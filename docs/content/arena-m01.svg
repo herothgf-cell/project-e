@@ -1,0 +1,317 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1120" viewBox="0 0 1280 1120" role="img" aria-labelledby="map-title map-desc">
+<title id="map-title">M01 Canal Workshop — proposed coordinate plan</title>
+<desc id="map-desc">Development diagram of the proposed 120 by 80 meter arena. X increases east; Z increases north. White ground is the union of three six-meter lanes, four four-meter connectors, two bases, tower and core pads, six cell pads and three-meter cell access paths, and nine-meter central combat widenings. Tower collision radius is one meter; core collision radius is two meters. Six opaque non-walkable blockers do not intersect the ground. All positions are from docs/content/02-arena-and-objectives.md, v0.1, 2026-10-21. Diagram verification is not a gameplay or navigation test.</desc>
+<defs>
+<pattern id="blocker-hatch" patternUnits="userSpaceOnUse" width="1.5" height="1.5"><rect width="1.5" height="1.5" fill="#66788a"/><path d="M-.75,.75 L.75,-.75 M0,1.5 L1.5,0 M.75,2.25 L2.25,.75" stroke="#8fa0af" stroke-width=".18"/></pattern>
+<mask id="ground-collision-cutouts" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="-60" y="-40" width="120" height="80">
+<rect x="-60" y="-40" width="120" height="80" fill="white"/>
+<circle cx="-26" cy="21.5" r="1" fill="black"/>
+<circle cx="-10" cy="21.5" r="1" fill="black"/>
+<circle cx="10" cy="21.5" r="1" fill="black"/>
+<circle cx="26" cy="21.5" r="1" fill="black"/>
+<circle cx="-30" cy="-3.5" r="1" fill="black"/>
+<circle cx="-10" cy="-3.5" r="1" fill="black"/>
+<circle cx="10" cy="3.5" r="1" fill="black"/>
+<circle cx="30" cy="3.5" r="1" fill="black"/>
+<circle cx="-26" cy="-21.5" r="1" fill="black"/>
+<circle cx="-10" cy="-21.5" r="1" fill="black"/>
+<circle cx="10" cy="-21.5" r="1" fill="black"/>
+<circle cx="26" cy="-21.5" r="1" fill="black"/>
+<circle cx="-50" cy="0" r="2" fill="black"/>
+<circle cx="50" cy="0" r="2" fill="black"/>
+</mask></defs>
+<g font-family="Arial, Helvetica, sans-serif">
+<rect width="1280" height="1120" fill="#f7f9fc"/>
+<text x="64" y="54" font-size="30" fill="#25394b" text-anchor="start" font-weight="700" >M01 / CANAL WORKSHOP</text>
+<text x="64" y="82" font-size="14" fill="#5e7284" text-anchor="start" font-weight="400" >X/Z coordinate plan  |  120 x 80 m  |  2026-10-21</text>
+<rect x="1057" y="29" width="159" height="29" rx="6" fill="#e5edf4"/>
+<text x="1136.5" y="49" font-size="12" fill="#49677f" text-anchor="middle" font-weight="700" >PROPOSED v0.1</text>
+<text x="1216" y="82" font-size="13" fill="#5e7284" text-anchor="end" font-weight="400" >3 lanes / 4 links / 12 towers / 2 cores / 6 cells / 6 blockers</text>
+<!-- World geometry: x = X in meters; y = Z in meters. No coordinate offsets are baked into the model. -->
+<g id="map-world" transform="translate(640 484) scale(9 -9)">
+<rect x="-60" y="-40" width="120" height="80" fill="#dce5ed"/>
+<g id="walkable-ground" fill="#ffffff" stroke="#ffffff" mask="url(#ground-collision-cutouts)">
+<polyline id="ground-lane-N" points="-50,0 -26,18 26,18 50,0" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline id="ground-lane-C" points="-50,0 50,0" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline id="ground-lane-S" points="-50,0 -26,-18 26,-18 50,0" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline id="ground-K01" points="-22,0 -10,18" fill="none" stroke-width="4" stroke-linecap="round"/>
+<polyline id="ground-K02" points="22,0 10,18" fill="none" stroke-width="4" stroke-linecap="round"/>
+<polyline id="ground-K03" points="-22,0 -10,-18" fill="none" stroke-width="4" stroke-linecap="round"/>
+<polyline id="ground-K04" points="22,0 10,-18" fill="none" stroke-width="4" stroke-linecap="round"/>
+<rect id="ground-base-W" x="-59" y="-8" width="15" height="16" stroke="none"/>
+<rect id="ground-base-E" x="44" y="-8" width="15" height="16" stroke="none"/>
+<rect id="ground-combat-N" x="-6" y="13.5" width="12" height="9" stroke="none"/>
+<rect id="ground-combat-C" x="-6" y="-4.5" width="12" height="9" stroke="none"/>
+<rect id="ground-combat-S" x="-6" y="-22.5" width="12" height="9" stroke="none"/>
+<circle id="ground-pad-W-N-inner" cx="-26" cy="21.5" r="3" stroke="none"/>
+<circle id="ground-pad-W-N-outer" cx="-10" cy="21.5" r="3" stroke="none"/>
+<circle id="ground-pad-E-N-outer" cx="10" cy="21.5" r="3" stroke="none"/>
+<circle id="ground-pad-E-N-inner" cx="26" cy="21.5" r="3" stroke="none"/>
+<circle id="ground-pad-W-C-inner" cx="-30" cy="-3.5" r="3" stroke="none"/>
+<circle id="ground-pad-W-C-outer" cx="-10" cy="-3.5" r="3" stroke="none"/>
+<circle id="ground-pad-E-C-outer" cx="10" cy="3.5" r="3" stroke="none"/>
+<circle id="ground-pad-E-C-inner" cx="30" cy="3.5" r="3" stroke="none"/>
+<circle id="ground-pad-W-S-inner" cx="-26" cy="-21.5" r="3" stroke="none"/>
+<circle id="ground-pad-W-S-outer" cx="-10" cy="-21.5" r="3" stroke="none"/>
+<circle id="ground-pad-E-S-outer" cx="10" cy="-21.5" r="3" stroke="none"/>
+<circle id="ground-pad-E-S-inner" cx="26" cy="-21.5" r="3" stroke="none"/>
+<circle id="ground-pad-W-core" cx="-50" cy="0" r="3" stroke="none"/>
+<circle id="ground-pad-E-core" cx="50" cy="0" r="3" stroke="none"/>
+<path id="ground-access-W-N-cell" d="M-18,18 L-18,24" fill="none" stroke-width="3" stroke-linecap="butt"/>
+<circle id="ground-pad-W-N-cell" cx="-18" cy="24" r="2.2" stroke="none"/>
+<path id="ground-access-E-N-cell" d="M18,18 L18,24" fill="none" stroke-width="3" stroke-linecap="butt"/>
+<circle id="ground-pad-E-N-cell" cx="18" cy="24" r="2.2" stroke="none"/>
+<path id="ground-access-W-C-cell" d="M-24,0 L-24,6" fill="none" stroke-width="3" stroke-linecap="butt"/>
+<circle id="ground-pad-W-C-cell" cx="-24" cy="6" r="2.2" stroke="none"/>
+<path id="ground-access-E-C-cell" d="M24,0 L24,-6" fill="none" stroke-width="3" stroke-linecap="butt"/>
+<circle id="ground-pad-E-C-cell" cx="24" cy="-6" r="2.2" stroke="none"/>
+<path id="ground-access-W-S-cell" d="M-18,-18 L-18,-24" fill="none" stroke-width="3" stroke-linecap="butt"/>
+<circle id="ground-pad-W-S-cell" cx="-18" cy="-24" r="2.2" stroke="none"/>
+<path id="ground-access-E-S-cell" d="M18,-18 L18,-24" fill="none" stroke-width="3" stroke-linecap="butt"/>
+<circle id="ground-pad-E-S-cell" cx="18" cy="-24" r="2.2" stroke="none"/>
+</g>
+<g id="coordinate-grid" stroke="#b9c7d4" stroke-width=".07" opacity=".62">
+<path d="M-60,-40 V40"/>
+<path d="M-50,-40 V40"/>
+<path d="M-40,-40 V40"/>
+<path d="M-30,-40 V40"/>
+<path d="M-20,-40 V40"/>
+<path d="M-10,-40 V40"/>
+<path d="M0,-40 V40"/>
+<path d="M10,-40 V40"/>
+<path d="M20,-40 V40"/>
+<path d="M30,-40 V40"/>
+<path d="M40,-40 V40"/>
+<path d="M50,-40 V40"/>
+<path d="M60,-40 V40"/>
+<path d="M-60,-40 H60"/>
+<path d="M-60,-30 H60"/>
+<path d="M-60,-20 H60"/>
+<path d="M-60,-10 H60"/>
+<path d="M-60,0 H60"/>
+<path d="M-60,10 H60"/>
+<path d="M-60,20 H60"/>
+<path d="M-60,30 H60"/>
+<path d="M-60,40 H60"/>
+</g>
+<g id="bases" stroke-width=".16">
+<rect id="base-W" x="-59" y="-8" width="15" height="16" fill="#246ea6" fill-opacity=".065" stroke="#246ea6" stroke-opacity=".4" mask="url(#ground-collision-cutouts)"/>
+<rect id="base-E" x="44" y="-8" width="15" height="16" fill="#bb591d" fill-opacity=".065" stroke="#bb591d" stroke-opacity=".4" mask="url(#ground-collision-cutouts)"/>
+<rect id="shop-zone-W" x="-59" y="-6" width="6" height="12" fill="#246ea6" fill-opacity=".07" stroke="#246ea6" stroke-dasharray=".7 .45"/>
+<rect id="shop-zone-E" x="53" y="-6" width="6" height="12" fill="#bb591d" fill-opacity=".07" stroke="#bb591d" stroke-dasharray=".7 .45"/>
+</g>
+<g id="centerlines" fill="none" stroke="#587589" stroke-width=".17" stroke-dasharray=".75 .6" opacity=".8">
+<polyline id="centerline-N" points="-50,0 -26,18 26,18 50,0" stroke-linejoin="round"/>
+<polyline id="centerline-C" points="-50,0 50,0" stroke-linejoin="round"/>
+<polyline id="centerline-S" points="-50,0 -26,-18 26,-18 50,0" stroke-linejoin="round"/>
+</g>
+<g id="connector-centerlines" fill="none" stroke="#80749c" stroke-width=".16" stroke-dasharray=".55 .45">
+<polyline id="centerline-K01" points="-22,0 -10,18"/>
+<polyline id="centerline-K02" points="22,0 10,18"/>
+<polyline id="centerline-K03" points="-22,0 -10,-18"/>
+<polyline id="centerline-K04" points="22,0 10,-18"/>
+</g>
+<g id="platform-rims" fill="none" stroke="#b7c7d3" stroke-width=".12" stroke-dasharray=".45 .3">
+<circle cx="-26" cy="21.5" r="3"/>
+<circle cx="-10" cy="21.5" r="3"/>
+<circle cx="10" cy="21.5" r="3"/>
+<circle cx="26" cy="21.5" r="3"/>
+<circle cx="-30" cy="-3.5" r="3"/>
+<circle cx="-10" cy="-3.5" r="3"/>
+<circle cx="10" cy="3.5" r="3"/>
+<circle cx="30" cy="3.5" r="3"/>
+<circle cx="-26" cy="-21.5" r="3"/>
+<circle cx="-10" cy="-21.5" r="3"/>
+<circle cx="10" cy="-21.5" r="3"/>
+<circle cx="26" cy="-21.5" r="3"/>
+<circle cx="-50" cy="0" r="3"/>
+<circle cx="50" cy="0" r="3"/>
+<circle cx="-18" cy="24" r="2.2"/>
+<circle cx="18" cy="24" r="2.2"/>
+<circle cx="-24" cy="6" r="2.2"/>
+<circle cx="24" cy="-6" r="2.2"/>
+<circle cx="-18" cy="-24" r="2.2"/>
+<circle cx="18" cy="-24" r="2.2"/>
+</g>
+<g id="opaque-blockers" stroke="#506376" stroke-width=".14">
+<rect id="B01" x="-6" y="6" width="12" height="6" fill="url(#blocker-hatch)"/>
+<rect id="B02" x="-6" y="-12" width="12" height="6" fill="url(#blocker-hatch)"/>
+<rect id="B03" x="-28" y="9" width="6" height="3" fill="url(#blocker-hatch)"/>
+<rect id="B04" x="22" y="-12" width="6" height="3" fill="url(#blocker-hatch)"/>
+<rect id="B05" x="-28" y="-12" width="6" height="3" fill="url(#blocker-hatch)"/>
+<rect id="B06" x="22" y="9" width="6" height="3" fill="url(#blocker-hatch)"/>
+</g>
+<g id="structures" stroke-width=".18">
+<circle id="W-N-inner" cx="-26" cy="21.5" r="1" fill="#ffffff" stroke="#246ea6"/>
+<circle id="W-N-outer" cx="-10" cy="21.5" r="1" fill="#246ea6" stroke="#246ea6"/>
+<circle id="E-N-outer" cx="10" cy="21.5" r="1" fill="#bb591d" stroke="#bb591d"/>
+<circle id="E-N-inner" cx="26" cy="21.5" r="1" fill="#ffffff" stroke="#bb591d"/>
+<circle id="W-C-inner" cx="-30" cy="-3.5" r="1" fill="#ffffff" stroke="#246ea6"/>
+<circle id="W-C-outer" cx="-10" cy="-3.5" r="1" fill="#246ea6" stroke="#246ea6"/>
+<circle id="E-C-outer" cx="10" cy="3.5" r="1" fill="#bb591d" stroke="#bb591d"/>
+<circle id="E-C-inner" cx="30" cy="3.5" r="1" fill="#ffffff" stroke="#bb591d"/>
+<circle id="W-S-inner" cx="-26" cy="-21.5" r="1" fill="#ffffff" stroke="#246ea6"/>
+<circle id="W-S-outer" cx="-10" cy="-21.5" r="1" fill="#246ea6" stroke="#246ea6"/>
+<circle id="E-S-outer" cx="10" cy="-21.5" r="1" fill="#bb591d" stroke="#bb591d"/>
+<circle id="E-S-inner" cx="26" cy="-21.5" r="1" fill="#ffffff" stroke="#bb591d"/>
+<circle id="W-core" cx="-50" cy="0" r="2" fill="#246ea6" stroke="#ffffff" stroke-width=".2"/>
+<circle id="E-core" cx="50" cy="0" r="2" fill="#bb591d" stroke="#ffffff" stroke-width=".2"/>
+</g>
+<g id="cell-markers" fill="#237969" stroke="#ffffff" stroke-width=".14">
+<path id="W-N-cell" d="M-18,25 L-17,24 L-18,23 L-19,24 Z"/>
+<path id="E-N-cell" d="M18,25 L19,24 L18,23 L17,24 Z"/>
+<path id="W-C-cell" d="M-24,7 L-23,6 L-24,5 L-25,6 Z"/>
+<path id="E-C-cell" d="M24,-5 L25,-6 L24,-7 L23,-6 Z"/>
+<path id="W-S-cell" d="M-18,-23 L-17,-24 L-18,-25 L-19,-24 Z"/>
+<path id="E-S-cell" d="M18,-23 L19,-24 L18,-25 L17,-24 Z"/>
+</g>
+<g id="spawn-and-shop-points" fill="none" stroke-width=".18">
+<path id="spawn-W" d="M-56.7,0 H-55.3 M-56,-0.7 V0.7" stroke="#246ea6"/>
+<path id="spawn-E" d="M55.3,0 H56.7 M56,-0.7 V0.7" stroke="#bb591d"/>
+<rect id="shop-point-W" x="-56.45" y="-4.45" width=".9" height=".9" fill="#246ea6" stroke="#246ea6"/>
+<rect id="shop-point-E" x="55.55" y="3.55" width=".9" height=".9" fill="#bb591d" stroke="#bb591d"/>
+</g></g>
+<g id="axes" stroke="#8599aa" stroke-width="1">
+<rect x="100" y="124" width="1080" height="720" fill="none"/>
+<path d="M100,844 v6"/>
+<path d="M190,844 v6"/>
+<path d="M280,844 v6"/>
+<path d="M370,844 v6"/>
+<path d="M460,844 v6"/>
+<path d="M550,844 v6"/>
+<path d="M640,844 v6"/>
+<path d="M730,844 v6"/>
+<path d="M820,844 v6"/>
+<path d="M910,844 v6"/>
+<path d="M1000,844 v6"/>
+<path d="M1090,844 v6"/>
+<path d="M1180,844 v6"/>
+<path d="M100,844 h-6"/>
+<path d="M100,754 h-6"/>
+<path d="M100,664 h-6"/>
+<path d="M100,574 h-6"/>
+<path d="M100,484 h-6"/>
+<path d="M100,394 h-6"/>
+<path d="M100,304 h-6"/>
+<path d="M100,214 h-6"/>
+<path d="M100,124 h-6"/>
+</g>
+<text x="100" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >-60</text>
+<text x="190" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >-50</text>
+<text x="280" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >-40</text>
+<text x="370" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >-30</text>
+<text x="460" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >-20</text>
+<text x="550" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >-10</text>
+<text x="640" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >0</text>
+<text x="730" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >+10</text>
+<text x="820" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >+20</text>
+<text x="910" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >+30</text>
+<text x="1000" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >+40</text>
+<text x="1090" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >+50</text>
+<text x="1180" y="868" font-size="12" fill="#5e7284" text-anchor="middle" font-weight="400" >+60</text>
+<text x="84" y="848" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >-40</text>
+<text x="84" y="758" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >-30</text>
+<text x="84" y="668" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >-20</text>
+<text x="84" y="578" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >-10</text>
+<text x="84" y="488" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >0</text>
+<text x="84" y="398" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >+10</text>
+<text x="84" y="308" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >+20</text>
+<text x="84" y="218" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >+30</text>
+<text x="84" y="128" font-size="12" fill="#5e7284" text-anchor="end" font-weight="400" >+40</text>
+<text x="640" y="892" font-size="13" fill="#5e7284" text-anchor="middle" font-weight="400" >X (m)  /  east +</text>
+<text x="34" y="484" font-size="13" fill="#5e7284" text-anchor="middle" font-weight="400" transform="rotate(-90 34 484)">Z (m)  /  north +</text>
+<path d="M1214,208 V163 M1208,174 L1214,160 L1220,174" fill="none" stroke="#425b70" stroke-width="2"/>
+<text x="1214" y="147" font-size="16" fill="#25394b" text-anchor="middle" font-weight="700" >N</text>
+<text x="640" y="407.05" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700" >B01</text>
+<text x="640" y="569.05" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700" >B02</text>
+<text x="415" y="393.55" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700" >B03</text>
+<text x="865" y="582.55" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700" >B04</text>
+<text x="415" y="582.55" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700" >B05</text>
+<text x="865" y="393.55" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700" >B06</text>
+<rect x="477" y="393" width="38" height="20" rx="4" fill="#ffffff" fill-opacity=".94"/>
+<text x="496" y="407" font-size="11.5" fill="#6d5d8c" text-anchor="middle" font-weight="700" >K01</text>
+<rect x="765" y="393" width="38" height="20" rx="4" fill="#ffffff" fill-opacity=".94"/>
+<text x="784" y="407" font-size="11.5" fill="#6d5d8c" text-anchor="middle" font-weight="700" >K02</text>
+<rect x="477" y="555" width="38" height="20" rx="4" fill="#ffffff" fill-opacity=".94"/>
+<text x="496" y="569" font-size="11.5" fill="#6d5d8c" text-anchor="middle" font-weight="700" >K03</text>
+<rect x="765" y="555" width="38" height="20" rx="4" fill="#ffffff" fill-opacity=".94"/>
+<text x="784" y="569" font-size="11.5" fill="#6d5d8c" text-anchor="middle" font-weight="700" >K04</text>
+<rect x="628" y="309" width="24" height="26" rx="5" fill="#314f66"/>
+<text x="640" y="327" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="700" >N</text>
+<rect x="628" y="471" width="24" height="26" rx="5" fill="#314f66"/>
+<text x="640" y="489" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="700" >C</text>
+<rect x="628" y="633" width="24" height="26" rx="5" fill="#314f66"/>
+<text x="640" y="651" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="700" >S</text>
+<text x="190" y="489" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="700" >W</text>
+<text x="1090" y="489" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="700" >E</text>
+<text x="172" y="381.4" font-size="14" fill="#246ea6" text-anchor="middle" font-weight="700" >W base</text>
+<text x="1108" y="381.4" font-size="14" fill="#bb591d" text-anchor="middle" font-weight="700" >E base</text>
+<polyline points="190,504.7 190,575.8" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="190" y="593.8" font-size="13" fill="#246ea6" text-anchor="middle" font-weight="700" >W core</text>
+<polyline points="1090,504.7 1090,575.8" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="1090" y="593.8" font-size="13" fill="#bb591d" text-anchor="middle" font-weight="700" >E core</text>
+<polyline points="406,279.7 361,240.1" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="361" y="226.6" font-size="12.5" fill="#246ea6" text-anchor="middle" font-weight="700" >W N inner</text>
+<polyline points="550,279.7 568,240.1" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="568" y="226.6" font-size="12.5" fill="#246ea6" text-anchor="middle" font-weight="700" >W N outer</text>
+<polyline points="730,279.7 712,240.1" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="712" y="226.6" font-size="12.5" fill="#bb591d" text-anchor="middle" font-weight="700" >E N outer</text>
+<polyline points="874,279.7 919,240.1" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="919" y="226.6" font-size="12.5" fill="#bb591d" text-anchor="middle" font-weight="700" >E N inner</text>
+<polyline points="370,526.3 325,535.3" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="325" y="550.6" font-size="12.5" fill="#246ea6" text-anchor="middle" font-weight="700" >W C inner</text>
+<polyline points="550,526.3 532,529" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="532" y="544.3" font-size="12.5" fill="#246ea6" text-anchor="middle" font-weight="700" >W C outer</text>
+<polyline points="730,441.7 730,430.9" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="730" y="416.5" font-size="12.5" fill="#bb591d" text-anchor="middle" font-weight="700" >E C outer</text>
+<polyline points="910,441.7 955,426.4" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="955" y="412" font-size="12.5" fill="#bb591d" text-anchor="middle" font-weight="700" >E C inner</text>
+<polyline points="406,688.3 361,731.5" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="361" y="749.5" font-size="12.5" fill="#246ea6" text-anchor="middle" font-weight="700" >W S inner</text>
+<polyline points="550,688.3 568,731.5" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="568" y="749.5" font-size="12.5" fill="#246ea6" text-anchor="middle" font-weight="700" >W S outer</text>
+<polyline points="730,688.3 712,731.5" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="712" y="749.5" font-size="12.5" fill="#bb591d" text-anchor="middle" font-weight="700" >E S outer</text>
+<polyline points="874,688.3 919,731.5" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="919" y="749.5" font-size="12.5" fill="#bb591d" text-anchor="middle" font-weight="700" >E S inner</text>
+<polyline points="478,248.2 478,199.6" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="478" y="184.3" font-size="12" fill="#237969" text-anchor="middle" font-weight="700" >W N cell</text>
+<polyline points="802,248.2 802,199.6" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="802" y="184.3" font-size="12" fill="#237969" text-anchor="middle" font-weight="700" >E N cell</text>
+<polyline points="413.2,430 374.5,430" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="334" y="431.8" font-size="12" fill="#237969" text-anchor="middle" font-weight="700" >W C cell</text>
+<polyline points="866.8,538 905.5,538" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="946" y="529" font-size="12" fill="#237969" text-anchor="middle" font-weight="700" >E C cell</text>
+<polyline points="478,719.8 478,772" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="478" y="790" font-size="12" fill="#237969" text-anchor="middle" font-weight="700" >W S cell</text>
+<polyline points="802,719.8 802,772" fill="none" stroke="#8495a5" stroke-width="1.1"/>
+<text x="802" y="790" font-size="12" fill="#237969" text-anchor="middle" font-weight="700" >E S cell</text>
+<path d="M64,913 H1216" stroke="#d4dee7" stroke-width="1"/>
+<text x="64" y="938" font-size="11" fill="#637d91" text-anchor="start" font-weight="700" >GROUND</text>
+<text x="403" y="938" font-size="11" fill="#637d91" text-anchor="start" font-weight="700" >OBJECTS</text>
+<text x="791" y="938" font-size="11" fill="#637d91" text-anchor="start" font-weight="700" >PATHS &amp; BASES</text>
+<rect x="64" y="949" width="23" height="16" rx="2" fill="#ffffff" stroke="#afbecb"/>
+<text x="98" y="961" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Walkable union</text>
+<rect x="64" y="977" width="23" height="16" rx="2" fill="#dce5ed" stroke="#afbecb"/>
+<text x="98" y="989" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Non-walkable garden</text>
+<rect x="64" y="1005" width="23" height="16" rx="2" fill="#66788a"/><path d="M65,1018 l12,-12 M72,1021 l13,-13 M81,1021 l5,-5" stroke="#9cabb7" stroke-width="1.5"/>
+<text x="98" y="1017" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Opaque, non-walkable blocker</text>
+<circle cx="411" cy="956" r="7" fill="#246ea6"/><circle cx="433" cy="956" r="7" fill="#ffffff" stroke="#bb591d" stroke-width="2"/>
+<text x="452" y="961" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Outer / inner tower  (r = 1 m)</text>
+<circle cx="421" cy="983" r="11" fill="#246ea6"/>
+<text x="452" y="989" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Core collision  (r = 2 m)</text>
+<path d="M421,1004 l8,8 l-8,8 l-8,-8 Z" fill="#237969"/>
+<text x="452" y="1017" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Cell marker; pad r = 2.2 m</text>
+<path d="M791,956 H823" stroke="#587589" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="839" y="961" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Lane 6 m / connector 4 m</text>
+<rect x="791" y="975" width="31" height="15" fill="#e2edf5" stroke="#246ea6" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="839" y="989" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Shop / recovery zone</text>
+<path d="M798,1005 v14 M791,1012 h14" stroke="#246ea6" stroke-width="2"/><rect x="814" y="1008" width="8" height="8" fill="#bb591d"/>
+<text x="839" y="1017" font-size="13" fill="#25394b" text-anchor="start" font-weight="400" >Spawn + / shop point</text>
+<text x="64" y="1054" font-size="12" fill="#63788a" text-anchor="start" font-weight="400" >Ground includes r = 3 m structure pads, 3 m cell access, and 9 m central combat widths.</text>
+<g id="scale-bar"><rect x="1000" y="1046" width="90" height="7" fill="#425b70"/><rect x="1090" y="1046" width="90" height="7" fill="#ffffff" stroke="#425b70" stroke-width="1"/><path d="M1000,1042 v15 M1090,1042 v15 M1180,1042 v15" stroke="#425b70" stroke-width="1"/></g>
+<text x="1000" y="1073" font-size="11" fill="#5e7284" text-anchor="middle" font-weight="400" >0</text>
+<text x="1090" y="1073" font-size="11" fill="#5e7284" text-anchor="middle" font-weight="400" >10</text>
+<text x="1180" y="1073" font-size="11" fill="#5e7284" text-anchor="middle" font-weight="400" >20 m</text>
+<text x="64" y="1096" font-size="12" fill="#63788a" text-anchor="start" font-weight="400" >Source: docs/content/02-arena-and-objectives.md  |  Proposed coordinates; diagram QA only, not a navigation test.</text>
+</g></svg>
