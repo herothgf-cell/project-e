@@ -1,8 +1,8 @@
 # 결정 이력·작업 가정·출처
 
-- 버전/작성일: v0.1 / 2026-10-21
+- 버전/작성일: v0.2 / 2026-10-22
 - 목적: 사용자 요구, 현재 기획 제안, 후속 검증이 필요한 결정을 구분한다.
-- 관련: [개요](00-project-brief.md), [공통 규칙](01-core-rules.md), [로드맵](02-development-roadmap.md), [Unity/Steam](technical/01-unity-and-steam.md)
+- 관련: [개요](00-project-brief.md), [공통 규칙](01-core-rules.md), [로드맵](02-development-roadmap.md), [Godot/Steam](technical/01-godot-and-steam.md)
 
 ## 1. 사용자 요구로 고정한 사항
 
@@ -14,8 +14,9 @@
 | U04 | 그대로 옮긴 게임이라는 인상은 피하기 | 캐릭터 기술·맵 세부 구조·표현을 독립적으로 설계 |
 | U05 | 콘텐츠·캐릭터 요소별 기획과 로드맵 | 분야별 문서와 단계별 산출물/검증 기준 작성 |
 | U06 | 지정 GitHub 저장소에 문서 작성 | `herothgf-cell/project-e`의 `docs/` 구조 사용 |
+| U07 | Godot으로 진행 | “godot 으로 해보자”라는 후속 선택에 따라 현재 엔진을 Godot으로 변경 |
 
-위 요구의 출처는 이번 대화다. 세부 인원, 수치, 세계관, 이름, 캐릭터 기술, 출시 가격까지 사용자 승인으로 확대하지 않는다. 사용자의 Unity 질문은 엔진 선택 검토로 반영했다.
+위 요구의 출처는 이번 대화다. 세부 인원, 수치, 세계관, 이름, 캐릭터 기술, 출시 가격까지 사용자 승인으로 확대하지 않는다. v0.1에서는 Unity 질문을 기술 선택 검토로 반영했다. v0.2에서는 사용자의 Godot 선택을 반영한다. GDScript·Compatibility 렌더러·정확한 패치는 구현 기본값 또는 검증 항목이며 별도의 명시적 사용자 요구로 취급하지 않는다.
 
 ## 2. 현재 채택한 기획 기준
 
@@ -28,12 +29,14 @@
 | D05 | 밝은 공방/원소 공학 세계, 가칭 수로 공방 | 빠른 전투의 식별성과 독립적 시청각 표현 | M3 표현 검증 |
 | D06 | 바스·리오·네마의 서로 다른 기술 판단 | 진입·귀환 궤적·장치 연결의 조작 차이 | M1–M3 |
 | D07 | 처음 3영웅/1맵, 출시 후보 6영웅/1맵 | 실제 한 판을 먼저 완성하고 조합 선택을 확장 | M3 이후 추가 영웅 착수 |
-| D08 | Unity 6.3 LTS + C# + URP 권장 | 버전을 고정하는 소규모 PC 제작 기준 | M0 호환성 시험 |
-| D09 | Windows x64·마우스/키보드 우선 | 첫 배포·입력·성능 검증 범위 제한 | 다른 플랫폼은 별도 검증 |
+| D08 | Godot 4.7.2 Standard 사용 확정; 초기 기본값은 타입을 명시한 GDScript + Compatibility | 사용자의 Godot 선택을 반영하고 작은 시작 프로젝트에서 검증 | M0 동일 버전 export template·Windows 실행 검증 |
+| D09 | Windows x86_64·마우스/키보드 우선 | 첫 배포·입력·성능 검증 범위 제한 | 다른 플랫폼은 별도 검증 |
 | D10 | 초기 권한 서버 30Hz, 화면 60fps 목표 | 빠른 전투 판정과 측정 가능한 예산 설정 | M1–M2 실측 |
 | D11 | 초기 listen server, 전용 서버로 분리 가능한 구조 | 비공개 검증을 시작하면서 공정성/운영 위험 확인 | M4 출시 구조 결정 |
 | D12 | 공개 매칭은 실제 수요/지연/운영비를 보고 결정 | 친구 방 성공과 지속 가능한 큐를 구분 | M4–M5 |
 | D13 | 기간 약속 없이 M0–M6 통과 기준 운영 | 실제 인원·속도·예산을 아직 확인하지 않음 | M1 이후 일정 추정 |
+| D14 | M0 시작 소스는 오프라인 입력·이동·E 단계·자원/쿨타임 진단으로 제한 | 환경과 최소 조작을 먼저 확인하고 전체 전투/온라인과 구분 | Windows export·수동 검증 이후 M1 확대 |
+| D15 | v0.1 Unity 권장안을 v0.2 Godot 기준으로 대체 | 사용자 후속 엔진 선택. 게임 규칙·콘텐츠 수·M0–M6 통과 기준은 유지 | 엔진별 실행·export·네트워크 검증 증거 기록 |
 
 모든 피해·쿨타임·경험치·좌표·경기 시간은 새 게임의 초기 가설이다. 원작의 수치를 복원했거나 원작과 같은 플레이 감각을 실측했다는 뜻이 아니다. 변경할 때는 [공통 규칙](01-core-rules.md)과 관련 콘텐츠·영웅·검증 문서를 함께 고친다.
 
@@ -42,7 +45,7 @@
 | 시점 | 결정할 내용 | 결정에 필요한 증거 |
 |---|---|---|
 | M0 | 실제 제작 인원·장비·시간·예산 책임 | 사용할 환경과 투입 가능 자원 |
-| M0 | Unity 정확한 패치·패키지·backend | 빈 프로젝트와 Windows 빌드 호환성 |
+| M0 | 고정한 Godot 4.7.2의 export template·애드온 적용과 Windows 환경 재현 | Linux 실행 버전 `4.7.2.stable.official.ed1daf0bf`; Windows x86_64 export/수동 검증은 대기 |
 | M1 | 예측/보정 구현 범위와 네트워크 후보 | 같은 2클라이언트 진단의 결과 비교 |
 | M3 | 고유한 정체성과 최초 세 영웅 유지 여부 | 새 조작·상대법에 대한 행동/인터뷰 |
 | M3–M4 | 추가 영웅의 실제 제작 순서 | 조합의 빈틈·학습 부담·제작 난도 |
@@ -62,22 +65,22 @@
 
 ## 5. 공식 자료로 확인한 기술·출시 사실
 
-자료 확인일은 2026-10-21이다. 아래는 제품 선택의 근거이며 실제 설치·연동·출시 완료의 증거가 아니다. 버전·약관·요금·심사 조건은 적용 단계에서 다시 확인한다.
+Steam 자료의 최초 확인일은 2026-10-21이며 Godot 전환 문서의 개정일은 2026-10-22다. 아래는 제품 선택의 근거이며 실제 설치·연동·출시 완료의 증거가 아니다. Godot은 `.godot-version`에 `4.7.2`로 고정하고 Linux 실행 버전 `4.7.2.stable.official.ed1daf0bf`를 확인했다. 이 기록은 Windows 검증을 뜻하지 않는다. 버전과 실제 실행 결과는 [기술 기준](technical/01-godot-and-steam.md)과 [빠른 시작](technical/03-godot-quickstart.md)에 기록한다. 버전·라이선스·요금·심사 조건은 적용 단계에서 다시 확인한다.
 
 | 주제 | 확인 내용 | 공식 자료 |
 |---|---|---|
-| Steam과 엔진 | Steamworks는 여러 게임 엔진의 연동 경로를 안내한다. Unity 사용 자체가 Steam 출시의 필수 조건은 아니다. | [Steamworks API](https://partner.steamgames.com/doc/sdk/api) |
-| Unity 지원 | Unity 6.3 LTS 지원은 2027년 12월까지로 안내되어 있다. | [Unity 6 support](https://unity.com/releases/unity-6/support) |
-| LTS 선택의 의미 | Unity는 버전 고정/라이브 서비스에 LTS를, 신규/중간 제작에 Update releases를 권장한다. 이 프로젝트의 LTS 선택은 버전 고정과 검증 범위를 우선한 판단이다. | [Unity 6 support](https://unity.com/releases/unity-6/support) |
-| URP | 여러 플랫폼에서 조정 가능한 렌더링을 제공하는 Unity의 렌더 파이프라인이다. 이 게임의 밝은 스타일과 PC 성능 목표에 적합한 후보로 판단한다. | [Unity URP](https://docs.unity3d.com/6000.3/Documentation/Manual/urp/urp-introduction.html) |
-| NGO 예측 | NGO 3.1의 anticipation은 완전한 클라이언트 예측·재조정/rollback-and-replay를 자동 제공하는 기능이 아니다. | [NGO Client anticipation](https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@3.1/manual/advanced-topics/client-anticipation.html) |
-| 예측 대안 | Netcode for Entities는 예측·복원·재시뮬레이션을 설명하며 별도의 구조/학습/CPU 부담을 평가해야 한다. | [Entities Prediction](https://docs.unity3d.com/Packages/com.unity.netcode@1.8/manual/intro-to-prediction.html) |
+| Steam과 엔진 | Steamworks는 여러 게임 엔진의 연동 경로를 안내한다. Godot 선택과 Steam 배포·API 연동 검증은 별도 작업이다. | [Steamworks API](https://partner.steamgames.com/doc/sdk/api) |
+| Godot 라이선스 | MIT 라이선스이며 엔진 사용료·매출 로열티가 없다. 배포 시 라이선스·저작권 고지를 포함하고 별도 자산/애드온 권리를 확인한다. | [Godot License](https://godotengine.org/license/) |
+| 언어 | Godot은 GDScript·C# 등 여러 언어를 지원한다. 초기 프로젝트는 Standard 배포판과 타입을 명시한 GDScript를 기본값으로 사용한다. | [Scripting languages](https://docs.godotengine.org/en/stable/getting_started/step_by_step/scripting_languages.html) |
+| 렌더러 | Compatibility는 Godot 4의 렌더러 선택지다. 초기 선택은 작은 3D 진단의 실행 범위를 위한 것이며 최종 PC 성능을 입증하지 않는다. | [Renderers](https://docs.godotengine.org/en/stable/tutorials/rendering/renderers.html) |
+| 온라인 | Godot의 high-level multiplayer API는 RPC와 전송 연결을 제공한다. 이 게임의 이동 예측·서버 보정·지연 보상은 별도 설계와 2클라이언트 측정이 필요하다. | [High-level multiplayer](https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html) |
+| 자동 실행·서버 | CLI와 headless 실행 경로로 진단·전용 서버 빌드를 준비할 수 있다. 실제 Windows export와 온라인 성능 검증을 대체하지 않는다. | [Command line](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html), [Dedicated servers](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_dedicated_servers.html) |
 | Steam Playtest | 본편에 연결된 별도 App ID로 테스트 참가를 관리하는 무료 기능이다. | [Steam Playtest](https://partner.steamgames.com/doc/features/playtest) |
 | 게임 서버 | 게임 서버 호스팅은 개발자/커뮤니티가 운영할 수 있는 별도 대상이다. 로비/Relay 제공을 무료 서버 실행 자원으로 계산하지 않는다. | [Game Servers](https://partner.steamgames.com/doc/features/multiplayer/game_servers) |
 | 수수료 | 신규 앱 수수료와 매출 조건에 따른 회수 규정이 있다. 실제 금액·세금·자격은 결제 시 확인한다. | [Steam Direct Fee](https://partner.steamgames.com/doc/gettingstarted/appfee) |
 | 심사/공개 | 스토어와 빌드를 검토하며 승인 후 실제 공개 동작을 별도로 실행한다. | [Review Process](https://partner.steamgames.com/doc/store/review_process), [Release Process](https://partner.steamgames.com/doc/store/releasing) |
 
-Unity 등급과 라이선스 적용은 제작 주체의 재무 조건에 따라 판단한다. 현재 사용자에게 특정 무료/유료 등급 자격이 있다고 단정하지 않는다. 상세한 공식 약관 링크와 확인 항목은 [기술 문서](technical/01-unity-and-steam.md)에 둔다.
+v0.1의 Unity 6.3 LTS·C#·URP와 NGO/Entities 비교는 당시의 권장안 이력이다. 현재 개발 기준이나 필수 패키지로 사용하지 않는다. 이전 경로 `technical/01-unity-and-steam.md`는 현재 [Godot 기술 문서](technical/01-godot-and-steam.md)로 안내하는 호환 문서로 남긴다. Godot 엔진 자체의 비용과 별개로 서버·유료 애드온·아트·음원·폰트·Steam 등록 비용을 관리한다.
 
 ## 6. 공식 자료의 불일치 처리
 
@@ -85,19 +88,21 @@ Unity 등급과 라이선스 적용은 제작 주체의 재무 조건에 따라 
 
 로드맵에는 최소 30일의 여유를 잡고 실제 App 대시보드와 Steam Support에서 적용 조건을 확인한다. 공개 Coming Soon 기간, 심사, 수정·재제출 시간은 별도 조건으로 관리한다. 자세한 순서는 [출시 계획](release/01-steam-release-plan.md)을 따른다.
 
-## 7. 이번 문서 작성의 완료 범위
+## 7. 현재 산출물과 완료하지 않은 범위
 
 - 프로젝트 개요와 단일 공통 규칙, 단계별 로드맵, 제작 범위와 검증 계획.
 - 세계관/표현, 맵/공성, 병력/경제, 모드/학습/UI 기획.
 - 최초 세 영웅의 상세 기술·상대법·예외와 추가 세 영웅의 확장 조건.
-- Unity/네트워크/Steam 배포의 권장안, 공식 근거와 후속 결정.
+- Godot/네트워크/Steam 배포의 기준, 공식 근거와 후속 결정.
+- `game/project-e/project.godot`의 M0 기반 소스와 오프라인 입력·이동·E 선딜/돌진/후딜·자원/쿨타임 진단 범위.
 
-게임 코드, Unity 프로젝트, 실행 파일, 네트워크/성능 실측, Steam 계정·App·스토어·Playtest 생성은 이번 문서 작성 결과에 포함되지 않는다. 문서 링크와 규칙 일치 확인은 게임 실행 검증과 구분한다.
+M0 시작 소스는 바스 전체 기술·성장·공성·3대3·네트워크 구현 또는 M1 완료가 아니다. 실제 테스트 명령과 결과는 [빠른 시작](technical/03-godot-quickstart.md)을 기준으로 보고한다. Windows 실행 파일의 export/수동 실행, 온라인 지연·손실/성능 실측, Steam 계정·App·스토어·Playtest 생성은 아직 완료하지 않았다. 문서 링크·규칙 일치 확인과 headless 진단만으로 화면·입력·Windows 배포를 검증했다고 기록하지 않는다.
 
 ## 8. 변경 기록
 
 | 버전 | 날짜 | 변경 |
 |---|---|---|
-| v0.1 | 2026-10-21 | 독립 Steam PC 게임으로 최초 기획. 원작의 핵심 재미를 목표로 삼고 신규 영웅·맵·표현을 설계. 공통 규칙·콘텐츠별 문서·M0–M6·온라인 조기 검증·출시 준비를 정리. |
+| v0.1 | 2026-10-21 | 독립 Steam PC 게임으로 최초 기획. 원작의 핵심 재미를 목표로 삼고 신규 영웅·맵·표현을 설계. Unity 6.3 LTS·C#·URP 권장안과 공통 규칙·콘텐츠별 문서·M0–M6·온라인 조기 검증·출시 준비를 정리. |
+| v0.2 | 2026-10-22 | 사용자 선택에 따라 Godot 4 Standard로 전환. 타입을 명시한 GDScript·Compatibility를 초기 기본값으로 채택. 기술 문서·빠른 시작·`game/project-e/project.godot` 경로, MIT 고지/비용과 Godot 추적 파일 규칙을 반영. 게임 규칙·콘텐츠 수·마일스톤 통과 기준은 유지. M0 시작 소스와 미완료인 Windows/온라인 검증을 구분. |
 
 다음 개정부터는 실제 변경한 규칙, 바꾼 이유, 사용한 테스트 기록, 영향을 받는 문서를 함께 적는다.

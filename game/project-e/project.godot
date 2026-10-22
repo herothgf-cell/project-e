@@ -1,0 +1,51 @@
+; Project E — Godot 4.7.2 Standard. Open this file in the project manager.
+config_version=5
+
+[application]
+config/name="Project E - Movement Probe"
+run/main_scene="res://scenes/combat_probe.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+config/description="M0 offline movement and Bas E probe. Full combat and networking are planned."
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+
+[input]
+move_click={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_index":2)]
+}
+confirm_aim={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_index":1)]
+}
+aim_dash={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":69)]
+}
+stop_move={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":83)]
+}
+cancel_aim={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194305)]
+}
+reset_probe={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194333)]
+}
+
+[physics]
+common/physics_ticks_per_second=30
+3d/physics_engine="GodotPhysics3D"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.055, 0.075, 0.09, 1)

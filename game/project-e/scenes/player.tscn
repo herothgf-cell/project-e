@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/probe_player.gd" id="1_player"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape"]
+radius = 0.45
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="BodyMaterial"]
+albedo_color = Color(0.16, 0.64, 0.61, 1)
+roughness = 0.8
+
+[sub_resource type="CapsuleMesh" id="BodyMesh"]
+radius = 0.40
+height = 1.6
+material = SubResource("BodyMaterial")
+
+[sub_resource type="StandardMaterial3D" id="CopperMaterial"]
+albedo_color = Color(0.91, 0.57, 0.26, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="GloveMesh"]
+size = Vector3(0.65, 0.6, 0.7)
+material = SubResource("CopperMaterial")
+
+[sub_resource type="BoxMesh" id="FacingMesh"]
+size = Vector3(0.12, 0.12, 0.65)
+material = SubResource("CopperMaterial")
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 1
+motion_mode = 1
+safe_margin = 0.001
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.8, 0)
+shape = SubResource("CapsuleShape")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+position = Vector3(0, 0.8, 0)
+mesh = SubResource("BodyMesh")
+
+[node name="Glove" type="MeshInstance3D" parent="Visual"]
+position = Vector3(-0.55, 0.9, 0.15)
+mesh = SubResource("GloveMesh")
+
+[node name="Facing" type="MeshInstance3D" parent="Visual"]
+position = Vector3(0, 0.15, 0.55)
+mesh = SubResource("FacingMesh")

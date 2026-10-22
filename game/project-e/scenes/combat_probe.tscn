@@ -1,0 +1,247 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat_probe.gd" id="1_probe"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 1
+background_color = Color(0.055, 0.075, 0.09, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.82, 0.88, 0.92, 1)
+ambient_light_energy = 0.65
+tonemap_mode = 0
+
+[sub_resource type="StandardMaterial3D" id="FloorMaterial"]
+albedo_color = Color(0.72, 0.71, 0.60, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="FloorMesh"]
+size = Vector3(28, 0.2, 20)
+material = SubResource("FloorMaterial")
+
+[sub_resource type="StandardMaterial3D" id="WallMaterial"]
+albedo_color = Color(0.32, 0.40, 0.42, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="CenterWallMesh"]
+size = Vector3(1, 2, 6)
+material = SubResource("WallMaterial")
+
+[sub_resource type="BoxShape3D" id="CenterWallShape"]
+size = Vector3(1, 2, 6)
+
+[sub_resource type="BoxMesh" id="SideWallMesh"]
+size = Vector3(1, 1, 21)
+material = SubResource("WallMaterial")
+
+[sub_resource type="BoxShape3D" id="SideWallShape"]
+size = Vector3(1, 2, 21)
+
+[sub_resource type="BoxMesh" id="EndWallMesh"]
+size = Vector3(29, 1, 1)
+material = SubResource("WallMaterial")
+
+[sub_resource type="BoxShape3D" id="EndWallShape"]
+size = Vector3(29, 2, 1)
+
+[sub_resource type="StandardMaterial3D" id="MarkerMaterial"]
+albedo_color = Color(1, 0.73, 0.27, 1)
+shading_mode = 0
+
+[sub_resource type="CylinderMesh" id="MarkerMesh"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.03
+material = SubResource("MarkerMaterial")
+
+[sub_resource type="StandardMaterial3D" id="AimMaterial"]
+albedo_color = Color(0.18, 0.73, 0.68, 0.45)
+transparency = 1
+shading_mode = 0
+
+[sub_resource type="BoxMesh" id="AimMesh"]
+size = Vector3(0.9, 0.03, 4.2)
+material = SubResource("AimMaterial")
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(0.055, 0.08, 0.10, 0.94)
+border_width_left = 2
+border_color = Color(0.22, 0.68, 0.63, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="CombatProbe" type="Node3D"]
+script = ExtResource("1_probe")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-60, -25, 0)
+light_color = Color(1, 0.94, 0.83, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.1, 0)
+mesh = SubResource("FloorMesh")
+
+[node name="CenterWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="CenterWall"]
+mesh = SubResource("CenterWallMesh")
+
+[node name="Collision" type="CollisionShape3D" parent="CenterWall"]
+shape = SubResource("CenterWallShape")
+
+[node name="WestWall" type="StaticBody3D" parent="."]
+position = Vector3(-14, 1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="WestWall"]
+position = Vector3(0, -0.5, 0)
+mesh = SubResource("SideWallMesh")
+
+[node name="Collision" type="CollisionShape3D" parent="WestWall"]
+shape = SubResource("SideWallShape")
+
+[node name="EastWall" type="StaticBody3D" parent="."]
+position = Vector3(14, 1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="EastWall"]
+position = Vector3(0, -0.5, 0)
+mesh = SubResource("SideWallMesh")
+
+[node name="Collision" type="CollisionShape3D" parent="EastWall"]
+shape = SubResource("SideWallShape")
+
+[node name="NorthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1, -10)
+
+[node name="Mesh" type="MeshInstance3D" parent="NorthWall"]
+position = Vector3(0, -0.5, 0)
+mesh = SubResource("EndWallMesh")
+
+[node name="Collision" type="CollisionShape3D" parent="NorthWall"]
+shape = SubResource("EndWallShape")
+
+[node name="SouthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1, 10)
+
+[node name="Mesh" type="MeshInstance3D" parent="SouthWall"]
+position = Vector3(0, -0.5, 0)
+mesh = SubResource("EndWallMesh")
+
+[node name="Collision" type="CollisionShape3D" parent="SouthWall"]
+shape = SubResource("EndWallShape")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector3(-8, 0, 3)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(14, 26, 18)
+projection = 1
+size = 28.0
+current = true
+
+[node name="Destination" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("MarkerMesh")
+
+[node name="AimPath" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("AimMesh")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Root" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="StatusPanel" type="PanelContainer" parent="HUD/Root"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 390.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Margin" type="MarginContainer" parent="HUD/Root/StatusPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="HUD/Root/StatusPanel/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="HUD/Root/StatusPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "PROJECT E"
+
+[node name="Subtitle" type="Label" parent="HUD/Root/StatusPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.83, 0.79, 1)
+theme_override_font_sizes/font_size = 15
+text = "MOVEMENT LAB  /  BAS"
+
+[node name="Status" type="Label" parent="HUD/Root/StatusPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "ENERGY  100 / 100     E  READY\nIDLE"
+
+[node name="Energy" type="ProgressBar" parent="HUD/Root/StatusPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="HelpPanel" type="PanelContainer" parent="HUD/Root"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -106.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Margin" type="MarginContainer" parent="HUD/Root/HelpPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="HUD/Root/HelpPanel/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 7
+
+[node name="Controls" type="Label" parent="HUD/Root/HelpPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "MOVE  RMB     AIM E  E + LMB     CANCEL  ESC     STOP  S     RESET  F2"
+
+[node name="Hint" type="Label" parent="HUD/Root/HelpPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.70, 0.76, 0.78, 1)
+theme_override_font_sizes/font_size = 16
+text = "Move around the wall. Try an E dash into it, then through open ground."

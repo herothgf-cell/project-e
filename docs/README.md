@@ -1,8 +1,8 @@
 # 기획 문서 목차
 
-- 버전: v0.1
-- 작성일: 2026-10-21, Asia/Seoul
-- 상태: 구현 착수 전 검토용 기획. 사용자 확정 요구와 제안값은 각 문서에서 구분한다.
+- 버전: v0.2
+- 개정일: 2026-10-22, Asia/Seoul
+- 상태: Godot 기반 및 오프라인 조작 진단 소스 작성. 기획의 사용자 확정 요구와 제안값은 각 문서에서 구분한다.
 
 ## 읽기 순서와 문서의 책임
 
@@ -39,8 +39,10 @@
 
 | 문서 | 주요 내용 |
 |---|---|
-| [Unity와 Steam](technical/01-unity-and-steam.md) | 엔진 선택, LTS/패키지 고정, PC 빌드, 라이선스 확인 |
+| [Godot과 Steam](technical/01-godot-and-steam.md) | 엔진·GDScript·렌더러 선택, 버전 고정, PC export, 라이선스 고지 |
 | [구조와 네트워크](technical/02-architecture-and-networking.md) | 게임 판정, 데이터 구조, 온라인 검증, 클라이언트/서버 경계 |
+| [Godot 빠른 시작](technical/03-godot-quickstart.md) | 프로젝트 열기, 조작, 검증 명령과 현재 결과, Windows export |
+| [Godot 기반 작업 계획](plans/2026-10-22-godot-foundation.md) | 이번 M0 범위, 구현 경계와 확인 항목 |
 | [Steam 출시 계획](release/01-steam-release-plan.md) | Playtest, 스토어/빌드 검토, 운영과 공개 매칭 판단 |
 
 ## 정본과 수정 규칙
@@ -50,7 +52,7 @@
 3. 맵 좌표·길이는 [맵 문서](content/02-arena-and-objectives.md), 개별 기술은 해당 캐릭터 문서가 상세 정본이다.
 4. 모든 초기 수치는 테스트 가설이다. 변경 이유와 관측 결과를 기록하며 동시에 연관 문서를 고친다.
 5. 기술 선택은 공식 문서의 확인 날짜를 남긴다. 출시 직전 정책·요금·플랫폼 요구 사항을 다시 확인한다.
-6. M0–M6 단계의 완료 여부는 산출물과 실제 검증 결과로 갱신한다. 현재는 문서 작성만 완료되었다.
+6. M0–M6 단계의 완료 여부는 산출물과 실제 검증 결과로 갱신한다. 현재 Godot 소스와 Linux headless 진단이 있으며 Windows·온라인 검증을 대신하지 않는다.
 
 ## 구현 담당자에게
 

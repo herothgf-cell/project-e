@@ -1,0 +1,11 @@
+# Godot imports and local editor state. Keep .uid sidecars in version control.
+.godot/
+*.tmp
+export_credentials.cfg
+
+# Reproducible build output and local tooling.
+build/
+dist/
+.tools/
+.DS_Store
+Thumbs.db

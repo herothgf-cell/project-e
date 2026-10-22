@@ -1,35 +1,42 @@
 # 전투 아키텍처와 네트워크 검증 계획
 
-- 상태: v0.1 설계 제안, 구현·접속·성능 시험 미실행.
-- 작성·공식 출처 확인: 2026-10-21, Asia/Seoul.
+- 상태: Godot 전환 후의 설계 계획. 현재 기반 작업은 오프라인 이동·대시 진단이며 온라인·접속·성능 시험은 미실행.
+- 작성·공식 출처 확인: 2026-10-22, Asia/Seoul.
 - 범위: 독립 실행 PC 3v3의 권위 시뮬레이션, 지연 검증, 기술 선택 기준.
-- 관련: [공통 규칙](../01-core-rules.md), [Unity 기반](01-unity-and-steam.md), [플레이테스트](../04-playtest-and-balance.md), [로드맵](../02-development-roadmap.md).
+- 관련: [공통 규칙](../01-core-rules.md), [Godot 기반](01-godot-and-steam.md), [플레이테스트](../04-playtest-and-balance.md), [로드맵](../02-development-roadmap.md).
 
 ## 1. 우선 결정
 
 서버가 이동 가능성, 피격, 피해, 상태 이상, 성장, 재화, 승패를 최종 확정한다.
 클라이언트는 입력 의도를 보내고 즉각적인 조작 표현을 제공하며 서버 결과에 맞춰 보정한다.
 시작 가설은 시뮬레이션 30Hz, 스냅샷 30Hz, 렌더링 60fps다.
-첫 온라인 시험은 영웅 하나·진단 장면 하나·두 독립 실행 클라이언트로 수행한다.
+M0의 오프라인 진단 뒤, M1의 첫 온라인 시험은 영웅 하나·진단 장면 하나·두 독립 실행 클라이언트로 수행한다.
+온라인 경로는 Godot 4의 `ENetMultiplayerPeer`와 RPC를 출발점으로 삼고 서버 권위·예측·보정은 프로젝트에서 명시적으로 구현한다. [N1]
 M2의 실제 3v3 이전에 50/100/150ms RTT에서 플레이 감각을 확인한다.
 작은 테스트의 성공은 6인 경기나 실제 인터넷 연결 품질의 성공으로 간주하지 않는다.
 
 ## 2. 모듈 경계
 
-| 계층 | 책임 | 피해야 할 결합 |
-| --- | --- | --- |
-| Domain | 피해식, 레벨, 분배, CC 제한, 승패 규칙 | `MonoBehaviour`, Steam ID, VFX가 규칙 소유 |
-| Content | 스킬·영웅·미니언·맵의 편집용 정의 | 매치 도중 원본 데이터를 직접 수정 |
-| Simulation | tick, 이동, 충돌 질의, 시전 상태, 이벤트 순서 | 렌더 프레임·애니메이션 이벤트가 피해 확정 |
-| Networking | 입력·스냅샷·동기화·재접속 | 클라이언트가 선언한 피해·재화 수용 |
-| Presentation | 보간, 예측 화면, UI, 음향, 카메라 | 서버 없이 실제 승패를 바꾸는 연출 |
-| Platform | 로그인·로비·초대·플랫폼 설정 | Steam callback이 직접 전투 상태 변경 |
+경로와 파일명은 `snake_case`, 코드의 클래스명은 `PascalCase`를 기준으로 한다. 아래는 `game/project-e/` 아래의 책임 경계이며 모든 모듈이 이미 구현되었다는 뜻은 아니다.
 
-편집에는 ScriptableObject를 쓸 수 있으나 매치 시작 시 검증된 값 형식 정의로 변환한다.
+| 계층 | Godot 구현 방향과 책임 | 피해야 할 결합 |
+| --- | --- | --- |
+| `domain/` | 타입을 명시한 GDScript·`RefCounted`, 피해식·레벨·분배·CC 제한·승패 규칙 | 장면 트리·Steam ID·VFX가 규칙 소유 |
+| `content/` | 편집용 `Resource`·`.tres`, 스킬·영웅·미니언·맵 정의 | 매치 도중 공유 원본 데이터를 직접 수정 |
+| `simulation/` | `Node3D` 어댑터와 명시적 상태, tick·이동·공간 질의·시전·이벤트 순서 | 렌더 프레임·애니메이션 이벤트가 피해 확정 |
+| `networking/` | `ENetMultiplayerPeer`·RPC 경계, 입력·스냅샷·동기화·재접속 | 클라이언트가 선언한 피해·재화 수용 |
+| `presentation/` | `Node3D`·UI, 보간·예측 화면·음향·카메라 | 보이는 transform이나 연출이 권위 판정 소유 |
+| `platform/` | 로그인·로비·초대·플랫폼 설정 어댑터 | Steam callback이 직접 전투 상태 변경 |
+
 규칙 함수는 입력·현재 상태·명시적 시간으로 결과를 내도록 작성하고 전역 시간에 숨겨 의존하지 않는다.
-Unity 공간 질의는 인터페이스 경계로 주입하되 실제 충돌 엔진까지 순수 C#이라고 주장하지 않는다.
+`RefCounted` 규칙 코드가 Godot 타입을 사용한다는 사실과 장면 트리에서 독립적으로 실행된다는 사실을 구분한다.
+`Resource`는 로드 캐시를 통해 같은 객체가 공유될 수 있다. [N3]
+매치 시작 시 원본을 검증하고 중첩 `Resource`·배열·딕셔너리까지 공유 수정이 없는 정의 스냅샷으로 복사한다. 단순 얕은 복사만으로 불변성이 보장된다고 가정하지 않는다.
+현재 HP·쿨다운·크레딧 등 가변 매치 상태는 별도로 만들고 편집용 `.tres`를 수정하지 않는다.
+Godot 공간 질의는 Simulation의 경계로 감싼다. 노드가 없는 규칙 검사와 실제 충돌 엔진 검증은 나누어 기록한다.
 서버·클라이언트가 같은 콘텐츠 hash와 프로토콜 버전을 사용하는지 연결 시 확인한다.
-씬 객체 이름이나 화면에 표시한 캐릭터 이름을 네트워크 식별자로 쓰지 않는다.
+Godot `Object` instance ID나 `RID`, 표시 이름을 네트워크 식별자로 사용하지 않고 서버가 발급한 엔티티 ID를 쓴다. `MultiplayerSynchronizer`도 `Resource` 같은 Object 속성과 피어마다 다른 instance ID·RID의 동기화를 지원하지 않는다. [N2]
+RPC를 호출하는 노드는 양쪽의 경로·이름과 RPC 선언을 맞추며, 이 라우팅 경로와 게임의 엔티티 ID는 별개로 관리한다. [N1]
 
 ## 3. 명령과 상태의 계약
 
@@ -57,19 +64,29 @@ HP·쿨다운·재화는 서버의 확정 상태이며 클라이언트 연출 �
 안정적인 서버 처리 순서는 디버깅 기준이며 모든 PC의 물리 계산이 완전히 같다는 보장은 아니다.
 XP·크레딧 분배의 소수는 내부에 유지하고 UI 표시에만 별도의 반올림을 적용한다.
 
-## 5. 네트워크 후보와 M1 결정
+## 5. Godot 네트워크 경로와 M1 결정
 
-| 후보 | 기대하는 이점 | 반드시 증명할 항목 | 판정 |
-| --- | --- | --- | --- |
-| A. NGO + Unity Transport + 필요한 보정 계층 | GameObject 제작 흐름으로 진단 범위를 작게 유지 | 로컬 이동 예측, 승인 입력 번호, 복원·재실행, 중복 VFX 억제 | 최초 실험의 잠정안 |
-| B. Netcode for Entities | 공식적인 예측·서버 상태 복원·재시뮬레이션 모델 | ECS 제작 비용, 스킬·충돌 변환, 재시뮬레이션 CPU 비용 | A가 기준 미달이거나 비용이 커지면 비교 |
+| 구성 | 시작안 | 반드시 증명할 항목 |
+| --- | --- | --- |
+| 연결·전송 | `ENetMultiplayerPeer` 직접 연결 | 두 PC 접속·종료·오류 감지·채널별 손실 동작 |
+| 명령 라우팅 | RPC 입력 요청, 서버에서 송신자·소유권·내용 검증 | 다른 영웅 조작·과거/미래 입력·빈도 초과 거부 |
+| 권위 상태 | 서버 tick·엔티티 상태·확정 이벤트 | 클라이언트가 transform·피해·성장을 확정하지 않음 |
+| 스냅샷 | 서버 tick + 처리한 입력 번호 + 가시성별 상태 | 손실·역순 수신 처리, 오래된 상태 거부, 보간 |
+| 로컬 반응 | 입력 이력·예측 상태·복원·재실행 | 벽·속박·밀치기·대시 중 보정과 중복 VFX 억제 |
+| Steam 경로 | M3 이후 별도 바인딩·전송 평가 | 선택한 Godot 버전과 RPC·채널·초대·재접속 호환성 |
 
-NGO 3.1 문서는 client anticipation이 완전한 client prediction/reconciliation·rollback-and-replay를 제공하지 않는다고 설명한다. [N1]
-따라서 `NetworkTransform`과 보간만 붙인 결과를 빠른 액션 전투의 완성형으로 판단하지 않는다.
-Netcode for Entities 공식 문서는 예측과 서버 스냅샷으로부터의 재시뮬레이션을 설명하며 CPU 비용도 지적한다. [N2]
-이 문서에서 인용한 패키지 버전은 동작 설명의 출처이고, Unity 6.3에 설치하기로 확정한 조합이 아니다.
-M0의 호환성 확인과 M1 측정 결과로 실제 패키지 버전을 고정한다.
-두 후보를 동시에 제품에 통합하지 않는다. 같은 진단 과제의 결과·제약·유지 비용을 비교해 하나를 선택한다.
+공식 고수준 API는 ENet peer, RPC의 권위·호출 방식, `reliable`·`unreliable`·`unreliable_ordered`와 채널을 제공한다. [N1]
+이들은 전송과 호출의 도구이며 이동의 정당성·피해 권위·예측 이력·복원·재실행을 대신 설계하지 않는다.
+기본 권위 노드는 서버 소유로 두고, 클라이언트 입력 수신 RPC를 `any_peer`로 열더라도 실제 송신자를 조회해 자신에게 허용된 명령인지 검사한다. [N1]
+호스트의 로컬 입력도 같은 검증·명령 경로를 통과시킨다.
+이동 입력·스냅샷은 오래된 데이터가 새 데이터를 막지 않도록 순서·손실 정책을 정하고, 확정 이벤트·참가 절차는 별도 신뢰 전송과 중복 제거를 적용한다.
+M1에서 채널과 패킷 크기를 고정하고 실제 손실 시험으로 확인한다. 단순히 모든 RPC를 reliable로 지정해 지연 검증을 대체하지 않는다.
+
+`MultiplayerSynchronizer`는 권위자의 설정된 속성을 다른 피어에 동기화하는 노드다. [N2]
+이를 붙인 결과를 로컬 입력 예측·서버 승인 번호·복원 후 미승인 입력 재실행이 구현된 것으로 기록하지 않는다.
+사용 여부는 스냅샷·시야 요구와 측정 결과로 결정하며, 숨은 적 상태를 먼저 모든 클라이언트에 보내고 화면만 감추지 않는다.
+Godot의 고수준 프로토콜과 Steam 전송의 호환성은 별도 검증 대상이다. 엔진·전송 경로를 바꿀 때 명령 계약과 지연 과제를 재사용한다.
+M1 결과가 기준에 미달하면 예측 범위·공간 질의·스냅샷·전송 비용을 조사하고 콘텐츠 확장 전에 경로를 수정한다.
 
 ## 6. 예측·보정의 최소 범위
 
@@ -86,7 +103,8 @@ M0의 호환성 확인과 M1 측정 결과로 실제 패키지 버전을 고정�
 ## 7. 물리와 시간의 주의점
 
 고정 tick, 동일한 코드, 동일한 난수 seed만으로 기기 간 완전한 결정성을 가정하지 않는다.
-Unity의 Enhanced Determinism도 actor 삽입 순서 조건과 성능 비용을 명시하므로 만능 동기화 옵션으로 취급하지 않는다. [N3]
+Godot의 물리 tick을 30Hz로 고정해도 운영체제·CPU·물리 엔진·부동소수점 차이에 대한 완전한 결정성을 보장한다고 주장하지 않는다.
+현재 구조는 서버 권위와 스냅샷 보정을 기준으로 하며 입력만 교환하는 결정적 lockstep을 전제하지 않는다.
 영웅은 반경 0.45m의 접지 capsule을 기준으로 하고 높낮이는 초기 판정에서 장식으로 제한한다.
 이동은 직접 제어하는 평면 운동·충돌 규칙부터 검증하고 ragdoll·강체 힘 누적을 핵심 판정에서 제외한다.
 호스트와 원격 클라이언트의 충돌·시전 취소·CC 종료 tick 불일치는 별도로 추적한다.
@@ -126,7 +144,8 @@ M1의 한 영웅 장면에서 자동 반복 가능한 이동·시전 사례를 �
 ## 10. 방·재접속·호스트 이탈
 
 M2의 비공개 방은 listen server로 시작한다. 호스트 PC가 권위 서버와 자기 클라이언트를 함께 실행한다.
-계층은 화면 없는 전용 서버 실행으로 옮길 수 있게 두되 실제 전용 서버 호환은 별도 빌드로 증명한다.
+계층은 화면 없는 전용 서버 실행으로 옮길 수 있게 둔다. Godot 4는 `--headless` 실행과 전용 서버 export를 제공한다. [N7]
+서버 실행에서는 카메라·UI·음향·로컬 입력·Steam 클라이언트 초기화를 분리한다. 이 구조적 준비만으로 실제 전용 서버 호환이 검증되었다고 기록하지 않고 별도 export·접속 시험으로 증명한다.
 연결 손실 5초 후 봇이 해당 영웅을 맡고 원래 사용자의 복귀 허용 시간은 손실 시점부터 60초다.
 60초 안에 인증된 원래 사용자가 돌아오면 한 번에 소유권을 넘기고 봇 입력을 중단한다.
 기한이 지나면 해당 플레이어의 재입장 권한을 종료하고 남은 경기는 봇이 계속 맡는 초기 정책으로 둔다.
@@ -140,8 +159,9 @@ M4에는 출시용 호스트 이탈·서비스 장애·경기 중단 정책을 �
 Steam 로비는 방 발견·초대·준비 상태를 다루며 실제 게임 전송과 권위 상태를 별도로 구성해야 한다. [N4]
 Steam Datagram Relay는 통신을 중계하는 서비스로 P2P와 전용 서버 통신에 사용할 수 있다. [N5]
 전용 서버의 실행 컴퓨팅은 별도 운영 대상이며 Steam 문서는 개발자 또는 커뮤니티 호스팅을 설명한다. [N6]
-후보 바인딩과 전송 어댑터는 선택한 NGO·SDK·backend에서 연결·종료·재접속을 실측한다.
-M1의 Unity Transport 직접 연결 성공은 Steam 초대·NAT 환경·Relay 연결의 성공 증거가 아니다.
+Steam 공식 API 안내는 GodotSteam을 제3자 바인딩으로 소개하며 해당 솔루션을 보증하지 않는다. [N8]
+바인딩과 Steam 전송 어댑터는 채택 여부·버전이 미정이다. 선택한 Godot·Steam SDK·Windows x86_64에서 연결·종료·재접속과 `MultiplayerPeer` 호환성을 실측한다.
+M1의 ENet 직접 연결 성공은 NAT 통과·Steam 초대·Relay 연결의 성공 증거가 아니다. UDP 포트·방화벽·인터넷 접속 환경은 따로 확인한다. [N1]
 공개 경쟁 환경에는 전용 서버를 우선 평가하되 M4의 공정성·지역·비용 근거로 최종 선택한다.
 listen server 유지 시에는 호스트 신뢰와 이탈 한계를 공개 범위·게임 약속에 반영한다.
 
@@ -157,18 +177,13 @@ M5 종료: 출시 장비·빌드·Steam 경로에서 성능과 장애 복구를 
 
 ## 공식 출처
 
-모두 2026-10-21 확인. 아래 패키지 문서 버전은 기능 설명용이며 프로젝트 설치 버전은 M0에서 별도로 고정한다.
+모두 2026-10-22, Asia/Seoul 확인. `stable` URL은 기능 설명의 출처이며 실제 엔진·애드온 버전은 실행 검증 기록으로 고정한다. 예측·보정 범위와 수치 기준은 Project E의 설계 가설이다.
 
-- N1: [NGO 3.1 — Client anticipation](https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@3.1/manual/advanced-topics/client-anticipation.html).
-- N2: [Netcode for Entities 1.8 — Introduction to prediction](https://docs.unity3d.com/Packages/com.unity.netcode@1.8/manual/intro-to-prediction.html).
-- N3: [Unity 6.3 — Physics settings](https://docs.unity3d.com/6000.3/Documentation/Manual/class-PhysicsManager.html).
+- N1: [Godot — High-level multiplayer](https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html).
+- N2: [Godot — MultiplayerSynchronizer](https://docs.godotengine.org/en/stable/classes/class_multiplayersynchronizer.html).
+- N3: [Godot — Resource](https://docs.godotengine.org/en/stable/classes/class_resource.html).
 - N4: [Steamworks Multiplayer](https://partner.steamgames.com/doc/features/multiplayer).
 - N5: [Steam Datagram Relay](https://partner.steamgames.com/doc/features/multiplayer/steamdatagramrelay).
 - N6: [Steamworks Game Servers](https://partner.steamgames.com/doc/features/multiplayer/game_servers).
-
-[N1]: https://docs.unity3d.com/Packages/com.unity.netcode.gameobjects@3.1/manual/advanced-topics/client-anticipation.html
-[N2]: https://docs.unity3d.com/Packages/com.unity.netcode@1.8/manual/intro-to-prediction.html
-[N3]: https://docs.unity3d.com/6000.3/Documentation/Manual/class-PhysicsManager.html
-[N4]: https://partner.steamgames.com/doc/features/multiplayer
-[N5]: https://partner.steamgames.com/doc/features/multiplayer/steamdatagramrelay
-[N6]: https://partner.steamgames.com/doc/features/multiplayer/game_servers
+- N7: [Godot — Exporting for dedicated servers](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_dedicated_servers.html).
+- N8: [Steamworks API Overview](https://partner.steamgames.com/doc/sdk/api).
