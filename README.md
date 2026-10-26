@@ -1,68 +1,74 @@
-# Project E
+# Project E — 수로 공방
 
-**빠른 스킬 교전, 경기 중 성장 선택, 세 라인 사이의 지원 판단을 중심으로 하는 독립 PC용 3대3 액션 AOS.** Steam 출시를 목표로 기획한다.
+**세 라인의 지원 판단, 짧은 스킬 교전, 경기 중 성장을 중심으로 하는 독립 PC용 3대3 액션 AOS.** Godot로 개발하며 Steam 출시를 목표로 한다.
 
-시티 오브 템페스트에서 참고한 재미의 구조를 바탕으로, 영웅의 기술 조합·맵 공방·세계관·시청각 표현은 새롭게 설계한다. 특정 원작 영웅이나 맵을 일대일로 옮기는 프로젝트가 아니다.
+현재 실행판은 **바스·리오·네마 중 한 명을 조작하고 봇 5명과 플레이하는 오프라인 프로토타입**이다. 미니언 진격, 영웅 교전, 성장, 외곽탑→내곽탑→핵 파괴를 한 판으로 연결한다. 참고작의 재미 구조를 출발점으로 삼되, 영웅·기술·수로 도시·공방 도구와 표현은 새롭게 설계했다.
 
 ## 현재 상태
 
-| 항목 | 상태 |
+| 항목 | 내용 |
 |---|---|
-| 문서 버전 | Godot 기반 v0.2 · 2026-10-22 |
-| 확정된 사용자 요구 | 독립 PC 게임, Steam 출시 목표, 참고작의 핵심 게임성 유지, 고유한 작품 정체성, Godot 사용 |
-| 기술 설계 기준 | **Godot 4.7.2 Standard + GDScript**, 초기 Compatibility, Windows x86_64 우선 |
-| 첫 3대3 검증 범위(M2) | 신규 영웅 3종, 맵 1개, 경기 중 성장, 3대3 공성, 기본 온라인 대전 |
-| 출시 후보 범위 | 영웅 6종, 주력 맵 1개, 연습/튜토리얼/봇/비공개 대전; 공개 매칭은 검증 후 결정 |
-| 구현 상태 | **Godot 프로젝트와 오프라인 이동·E 조작 진단 장면 작성. 전체 전투·3대3·온라인은 후속 단계.** |
+| 기준일 | 2026-10-26 · 오프라인 3라인 전투 프로토타입 |
+| 엔진 | **Godot 4.7.2 Standard + GDScript**, Compatibility, 30Hz 로컬 판정 |
+| 참가자 | 사람 1명 + 아군 봇 2명 + 상대 봇 3명; 팀별 세 영웅 1명씩 |
+| 전장 | M01 수로 공방, N/C/S 세 라인, 지원 연결로, 타워 12개와 핵 2개 |
+| 전투 | 기본 공격, 세 영웅의 패시브·Q/W/E/R, 보호막·상태 이상·사망·부활 |
+| 성장 | 레벨·XP·투자 포인트·R 해금; 일반 경기와 기술 체험 분리 |
+| 승패 | 외곽/내곽/핵 잠금, 병력 유무에 따른 공성 보호, 핵 파괴·무승부·재시작 |
+| 기획서 | 요청 경로인 [doc/design](doc/design/README.md)에 요소별 기획 |
+| 검증 | [실제 실행 명령·통과 범위·자연 봇 경기 결과](doc/design/09-verification.md) |
 
-문서의 이름, 세계관, 수치, 목표 시간, 제작량은 검증을 위한 제안이다. 엔진은 `.godot-version`에 고정했다. Linux headless에서 규칙·장면 검증을 수행했으며 Windows 실행·화면·인터넷 지연 검증은 남아 있다. [기술 선택](docs/technical/01-godot-and-steam.md)과 [실제 검증 기록](docs/technical/03-godot-quickstart.md)을 참조한다.
+초기 로드맵 M0–M2 일부를 오프라인에서 연결했다. 인터넷 대전·Steam 연동·Windows 독립 실행 파일의 통과 기준은 별도로 남아 있다.
 
 ## 바로 실행하기
 
-1. [Godot 공식 다운로드](https://godotengine.org/download/windows/)에서 **4.7.2 Standard / Windows x86_64**를 준비한다. `.NET` 버전은 필요하지 않다. 최신 기본 다운로드가 달라졌으면 [버전 보관함](https://godotengine.org/download/archive/4.7.2-stable/)에서 4.7.2를 고른다.
-2. 저장소를 내려받고 Godot 프로젝트 관리자에서 **Import**를 누른다.
-3. [`game/project-e/project.godot`](game/project-e/project.godot)을 선택해 연다.
-4. **F6**으로 현재 장면을 실행하거나 **F5**로 프로젝트를 실행한다. 처음 열 때는 F5를 권장한다.
+1. **Godot 4.7.2 Standard**를 준비한다. .NET 버전은 필요하지 않다. [공식 버전 보관함](https://godotengine.org/download/archive/4.7.2-stable/)을 참고한다.
+2. 저장소를 내려받거나 기존 저장소에서 최신 main을 받는다.
+3. Godot 프로젝트 관리자에서 **Import** → [game/project-e/project.godot](game/project-e/project.godot)을 선택한다.
+4. 프로젝트를 연 뒤 **F5**를 누른다. 영웅 선택 화면에서 바스·리오·네마를 선택하고 시작한다.
+5. 모든 기술부터 확인하려면 **기술 체험**을 켠다. 여섯 영웅 모두 레벨 3·R 해금으로 시작한다.
 
-| 입력 | 진단 장면 동작 |
+일반 경기는 레벨 1·성장 2포인트로 시작한다. **G**로 초기 포인트를 투자하고 첫 병력과 함께 전진한다. 일반 경기의 R은 **레벨 3부터 성장 1포인트로 해금**한다. [자세한 실행 안내](docs/technical/03-godot-quickstart.md).
+
+| 입력 | 동작 |
 |---|---|
-| 마우스 우클릭 | 클릭한 바닥으로 이동 |
-| E → 마우스 좌클릭 | 조준 방향으로 바스 E 돌진 |
-| Esc | 확정 전 E 조준 취소 |
-| S | 일반 이동 정지 |
-| F2 | 위치·에너지·쿨다운 초기화 |
+| 지면 우클릭 / 보이는 적 우클릭 | 이동 / 접근 후 기본 공격 |
+| Q/W/E/R → 좌클릭 | 조준 후 기술 확정 |
+| Esc | 조준 취소 / 일시정지 메뉴 / 패널 닫기 |
+| S | 이동·공격 명령 중지 |
+| G | 성장 패널과 투자; 로컬 경기가 잠시 멈춤 |
+| B | 기지로 걸어가기 |
+| 가운데 버튼 드래그 / 휠 / Space | 카메라 이동 / 확대·축소 / 영웅으로 복귀 |
+| 미니맵 좌클릭 / 우클릭 | 시점 이동 / 영웅 이동 |
 
-중앙 벽은 돌진을 막는다. 벽을 돌아가는 자동 경로 탐색은 아직 없으므로 통로를 직접 클릭한다. E의 영웅 충돌 피해·넉백, Q/W/R·기본 공격·성장·온라인은 아직 구현하지 않았다. 현재 영어 HUD와 도형 캐릭터는 조작 진단용이다.
+## 세 영웅
 
-설치·실행·검증·Windows export의 자세한 순서는 [Godot 빠른 시작](docs/technical/03-godot-quickstart.md)에 있다.
+| 영웅 | 핵심 플레이 | 상세 기획 |
+|---|---|---|
+| 바스 | 압력을 쌓고 돌진·근거리 부채 공격·엄호로 전선을 연다 | [바스](doc/design/characters/01-bas.md) |
+| 리오 | 왕복 원반과 회수점을 배치하고 이동으로 공격 경로를 바꾼다 | [리오](doc/design/characters/02-rio.md) |
+| 네마 | 두 핀의 연결선으로 진입을 보호하고 구역을 제어한다 | [네마](doc/design/characters/03-nema.md) |
 
-## 처음 읽을 문서
+## 실행 화면과 시안
 
-1. [프로젝트 개요와 설계 원칙](docs/00-project-brief.md)
-2. [공통 전투·성장·승리 규칙](docs/01-core-rules.md)
-3. [개발 로드맵과 단계별 통과 기준](docs/02-development-roadmap.md)
-4. [콘텐츠 제작 범위와 의존 관계](docs/03-content-matrix.md)
-5. [캐릭터 목록과 설계 기준](docs/characters/README.md)
-6. [전체 문서 목차](docs/README.md)
+아래는 현재 Godot 프로토타입의 실제 렌더링 화면이다. 테스트용 3D 도형과 UI이며 최종 그래픽이 아니다.
 
-## 상세 기획 바로가기
+![실제 Godot 프로토타입 화면](doc/design/assets/prototype-battlefield.png)
 
-| 분야 | 문서 |
-|---|---|
-| 세계관·그래픽·사운드 | [공방 연맹과 표현 방향](docs/content/01-world-and-presentation.md) |
-| 맵·시야·공성 | [M01 수로 공방](docs/content/02-arena-and-objectives.md) |
-| 병력·경제·오브젝트 | [미니언, 경험치 셀, 소모품](docs/content/03-minions-and-economy.md) |
-| 모드·튜토리얼·UI | [사용자 흐름과 학습 설계](docs/content/04-modes-onboarding-and-ui.md) |
-| 최초 영웅 | [바스](docs/characters/01-bas.md) · [리오](docs/characters/02-rio.md) · [네마](docs/characters/03-nema.md) |
-| 출시 후보 영웅 | [추가 3종의 확장 조건](docs/characters/04-roster-expansion.md) |
-| 엔진·구조·온라인 | [Godot/Steam](docs/technical/01-godot-and-steam.md) · [아키텍처/네트워크](docs/technical/02-architecture-and-networking.md) |
-| 실행·현재 검증 | [Godot 빠른 시작](docs/technical/03-godot-quickstart.md) · [이번 작업 범위](docs/plans/2026-10-22-godot-foundation.md) |
-| 검증 | [플레이테스트와 밸런스](docs/04-playtest-and-balance.md) |
-| 출시 | [Steam 출시 준비](docs/release/01-steam-release-plan.md) |
-| 결정 이력·출처 | [확정 사항, 제안, 후속 결정](docs/05-decisions-and-sources.md) |
+별도의 목표 시안: [전장·HUD 콘셉트](doc/design/assets/battlefield-concept.png) · [바스·리오·네마 캐릭터 콘셉트](doc/design/assets/hero-lineup-concept.png). 생성 시안의 디테일을 현재 실행판에 적용했다고 표시하지 않는다.
 
-## 다음 개발 작업
+## 문서와 개발
 
-다음 작업은 [로드맵 M0–M1](docs/02-development-roadmap.md)의 남은 Windows export·실행 확인과 바스 전투 확장이다. 이어서 영웅 1종과 두 클라이언트의 서버 권위·지연 환경을 검증한 뒤 실제 3라인·3대3 한 판을 구성한다. 일정은 첫 구현의 실측 속도와 담당 인원을 기준으로 갱신한다.
+- **현재 콘텐츠 기획:** [전체 목차](doc/design/README.md) · [경기 흐름](doc/design/01-match-loop.md) · [맵](doc/design/02-map-m01.md) · [전투](doc/design/03-combat.md) · [병력/AI](doc/design/04-units-and-ai.md) · [성장](doc/design/05-growth-and-economy.md) · [UI](doc/design/06-ui-and-controls.md).
+- **표현·진행:** [아트 방향](doc/design/07-art-direction.md) · [로드맵](doc/design/08-roadmap.md) · [검증](doc/design/09-verification.md) · [기존 설계와 현재 차이](doc/design/10-differences.md).
+- **원본 수치와 장기 계획:** [공통 규칙](docs/01-core-rules.md) · [전체 문서](docs/README.md) · [온라인 아키텍처](docs/technical/02-architecture-and-networking.md) · [Steam 출시 준비](docs/release/01-steam-release-plan.md).
 
-문서 간 수치 충돌은 [공통 규칙](docs/01-core-rules.md)을 우선한다. 영웅별 예외는 각 영웅 문서에 명시해야 하며, 수정 시 관련 문서와 검증 기준을 함께 갱신한다.
+```sh
+python tools/check_godot.py --godot /actual/path/to/godot
+# 자연스러운 핵 파괴까지 연장한 봇 경기 포함
+python tools/check_godot.py --godot /actual/path/to/godot --long-match
+```
+
+검증 도구는 엔진 버전, import, 기존 이동/충돌 2묶음, 신규 전투/경기/UI 3묶음과 메인 장면 시작을 검사한다. 실제 실행 기록은 검증 문서에 남긴다. 기존 이동 진단은 scenes/combat_probe.tscn을 열고 **F6**으로 실행할 수 있다.
+
+사람이 직접 플레이한 조작감·균형, 온라인과 Windows/Steam 배포는 후속 검증이다. 다음 작업은 현재 프로토타입을 플레이한 피드백을 기준으로 잡는다.

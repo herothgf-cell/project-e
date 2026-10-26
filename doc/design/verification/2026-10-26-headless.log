@@ -1,0 +1,61 @@
+Checking the pinned engine version
+4.7.2.stable.official.ed1daf0bf
+Importing project
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
+Checking Original movement rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bas motion: 40 checks, 0 failures
+Checking Original physical scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Probe scene: 19 checks, 0 failures
+Checking Combat and hero abilities
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle rules: 115 checks, 0 failures
+Checking Lanes, bots and match lifecycle
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bot checkpoint: 60.0s; damage=18081.2; units=62
+Bot checkpoint: 210.5s; damage=88272.5; units=51
+Bot checkpoint: 360.5s; damage=168052.9; units=48
+Bot checkpoint: 510.5s; damage=254975.6; units=69
+Bot checkpoint: 660.5s; damage=343466.4; units=53
+Bot checkpoint: 810.5s; damage=426691.4; units=58
+Bot checkpoint: 960.5s; damage=514519.5; units=73
+Bot checkpoint: 1110.5s; damage=608163.9; units=61
+Bot diagnostic: 1211.0s; winner=1; towers=11; damage=671471.1; hero deaths=22; units=77
+End state: Bas team=0 hp=0.0 position=(-50.91164, -2.274472) order=move target=-1
+End state: Rio team=0 hp=185.3 position=(-30.12959, 14.06509) order=idle target=-1
+End state: Nema team=0 hp=630.7 position=(-51.01497, -2.654892) order=attack target=6
+End state: Bas team=1 hp=1520.0 position=(14.85647, 17.91621) order=attack target=1916
+End state: Rio team=1 hp=1630.0 position=(-41.67893, -0.297546) order=attack target=1951
+End state: Nema team=1 hp=637.1 position=(-45.4151, -4.301598) order=attack target=3
+End state: East C inner team=1 hp=1648.0 position=(30.0, 3.5) order=idle target=-1
+End state: West Core team=0 hp=0.0 position=(-50.0, 0.0) order=idle target=-1
+End state: East Core team=1 hp=3884.8 position=(50.0, 0.0) order=idle target=-1
+Battle match: 1922 checks, 0 failures
+Checking Playable scene and UI routing
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle scene: 96 checks, 0 failures
+Starting the main scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Godot import, all five behavioral suites and main-scene startup

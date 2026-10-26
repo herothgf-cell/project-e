@@ -24,7 +24,7 @@
 
 사용자가 “godot 으로 해보자”라고 선택했으므로 현재 엔진은 **Godot 4.7.2 Standard**다. 초기 구현 기본값은 **타입을 명시한 GDScript와 Compatibility 렌더러**이며, 언어와 렌더러까지 사용자가 직접 지정한 것은 아니다. Steam 출시가 특정 엔진을 요구하는 것은 아니다. 에디터는 `.godot-version`에 `4.7.2`로 고정하며 Linux에서 `4.7.2.stable.official.ed1daf0bf` 실행을 확인했다. 같은 버전의 export template과 Windows 실행은 별도 검증한다. 버전 고정과 선택 근거는 [Godot/Steam 기술 기준](technical/01-godot-and-steam.md), 시작 프로젝트의 실행·검증 범위는 [Godot 빠른 시작](technical/03-godot-quickstart.md)을 따른다.
 
-시작 프로젝트 경로는 `game/project-e/project.godot`이다. M0 기반 소스와 오프라인 입력·이동·E의 선딜/돌진/후딜·자원/쿨타임 진단부터 구성한다. 이는 바스 전체 기술, 네트워크 대전 또는 M1 완료를 뜻하지 않는다. Windows 실행 파일·수동 조작·온라인 지연 검증은 해당 증거가 생길 때 별도로 기록한다.
+프로젝트 경로는 `game/project-e/project.godot`이다. 2026-10-26 현재는 초기 이동 진단을 보존하면서 세 영웅의 전체 기술·3라인·봇·성장·공성·승패가 연결된 오프라인 3대3으로 확장했다. [현재 구현 기획](../doc/design/README.md)과 [검증 기록](../doc/design/09-verification.md)을 따른다. 네트워크 대전, Windows 독립 실행 파일과 사람 플레이 검증은 별도로 남아 있으며 M0–M2 전체 통과를 주장하지 않는다.
 
 ## 3. 제작 가정과 제품 범위
 

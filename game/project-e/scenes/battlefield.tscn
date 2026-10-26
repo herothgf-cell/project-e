@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/presentation/battlefield.gd" id="1_controller"]
+[ext_resource type="Script" path="res://scripts/presentation/arena_view.gd" id="2_arena"]
+[ext_resource type="Script" path="res://scripts/presentation/effects_view.gd" id="3_effects"]
+
+[sub_resource type="Environment" id="Environment_workshop"]
+background_mode = 1
+background_color = Color(0.53, 0.69, 0.64, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.94, 0.98, 0.91, 1)
+ambient_light_energy = 0.3
+tonemap_mode = 0
+
+[node name="Battlefield" type="Node3D"]
+script = ExtResource("1_controller")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_workshop")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-54, -27, -5)
+light_color = Color(1, 0.94, 0.80, 1)
+light_energy = 0.45
+shadow_enabled = true
+directional_shadow_max_distance = 140.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+projection = 1
+current = true
+size = 66.0
+near = 0.1
+far = 220.0
+
+[node name="Arena" type="Node3D" parent="."]
+script = ExtResource("2_arena")
+
+[node name="Units" type="Node3D" parent="."]
+
+[node name="Effects" type="MeshInstance3D" parent="."]
+script = ExtResource("3_effects")
