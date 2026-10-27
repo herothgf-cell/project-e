@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FAIL: 360 fixed ticks clamp exact twelve-second cooldown to zero
+FAIL: exact twelve-second boundary unlocks selected patch
+FAIL: boundary repeat consumes only once
+Consumables: 245 checks, 3 failures

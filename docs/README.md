@@ -1,8 +1,10 @@
 # 기획 문서 목차
 
 - 버전: v0.3 (장기 기획과 현재 오프라인 구현을 함께 안내)
-- 개정일: 2026-10-26, Asia/Seoul
+- 개정일: 2026-10-27, Asia/Seoul
 - 상태: Godot 오프라인 3라인·3영웅·3대3 전투 프로토타입. 현재 요소별 기획은 [doc/design](../doc/design/README.md), 실행 증거는 [검증 기록](../doc/design/09-verification.md). 이 폴더는 공통 수치와 장기 계획의 원본 정본을 유지한다.
+
+이번에 추가한 개발은 R09 기지 상점·소모품 전체와 R10 중 구매/사용 판단이며 구현·자동 검증을 완료했다. 고정 키는 **G 성장/B 기지 이동/P 상점/D 사용**, 두 슬롯 클릭은 I01/I02 종류 선택만 한다. 초기 UI 제안의 G 핑/U 성장/B 상점과 구별한다. 현재 계약과 수행 증거는 [성장·경제](../doc/design/05-growth-and-economy.md), [UI·조작](../doc/design/06-ui-and-controls.md), [남은 개발](../doc/design/11-remaining-development.md)을 따른다. 이번12묶음3,453 assertion 실패0·메인90프레임·431.8초6봇 핵 파괴 결과와 최종 화면/새 export 상태는 [최신 검증](../doc/design/13-consumables-verification.md)에 기록한다. 원본 장기 전술·튜토리얼·온라인을 완료했다는 의미는 아니다.
 
 ## 읽기 순서와 문서의 책임
 
@@ -43,6 +45,8 @@
 | [구조와 네트워크](technical/02-architecture-and-networking.md) | 게임 판정, 데이터 구조, 온라인 검증, 클라이언트/서버 경계 |
 | [Godot 빠른 시작](technical/03-godot-quickstart.md) | 프로젝트 열기, 조작, 검증 명령과 현재 결과, Windows export |
 | [Windows 빌드와 전달](technical/04-windows-build.md) | 고정 엔진/templates, 반복 가능한 EXE/PCK/ZIP 제작, 실제 PC 확인 |
+| [기지 상점·소모품 검증](../doc/design/13-consumables-verification.md) | 새12개 검사 묶음·자연 봇 경기·화면과 새 export 상태 |
+| [기지 상점·소모품 설계](plans/2026-10-27-base-consumables-design.md) | R09 전체·R10 경제 판단의 확정 계약과 검증 경계 |
 | [Godot 기반 작업 계획](plans/2026-10-22-godot-foundation.md) | 이번 M0 범위, 구현 경계와 확인 항목 |
 | [Steam 출시 계획](release/01-steam-release-plan.md) | Playtest, 스토어/빌드 검토, 운영과 공개 매칭 판단 |
 

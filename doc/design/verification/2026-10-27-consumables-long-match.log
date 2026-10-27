@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bot checkpoint: 60.0s; damage=18769.0; units=62
+Bot checkpoint: 210.5s; damage=94272.9; units=47
+Bot checkpoint: 360.5s; damage=161760.2; units=49
+Bot diagnostic: 431.8s; winner=0; towers=6; damage=201467.8; hero deaths=5; units=54
+End state: Bas team=0 hp=379.3 position=(12.9093, 1.669371) order=move target=-1
+End state: Rio team=0 hp=632.9 position=(45.02362, 6.996295) order=attack target=4
+End state: Nema team=0 hp=924.3 position=(44.17292, -4.646434) order=attack target=20
+End state: Bas team=1 hp=199.5 position=(53.49944, 2.794649) order=move target=-1
+End state: Rio team=1 hp=0.0 position=(56.0, 0.0) order=idle target=-1
+End state: Nema team=1 hp=0.0 position=(44.37843, -7.387125) order=idle target=-1
+End state: West N outer team=0 hp=1671.7 position=(-10.0, 21.5) order=idle target=-1
+End state: West N inner team=0 hp=2600.0 position=(-26.0, 21.5) order=idle target=-1
+End state: West C outer team=0 hp=2000.0 position=(-10.0, -3.5) order=idle target=-1
+End state: West C inner team=0 hp=2600.0 position=(-30.0, -3.5) order=idle target=-1
+End state: West S outer team=0 hp=1005.4 position=(-10.0, -21.5) order=idle target=-1
+End state: West S inner team=0 hp=2600.0 position=(-26.0, -21.5) order=idle target=-1
+End state: West Core team=0 hp=4000.0 position=(-50.0, 0.0) order=idle target=-1
+End state: East Core team=1 hp=0.0 position=(50.0, 0.0) order=idle target=-1
+Battle match: 1922 checks, 0 failures

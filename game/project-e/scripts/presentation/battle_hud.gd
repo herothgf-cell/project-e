@@ -12,7 +12,13 @@ signal pause_requested
 signal growth_closed
 signal help_requested
 signal help_closed
+signal shop_requested
+signal shop_closed
+signal consumable_purchase_requested(item_id: String)
+signal consumable_selected(item_id: String)
+signal consumable_use_requested
 
+const ConsumablesScript = preload("res://scripts/battle/battle_consumables.gd")
 const PortraitScript = preload("res://scripts/presentation/hero_portrait.gd")
 const MapScript = preload("res://scripts/presentation/tactical_map.gd")
 const OverlayScript = preload("res://scripts/presentation/unit_overlay.gd")
@@ -51,6 +57,19 @@ var growth: Control
 var pause_menu: Control
 var result: Control
 var help_panel: Control
+var shop: Control
+var _inventory: PanelContainer
+var _inventory_credits: Label
+var _inventory_status: Label
+var _item_buttons: Dictionary = {}
+var _shop_buy_buttons: Dictionary = {}
+var _shop_reasons: Dictionary = {}
+var _shop_button: Button
+var _use_button: Button
+var _shop_close: Button
+var _shop_balance: Label
+var _shop_feedback: Label
+var _last_consumable_event_seq: int = 0
 var ui_font: Font
 var selected_hero: String = "bas"
 var growth_button: Button
@@ -107,10 +126,12 @@ func _ready() -> void:
 	root_control.add_child(unit_overlay)
 	_build_top()
 	_build_bottom()
+	_build_inventory()
 	_build_map()
 	_build_feedback()
 	_build_selection()
 	_build_growth()
+	_build_shop()
 	_build_pause()
 	_build_result()
 	_build_help()
@@ -196,14 +217,144 @@ func _build_bottom() -> void:
 	growth_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	growth_button.add_theme_color_override("font_color", TEAL)
 	growth_button.pressed.connect(func() -> void: growth_requested.emit())
-	_hint = _label(root_control, "우클릭 이동·공격 · A+좌클릭 공격 이동 · QWER 기술 · G 성장 · S 정지 · F1 도움말", 12, Color("fff5da"))
+	_hint = _label(root_control, "우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말", 10, Color("fff5da"))
 	_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_hint.offset_left = 22
 	_hint.offset_right = -300
-	_hint.offset_top = -192
-	_hint.offset_bottom = -168
+	_hint.offset_top = -183
+	_hint.offset_bottom = -166
 	_hint.add_theme_color_override("font_shadow_color", Color("294943"))
 	_hint.add_theme_constant_override("shadow_offset_y", 1)
+
+
+
+func _build_inventory() -> void:
+	_inventory = _panel(root_control)
+	_inventory.name = "ConsumableInventory"
+	_inventory.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_inventory.offset_left = 18
+	_inventory.offset_right = -298
+	_inventory.offset_top = -240
+	_inventory.offset_bottom = -184
+	var row: HBoxContainer = _row(_inset(_inventory, 10, 1), 8)
+	_inventory_credits = _label(row, "0 크레딧", 13, INK)
+	_inventory_credits.custom_minimum_size.x = 96
+	_inventory_credits.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	for item_id: String in ConsumablesScript.ITEMS:
+		var button: Button = _button(row, "", Vector2(145, 38))
+		button.name = "Select" + item_id
+		button.add_theme_font_size_override("font_size", 13)
+		button.pressed.connect(func() -> void: consumable_selected.emit(item_id))
+		_item_buttons[item_id] = button
+	_shop_button = _button(row, "P 상점", Vector2(78, 38))
+	_shop_button.add_theme_font_size_override("font_size", 13)
+	_shop_button.pressed.connect(func() -> void: shop_requested.emit())
+	_use_button = _button(row, "D 사용", Vector2(78, 38))
+	_use_button.add_theme_font_size_override("font_size", 13)
+	_use_button.pressed.connect(func() -> void: consumable_use_requested.emit())
+	_inventory_status = _label(row, "공유 대기: 준비", 12, TEAL)
+	_inventory_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_inventory_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+
+func _build_shop() -> void:
+	shop = _modal("BaseShop", 750)
+	var column: VBoxContainer = shop.get_meta("column") as VBoxContainer
+	_label(column, "기지 상점  /  소모품", 28, INK)
+	_shop_balance = _label(column, "", 16, TEAL)
+	_label(column, "자기 기지의 살아 있는 영웅만 구매 · 두 종류 합산 최대 2개", 14, MUTED)
+	_label(column, "공유 사용 대기 12초 · 상점을 닫고 소모품 칸 선택 → D로 사용", 13, MUTED)
+	var cards: HBoxContainer = _row(column, 14)
+	for item_id: String in ConsumablesScript.ITEMS:
+		var item: Dictionary = ConsumablesScript.ITEMS[item_id]
+		var card: PanelContainer = _panel(cards)
+		card.custom_minimum_size.x = 334
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var content: VBoxContainer = _column(_inset(card, 15, 14), 10)
+		_label(content, item.name, 23, INK)
+		_label(content, "%d 크레딧" % item.cost, 20, TEAL)
+		_label(content, "에너지 40을 2초 동안 회복" if item_id == "I01" else "체력 200을 4초 동안 회복", 15, INK)
+		_label(content, "적 영웅 피해에도 회복 유지" if item_id == "I01" else "적 영웅 귀속 유효 피해를 받으면 중단", 12, MUTED)
+		var reason: Label = _label(content, "", 13, COPPER)
+		_shop_reasons[item_id] = reason
+		var button: Button = _button(content, "구매", Vector2(0, 42), true)
+		button.name = "Buy" + item_id
+		button.pressed.connect(func() -> void: consumable_purchase_requested.emit(item_id))
+		_shop_buy_buttons[item_id] = button
+	_shop_feedback = _label(column, "", 14, TEAL)
+	_shop_feedback.custom_minimum_size.y = 22
+	_shop_close = _button(column, "P / Esc  ·  전장으로 돌아가기", Vector2(0, 44), true)
+	_shop_close.pressed.connect(func() -> void: shop_closed.emit())
+	shop.hide()
+
+
+static func consumable_reason(reason: String) -> String:
+	var reasons: Dictionary = {
+		"Match ended": "경기가 종료되었습니다.",
+		"Invalid hero": "사용할 영웅을 확인하세요.",
+		"Hero defeated": "부활 후 구매·사용할 수 있습니다.",
+		"Unknown consumable": "알 수 없는 소모품입니다.",
+		"Return to home base": "자기 기지로 돌아오면 구매할 수 있습니다.",
+		"Consumable inventory full": "합산 2개까지 보유할 수 있습니다.",
+		"Not enough credits": "크레딧이 부족합니다.",
+		"No selected consumable": "선택한 아이템의 재고가 없습니다.",
+		"Consumable cooldown": "소모품의 공유 사용 대기 중입니다.",
+		"Health already full": "체력이 이미 가득 찼습니다.",
+		"Energy already full": "에너지가 이미 가득 찼습니다.",
+		"Invalid consumable state": "소모품 상태를 확인하세요.",
+	}
+	return str(reasons.get(reason, "지금은 소모품을 사용할 수 없습니다."))
+
+
+func reset_consumable_feedback() -> void:
+	_last_consumable_event_seq = 0
+	_shop_feedback.text = ""
+	_toast_left = 0.0
+	_toast.hide()
+
+
+func show_consumable_message(message: String) -> void:
+	_shop_feedback.text = message
+	show_message(message)
+
+
+func _update_consumables(battle: Variant, hero: Dictionary) -> void:
+	var stock: int = int(hero.consumables.I01) + int(hero.consumables.I02)
+	_inventory_credits.text = "%d 크레딧\n보유 %d / 2" % [floori(hero.credits), stock]
+	_shop_balance.text = "보유 %d 크레딧  ·  재고 %d / 2  ·  읽는 동안 경기 일시정지" % [floori(hero.credits), stock]
+	for item_id: String in ConsumablesScript.ITEMS:
+		var item: Dictionary = ConsumablesScript.ITEMS[item_id]
+		var button: Button = _item_buttons[item_id]
+		var selected: bool = hero.consumable_selected == item_id
+		button.text = "%s %s ×%d" % ["●" if selected else "○", item.name, hero.consumables[item_id]]
+		button.tooltip_text = "클릭: 선택만 / D: 선택한 아이템 사용"
+		button.add_theme_stylebox_override("normal", _style(Color("d5e8d2") if selected else Color("eee5cf"), TEAL if selected else Color("d2c5a7")))
+		var reason: String = battle.consumable_purchase_error(hero.id, item_id)
+		_shop_reasons[item_id].text = "구매 가능 · 보유 %d개" % hero.consumables[item_id] if reason.is_empty() else consumable_reason(reason)
+		_shop_buy_buttons[item_id].disabled = not reason.is_empty()
+		_shop_buy_buttons[item_id].text = "%d 크레딧 · 구매" % item.cost
+	var cooldown: float = hero.consumable_cooldown
+	_inventory_status.text = "공유 대기 %.1f초" % cooldown if cooldown > 0.0 else "공유 대기: 준비"
+	if not hero.consumable_effect.is_empty():
+		var effect: Dictionary = hero.consumable_effect
+		_inventory_status.text += "\n%s 회복 %.1f초" % [ConsumablesScript.ITEMS[effect.item_id].name, effect.remaining]
+	else:
+		_inventory_status.text += "\n선택 후 D로 사용"
+	_use_button.tooltip_text = consumable_reason(battle.consumable_use_error(hero.id)) if not battle.consumable_use_error(hero.id).is_empty() else "선택한 아이템 사용 · 공유 대기 12초"
+	for event: Dictionary in battle.events:
+		var sequence: int = int(event.get("seq", 0))
+		if sequence <= _last_consumable_event_seq:
+			continue
+		_last_consumable_event_seq = sequence
+		if int(event.get("target_id", -1)) != int(hero.id) or not ConsumablesScript.ITEMS.has(event.get("item_id", "")):
+			continue
+		var item_name: String = ConsumablesScript.ITEMS[event.item_id].name
+		match str(event.get("type", "")):
+			"consumable_purchase": show_consumable_message(item_name + " 구매 완료")
+			"consumable_use": show_consumable_message(item_name + " 사용 · 회복 시작")
+			"consumable_end":
+				var endings: Dictionary = {"completed": " 회복 완료", "interrupted": " 회복 중단 · 적 영웅 피해", "death": " 회복 종료 · 영웅 사망"}
+				show_consumable_message(item_name + str(endings.get(event.get("reason", ""), " 회복 종료")))
 
 
 func _build_map() -> void:
@@ -280,7 +431,7 @@ func _build_selection() -> void:
 	_label(column, "일반 경기: 레벨 1 · 성장 2포인트 · R은 레벨 3부터 1포인트로 해금", 13, MUTED)
 	_start = _button(column, "바스로 경기 시작", Vector2(0, 52), true)
 	_start.pressed.connect(func() -> void: match_requested.emit(selected_hero, _practice.button_pressed))
-	_label(column, "우클릭 이동·공격    A+좌클릭 공격 이동    QWER 기술    G 성장    경기 중 F1 도움말", 13, MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label(column, "경기 중: 우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말", 13, MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 
 func _build_growth() -> void:
@@ -342,7 +493,7 @@ func _build_help() -> void:
 	_label(left, "2  기술과 카메라", 18, TEAL)
 	_label(left, "Q / W / E / R → 좌클릭 확정 · Esc: 조준 취소\n가운데 버튼 드래그: 시점 이동 · 휠: 확대/축소\nSpace: 내 영웅 보기 · 미니맵 좌클릭: 시점 이동", 14, INK)
 	_label(left, "3  성장과 회복", 18, TEAL)
-	_label(left, "G: 성장 포인트 투자 · 일반 경기 시작은 2포인트\nR: 레벨 3부터 성장 1포인트로 해금\nB: 기지까지 걸어서 복귀 · 기지에서 전투 이탈 후 회복", 14, INK)
+	_label(left, "G: 성장 포인트 투자 · 일반 경기 시작은 2포인트\nR: 레벨 3부터 성장 1포인트로 해금\nB: 기지까지 걸어서 복귀 · 기지에서 전투 이탈 후 회복\nP: 상점 · 자기 기지에서 구매 / 합산 2개 보유\n슬롯 클릭: 선택만 · D: 선택한 아이템 사용 / 공유 12초", 14, INK)
 	_label(right, "4  경험치 셀", 18, COPPER)
 	_label(right, "작은 셀 20 / 중간 셀 30 / 큰 셀 40 XP\n처치 팀의 14m 안 살아 있는 영웅이 보상을 나눔\n첫 생성 30초 · 파괴 후 45초에 같은 종류로 재생성", 14, INK)
 	_label(right, "5  우리 팀의 시야", 18, COPPER)
@@ -367,6 +518,8 @@ func show_selection() -> void:
 	pause_menu.hide()
 	result.hide()
 	help_panel.hide()
+	shop.hide()
+	reset_consumable_feedback()
 	_toast.hide()
 	_toast_left = 0
 	_target.hide()
@@ -379,11 +532,13 @@ func show_match() -> void:
 	pause_menu.hide()
 	result.hide()
 	help_panel.hide()
+	shop.hide()
+	reset_consumable_feedback()
 	_set_match_visible(true)
 
 
 func _set_match_visible(active: bool) -> void:
-	for item: Control in [_top, _bottom, _map_panel, _hint]:
+	for item: Control in [_top, _bottom, _inventory, _map_panel, _hint]:
 		item.visible = active
 	unit_overlay.enabled = active
 	minimap.active = active
@@ -393,7 +548,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 	if not battle.units.has(battle.controlled_id):
 		return
 	var hero: Dictionary = battle.units[battle.controlled_id]
-	_hint.text = "A 공격 이동 · 지면 좌클릭 확정 · Esc 취소" if attack_aim else "우클릭 이동·공격 · A+좌클릭 공격 이동 · QWER 기술 · G 성장 · S 정지 · F1 도움말"
+	_hint.text = "A 공격 이동 · 지면 좌클릭 확정 · Esc 취소" if attack_aim else "우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말"
 	var key: String = str(hero.hero)
 	_hero_name.text = "%s  /  Lv. %d%s" % [HEROES[key][0], hero.level, "  ·  부활 %.0f초" % ceilf(hero.respawn_left) if not hero.alive else ""]
 	_health.max_value = hero.max_hp
@@ -444,6 +599,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 			note = "해금 완료" if hero.r_unlocked else ("레벨 3 필요" if hero.level < 3 else "1포인트로 해금")
 		button.text = "%s   %d / %d\n%s" % [spec[0], used, spec[2], note]
 		button.disabled = hero.points <= 0 or used >= int(spec[2]) or (stat == "R" and hero.level < 3)
+	_update_consumables(battle, hero)
 	minimap.queue_redraw()
 
 
@@ -486,6 +642,7 @@ func show_result(battle: Variant, practice: bool) -> void:
 	growth.hide()
 	pause_menu.hide()
 	help_panel.hide()
+	shop.hide()
 	result.show()
 	_result_title.text = "승리" if battle.winner == 0 else ("패배" if battle.winner == 1 else "무승부")
 	_result_title.add_theme_color_override("font_color", TEAL if battle.winner == 0 else COPPER)
@@ -496,9 +653,9 @@ func show_result(battle: Variant, practice: bool) -> void:
 
 
 func blocks_point(point: Vector2) -> bool:
-	if selection.visible or growth.visible or pause_menu.visible or result.visible or help_panel.visible:
+	if selection.visible or growth.visible or pause_menu.visible or result.visible or help_panel.visible or shop.visible:
 		return true
-	for control: Control in [_top, _bottom, _map_panel, _target]:
+	for control: Control in [_top, _bottom, _inventory, _map_panel, _target, _hint, _toast]:
 		if control.visible and control.get_global_rect().has_point(point):
 			return true
 	return false

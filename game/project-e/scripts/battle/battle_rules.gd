@@ -39,6 +39,8 @@ func damage(state: Variant, source_id: int, target_id: int, raw: float, cast_id:
 	target.last_damage = state.time
 	var owner_id: int = int(source.get("owner_id", source_id))
 	var owner: Dictionary = state.units.get(owner_id, source)
+	if target.hp > 0.0:
+		state._consumables.interrupt_patch(state, target, owner)
 	if owner.kind == "hero" and target.kind == "hero":
 		owner.last_hostile = state.time
 		target.contributors[owner.id] = state.time
@@ -163,6 +165,7 @@ func _kill(state: Variant, unit: Dictionary, source: Dictionary, team: int) -> v
 	unit.slows.clear()
 	unit.knockback.clear()
 	if unit.kind == "hero":
+		state._consumables.end_effect(state, unit, "death")
 		state.stats.hero_deaths += 1
 		unit.respawn_left = 8.0 + 2.0 * unit.level
 		unit.pressure = 0

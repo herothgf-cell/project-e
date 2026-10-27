@@ -25,6 +25,7 @@ var _camera_follow: bool = false
 var _camera_drag: bool = false
 var _result_shown: bool = false
 var _help_was_paused: bool = false
+var _shop_was_paused: bool = false
 
 @onready var camera: Camera3D = $Camera3D
 @onready var arena: Node3D = $Arena
@@ -60,6 +61,11 @@ func _ready() -> void:
 	hud.growth_closed.connect(close_growth)
 	hud.help_requested.connect(open_help)
 	hud.help_closed.connect(close_help)
+	hud.shop_requested.connect(open_shop)
+	hud.shop_closed.connect(close_shop)
+	hud.consumable_purchase_requested.connect(buy_consumable)
+	hud.consumable_selected.connect(select_consumable)
+	hud.consumable_use_requested.connect(use_consumable)
 	camera.current = true
 	camera.size = 66.0
 	_update_camera(0)
@@ -99,6 +105,8 @@ func start_match(hero_key: String, practice: bool = false) -> void:
 	_destination = null
 	_destination_left = 0.0
 	_result_shown = false
+	_help_was_paused = false
+	_shop_was_paused = false
 	_camera_drag = false
 	_camera_follow = true
 	_clear_models()
@@ -111,7 +119,7 @@ func start_match(hero_key: String, practice: bool = false) -> void:
 	_update_camera(0)
 	_sync_visuals(0)
 	hud.update_state(battle, aim_slot, is_practice)
-	hud.show_message("기술 체험 · 레벨 3 / R 해금 · F1로 조작과 목표 확인" if practice else "G로 성장 2포인트 투자 · 첫 병력은 20초 · F1 도움말", 5.0)
+	hud.show_message("기술 체험 · 레벨 3 / R 해금 · P 상점 / D 사용 · F1 도움말" if practice else "G 성장 · P 기지 상점 / D 사용 · 첫 병력은 20초 · F1 도움말", 5.0)
 
 
 func restart_match() -> void:
@@ -145,7 +153,7 @@ func help_visible() -> bool:
 
 
 func open_help() -> void:
-	if not has_active_match or battle.winner != -1 or growth_visible():
+	if not has_active_match or battle.winner != -1 or growth_visible() or shop_visible():
 		return
 	if help_visible():
 		close_help()
@@ -164,12 +172,67 @@ func close_help() -> void:
 	paused = _help_was_paused
 
 
+func shop_visible() -> bool:
+	return hud.shop.visible
+
+
+func open_shop() -> void:
+	if not has_active_match or battle.winner != -1 or growth_visible() or help_visible() or hud.result.visible or hud.pause_menu.visible:
+		return
+	if shop_visible():
+		close_shop()
+		return
+	_shop_was_paused = paused
+	_clear_aim()
+	_camera_drag = false
+	paused = true
+	hud._shop_feedback.text = ""
+	hud.shop.show()
+	hud.update_state(battle, aim_slot, is_practice, attack_move_aim)
+
+
+func close_shop() -> void:
+	if not shop_visible():
+		return
+	hud.shop.hide()
+	paused = _shop_was_paused
+
+
+func buy_consumable(item_id: String) -> bool:
+	if not has_active_match or not shop_visible() or battle.winner != -1:
+		return false
+	var accepted: bool = battle.command_buy_consumable(battle.controlled_id, item_id)
+	if not accepted:
+		hud.show_consumable_message(HUDScript.consumable_reason(str(battle.last_error)))
+	hud.update_state(battle, aim_slot, is_practice, attack_move_aim)
+	return accepted
+
+
+func select_consumable(item_id: String) -> bool:
+	if not has_active_match or battle.winner != -1 or paused or hud.selection.visible or hud.result.visible or shop_visible() or growth_visible() or help_visible() or hud.pause_menu.visible:
+		return false
+	var accepted: bool = battle.command_select_consumable(battle.controlled_id, item_id)
+	if not accepted:
+		hud.show_consumable_message(HUDScript.consumable_reason(str(battle.last_error)))
+	hud.update_state(battle, aim_slot, is_practice, attack_move_aim)
+	return accepted
+
+
+func use_consumable() -> bool:
+	if not _accepts_commands():
+		return false
+	var accepted: bool = battle.command_use_consumable(battle.controlled_id)
+	if not accepted:
+		hud.show_consumable_message(HUDScript.consumable_reason(str(battle.last_error)))
+	hud.update_state(battle, aim_slot, is_practice, attack_move_aim)
+	return accepted
+
 func get_growth_button_rect() -> Rect2:
 	return hud.growth_button.get_global_rect()
 
 
 func open_growth() -> void:
-	if not has_active_match or battle.winner != -1 or hud.pause_menu.visible or help_visible():
+	if not has_active_match or battle.winner != -1 or hud.pause_menu.visible or help_visible() or shop_visible():
 		return
 	if growth_visible():
 		close_growth()
@@ -249,7 +312,9 @@ func handle_hotkey(keycode: int) -> bool:
 	if keycode == KEY_ESCAPE:
 		if battle.winner != -1:
 			return false
-		if aim_slot != "" or attack_move_aim:
+		if shop_visible():
+			close_shop()
+		elif aim_slot != "" or attack_move_aim:
 			_clear_aim()
 			hud.show_message("조준을 취소했습니다.", 1.2)
 		elif help_visible():
@@ -263,15 +328,19 @@ func handle_hotkey(keycode: int) -> bool:
 			_camera_drag = false
 			hud.pause_menu.show()
 		return true
-	if keycode == KEY_F1 and battle.winner == -1 and not growth_visible():
+	if keycode == KEY_P and battle.winner == -1 and not growth_visible() and not help_visible() and not hud.result.visible and not hud.pause_menu.visible:
+		open_shop()
+		return true
+	if keycode == KEY_F1 and battle.winner == -1 and not growth_visible() and not shop_visible():
 		open_help()
 		return true
-	if keycode == KEY_G and not hud.pause_menu.visible and battle.winner == -1:
+	if keycode == KEY_G and not hud.pause_menu.visible and not help_visible() and not shop_visible() and battle.winner == -1:
 		open_growth()
 		return true
 	if not _accepts_commands():
 		return false
 	match keycode:
+		KEY_D: return use_consumable()
 		KEY_A: return arm_attack_move()
 		KEY_Q: return arm_ability("Q")
 		KEY_W: return arm_ability("W")
@@ -301,10 +370,11 @@ func _resume() -> void:
 	hud.pause_menu.hide()
 	hud.growth.hide()
 	hud.help_panel.hide()
+	hud.shop.hide()
 
 
 func _accepts_commands() -> bool:
-	return has_active_match and not paused and battle.winner == -1 and not hud.selection.visible and not hud.growth.visible and not hud.pause_menu.visible and not hud.result.visible and not help_visible()
+	return has_active_match and not paused and battle.winner == -1 and not hud.selection.visible and not hud.growth.visible and not hud.pause_menu.visible and not hud.result.visible and not help_visible() and not shop_visible()
 
 
 func ui_blocks_point(point: Vector2) -> bool:

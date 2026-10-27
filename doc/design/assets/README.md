@@ -64,3 +64,24 @@ Godot4.7.2 Compatibility, Linux/Xvfb/Mesa llvmpipe에서 `capture_next_features.
 자세한 준비 조건·실행 로그·표시 한계는 [검증](../09-verification.md)을 따른다.
 
 Windows release export에서 나온 PCK도 소스 폴더 밖에서 Linux 엔진으로 로딩했다. `windows-pack-startup.png`는 선택 화면, `windows-pack-match.png`는 일반 경기 시작이며 실제 Windows EXE 실행의 증거는 아니다. [exported-PCK 로그](../verification/2026-10-27-windows-pack-graphical.log)를 함께 확인한다.
+
+
+## 2026-10-27 기지 상점·소모품의 실제 렌더
+
+다음9장은 `game/project-e/tests/capture_consumables.gd`가 Godot4.7.2 Compatibility, Linux/Xvfb/Mesa llvmpipe에서 저장한 **실제 기능 확인 프레임**이다.720p/1080p에서8장씩 총16장을 확인했고, 아래는 저장소에 보관한 대표9장이다. 생성 시안이나 사람의 경기 기록이 아니다. [최신 검증의 촬영 조건](../13-consumables-verification.md#5-실제-렌더와-화면-확인)과 [렌더 실행 로그](../verification/2026-10-27-consumables-render.log)를 함께 확인한다.
+
+| 파일 | 실제 촬영 상태 |
+|---|---|
+| [consumables-selection-720p.png](consumables-selection-720p.png) | 선택 화면의 경기 중 P/D/F1 조작 안내와 시작 버튼 |
+| [consumables-shop-720p.png](consumables-shop-720p.png) |1280×720 상점: 두 품목의 가격·효과·구매 조건·닫은 뒤 선택/D 사용 순서 |
+| [consumables-shop-1080p.png](consumables-shop-1080p.png) |1920×1080 상점: 논리 UI 크기도 넓혀 품목 카드·안내·닫기 버튼의 배치 확인 |
+| [consumables-inventory-720p.png](consumables-inventory-720p.png) | 실제 병/패치 구매 뒤 종류별 수량과 선택 표시; 슬롯 클릭은 선택만 함 |
+| [consumables-recovery-720p.png](consumables-recovery-720p.png) | 병을 사용하고0.5초 진행한 상태: 감소한 재고·공유 대기11.5초·회복1.5초 |
+| [consumables-interruption-720p.png](consumables-interruption-720p.png) | 실제 적 영웅 귀속 피해로 패치 회복을 끊은 뒤 한국어 중단 알림·공유 대기 |
+| [consumables-help-720p.png](consumables-help-720p.png) | F1의 기존 성장·시야·공성 안내와 P 상점→구매→닫기→선택→D 사용 설명 |
+| [consumables-offbase-720p.png](consumables-offbase-720p.png) | 자기 기지 밖에서 상점 설명은 열리고 구매는 이유와 함께 제한되는 상태 |
+| [consumables-dead-720p.png](consumables-dead-720p.png) | 사망 중 상점 열람과 구매 불가 이유 |
+
+경기 프레임은 기술 체험의 바스L3와 재현용 크레딧210·자원 부족 상태를 준비하고 **실제 구매·사용·시간 진행·피해 명령**으로 만든 테스트 장면이다. 병40+패치50을 실제로 구입해120크레딧이 남는지 확인했다. 일반 경기의 시작금100이나 전투 수치를 바꾼 것이 아니며 자연6봇 경기의 특정 순간을 촬영한 것도 아니다.
+
+**1080p는 창 크기와 논리 UI 크기를 모두1920×1080으로 설정한 레이아웃 검사**다.720p 논리 화면을 단순 확대했다는 의미가 아니며, 실제 Windows100/150/200% DPI 배율·물리 키보드/마우스·Windows EXE 실행 검증으로 대신하지 않는다. 실제 Windows PC와 사람 플레이는 미실시다. 새 Windows export·게시 여부는 [최신 검증](../13-consumables-verification.md)의 별도 산출물 기록을 따른다.

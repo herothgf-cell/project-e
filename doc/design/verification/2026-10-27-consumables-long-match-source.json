@@ -1,0 +1,15 @@
+{
+  "command": "Godot --headless --path game/project-e --script tests/test_battle_match.gd -- --long",
+  "exit_code": 0,
+  "elapsed_seconds": 36.538,
+  "source_files_sha256": {
+    "game/project-e/scripts/battle/battle_ai.gd": "be8b74ae831dd8079e3b2e502e93488f30c41e6b4b5b9df2cc8b4009227765c0",
+    "game/project-e/scripts/battle/battle_consumables.gd": "753c74be58f5d20f345918fcb6db1b79fecdbd808d2895dc347084b0e9f9b213",
+    "game/project-e/scripts/battle/battle_map.gd": "57681aef088a852a14f9656e5817409fa3a208b9ebd21135572b69ea4a2088d4",
+    "game/project-e/scripts/battle/battle_rules.gd": "879e43a5e51946448cf901a0dd869ad92bcbd41843b0c101e773098f14d62c0a",
+    "game/project-e/scripts/battle/battle_state.gd": "df4e0a9a27e00ef9063de891a58e063736683ca7afcc0759d3581a5aee479d80",
+    "game/project-e/scripts/battle/hero_abilities.gd": "18cf3d34b7ee333b4880c4137f04ba592af0b1fc77f1c5351d98739f93477306",
+    "game/project-e/tests/test_battle_match.gd": "c96252a9aa3bc802194691a83789d1bcd71b6ebf5fb8168d9896a398d2459eeb"
+  },
+  "source_unchanged_during_run": true
+}

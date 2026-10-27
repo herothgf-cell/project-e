@@ -5,6 +5,7 @@ const MapScript = preload("res://scripts/battle/battle_map.gd")
 const RulesScript = preload("res://scripts/battle/battle_rules.gd")
 const AbilitiesScript = preload("res://scripts/battle/hero_abilities.gd")
 const AIScript = preload("res://scripts/battle/battle_ai.gd")
+const ConsumablesScript = preload("res://scripts/battle/battle_consumables.gd")
 const FIXED_STEP: float = 1.0 / 30.0
 const ATTACK_MOVE_SEARCH: float = 8.0
 const ATTACK_MOVE_CHASE: float = 8.0
@@ -27,6 +28,7 @@ var hit_registry: Dictionary = {}
 var _rules: Variant = RulesScript.new()
 var _abilities: Variant = AbilitiesScript.new()
 var _ai: Variant = AIScript.new()
+var _consumables: Variant = ConsumablesScript.new()
 var _accumulator: float = 0.0
 var _next_unit: int = 1
 var _next_action: int = 1
@@ -98,6 +100,8 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 
 func _entity(kind: String, team: int, position: Vector2, health: float, radius: float) -> Dictionary:
 	var entity: Dictionary = {"id": _next_unit, "kind": kind, "team": team, "hero": "", "name": kind.capitalize(), "pos": position, "facing": Vector2.RIGHT if team == 0 else Vector2.LEFT, "radius": radius, "alive": true, "hp": health, "max_hp": health, "shield": 0.0, "shields": [], "energy": 0.0, "max_energy": 0.0, "energy_regen": 0.0, "level": 1, "xp": 0.0, "points": 0, "r_unlocked": false, "cooldowns": {"Q": 0.0, "W": 0.0, "E": 0.0, "R": 0.0}, "respawn_left": 0.0, "lane": 1, "phase": "idle", "phase_left": 0.0, "locked": false, "power": 0.0, "armor": 0.0, "speed": 0.0, "attack_range": 0.0, "attack_interval": 1.0, "attack_windup": 0.18, "attack_damage": 0.0, "attack_left": 0.0, "target_id": -1, "path": [], "goal": position, "order": "idle", "cast": {}, "queued": {}, "root_left": 0.0, "stun_left": 0.0, "cc_history": [], "slows": [], "knockback": {}, "protected": 0.0, "siege_protected": false, "last_damage": -100.0, "last_hostile": -100.0, "contributors": {}, "pressure": 0, "pressure_left": 0.0, "empowered_left": 0.0, "empowered_damage": 0.0, "pins": [], "return_mark": {}, "passive_inside": {}, "passive_ready": {}, "investments": {"power": 0, "hp": 0, "armor": 0, "regen": 0, "speed": 0, "R": 0}, "credits": 0.0, "kills": 0, "deaths": 0, "assists": 0, "repath_at": 0.0, "last_seen": -100.0, "last_target_pos": position, "aggro_id": -1, "aggro_until": 0.0, "remove_at": INF, "lane_progress": 5.0, "ai_retreat": false, "ai_think": 0.0}
+	if kind == "hero":
+		entity.merge({"consumables": {"I01": 0, "I02": 0}, "consumable_selected": "I01", "consumable_cooldown": 0.0, "consumable_effect": {}})
 	units[_next_unit] = entity
 	entity.merge({"attack_move_goal": position, "attack_move_arrived": false, "attack_move_origins": {}, "attack_move_blocked": {}})
 	_next_unit += 1
@@ -162,6 +166,8 @@ func _tick(delta: float) -> void:
 
 
 func _timers(unit: Dictionary, delta: float) -> void:
+	if unit.kind == "hero":
+		_consumables.tick_cooldown(unit, delta)
 	for slot: String in unit.cooldowns:
 		unit.cooldowns[slot] = maxf(0.0, unit.cooldowns[slot] - delta)
 	unit.attack_left = maxf(0.0, unit.attack_left - delta)
@@ -200,10 +206,10 @@ func _timers(unit: Dictionary, delta: float) -> void:
 		return
 	if unit.kind == "hero":
 		unit.energy = minf(unit.max_energy, unit.energy + unit.energy_regen * delta)
-		var base: Rect2 = Rect2(-59, -6, 6, 12) if unit.team == 0 else Rect2(53, -6, 6, 12)
-		if base.has_point(unit.pos) and time - unit.last_damage >= 2.0 and time - unit.last_hostile >= 3.0:
+		if is_in_home_base(unit.id) and time - unit.last_damage >= 2.0 and time - unit.last_hostile >= 3.0:
 			unit.hp = minf(unit.max_hp, unit.hp + unit.max_hp * 0.2 * delta)
 			unit.energy = minf(unit.max_energy, unit.energy + unit.max_energy * 0.2 * delta)
+		_consumables.tick_effect(self, unit, delta)
 
 
 func _advance_actor(unit: Dictionary, delta: float) -> void:
@@ -679,6 +685,30 @@ func invest(actor_id: int, stat: String) -> bool:
 		"speed": actor.speed += 0.15
 		"R": actor.r_unlocked = true
 	return true
+
+
+func is_in_home_base(actor_id: int) -> bool:
+	return _consumables.is_in_home_base(self, actor_id)
+
+
+func consumable_purchase_error(actor_id: int, item_id: String) -> String:
+	return _consumables.purchase_error(self, actor_id, item_id)
+
+
+func consumable_use_error(actor_id: int, item_id: String = "") -> String:
+	return _consumables.use_error(self, actor_id, item_id)
+
+
+func command_buy_consumable(actor_id: int, item_id: String) -> bool:
+	return _consumables.buy(self, actor_id, item_id)
+
+
+func command_select_consumable(actor_id: int, item_id: String) -> bool:
+	return _consumables.select(self, actor_id, item_id)
+
+
+func command_use_consumable(actor_id: int) -> bool:
+	return _consumables.use_selected(self, actor_id)
 
 
 func _valid_actor(actor_id: int) -> bool:

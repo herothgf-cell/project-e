@@ -6,6 +6,8 @@ func think(state: Variant) -> void:
 	for actor: Dictionary in state.units.values():
 		if not actor.alive:
 			continue
+		if actor.kind == "hero" and state.bots_enabled and actor.id != state.controlled_id:
+			_consumables(state, actor)
 		if actor.order == "attack_move":
 			continue
 		match actor.kind:
@@ -14,6 +16,24 @@ func think(state: Variant) -> void:
 			"hero":
 				if state.bots_enabled and actor.id != state.controlled_id:
 					_hero(state, actor)
+
+
+func _consumables(state: Variant, actor: Dictionary) -> void:
+	# Items are independent of battle orders, casting and crowd control.
+	if state.is_in_home_base(actor.id):
+		for item_id: String in ["I02", "I01"]:
+			if actor.consumables[item_id] == 0 and state.consumable_purchase_error(actor.id, item_id).is_empty():
+				state.command_buy_consumable(actor.id, item_id)
+		return
+	if actor.consumable_cooldown > 0.0:
+		return
+	var chosen: String = ""
+	if actor.max_hp - actor.hp >= 200.0 and state.time - actor.last_damage >= 2.0 and state.consumable_use_error(actor.id, "I02").is_empty():
+		chosen = "I02"
+	elif actor.max_energy - actor.energy >= 40.0 and state.consumable_use_error(actor.id, "I01").is_empty():
+		chosen = "I01"
+	if not chosen.is_empty() and state.command_select_consumable(actor.id, chosen):
+		state.command_use_consumable(actor.id)
 
 
 func _available(state: Variant, actor: Dictionary, target: Dictionary, reach: float) -> bool:

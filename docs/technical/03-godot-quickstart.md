@@ -31,11 +31,20 @@
 | G | 성장 투자 패널; 읽는 동안 로컬 시간 정지 |
 | F1 | 조작·셀·시야·공성 안내; 닫으면 이전 진행 상태로 복귀 |
 | B | 기지로 걸어가기; 순간이동 아님 |
+| P | 상점 열기/닫기; 읽는 동안 로컬 정지, 닫으면 직전 상태 복원 |
+| I01/I02 슬롯 클릭 | 종류 선택만; 빈 종류도 선택 가능하며 자동 교체하지 않음 |
+| D / 사용 버튼 | 선택한 종류 한 개 사용; 합산2개 보유·공유12초 쿨타임 |
 | 가운데 버튼 드래그 | 카메라 이동 |
 | 휠 / Space | 확대·축소 / 조작 영웅으로 복귀 |
 | 미니맵 좌클릭 / 우클릭 | 시점 이동 / 이동 명령 |
 
 바스는 돌파와 엄호, 리오는 왕복 원반과 회수점, 네마는 핀 두 개의 연결을 사용한다. [영웅별 기술](../../doc/design/characters/README.md)과 [입력 상세](../../doc/design/06-ui-and-controls.md)를 참고한다. 기지 부근에서 회복하고, 아군 병력을 동반해 외곽탑→내곽탑→핵을 공격한다.
+
+### 기지에서 구매하고 라인에서 사용하기
+
+기지 상점·소모품은 현재 구현·자동 검증을 완료했다. G 성장/B 걷기 복귀를 유지하며 **P→구매→슬롯 선택→D**로 사용한다. I01 에너지 병은40크레딧/2초 동안 에너지40, I02 수리 패치는50크레딧/4초 동안 HP200이다. 상점은 어디서나 설명을 볼 수 있지만 구매는 경기 중 자기 기지 회복 구역의 살아 있는 영웅만 가능하다. 최근 피해나 사용 쿨타임은 구매 제한이 아니다.
+
+최대 자원·빈 선택·사망·공유 쿨타임에서는 사용하지 않고 한국어 이유를 알린다. D는 이동·공격·시전·예약 명령과 조준을 보존하며 기절/속박 자체로 막지 않는다. 패치는 적 영웅 귀속 유효 피해(장치·지속·보호막 흡수 포함)로 중단하며 환급하지 않는다. 사망 후 남은 재고·선택은 유지하고 사용 쿨타임도 계속 감소한다. 자세한 조건은 [경제](../../doc/design/05-growth-and-economy.md#5-기지-상점과-소모품)를 따른다.
 
 ## 3. 현재 소스 구조
 
@@ -45,6 +54,7 @@
 |---|---|
 | scripts/battle/battle_state.gd | 고정 시간 경기 상태·명령·공격·생성·공성·승패 |
 | scripts/battle/battle_rules.gd | 피해·보호막·CC·성장·보상·사망 |
+| scripts/battle/battle_consumables.gd | I01/I02 구매·사용 검사·회복·피해/사망 종료 |
 | scripts/battle/hero_abilities.gd | 세 영웅의 기술·기하·시간·장치·원반 |
 | scripts/battle/battle_map.gd | M01 좌표·시야·충돌·길찾기 |
 | scripts/battle/battle_ai.gd | 병력/탑 자율 행동, 영웅 봇의 전투·복귀·투자 |
@@ -64,7 +74,7 @@ python tools/check_godot.py --godot /actual/path/to/godot
 python tools/check_godot.py --godot /actual/path/to/godot --long-match
 ```
 
-기본 명령은 버전/import와 이동·물리·전투·경기·장면·새 전투·시야·입력·경고 형상의9개 검증 묶음 및 메인 장면 시작을 확인한다. **--long-match**는 원래 수치의 봇 경기를 핵 파괴 또는 최대 1,860초까지 연장한다. 경기 검사는 최대 300초의 실제 실행 시간을 허용한다. 장시간 검사와 일반 실행을 혼동하지 않는다.
+기본 명령은 버전/import와 기존9개 묶음에 소모품 권한·실제 입력·봇 판단3개를 더한 **12개 검사 묶음** 및 메인 장면 시작을 확인한다. 이번 실행은 **3,453 assertion 실패0과 메인90프레임 시작을 통과**했다. 별도 장시간 검사는1,922 assertion 실패0,431.8초(약7분12초) 서쪽 핵 파괴 승리였다. 정확한 실행 조건과 이전27:18 동쪽 승리와의 구분은 [최신 검증](../../doc/design/13-consumables-verification.md)을 따른다. **--long-match**는 원래 수치의 봇 경기를 핵 파괴 또는 최대 1,860초까지 연장한다. 경기 검사는 최대 300초의 실제 실행 시간을 허용한다. 장시간 검사와 일반 실행을 혼동하지 않는다.
 
 PowerShell 예시에서 실제 Godot 실행 파일 경로를 지정한다.
 
@@ -86,9 +96,14 @@ godot --headless --path game/project-e --script tests/test_next_combat.gd
 godot --headless --path game/project-e --script tests/test_team_vision.gd
 godot --headless --path game/project-e --script tests/test_next_input.gd
 godot --headless --path game/project-e --script tests/test_effect_geometry.gd
+godot --headless --path game/project-e --script tests/test_consumables.gd
+godot --headless --path game/project-e --script tests/test_consumable_input.gd
+godot --headless --path game/project-e --script tests/test_consumable_ai.gd
 ```
 
-검증 도구는 종료 코드뿐 아니라 ERROR/SCRIPT ERROR와 완료 문구를 확인한다. 최신 통과 수·자연 종료 시간·수정 이력은 [검증 기록](../../doc/design/09-verification.md)에 모은다.
+소모품 권한 검사는245개, 실제 장면 입력은113개, 봇 구매/사용은186개 assertion을 통과했다. 이 수는 반복·경계 비교를 포함하며 서로 다른 기능 수나 사람의 조작감 검증 수가 아니다.
+
+검증 도구는 종료 코드뿐 아니라 ERROR/SCRIPT ERROR와 완료 문구를 확인한다. 이번 통과 수·자연 종료 시간은 [최신 검증](../../doc/design/13-consumables-verification.md), 이전 실행은 [과거 기록](../../doc/design/09-verification.md)에 모은다.
 
 ## 5. 실제 렌더링 확인
 
@@ -100,6 +115,8 @@ godot --path game/project-e --script tests/capture_battlefield.gd
 
 새 기능의 셀·시야 전후·A 조준·F1 안내·벽 경고는 `tests/capture_next_features.gd`로 캡처하며 출력은 build/screenshots-next다. 기존 도우미 출력은 build/screenshots이다. **--headless에서는 실행하지 않는다.** 경기 화면은 시뮬레이션을 빠르게 진행한 렌더링이며 사람이 조작해 플레이한 기록이 아니다. 자동 검사·프레임 확인·사람 플레이의 범위를 구분한다.
 
+기지 상점·재고/선택·회복 진행·F1 안내는 `tests/capture_consumables.gd`로720p/1080p 실제 프레임을 캡처한다. 수행 조건·출력·최종16프레임 검수 상태는 [최신 검증](../../doc/design/13-consumables-verification.md)을 따른다. 자동 입력 검사 통과와 사람이 직접 플레이한 결과는 구별한다.
+
 ## 6. 기존 이동 진단
 
 scenes/combat_probe.tscn을 열고 **F6**을 누르면 이전 진단을 실행한다. 우클릭 이동, E→좌클릭 돌진, S 정지, Esc 취소, F2 초기화다. 작은 진단의 벽 우회 미지원과 영어 HUD는 이 장면의 특성이다. 새로운 전장에는 길찾기와 한국어 HUD가 별도로 있다.
@@ -107,6 +124,8 @@ scenes/combat_probe.tscn을 열고 **F6**을 누르면 이전 진단을 실행�
 2026-10-22 기반 작업은 동일한 엔진에서 이동 규칙 40개와 실제 진단 장면 19개를 통과했다. 이 과거 기록은 당시 Windows 실행이나 온라인 검증을 포함하지 않았다. 현재 검증 도구는 이 두 묶음을 계속 회귀 검사한다.
 
 ## 7. Windows 독립 실행 패키지
+
+기존 전달 패키지는 소모품 추가 전 `a11834f` 소스의 산출물이다. 이번 소모품 소스의 새 export·ZIP 결과는 [최신 검증](../../doc/design/13-consumables-verification.md)에서 별도로 확정한다. 실제 Windows PC 실행과 사람 경기는 여전히 미실시다.
 
 테스트 ZIP을 받았다면 **전체 압축을 풀고 ProjectE.exe를 실행**한다. ProjectE.pck를 같은 폴더에 둔다. 플레이에 Godot 에디터나 Python 설치는 필요하지 않다. 프로젝트 소스 ZIP과 실행 패키지는 서로 다른 파일이다.
 
