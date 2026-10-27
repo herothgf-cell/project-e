@@ -59,7 +59,7 @@
 
 ## 문서와 개발
 
-- **다음 개발:** [남은 개발 사항과 추천 순서](doc/design/11-remaining-development.md) — 기존 5개 작업에 경험치 셀 다양화·시야 다양화·포탑 사거리 조정·A 공격 이동을 추가한 9개 작업과 완료 기준. 새 네 항목은 다음 개발 범위이며 아직 구현되지 않았다.
+- **다음 개발:** [남은 개발 사항과 추천 순서](doc/design/11-remaining-development.md) — 기존 5개 작업에 경험치 셀 다양화·시야 제공원/관측 영역 표시 개선·포탑 사거리 소폭 축소·A 공격 이동을 추가한 9개 작업과 완료 기준. 새 네 항목은 다음 개발 범위이며 아직 구현되지 않았다.
 - **현재 콘텐츠 기획:** [전체 목차](doc/design/README.md) · [경기 흐름](doc/design/01-match-loop.md) · [맵](doc/design/02-map-m01.md) · [전투](doc/design/03-combat.md) · [병력/AI](doc/design/04-units-and-ai.md) · [성장](doc/design/05-growth-and-economy.md) · [UI](doc/design/06-ui-and-controls.md).
 - **표현·진행:** [아트 방향](doc/design/07-art-direction.md) · [로드맵](doc/design/08-roadmap.md) · [검증](doc/design/09-verification.md) · [기존 설계와 현재 차이](doc/design/10-differences.md).
 - **원본 수치와 장기 계획:** [공통 규칙](docs/01-core-rules.md) · [전체 문서](docs/README.md) · [온라인 아키텍처](docs/technical/02-architecture-and-networking.md) · [Steam 출시 준비](docs/release/01-steam-release-plan.md).
