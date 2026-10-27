@@ -74,8 +74,8 @@
 
 - [x] 고정 엔진과 일치하는 공식 export templates를 확보하고 다운로드 출처·버전·hash를 기록한다. 불일치 버전으로 완료를 가장하지 않는다.
 - [x] Python CLI가 import/export, EXE/PCK 확인, 라이선스/조작 안내, 버전 manifest와 ZIP을 만든다. 실제 산출물 누락과 export 오류는 실패로 종료한다.
-- [ ] 최종 소스로 Windows release export를 실행하고 실제 파일/ZIP/hash를 확인한다. 가능하면 호환 환경 smoke를 수행하되 실제 Windows PC 확인과 구별한다.
-- [ ] 사용자 전달 파일과 에디터 없는 실행·Alt-Tab·재시작·폰트·로그 확인 절차를 제공한다.
+- [x] 최종 소스로 Windows release export를 실행하고 실제 파일/ZIP/hash를 확인한다. 가능하면 호환 환경 smoke를 수행하되 실제 Windows PC 확인과 구별한다.
+- [x] 사용자 전달 파일과 에디터 없는 실행·Alt-Tab·재시작·폰트·로그 확인 절차를 제공한다.
 
 검증: `python tools/package_windows.py --godot <pinned executable>` (최종 CLI와 옵션은 배포 문서에 기록). Expected: EXE/PCK/ZIP/manifest 생성, export error 없음.
 
@@ -85,7 +85,7 @@
 - [x] 실제 렌더와 신규 입력·시야·경고를 검토하고 명백한 문제를 수정한다.
 - [x] 독립 검토에서 규칙·시야 노출·명령 경계·패키지 누락을 확인한다.
 - [x] 실제 수행한 증거와 미수행한 Windows PC/사람 플레이를 구분해 개발 목록·요소별 규칙·검증 문서·플레이 기록표를 갱신한다.
-- [ ] 개발 소스/기획/검증을 GitHub에 반영하고 원격 내용과 commit을 확인한다.
+- [x] 개발 소스/기획/검증을 GitHub에 반영하고 원격 내용과 commit을 확인한다.
 
 ## 결정 기록
 
@@ -99,4 +99,4 @@
 - 최종9개 묶음2,911개 assertion와 메인90프레임 통과. 새 전투 수치의 별도6봇 자연 경기1,638.2초 종료.
 - 실제 GL11프레임 및 GPU 지면/미니맵 시야 전후 변화 확인. 눈 배지로 체력바에 가린 시야원 고리를 교체했다.
 - 독립 검토에서 적 원/부채 렌더219–432ms 회귀를 발견하고 캐시·native 다각형 제한으로 수정했다. 최종 형상35개 및 독립171,990표본 통과.
-- 상세 증거: [검증 기록](../../doc/design/09-verification.md). Windows 최종 export/전달과 GitHub 반영은 실제 수행 후 위 체크를 갱신한다. 실제 Windows PC/사람 플레이는 미실시로 유지한다.
+- 상세 증거: [검증 기록](../../doc/design/09-verification.md). 소스 a11834f를 GitHub main에 반영한 뒤 같은 깨끗한 소스로 Windows release EXE/PCK/ZIP을 만들고 전달 파일을 준비했다. 실제 export·ZIP 무결성과 Linux에서 exported-PCK 시작/2프레임도 확인했다. 실제 Windows PC/사람 플레이는 미실시로 유지한다.

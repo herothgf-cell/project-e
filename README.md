@@ -19,9 +19,11 @@
 | 기획서 | 요청 경로인 [doc/design](doc/design/README.md)에 요소별 기획 |
 | 검증 | [실제 실행 명령·통과 범위·자연 봇 경기 결과](doc/design/09-verification.md) |
 
-초기 로드맵 M0–M2 일부를 오프라인에서 연결했다. [Windows 패키징 절차](docs/technical/04-windows-build.md)와 자동 검증 도구를 제공한다. 실제 Windows PC의 실행·조작, 사람 경기, 인터넷 대전과 Steam 연동은 각각 별도 확인이 필요하다.
+초기 로드맵 M0–M2 일부를 오프라인에서 연결했다. Windows 독립 실행 ZIP을 제작했고 [재현 가능한 패키징 절차](docs/technical/04-windows-build.md)와 자동 검증 도구를 제공한다. 실제 Windows PC의 실행·조작, 사람 경기, 인터넷 대전과 Steam 연동은 각각 별도 확인이 필요하다.
 
 ## 바로 실행하기
+
+**Windows 실행 패키지를 받았다면:** ZIP 전체를 풀고 **ProjectE.exe**를 실행한다. ProjectE.pck를 같은 폴더에 둔다. 이 패키지로 플레이할 때는 Godot 에디터가 필요 없다. 아래는 소스를 직접 여는 방법이다.
 
 1. **Godot 4.7.2 Standard**를 준비한다. .NET 버전은 필요하지 않다. [공식 버전 보관함](https://godotengine.org/download/archive/4.7.2-stable/)을 참고한다.
 2. 저장소를 내려받거나 기존 저장소에서 최신 main을 받는다.

@@ -70,3 +70,5 @@ Also ran `git diff --check`: clean. No unchanged full suite was rerun by this re
 ## Integration-owner evidence after review
 
 Final full standard runner exited0:40+19+115+1923+96+152+499+32+35=2911assertions,0failures;main90framespassed. See2026-10-27-headless.log. FinalrealGLcapture exited0 with11frames andGPUmasktransitionsPASS;rootinspected thefinalimages. See2026-10-27-render.log and../assets/next-*.png. Packagingboundarytests9/0. These areintegration-owner observations addedaftertheindependentreview, notclaimsthatreviewerreran suites. FinalgameWindowsexport follows sourcecommit;actualWindowsPC/humanplaynotrun.
+
+Final packaging follow-up by integration owner: genuine Windows release export from clean a11834fc0da7ad1aa75292c03661d86b989d00ec passed. ZIP CRC, per-file hashes, source snapshot, exported-PCK headless90frames and two actualGLcaptures passed. See2026-10-27-windows-* logs/manifest and09-verification.md. WindowsPEexecution andhumanplay remainnotrun.

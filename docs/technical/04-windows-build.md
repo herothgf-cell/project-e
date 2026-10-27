@@ -174,6 +174,14 @@ Python 패키징 검사는 외부 Godot 프로세스의 실패 모드를 작은 
 
 이번 빌드 호스트에는 Wine/Wine64가 설치돼 있지 않다. Linux Godot로 같은 PCK를 실행할 경우에도 확인 범위는 플랫폼 공통 리소스/스크립트 시작이며 Windows EXE 실행 확인은 아니다. 실제 Windows PC, 사람 플레이, 장시간 GPU 성능, Steam SDK·로비·배포와 온라인 환경은 별도 검증 대상이다.
 
+## 7. 이번에 생성한 테스트 패키지
+
+2026-10-27에 깨끗한 소스 commit `a11834fc0da7ad1aa75292c03661d86b989d00ec`로 실제 Windows release export를 완료했다. ZIP은39,413,375bytes이며 EXE/PCK·한국어 실행 안내·고지·manifest·빌드 로그11개 항목을 포함한다.
+
+ZIP SHA-256: `4bcccb9aac03bc20557d74a4b40e8baf7718ec41e20e05c756b397babc772fb0`.
+
+실제 import/export, ZIP CRC와 파일별 해시, 소스63개 파일 일치를 확인했다. 소스 폴더 밖에서 Linux 엔진으로 exported-PCK90프레임 시작과 실제 GL 선택/경기 화면2장을 확인했다. **Windows PE 파일을 실제 Windows에서 실행한 검사는 미실시**다. [전체 산출물·로그·검증 범위](../../doc/design/09-verification.md#6-windows-패키지-검증), [PC/사람 기록표](../../doc/design/12-local-playtest-record.md)를 따른다.
+
 ## 공식 참고 자료
 
 - [Windows export와 EXE/PCK](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_windows.html)

@@ -62,3 +62,5 @@ Godot4.7.2 Compatibility, Linux/Xvfb/Mesa llvmpipe에서 `capture_next_features.
 | next-wall-cone.png / next-wall-circle.png | 유효한 바스 Q/W 조준의 벽 차단 |
 
 자세한 준비 조건·실행 로그·표시 한계는 [검증](../09-verification.md)을 따른다.
+
+Windows release export에서 나온 PCK도 소스 폴더 밖에서 Linux 엔진으로 로딩했다. `windows-pack-startup.png`는 선택 화면, `windows-pack-match.png`는 일반 경기 시작이며 실제 Windows EXE 실행의 증거는 아니다. [exported-PCK 로그](../verification/2026-10-27-windows-pack-graphical.log)를 함께 확인한다.

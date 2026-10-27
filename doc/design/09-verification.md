@@ -5,7 +5,7 @@
 - 엔진: **Godot 4.7.2 Standard**, 실제 버전 `4.7.2.stable.official.ed1daf0bf`.
 - 최종 결과: **임포트, 9개 검사 묶음의2,911개 assertion, 메인 장면90프레임 시작 모두 통과**. 통합 명령 종료0, 실패0, `ERROR:`/`SCRIPT ERROR:` 없음.
 - 실제 그래픽 실행: **1280×720의11프레임**, GPU 시야/미니맵 마스크의 비관측→관측→비관측 갱신 확인. 소스·검사·실제 프레임을 독립 검토했다.
-- 실제 Windows PC와 사람 플레이는 아직 수행하지 않았다. Windows export 결과는 아래 배포 절에 별도로 기록한다.
+- 실제 Windows PC와 사람 플레이는 아직 수행하지 않았다. Windows release export와 전달 ZIP 제작은 완료했고, 실제 PC 확인과 구분해 아래 배포 절에 기록한다.
 
 ## 1. 최종 자동 검사
 
@@ -136,7 +136,22 @@ python tools/package_windows.py --godot /actual/path/to/Godot_v4.7.2-stable_linu
 
 첫 명령의 최종 결과는 **9 tests,0 failures**다. [패키징 검사 로그](verification/2026-10-27-packaging-tests.log). 외부 엔진 경계에 실패 응답을 주입해 실제 CLI의 파일·ZIP·manifest·종료 코드를 확인한다. 잘못된 버전/templates, 종료0이어도 오류가 있는 import/export, 빠진PCK, 오래된 산출물 재사용, 고지 누락과 다른 파일이 있는 출력 폴더 덮어쓰기를 거부한다. 실패 시 이전 정상 패키지를 보존한다. 이 대역 검사를 실제 게임 export로 세지 않는다.
 
-**최종 게임 export:** 검증된 소스를 commit한 뒤 해당 깨끗한 소스로 실행하고 산출물·SHA-256·PCK 확인을 여기에 추가한다. 아직 이 문단은 export 완료 선언이 아니다.
+**최종 게임 Windows release export 완료.** 소스 commit [a11834f](https://github.com/herothgf-cell/project-e/commit/a11834fc0da7ad1aa75292c03661d86b989d00ec), Git tree `07cbe0f89a14789f04672376824e50083d3783a2`의 깨끗한 작업 트리에서 생성했다. 이 뒤의 배포 검증 문서 갱신은 게임 소스를 바꾸지 않는다.
+
+| 파일 | 실제 크기(bytes) | SHA-256 |
+|---|---:|---|
+| ProjectE-windows-x86_64.zip |39,413,375 |`4bcccb9aac03bc20557d74a4b40e8baf7718ec41e20e05c756b397babc772fb0` |
+| ProjectE.exe |109,268,480 |`d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562` |
+| ProjectE.pck |1,328,356 |`7694f1498fc7c4187098ddea16a75fd31e65c86140c36f8022bd9c8d5fb64368` |
+
+실제 import/export는 종료0·오류0이다. EXE의 PE32+ x86-64 형식, PCK 헤더, ZIP11개 항목의CRC, ZIP과 원본의 파일별 일치, manifest와 별도ZIP 체크섬을 확인했다. 게임 소스63개 파일을 다시 해시해 manifest와 비교했으며 소스 snapshot SHA-256은 `2f93037831c72eada8041d0f4d4890a20d953c6fdf692eceec816c4390e3c37c`다.
+
+- [실제 import 로그](verification/2026-10-27-windows-import.log) / [release export 로그](verification/2026-10-27-windows-export.log)
+- [빌드 manifest](verification/2026-10-27-windows-manifest.json) / [ZIP 체크섬](verification/2026-10-27-windows-zip.sha256)
+- [Linux exported-PCK 시작 로그](verification/2026-10-27-windows-pack-headless.log): 소스 폴더 밖 `/tmp`에서90프레임, 종료0·오류0.
+- [exported-PCK 실제 GL 로그](verification/2026-10-27-windows-pack-graphical.log): [선택 화면](assets/windows-pack-startup.png)과 [바스 일반 경기 시작](assets/windows-pack-match.png)2장. 한국어·맵·유닛·HUD·미니맵을 확인했고 종료0·오류0, 기존VSync 경고만 있다.
+
+전달 ZIP에는 EXE/PCK·한국어 실행 안내·Godot/폰트/게임 고지·manifest·빌드 로그를 포함한다. 전체 압축을 풀고 ProjectE.exe를 실행하며 ProjectE.pck를 같은 폴더에 둔다. ZIP/manifest는 export 뒤 수정하지 않았다.
 
 **실제 Windows PC 실행과 사람 플레이는 미실시**다. 이 호스트에는 Wine/Wine64도 없다. Linux로 exported PCK를 로딩하더라도 플랫폼 공통 리소스/스크립트 확인이며 Windows PE 실행과 다르다. Steam과 온라인 테스트도 별도 범위다.
 
