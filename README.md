@@ -69,6 +69,7 @@
 
 ## 문서와 개발
 
+- **참고 요청 재정리:** [맵·XP·타워·스킬·스피디함과 다음 우선순위](doc/design/14-tempest-reference-reprioritization.md) — 현재 코드 감사와 고저차/표현/동선의 권장안. 제공 영상의 실제 장면 분석은 접근 제한으로 미완료이며 신규 기능 구현을 뜻하지 않는다.
 - **개발 상태:** [남은 개발 사항과 추천 순서](doc/design/11-remaining-development.md) — 셀 XP·시야·포탑·A 공격 이동의 기존 증거와 R09·R10 경제 판단의 자동 검사·화면·패키지 결과, 남은 실제 PC/사람 확인과 개발 순서.
 - **사람 확인:** [Windows 빌드·실행 안내](docs/technical/04-windows-build.md) · [로컬 플레이 기록표](doc/design/12-local-playtest-record.md).
 - **현재 콘텐츠 기획:** [전체 목차](doc/design/README.md) · [경기 흐름](doc/design/01-match-loop.md) · [맵](doc/design/02-map-m01.md) · [전투](doc/design/03-combat.md) · [병력/AI](doc/design/04-units-and-ai.md) · [성장](doc/design/05-growth-and-economy.md) · [UI](doc/design/06-ui-and-controls.md).
