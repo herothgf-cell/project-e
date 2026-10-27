@@ -42,6 +42,7 @@
 | [Godot과 Steam](technical/01-godot-and-steam.md) | 엔진·GDScript·렌더러 선택, 버전 고정, PC export, 라이선스 고지 |
 | [구조와 네트워크](technical/02-architecture-and-networking.md) | 게임 판정, 데이터 구조, 온라인 검증, 클라이언트/서버 경계 |
 | [Godot 빠른 시작](technical/03-godot-quickstart.md) | 프로젝트 열기, 조작, 검증 명령과 현재 결과, Windows export |
+| [Windows 빌드와 전달](technical/04-windows-build.md) | 고정 엔진/templates, 반복 가능한 EXE/PCK/ZIP 제작, 실제 PC 확인 |
 | [Godot 기반 작업 계획](plans/2026-10-22-godot-foundation.md) | 이번 M0 범위, 구현 경계와 확인 항목 |
 | [Steam 출시 계획](release/01-steam-release-plan.md) | Playtest, 스토어/빌드 검토, 운영과 공개 매칭 판단 |
 

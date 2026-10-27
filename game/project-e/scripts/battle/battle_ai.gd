@@ -6,6 +6,8 @@ func think(state: Variant) -> void:
 	for actor: Dictionary in state.units.values():
 		if not actor.alive:
 			continue
+		if actor.order == "attack_move":
+			continue
 		match actor.kind:
 			"tower": _tower(state, actor)
 			"minion": _minion(state, actor)
@@ -112,7 +114,7 @@ func _advance_lane(state: Variant, actor: Dictionary) -> void:
 			if structure.team == actor.team or not structure.alive or structure.kind != "tower" or structure.lane != actor.lane:
 				continue
 			if not state.has_siege_minion(actor.team, structure.pos):
-				goal_progress = minf(goal_progress, _progress(state, actor, structure.pos) - 11.0)
+				goal_progress = minf(goal_progress, _progress(state, actor, structure.pos) - (structure.attack_range + 2.0))
 	var goal: Vector2 = state.map.lane_point(actor.lane, maxf(3.5, goal_progress), actor.team)
 	if actor.pos.distance_to(goal) > 0.25 and (actor.order != "move" or actor.goal.distance_to(goal) > 1.5 or actor.path.is_empty()):
 		state.command_move(actor.id, goal)
@@ -213,7 +215,7 @@ func _hero_skill(state: Variant, actor: Dictionary, target: Dictionary) -> bool:
 
 func _unsafe_tower(state: Variant, actor: Dictionary, point: Vector2) -> bool:
 	for tower: Dictionary in state.units.values():
-		if tower.kind == "tower" and tower.alive and tower.team != actor.team and point.distance_to(tower.pos) < 9.5 and not state.has_siege_minion(actor.team, tower.pos):
+		if tower.kind == "tower" and tower.alive and tower.team != actor.team and point.distance_to(tower.pos) < tower.attack_range + 0.5 and not state.has_siege_minion(actor.team, tower.pos):
 			return true
 	return false
 

@@ -1,0 +1,98 @@
+Checking the pinned engine version
+4.7.2.stable.official.ed1daf0bf
+Importing project
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registering global classes... (16 steps)
+[   0% ] update_scripts_classes |
+[   5% ] update_scripts_classes |
+[  11% ] update_scripts_classes |
+[  17% ] update_scripts_classes |
+[  23% ] update_scripts_classes |
+[  29% ] update_scripts_classes |
+[  35% ] update_scripts_classes |
+[  41% ] update_scripts_classes |
+[  47% ] update_scripts_classes |
+[  52% ] update_scripts_classes |
+[  58% ] update_scripts_classes |
+[  64% ] update_scripts_classes |
+[  70% ] update_scripts_classes |
+[  76% ] update_scripts_classes |
+[  82% ] update_scripts_classes |
+[  88% ] update_scripts_classes |
+[ DONE ] update_scripts_classes
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
+Checking Original movement rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bas motion: 40 checks, 0 failures
+Checking Original physical scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Probe scene: 19 checks, 0 failures
+Checking Combat and hero abilities
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle rules: 115 checks, 0 failures
+Checking Lanes, bots and match lifecycle
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bot checkpoint: 60.0s; damage=18161.9; units=64
+Bot checkpoint: 210.5s; damage=91519.1; units=55
+Bot checkpoint: 360.5s; damage=178175.3; units=46
+Bot checkpoint: 510.5s; damage=261208.7; units=75
+Bot checkpoint: 660.5s; damage=344645.8; units=61
+Bot checkpoint: 810.5s; damage=434331.5; units=55
+Bot checkpoint: 960.5s; damage=530660.0; units=66
+Bot checkpoint: 1110.5s; damage=629318.4; units=62
+Bot checkpoint: 1260.5s; damage=710833.5; units=63
+Bot checkpoint: 1410.5s; damage=802939.4; units=73
+Bot checkpoint: 1560.5s; damage=896283.5; units=66
+Bot diagnostic: 1638.2s; winner=1; towers=12; damage=944723.9; hero deaths=18; units=55
+End state: Bas team=0 hp=1780.0 position=(-56.0, 0.0) order=attack target=2686
+End state: Rio team=0 hp=0.0 position=(-44.3275, 7.435967) order=idle target=-1
+End state: Nema team=0 hp=399.5 position=(-14.91267, -16.45716) order=move target=-1
+End state: Bas team=1 hp=581.9 position=(2.025669, 16.57982) order=move target=-1
+End state: Rio team=1 hp=619.0 position=(-41.62531, 1.300399) order=attack target=19
+End state: Nema team=1 hp=1353.1 position=(6.874788, -17.97432) order=attack target=2708
+End state: West Core team=0 hp=0.0 position=(-50.0, 0.0) order=idle target=-1
+End state: East Core team=1 hp=2312.8 position=(50.0, 0.0) order=idle target=-1
+Battle match: 1924 checks, 0 failures
+Checking Playable scene and UI routing
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle scene: 96 checks, 0 failures
+Checking Cell tiers, turret boundaries and attack-move
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next combat: 152 checks, 0 failures
+Checking Shared vision presentation and cell labels
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Team vision: 465 checks, 0 failures
+Checking Attack-move input, target priority and help
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next input: 32 checks, 0 failures
+Checking Wall-clipped area previews and effects
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Effect geometry: 16 checks, 0 failures
+Starting the main scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Godot import, all 9 behavioral suites and main-scene startup

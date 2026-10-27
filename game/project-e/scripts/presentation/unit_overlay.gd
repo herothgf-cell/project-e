@@ -58,18 +58,13 @@ func _draw() -> void:
 		var kind: String = str(unit.kind)
 		if kind == "minion" and float(unit.hp) >= float(unit.max_hp):
 			continue
-		var height: float = 2.35 if kind == "hero" else 1.25
-		if kind in ["tower", "core"]:
-			height = 3.6
-		var world := Vector3(unit.pos.x, height, -unit.pos.y)
+		var world: Vector3 = status_anchor_world(unit)
 		if camera.is_position_behind(world):
 			continue
 		var point: Vector2 = camera.unproject_position(world)
 		if not Rect2(Vector2(8, 78), size - Vector2(16, 190)).has_point(point):
 			continue
-		var width: float = 70.0 if kind == "hero" else 49.0
-		if kind in ["tower", "core"]:
-			width = 82.0
+		var width: float = status_bar_width(unit)
 		var color := Color("4dd4bb") if int(unit.team) == 0 else Color("f8985e")
 		if int(unit.team) == 2:
 			color = Color("e8c96d")
@@ -85,6 +80,8 @@ func _draw() -> void:
 			if id == battle.controlled_id:
 				text = ("나 · " if use_korean else "YOU · ") + text
 			_text_center(text, point - Vector2(0, 6), 12, Color("fff5d8"))
+		elif kind == "cell":
+			_text_center(cell_label(id), point - Vector2(0, 6), 12, Color("ffe8a3"))
 		elif kind in ["tower", "core"] and (unit.get("locked", false) or unit.get("siege_protected", false)):
 			var text: String = ("잠금" if use_korean else "LOCKED") if unit.get("locked", false) else ("병력 보호" if use_korean else "GUARDED")
 			_text_center(text, point - Vector2(0, 5), 11, Color("fff0cc"))
@@ -110,3 +107,27 @@ func _plate() -> StyleBoxFlat:
 	result.bg_color = Color("253e3d")
 	result.set_corner_radius_all(2)
 	return result
+
+
+func cell_label(id: int) -> String:
+	if battle == null or not battle.units.has(id):
+		return ""
+	var unit: Dictionary = battle.units[id]
+	if unit.kind != "cell" or not unit.alive or not battle.is_point_visible(0, unit.pos):
+		return ""
+	return "%d XP" % int(unit.get("xp_reward", 30))
+
+
+static func status_anchor_world(unit: Dictionary) -> Vector3:
+	var height: float = 2.35 if unit.kind == "hero" else 1.25
+	if unit.kind in ["tower", "core"]:
+		height = 3.6
+	elif unit.kind == "cell":
+		height = 1.95
+	return Vector3(unit.pos.x, height, -unit.pos.y)
+
+
+static func status_bar_width(unit: Dictionary) -> float:
+	if unit.kind in ["tower", "core"]:
+		return 82.0
+	return 70.0 if unit.kind == "hero" else 49.0

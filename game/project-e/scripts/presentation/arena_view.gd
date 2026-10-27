@@ -8,10 +8,34 @@ const DARK := Color("364e4a")
 const TEAL := Color("38c6bb")
 const ORANGE := Color("f08c55")
 
+const TERRAIN_SHADER := """
+shader_type spatial;
+uniform vec4 base_color : source_color = vec4(1.0);
+uniform sampler2D vision_mask : filter_nearest, repeat_disable;
+uniform bool vision_bound = false;
+varying vec2 world_point;
+void vertex() {
+ vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+ world_point = vec2(world.x, -world.z);
+}
+void fragment() {
+ float visible = vision_bound ? texture(vision_mask, (world_point + vec2(62.0,40.0)) / vec2(124.0,80.0)).r : 1.0;
+ float grey = dot(base_color.rgb, vec3(0.2126,0.7152,0.0722));
+ vec3 unseen = mix(vec3(grey), base_color.rgb, 0.18) * 0.40;
+ ALBEDO = mix(unseen, base_color.rgb, visible);
+ ROUGHNESS = 0.82;
+}
+"""
+
 var _materials: Dictionary = {}
+var _terrain_materials: Dictionary = {}
+var _building_terrain: bool = false
+var _vision_texture: Texture2D
+var _terrain_shader: Shader
 
 
 func build(map: Variant, units: Dictionary) -> void:
+	_building_terrain = true
 	_box(self, Vector3(124, 1.1, 84), Vector3(0, -1.15, 0), Color("326c69"))
 	_box(self, Vector3(121, 0.16, 81), Vector3(0, -0.48, 0), Color("62aaa0"))
 	# Subtle recessed water stripes preserve a quiet, readable play surface.
@@ -67,6 +91,8 @@ func build(map: Variant, units: Dictionary) -> void:
 		for x: float in [-5.7, 5.7]:
 			_lane_emblem(Vector2(x, y), ["N", "C", "S"][lane_index])
 
+	_building_terrain = false
+
 
 func create_unit(unit: Dictionary, parent: Node3D) -> Node3D:
 	var root := Node3D.new()
@@ -92,14 +118,32 @@ func create_unit(unit: Dictionary, parent: Node3D) -> Node3D:
 		"core":
 			_core(model, color)
 		"cell":
-			_cylinder(model, 0.65, 0.18, Vector3(0, 0.12, 0), COPPER, 6)
-			var crystal: MeshInstance3D = _sphere(model, 0.44, Vector3(0, 0.75, 0), Color("f9d887"))
-			crystal.scale = Vector3(0.8, 1.45, 0.8)
-			_box(model, Vector3(0.13, 1, 0.13), Vector3(0, 0.65, 0), PALE)
+			_cell(model, unit)
 		"pin":
 			_pin(model, color)
 	root.position = to_world(unit.pos)
 	return root
+
+
+func _cell(parent: Node3D, unit: Dictionary) -> void:
+	# All tiers keep the authority's radius / Footprint. Only the crystal varies.
+	var tier: String = str(unit.get("cell_tier", "medium"))
+	var reward: float = float(unit.get("xp_reward", {"low": 20, "medium": 30, "high": 40}.get(tier, 30)))
+	var count: int = 1 if reward < 25 else (2 if reward < 35 else 3)
+	var height: float = 0.66 + count * 0.17
+	_cylinder(parent, 0.55, 0.18, Vector3(0, 0.12, 0), COPPER, 6)
+	for index: int in range(count):
+		var x: float = (float(index) - (count - 1) * 0.5) * 0.32
+		var crystal: MeshInstance3D = _sphere(parent, 0.28 + count * 0.035, Vector3(x, height - absf(x) * 0.6, 0), Color("f9d887"))
+		crystal.scale = Vector3(0.67, 1.20 + count * 0.26, 0.80)
+	_box(parent, Vector3(0.09, height * 1.15, 0.09), Vector3(0, height * 0.6, 0), PALE)
+
+
+func set_vision_texture(texture: Texture2D) -> void:
+	_vision_texture = texture
+	for value: ShaderMaterial in _terrain_materials.values():
+		value.set_shader_parameter("vision_mask", texture)
+		value.set_shader_parameter("vision_bound", texture != null)
 
 
 func _hero(parent: Node3D, key: String, color: Color) -> void:
@@ -313,7 +357,19 @@ func _mesh(parent: Node3D, resource: Mesh, position_value: Vector3, color: Color
 	return mesh
 
 
-func material(color: Color) -> StandardMaterial3D:
+func material(color: Color) -> Material:
+	if _building_terrain:
+		if not _terrain_materials.has(color):
+			if _terrain_shader == null:
+				_terrain_shader = Shader.new()
+				_terrain_shader.code = TERRAIN_SHADER
+			var terrain := ShaderMaterial.new()
+			terrain.shader = _terrain_shader
+			terrain.set_shader_parameter("base_color", color)
+			terrain.set_shader_parameter("vision_mask", _vision_texture)
+			terrain.set_shader_parameter("vision_bound", _vision_texture != null)
+			_terrain_materials[color] = terrain
+		return _terrain_materials[color]
 	if not _materials.has(color):
 		var result := StandardMaterial3D.new()
 		result.albedo_color = color

@@ -4,15 +4,18 @@ extends Node3D
 const BattleScript = preload("res://scripts/battle/battle_state.gd")
 const HUDScript = preload("res://scripts/presentation/battle_hud.gd")
 const AbilityScript = preload("res://scripts/battle/hero_abilities.gd")
+const VisionScript = preload("res://scripts/presentation/team_vision_view.gd")
 
 var battle: Variant = BattleScript.new()
 var has_active_match: bool = false
 var paused: bool = false
 var aim_slot: String = ""
+var attack_move_aim: bool = false
 var selected_target_id: int = -1
 var is_practice: bool = false
 var minimap: Control
 var hud: CanvasLayer
+var vision_view: Node3D
 var _hero_key: String = "bas"
 var _unit_nodes: Dictionary = {}
 var _destination: Variant = null
@@ -21,6 +24,7 @@ var _camera_focus := Vector2(-28, 0)
 var _camera_follow: bool = false
 var _camera_drag: bool = false
 var _result_shown: bool = false
+var _help_was_paused: bool = false
 
 @onready var camera: Camera3D = $Camera3D
 @onready var arena: Node3D = $Arena
@@ -31,12 +35,17 @@ var _result_shown: bool = false
 func _ready() -> void:
 	battle.reset("bas", false)
 	arena.build(battle.map, battle.units)
+	vision_view = VisionScript.new()
+	vision_view.name = "TeamVision"
+	add_child(vision_view)
+	vision_view.configure(battle)
 	hud = HUDScript.new()
 	hud.name = "BattleHUD"
 	add_child(hud)
 	minimap = hud.minimap
 	minimap.battle = battle
 	minimap.camera = camera
+	minimap.vision_view = vision_view
 	minimap.point_selected.connect(_on_minimap_point)
 	hud.unit_overlay.battle = battle
 	hud.unit_overlay.camera = camera
@@ -49,6 +58,8 @@ func _ready() -> void:
 	hud.restart_requested.connect(restart_match)
 	hud.pause_requested.connect(func() -> void: handle_hotkey(KEY_ESCAPE))
 	hud.growth_closed.connect(close_growth)
+	hud.help_requested.connect(open_help)
+	hud.help_closed.connect(close_help)
 	camera.current = true
 	camera.size = 66.0
 	_update_camera(0)
@@ -67,10 +78,12 @@ func _process(delta: float) -> void:
 	_update_camera(delta)
 	_sync_visuals(delta)
 	if has_active_match:
-		hud.update_state(battle, aim_slot, is_practice)
+		if not battle.units[battle.controlled_id].alive:
+			_clear_aim()
+		hud.update_state(battle, aim_slot, is_practice, attack_move_aim)
 		if battle.winner != -1 and not _result_shown:
 			_result_shown = true
-			aim_slot = ""
+			_clear_aim()
 			paused = true
 			hud.show_result(battle, is_practice)
 
@@ -81,7 +94,7 @@ func start_match(hero_key: String, practice: bool = false) -> void:
 	is_practice = practice
 	has_active_match = true
 	paused = false
-	aim_slot = ""
+	_clear_aim()
 	selected_target_id = -1
 	_destination = null
 	_destination_left = 0.0
@@ -89,6 +102,7 @@ func start_match(hero_key: String, practice: bool = false) -> void:
 	_camera_drag = false
 	_camera_follow = true
 	_clear_models()
+	vision_view.configure(battle)
 	hud.unit_overlay.reset_feedback()
 	hud.show_match()
 	hud.select_hero(_hero_key)
@@ -97,7 +111,7 @@ func start_match(hero_key: String, practice: bool = false) -> void:
 	_update_camera(0)
 	_sync_visuals(0)
 	hud.update_state(battle, aim_slot, is_practice)
-	hud.show_message("기술 체험 · 레벨 3 / R 해금 · 아군 병력과 함께 전진하세요." if practice else "첫 병력은 20초에 출발합니다. G로 성장 2포인트를 투자하세요.", 5.0)
+	hud.show_message("기술 체험 · 레벨 3 / R 해금 · F1로 조작과 목표 확인" if practice else "G로 성장 2포인트 투자 · 첫 병력은 20초 · F1 도움말", 5.0)
 
 
 func restart_match() -> void:
@@ -107,7 +121,7 @@ func restart_match() -> void:
 func return_to_selection() -> void:
 	has_active_match = false
 	paused = false
-	aim_slot = ""
+	_clear_aim()
 	selected_target_id = -1
 	_destination = null
 	_camera_follow = false
@@ -126,17 +140,41 @@ func growth_visible() -> bool:
 	return hud.growth.visible
 
 
+func help_visible() -> bool:
+	return hud.help_panel.visible
+
+
+func open_help() -> void:
+	if not has_active_match or battle.winner != -1 or growth_visible():
+		return
+	if help_visible():
+		close_help()
+		return
+	_help_was_paused = paused
+	_clear_aim()
+	_camera_drag = false
+	paused = true
+	hud.help_panel.show()
+
+
+func close_help() -> void:
+	if not help_visible():
+		return
+	hud.help_panel.hide()
+	paused = _help_was_paused
+
+
 func get_growth_button_rect() -> Rect2:
 	return hud.growth_button.get_global_rect()
 
 
 func open_growth() -> void:
-	if not has_active_match or battle.winner != -1 or hud.pause_menu.visible:
+	if not has_active_match or battle.winner != -1 or hud.pause_menu.visible or help_visible():
 		return
 	if growth_visible():
 		close_growth()
 		return
-	aim_slot = ""
+	_clear_aim()
 	_camera_drag = false
 	paused = true
 	hud.growth.show()
@@ -177,9 +215,29 @@ func arm_ability(slot: String) -> bool:
 	if error != "":
 		hud.show_message(error)
 		return false
+	attack_move_aim = false
 	aim_slot = slot
 	hud.show_message("%s 조준 · 좌클릭 확정 / Esc 취소" % slot, 2.0)
 	return true
+
+
+func arm_attack_move() -> bool:
+	if not _accepts_commands():
+		return false
+	var hero: Dictionary = battle.units[battle.controlled_id]
+	if not hero.alive or hero.stun_left > 0.0 or hero.root_left > 0.0:
+		hud.show_message("지금은 공격 이동을 시작할 수 없습니다.")
+		return false
+	aim_slot = ""
+	attack_move_aim = true
+	hud.show_message("A 공격 이동 · 지면 좌클릭 확정 / Esc 취소", 2.0)
+	return true
+
+
+func _clear_aim() -> void:
+	aim_slot = ""
+	attack_move_aim = false
+	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 
 func handle_hotkey(keycode: int) -> bool:
@@ -191,9 +249,11 @@ func handle_hotkey(keycode: int) -> bool:
 	if keycode == KEY_ESCAPE:
 		if battle.winner != -1:
 			return false
-		if aim_slot != "":
-			aim_slot = ""
+		if aim_slot != "" or attack_move_aim:
+			_clear_aim()
 			hud.show_message("조준을 취소했습니다.", 1.2)
+		elif help_visible():
+			close_help()
 		elif growth_visible():
 			close_growth()
 		elif paused:
@@ -203,24 +263,28 @@ func handle_hotkey(keycode: int) -> bool:
 			_camera_drag = false
 			hud.pause_menu.show()
 		return true
+	if keycode == KEY_F1 and battle.winner == -1 and not growth_visible():
+		open_help()
+		return true
 	if keycode == KEY_G and not hud.pause_menu.visible and battle.winner == -1:
 		open_growth()
 		return true
 	if not _accepts_commands():
 		return false
 	match keycode:
+		KEY_A: return arm_attack_move()
 		KEY_Q: return arm_ability("Q")
 		KEY_W: return arm_ability("W")
 		KEY_E: return arm_ability("E")
 		KEY_R: return arm_ability("R")
 		KEY_S:
-			aim_slot = ""
+			_clear_aim()
 			selected_target_id = -1
 			_destination = null
 			battle.command_stop(battle.controlled_id)
 			return true
 		KEY_B:
-			aim_slot = ""
+			_clear_aim()
 			return _move_to(battle.map.spawn_points[0])
 		KEY_SPACE:
 			_camera_follow = true
@@ -236,10 +300,11 @@ func _resume() -> void:
 	paused = false
 	hud.pause_menu.hide()
 	hud.growth.hide()
+	hud.help_panel.hide()
 
 
 func _accepts_commands() -> bool:
-	return has_active_match and not paused and battle.winner == -1 and not hud.selection.visible and not hud.growth.visible and not hud.pause_menu.visible and not hud.result.visible
+	return has_active_match and not paused and battle.winner == -1 and not hud.selection.visible and not hud.growth.visible and not hud.pause_menu.visible and not hud.result.visible and not help_visible()
 
 
 func ui_blocks_point(point: Vector2) -> bool:
@@ -254,10 +319,20 @@ func world_click(screen: Vector2, button: int) -> bool:
 	var ground: Variant = screen_to_ground(screen)
 	if not ground is Vector2:
 		return false
+	if button == MOUSE_BUTTON_LEFT and attack_move_aim:
+		var accepted: bool = battle.command_attack_move(battle.controlled_id, ground)
+		if accepted:
+			_clear_aim()
+			selected_target_id = -1
+			_destination = ground
+			_destination_left = 1.5
+		else:
+			_show_error()
+		return accepted
 	if button == MOUSE_BUTTON_LEFT and aim_slot != "":
 		var accepted: bool = battle.command_cast(battle.controlled_id, aim_slot, ground)
 		if accepted:
-			aim_slot = ""
+			_clear_aim()
 			selected_target_id = -1
 			_destination = null
 		else:
@@ -265,7 +340,7 @@ func world_click(screen: Vector2, button: int) -> bool:
 		return accepted
 	var target: int = pick_visible_target(screen)
 	if button == MOUSE_BUTTON_RIGHT:
-		aim_slot = ""
+		_clear_aim()
 		if target >= 0:
 			selected_target_id = target
 			_destination = null
@@ -292,9 +367,12 @@ func screen_to_ground(screen: Vector2) -> Variant:
 func pick_visible_target(screen: Vector2) -> int:
 	var best_id: int = -1
 	var best_distance: float = INF
+	var best_priority: int = 100
+	var priorities: Dictionary = {"hero": 0, "minion": 1, "tower": 2, "core": 2, "cell": 3, "pin": 4}
+	var team: int = int(battle.units[battle.controlled_id].team) if battle.units.has(battle.controlled_id) else 0
 	for id: int in battle.units:
 		var unit: Dictionary = battle.units[id]
-		if not unit.alive or unit.team == 0 or not battle.is_visible(0, id):
+		if not battle.is_attackable_target(team, id):
 			continue
 		var floor_position := Vector3(unit.pos.x, 0, -unit.pos.y)
 		if camera.is_position_behind(floor_position):
@@ -306,8 +384,10 @@ func pick_visible_target(screen: Vector2) -> int:
 		var edge: Vector2 = camera.unproject_position(floor_position + Vector3.RIGHT * unit.radius)
 		var radius: float = maxf(10.0, foot.distance_to(edge) + 4.0)
 		var distance: float = screen.distance_to(closest)
-		if distance <= radius and distance < best_distance:
+		var priority: int = int(priorities.get(unit.kind, 100))
+		if distance <= radius and (priority < best_priority or (priority == best_priority and (distance < best_distance - 0.001 or (absf(distance - best_distance) <= 0.001 and id < best_id)))):
 			best_distance = distance
+			best_priority = priority
 			best_id = id
 	return best_id
 
@@ -331,7 +411,7 @@ func _on_minimap_point(point: Vector2, button: int) -> void:
 		_camera_focus = point
 		_update_camera(0)
 	elif button == MOUSE_BUTTON_RIGHT:
-		aim_slot = ""
+		_clear_aim()
 		_move_to(point)
 
 
@@ -381,6 +461,10 @@ func _update_camera(delta: float) -> void:
 
 
 func _sync_visuals(delta: float) -> void:
+	var mouse: Vector2 = get_viewport().get_mouse_position()
+	var allow_hover: bool = _accepts_commands() and not ui_blocks_point(mouse) and aim_slot == "" and not attack_move_aim
+	vision_view.update_view(camera, 0, delta, allow_hover)
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS if (attack_move_aim or aim_slot != "") and _accepts_commands() and not ui_blocks_point(mouse) else Input.CURSOR_ARROW)
 	for id: int in _unit_nodes.keys():
 		if not battle.units.has(id):
 			_unit_nodes[id].queue_free()
@@ -398,7 +482,7 @@ func _sync_visuals(delta: float) -> void:
 		var model: Node3D = node.get_node("Model")
 		if unit.kind in ["hero", "minion"]:
 			model.rotation.y = atan2(-unit.facing.x, unit.facing.y)
-			model.position.y = sin(battle.time * 13.0 + id) * 0.035 if unit.order == "move" else 0.0
+			model.position.y = sin(battle.time * 13.0 + id) * 0.035 if unit.order in ["move", "attack_move"] else 0.0
 	if selected_target_id >= 0:
 		if not battle.units.has(selected_target_id) or not battle.units[selected_target_id].alive or not battle.is_visible(0, selected_target_id):
 			selected_target_id = -1
@@ -413,7 +497,10 @@ func _sync_visuals(delta: float) -> void:
 		var ground: Variant = screen_to_ground(screen)
 		if ground is Vector2 and not ui_blocks_point(screen):
 			preview = battle.get_cast_preview(battle.controlled_id, aim_slot, ground)
-	effects_view.redraw(battle, preview, selected_target_id, _destination)
+	var aim_destination: Variant = _destination
+	if attack_move_aim and _accepts_commands() and not ui_blocks_point(mouse):
+		aim_destination = screen_to_ground(mouse)
+	effects_view.redraw(battle, preview, selected_target_id, aim_destination)
 	hud.unit_overlay.update_feedback(delta if has_active_match and not paused else 0.0)
 
 

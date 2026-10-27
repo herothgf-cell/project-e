@@ -2,15 +2,45 @@ extends Control
 
 signal point_selected(point: Vector2, button: int)
 
+const DEFAULT_VISION_TOOLTIP := "팀 공유 시야 · 밝은 고리가 시야 제공원을 나타냅니다.\n고리에 마우스를 올리면 벽에 막히는 실제 시야 범위를 확인할 수 있습니다."
+
 var battle: Variant
 var camera: Camera3D
 var active: bool = false
+var vision_view: Node3D
+var _hovered_source: int = -1
+var _hover_boundary := PackedVector2Array()
+var _hover_source_pos := Vector2(INF, INF)
+var _hover_boundary_at: int = 0
 
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	custom_minimum_size = Vector2(230, 148)
 	clip_contents = true
+	mouse_exited.connect(func() -> void: _update_source_hover(Vector2(INF, INF)))
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	tooltip_text = DEFAULT_VISION_TOOLTIP
+
+
+func _process(_delta: float) -> void:
+	_update_source_hover(get_local_mouse_position())
+
+
+func _update_source_hover(pointer: Vector2) -> void:
+	var hovered: int = -1
+	if battle != null and vision_view != null and Rect2(Vector2.ZERO, size).has_point(pointer):
+		for id: int in vision_view.source_ids():
+			if battle.units.has(id) and battle.units[id].alive and (to_map(battle.units[id].pos) + Vector2(0, -6)).distance_to(pointer) < 8:
+				hovered = id
+				break
+	var text: String = vision_view.source_tooltip(hovered) if hovered != -1 else DEFAULT_VISION_TOOLTIP
+	if hovered != _hovered_source:
+		_hover_source_pos = Vector2(INF, INF)
+		_hovered_source = hovered
+		queue_redraw()
+	if tooltip_text != text:
+		tooltip_text = text
 
 
 func _draw() -> void:
@@ -29,6 +59,12 @@ func _draw() -> void:
 	for blocker: Rect2 in battle.map.blockers:
 		var top_left: Vector2 = to_map(Vector2(blocker.position.x, blocker.end.y))
 		draw_rect(Rect2(top_left, blocker.size * scale_value), Color("406e65"))
+	if vision_view != null and vision_view.minimap_fog_texture != null:
+		# Texture rows follow simulation north; the minimap's screen y is south.
+		draw_set_transform(Vector2(0, size.y), 0, Vector2(1, -1))
+		draw_texture_rect(vision_view.minimap_fog_texture, Rect2(Vector2.ZERO, size), false)
+		draw_set_transform(Vector2.ZERO)
+	_draw_hover_range()
 	for id: int in visible_unit_ids():
 		var unit: Dictionary = battle.units[id]
 		var point: Vector2 = to_map(unit.pos)
@@ -49,6 +85,11 @@ func _draw() -> void:
 				draw_line(point - Vector2(0, 2), point + Vector2(0, 2), color, 1.5)
 			_:
 				draw_circle(point, 1.6, color)
+	if vision_view != null:
+		for id: int in vision_view.source_ids():
+			if battle.units.has(id):
+				var source: Vector2 = to_map(battle.units[id].pos) + Vector2(0, -6)
+				draw_arc(source, 2.0, 0, TAU, 12, Color("c3f4e3"), 1.0, true)
 	if camera != null:
 		var viewport_size: Vector2 = get_viewport_rect().size
 		var corners: Array[Vector2] = []
@@ -75,6 +116,8 @@ func visible_unit_ids() -> Array:
 
 
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		_update_source_hover(event.position)
 	if event is InputEventMouseButton:
 		accept_event()
 		if active and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
@@ -87,3 +130,28 @@ func to_map(point: Vector2) -> Vector2:
 
 func from_map(point: Vector2) -> Vector2:
 	return Vector2(point.x / size.x * 124.0 - 62.0, 40.0 - point.y / size.y * 80.0)
+
+
+func vision_at(point: Vector2) -> float:
+	if vision_view != null:
+		return vision_view.mask_visibility_at(point)
+	return 1.0 if battle != null and battle.is_point_visible(0, point) else 0.0
+
+
+func _draw_hover_range() -> void:
+	if vision_view == null or _hovered_source not in vision_view.source_ids() or not battle.units.has(_hovered_source):
+		return
+	var unit: Dictionary = battle.units[_hovered_source]
+	if _hover_source_pos == Vector2(INF, INF) or (_hover_source_pos.distance_squared_to(unit.pos) > 0.01 and Time.get_ticks_msec() - _hover_boundary_at >= 250):
+		_hover_boundary = vision_view.source_boundary(_hovered_source)
+		_hover_source_pos = unit.pos
+		_hover_boundary_at = Time.get_ticks_msec()
+	for index: int in range(_hover_boundary.size()):
+		draw_line(to_map(_hover_boundary[index]), to_map(_hover_boundary[(index + 1) % _hover_boundary.size()]), Color("c3f4e3"), 1, true)
+	if unit.kind == "tower":
+		for index: int in range(32):
+			if index % 2 == 1:
+				continue
+			var a: float = TAU * index / 32.0
+			var b: float = TAU * (index + 1) / 32.0
+			draw_line(to_map(unit.pos + Vector2(cos(a), sin(a)) * float(unit.attack_range)), to_map(unit.pos + Vector2(cos(b), sin(b)) * float(unit.attack_range)), Color("efb370"), 1, true)

@@ -43,7 +43,7 @@ func damage(state: Variant, source_id: int, target_id: int, raw: float, cast_id:
 		owner.last_hostile = state.time
 		target.contributors[owner.id] = state.time
 		for tower: Dictionary in state.units.values():
-			if tower.kind == "tower" and tower.alive and tower.team == target.team and tower.pos.distance_to(owner.pos) <= 9.0 + owner.radius:
+			if tower.kind == "tower" and tower.alive and tower.team == target.team and tower.pos.distance_to(owner.pos) <= tower.attack_range + owner.radius:
 				tower.aggro_id = owner.id
 				tower.aggro_until = state.time + 3.0
 	if target.team == 0 or state.is_visible(0, target_id):
@@ -152,6 +152,8 @@ func _kill(state: Variant, unit: Dictionary, source: Dictionary, team: int) -> v
 	unit.alive = false
 	unit.hp = 0.0
 	state.cancel_action(unit)
+	state._clear_attack_move(unit)
+	unit.order = "idle"
 	unit.path.clear()
 	unit.target_id = -1
 	unit.shields.clear()
@@ -194,7 +196,7 @@ func _kill(state: Variant, unit: Dictionary, source: Dictionary, team: int) -> v
 			source.credits += 4.0
 		unit.remove_at = state.time + 0.8
 	elif unit.kind == "cell":
-		_share(state, team, unit.pos, 30.0, 10.0)
+		_share(state, team, unit.pos, unit.xp_reward, 10.0)
 		unit.respawn_left = 45.0
 	elif unit.kind == "pin":
 		state.remove_pin(unit.id)

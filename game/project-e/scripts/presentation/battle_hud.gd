@@ -10,6 +10,8 @@ signal selection_requested
 signal restart_requested
 signal pause_requested
 signal growth_closed
+signal help_requested
+signal help_closed
 
 const PortraitScript = preload("res://scripts/presentation/hero_portrait.gd")
 const MapScript = preload("res://scripts/presentation/tactical_map.gd")
@@ -48,6 +50,7 @@ var selection: Control
 var growth: Control
 var pause_menu: Control
 var result: Control
+var help_panel: Control
 var ui_font: Font
 var selected_hero: String = "bas"
 var growth_button: Button
@@ -110,6 +113,7 @@ func _ready() -> void:
 	_build_growth()
 	_build_pause()
 	_build_result()
+	_build_help()
 	show_selection()
 
 
@@ -142,6 +146,7 @@ func _build_top() -> void:
 	_east_core.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_east_core.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_mode = _label(row, "일반 경기", 13, MUTED)
+	_button(row, "F1 도움말", Vector2(88, 40)).pressed.connect(func() -> void: help_requested.emit())
 	var pause_button: Button = _button(row, "Esc  메뉴", Vector2(99, 40))
 	pause_button.pressed.connect(func() -> void: pause_requested.emit())
 
@@ -191,7 +196,7 @@ func _build_bottom() -> void:
 	growth_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	growth_button.add_theme_color_override("font_color", TEAL)
 	growth_button.pressed.connect(func() -> void: growth_requested.emit())
-	_hint = _label(root_control, "우클릭 이동 / 공격   ·   QWER 조준 + 좌클릭   ·   S 정지   ·   B 기지   ·   Space 카메라", 13, Color("fff5da"))
+	_hint = _label(root_control, "우클릭 이동·공격 · A+좌클릭 공격 이동 · QWER 기술 · G 성장 · S 정지 · F1 도움말", 12, Color("fff5da"))
 	_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_hint.offset_left = 22
 	_hint.offset_right = -300
@@ -275,7 +280,7 @@ func _build_selection() -> void:
 	_label(column, "일반 경기: 레벨 1 · 성장 2포인트 · R은 레벨 3부터 1포인트로 해금", 13, MUTED)
 	_start = _button(column, "바스로 경기 시작", Vector2(0, 52), true)
 	_start.pressed.connect(func() -> void: match_requested.emit(selected_hero, _practice.button_pressed))
-	_label(column, "우클릭 이동 / 공격    QWER 후 좌클릭 시전    G 성장    Esc 취소 / 일시정지", 13, MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label(column, "우클릭 이동·공격    A+좌클릭 공격 이동    QWER 기술    G 성장    경기 중 F1 도움말", 13, MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 
 func _build_growth() -> void:
@@ -305,6 +310,7 @@ func _build_pause() -> void:
 	_label(column, "잠시 멈춤", 29, INK)
 	_label(column, "로컬 경기의 시간과 전투가 멈춰 있습니다.", 14, MUTED)
 	_button(column, "Esc  계속하기", Vector2(0, 46), true).pressed.connect(func() -> void: resume_requested.emit())
+	_button(column, "F1  조작과 전장 안내", Vector2(0, 42)).pressed.connect(func() -> void: help_requested.emit())
 	_button(column, "현재 영웅으로 다시 시작", Vector2(0, 42)).pressed.connect(func() -> void: restart_requested.emit())
 	_button(column, "영웅 선택으로", Vector2(0, 42)).pressed.connect(func() -> void: selection_requested.emit())
 	pause_menu.hide()
@@ -321,6 +327,32 @@ func _build_result() -> void:
 	result.hide()
 
 
+func _build_help() -> void:
+	help_panel = _modal("FirstPlayGuide", 900)
+	var column: VBoxContainer = help_panel.get_meta("column") as VBoxContainer
+	_label(column, "전장 첫걸음", 28, INK)
+	_label(column, "세 라인에서 성장하고, 병력을 동반해 상대 핵을 파괴하세요. 읽는 동안 경기는 멈춥니다.", 14, MUTED)
+	var row: HBoxContainer = _row(column, 24)
+	var left: VBoxContainer = _column(row, 8)
+	var right: VBoxContainer = _column(row, 8)
+	left.custom_minimum_size.x = 402
+	right.custom_minimum_size.x = 402
+	_label(left, "1  이동과 기본 공격", 18, TEAL)
+	_label(left, "우클릭: 지면으로 이동 / 보이는 적을 지정 공격\nA → 지면 좌클릭: 이동 중 적을 기본 공격\n교전이 끝나면 원래 목적지로 이동 · S: 정지", 14, INK)
+	_label(left, "2  기술과 카메라", 18, TEAL)
+	_label(left, "Q / W / E / R → 좌클릭 확정 · Esc: 조준 취소\n가운데 버튼 드래그: 시점 이동 · 휠: 확대/축소\nSpace: 내 영웅 보기 · 미니맵 좌클릭: 시점 이동", 14, INK)
+	_label(left, "3  성장과 회복", 18, TEAL)
+	_label(left, "G: 성장 포인트 투자 · 일반 경기 시작은 2포인트\nR: 레벨 3부터 성장 1포인트로 해금\nB: 기지까지 걸어서 복귀 · 기지에서 전투 이탈 후 회복", 14, INK)
+	_label(right, "4  경험치 셀", 18, COPPER)
+	_label(right, "작은 셀 20 / 중간 셀 30 / 큰 셀 40 XP\n처치 팀의 14m 안 살아 있는 영웅이 보상을 나눔\n첫 생성 30초 · 파괴 후 45초에 같은 종류로 재생성", 14, INK)
+	_label(right, "5  우리 팀의 시야", 18, COPPER)
+	_label(right, "밝은 곳: 현재 관측 / 어두운 곳: 현재 보이지 않음\n아군 영웅·병력·포탑·핵이 시야를 제공합니다.\n시야원에 마우스를 올려 범위 확인 · 셀과 핀은 제공 안 함", 14, INK)
+	_label(right, "6  병력과 함께 공성", 18, COPPER)
+	_label(right, "아군 라인 병력이 12m 안에 오면 구조물 보호 해제\n같은 라인의 외곽탑 → 내곽탑 → 상대 핵 공격\n포탑 공격 8.5m · 잠긴 구조물은 먼저 앞선 탑을 파괴", 14, INK)
+	_button(column, "F1 / Esc  ·  닫기", Vector2(0, 44), true).pressed.connect(func() -> void: help_closed.emit())
+	help_panel.hide()
+
+
 func select_hero(key: String) -> void:
 	if not HEROES.has(key):
 		return
@@ -334,6 +366,7 @@ func show_selection() -> void:
 	growth.hide()
 	pause_menu.hide()
 	result.hide()
+	help_panel.hide()
 	_toast.hide()
 	_toast_left = 0
 	_target.hide()
@@ -345,6 +378,7 @@ func show_match() -> void:
 	growth.hide()
 	pause_menu.hide()
 	result.hide()
+	help_panel.hide()
 	_set_match_visible(true)
 
 
@@ -355,10 +389,11 @@ func _set_match_visible(active: bool) -> void:
 	minimap.active = active
 
 
-func update_state(battle: Variant, aim_slot: String, practice: bool) -> void:
+func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim: bool = false) -> void:
 	if not battle.units.has(battle.controlled_id):
 		return
 	var hero: Dictionary = battle.units[battle.controlled_id]
+	_hint.text = "A 공격 이동 · 지면 좌클릭 확정 · Esc 취소" if attack_aim else "우클릭 이동·공격 · A+좌클릭 공격 이동 · QWER 기술 · G 성장 · S 정지 · F1 도움말"
 	var key: String = str(hero.hero)
 	_hero_name.text = "%s  /  Lv. %d%s" % [HEROES[key][0], hero.level, "  ·  부활 %.0f초" % ceilf(hero.respawn_left) if not hero.alive else ""]
 	_health.max_value = hero.max_hp
@@ -450,6 +485,7 @@ func show_target(target: Dictionary) -> void:
 func show_result(battle: Variant, practice: bool) -> void:
 	growth.hide()
 	pause_menu.hide()
+	help_panel.hide()
 	result.show()
 	_result_title.text = "승리" if battle.winner == 0 else ("패배" if battle.winner == 1 else "무승부")
 	_result_title.add_theme_color_override("font_color", TEAL if battle.winner == 0 else COPPER)
@@ -460,7 +496,7 @@ func show_result(battle: Variant, practice: bool) -> void:
 
 
 func blocks_point(point: Vector2) -> bool:
-	if selection.visible or growth.visible or pause_menu.visible or result.visible:
+	if selection.visible or growth.visible or pause_menu.visible or result.visible or help_panel.visible:
 		return true
 	for control: Control in [_top, _bottom, _map_panel, _target]:
 		if control.visible and control.get_global_rect().has_point(point):

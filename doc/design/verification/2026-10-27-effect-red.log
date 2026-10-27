@@ -1,0 +1,33 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: An ordinary enemy circle avoids thousands of radial strip triangles
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_effect_geometry.gd:173)
+       [1] _test_radial_visibility_and_cost (res://tests/test_effect_geometry.gd:67)
+       [2] _run (res://tests/test_effect_geometry.gd:52)
+ERROR: A radial warning does not make thousands of whole-world visibility queries
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_effect_geometry.gd:173)
+       [1] _test_radial_visibility_and_cost (res://tests/test_effect_geometry.gd:68)
+       [2] _run (res://tests/test_effect_geometry.gd:52)
+ERROR: Unchanged radial geometry and allied sight reuse their clipped result
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_effect_geometry.gd:173)
+       [1] _test_radial_visibility_and_cost (res://tests/test_effect_geometry.gd:72)
+       [2] _run (res://tests/test_effect_geometry.gd:52)
+ERROR: Out-of-sight warnings are rejected before radial construction
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_effect_geometry.gd:173)
+       [1] _test_radial_visibility_and_cost (res://tests/test_effect_geometry.gd:79)
+       [2] _run (res://tests/test_effect_geometry.gd:52)
+ERROR: Even small source movement invalidates enemy-effect sight immediately
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_effect_geometry.gd:173)
+       [1] _test_radial_visibility_and_cost (res://tests/test_effect_geometry.gd:96)
+       [2] _run (res://tests/test_effect_geometry.gd:52)
+Effect geometry: 31 checks, 5 failures

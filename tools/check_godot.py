@@ -46,6 +46,10 @@ def main() -> int:
         ("Combat and hero abilities", "test_battle_rules.gd", "Battle rules"),
         ("Lanes, bots and match lifecycle", "test_battle_match.gd", "Battle match"),
         ("Playable scene and UI routing", "test_battle_scene.gd", "Battle scene"),
+        ("Cell tiers, turret boundaries and attack-move", "test_next_combat.gd", "Next combat"),
+        ("Shared vision presentation and cell labels", "test_team_vision.gd", "Team vision"),
+        ("Attack-move input, target priority and help", "test_next_input.gd", "Next input"),
+        ("Wall-clipped area previews and effects", "test_effect_geometry.gd", "Effect geometry"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)
@@ -57,7 +61,7 @@ def main() -> int:
             timeout=300 if script == "test_battle_match.gd" else 60)
     print("Starting the main scene", flush=True)
     run(base + ["--quit-after", "90"])
-    print("PASS: Godot import, all five behavioral suites and main-scene startup")
+    print(f"PASS: Godot import, all {len(checks)} behavioral suites and main-scene startup")
     return 0
 
 

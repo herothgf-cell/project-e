@@ -46,3 +46,19 @@ Style: consistent softly beveled stylized 3D forms with hand-painted material fi
 Typography: at top 'PROJECT E' and smaller 'CHARACTER CONCEPTS'. Column headings exactly 'BAS', 'RIO', 'NEMA'. Small role labels exactly 'BREAK / GUARD', 'RETURN / REPOSITION', 'LINK / PROTECT'. Small bottom-right 'VISUAL CONCEPT'. No other text.
 Constraints: exactly three original hero designs, every full-body figure fits entirely within its column; tools do not overlap neighboring columns, no copied characters or existing game logos, no grimdark armor or generic neon sci-fi, no swords, no sexualized clothing. Preserve common material language but three unmistakably different silhouettes.
 ```
+
+
+## 2026-10-27 다음 개발의 실제 렌더
+
+Godot4.7.2 Compatibility, Linux/Xvfb/Mesa llvmpipe에서 `capture_next_features.gd`로 생성했다. 시야 전후와 셀 비교는 재현을 위해 위치·활성 상태를 준비한 자동 장면이며 사람 플레이 기록이 아니다.
+
+| 파일 | 내용 |
+|---|---|
+| next-guide.png | 1280×720의 F1 안내 |
+| next-cell-tiers.png | 실제30초 생성 후 위치를 모은20/30/40 XP 셀 |
+| next-vision-before.png / next-vision-overlap.png / next-vision.png | 같은 카메라의 벽 차단→아군 제공원 추가→제거, 눈 표식·시야 범위 |
+| next-tower-range.png |12m 시야와8.5m 공격 사거리 |
+| next-attack-move.png | A 공격 이동 조준·지면 목적지 |
+| next-wall-cone.png / next-wall-circle.png | 유효한 바스 Q/W 조준의 벽 차단 |
+
+자세한 준비 조건·실행 로그·표시 한계는 [검증](../09-verification.md)을 따른다.

@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BENCH { "shape": "circle", "origin": (-15.0, 0.0), "radius": 2.2, "team": 0 } redraw_us=707.375 triangles=404
+BENCH { "shape": "circle", "origin": (-15.0, 0.0), "radius": 2.2, "team": 1 } redraw_us=2080.75 triangles=451
+BENCH { "shape": "cone", "origin": (-15.0, 0.0), "target": (-9.0, 0.0), "angle": 70.0, "radius": 6.0, "team": 1 } redraw_us=702.75 triangles=196
+BENCH { "shape": "cone", "origin": (15.0, 0.0), "target": (9.0, 0.0), "angle": 70.0, "radius": 6.0, "team": 1 } redraw_us=34.125 triangles=1

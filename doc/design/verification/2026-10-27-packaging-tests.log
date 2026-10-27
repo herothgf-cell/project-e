@@ -1,0 +1,14 @@
+test_absent_license_blocks_incomplete_distribution (test_package_windows.WindowsPackagingTests.test_absent_license_blocks_incomplete_distribution) ... ok
+test_import_error_stops_packaging (test_package_windows.WindowsPackagingTests.test_import_error_stops_packaging) ... ok
+test_mismatched_templates_are_rejected (test_package_windows.WindowsPackagingTests.test_mismatched_templates_are_rejected) ... ok
+test_missing_pck_cannot_reuse_previous_output (test_package_windows.WindowsPackagingTests.test_missing_pck_cannot_reuse_previous_output) ... ok
+test_nonzero_export_exit_is_failure (test_package_windows.WindowsPackagingTests.test_nonzero_export_exit_is_failure) ... ok
+test_refuses_to_replace_unrelated_output_directory (test_package_windows.WindowsPackagingTests.test_refuses_to_replace_unrelated_output_directory) ... ok
+test_success_delivers_real_zip_manifest_and_notices (test_package_windows.WindowsPackagingTests.test_success_delivers_real_zip_manifest_and_notices) ... ok
+test_wrong_engine_is_rejected_before_outputs (test_package_windows.WindowsPackagingTests.test_wrong_engine_is_rejected_before_outputs) ... ok
+test_zero_exit_export_error_is_failure (test_package_windows.WindowsPackagingTests.test_zero_exit_export_error_is_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 2.296s
+
+OK

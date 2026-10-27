@@ -125,6 +125,51 @@ func clip_wall(start: Vector2, finish: Vector2, radius: float = 0.0) -> Vector2:
 	return result
 
 
+func radial_effect_outline(shape: Dictionary) -> Array[Vector2]:
+	# The same wall segments that reject authoritative effects bound their warning.
+	# Corner rays preserve a wall's silhouette between regular circular samples.
+	var result: Array[Vector2] = []
+	var origin: Vector2 = shape.get("origin", Vector2.ZERO)
+	var radius: float = float(shape.get("radius", 0.0))
+	if not origin.is_finite() or not is_finite(radius) or radius <= 0.0 or not has_line_of_sight(origin, origin):
+		return result
+	var cone: bool = str(shape.get("shape", "circle")) == "cone"
+	var sweep: float = deg_to_rad(clampf(float(shape.get("angle", 80.0)), 0.01, 360.0)) if cone else TAU
+	var direction: Vector2 = shape.get("target", origin + Vector2.RIGHT) - origin
+	if direction.length_squared() < 0.00001:
+		direction = Vector2.RIGHT
+	var start: float = direction.angle() - sweep * 0.5 if cone else 0.0
+	var angles: Array[float] = []
+	var count: int = maxi(2, ceili(sweep / (TAU / 96.0)))
+	for i: int in range(count + 1):
+		angles.append(sweep * float(i) / count)
+	for wall: Rect2 in blockers:
+		for corner: Vector2 in [wall.position, wall.position + Vector2(wall.size.x, 0), wall.end, wall.position + Vector2(0, wall.size.y)]:
+			var angle: float = fposmod((corner - origin).angle() - start, TAU)
+			if angle > sweep:
+				continue
+			for offset: float in [-0.00005, 0.0, 0.00005]:
+				angles.append(clampf(angle + offset, 0.0, sweep))
+	angles.sort()
+	var previous: float = -1.0
+	for angle: float in angles:
+		if absf(angle - previous) < 0.000001:
+			continue
+		previous = angle
+		var endpoint: Vector2 = origin + Vector2.from_angle(start + angle) * radius
+		var nearest: float = radius
+		var blocked: bool = false
+		for wall: Rect2 in blockers:
+			var corners: Array[Vector2] = [wall.position, wall.position + Vector2(wall.size.x, 0), wall.end, wall.position + Vector2(0, wall.size.y)]
+			for index: int in range(4):
+				var hit: Variant = Geometry2D.segment_intersects_segment(origin, endpoint, corners[index], corners[(index + 1) % 4])
+				if hit is Vector2 and origin.distance_to(hit) <= nearest:
+					nearest = origin.distance_to(hit)
+					blocked = true
+		result.append(origin + Vector2.from_angle(start + angle) * maxf(0.0, nearest - (0.012 if blocked else 0.0)))
+	return result
+
+
 func _build_grid() -> void:
 	_grid = AStarGrid2D.new()
 	_grid.region = Rect2i(-59, -38, 119, 77)

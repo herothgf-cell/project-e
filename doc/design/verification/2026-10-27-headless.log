@@ -1,0 +1,76 @@
+Checking the pinned engine version
+4.7.2.stable.official.ed1daf0bf
+Importing project
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registering global classes... (8 steps)
+[   0% ] update_scripts_classes |
+[  11% ] update_scripts_classes |
+[  22% ] update_scripts_classes |
+[  33% ] update_scripts_classes |
+[  44% ] update_scripts_classes |
+[  55% ] update_scripts_classes |
+[  66% ] update_scripts_classes |
+[  77% ] update_scripts_classes |
+[ DONE ] update_scripts_classes
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
+Checking Original movement rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bas motion: 40 checks, 0 failures
+Checking Original physical scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Probe scene: 19 checks, 0 failures
+Checking Combat and hero abilities
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle rules: 115 checks, 0 failures
+Checking Lanes, bots and match lifecycle
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bot checkpoint: 60.0s; damage=18161.9; units=64
+Bot checkpoint: 210.5s; damage=91519.1; units=55
+Bot checkpoint: 360.5s; damage=178175.3; units=46
+Bot checkpoint: 510.5s; damage=261208.7; units=75
+Bot checkpoint: 660.5s; damage=344645.8; units=61
+Bot diagnostic: 810.0s; winner=-1; towers=7; damage=433956.0; hero deaths=5; units=56
+Battle match: 1923 checks, 0 failures
+Checking Playable scene and UI routing
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle scene: 96 checks, 0 failures
+Checking Cell tiers, turret boundaries and attack-move
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next combat: 152 checks, 0 failures
+Checking Shared vision presentation and cell labels
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Team vision: 499 checks, 0 failures
+Checking Attack-move input, target priority and help
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next input: 32 checks, 0 failures
+Checking Wall-clipped area previews and effects
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Effect geometry: 35 checks, 0 failures
+Starting the main scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Godot import, all 9 behavioral suites and main-scene startup

@@ -6,6 +6,8 @@ const RulesScript = preload("res://scripts/battle/battle_rules.gd")
 const AbilitiesScript = preload("res://scripts/battle/hero_abilities.gd")
 const AIScript = preload("res://scripts/battle/battle_ai.gd")
 const FIXED_STEP: float = 1.0 / 30.0
+const ATTACK_MOVE_SEARCH: float = 8.0
+const ATTACK_MOVE_CHASE: float = 8.0
 const HERO_STATS: Dictionary = {"bas": [1100.0, 5.8, 2.0, 0.18], "rio": [950.0, 6.2, 6.5, 0.16], "nema": [1000.0, 6.0, 5.5, 0.18]}
 static var _shared_map: Variant
 
@@ -87,7 +89,7 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 				controlled_id = unit.id
 	for spec: Dictionary in map.tower_specs:
 		var unit: Dictionary = _entity("tower", spec.team, spec.pos, 2600.0 if spec.subtype == "inner" else 2000.0, 1.0)
-		unit.merge({"name": "%s %s %s" % ["West" if spec.team == 0 else "East", ["N", "C", "S"][spec.lane], spec.subtype], "lane": spec.lane, "subtype": spec.subtype, "attack_range": 9.0, "attack_damage": 180.0, "attack_windup": 0.1, "locked": spec.subtype == "inner"}, true)
+		unit.merge({"name": "%s %s %s" % ["West" if spec.team == 0 else "East", ["N", "C", "S"][spec.lane], spec.subtype], "lane": spec.lane, "subtype": spec.subtype, "attack_range": 8.5, "attack_damage": 180.0, "attack_windup": 0.1, "locked": spec.subtype == "inner"}, true)
 	for team: int in range(2):
 		var core: Dictionary = _entity("core", team, map.core_positions[team], 4000.0, 2.0)
 		core.merge({"name": "West Core" if team == 0 else "East Core", "locked": true, "lane": 1}, true)
@@ -97,6 +99,7 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 func _entity(kind: String, team: int, position: Vector2, health: float, radius: float) -> Dictionary:
 	var entity: Dictionary = {"id": _next_unit, "kind": kind, "team": team, "hero": "", "name": kind.capitalize(), "pos": position, "facing": Vector2.RIGHT if team == 0 else Vector2.LEFT, "radius": radius, "alive": true, "hp": health, "max_hp": health, "shield": 0.0, "shields": [], "energy": 0.0, "max_energy": 0.0, "energy_regen": 0.0, "level": 1, "xp": 0.0, "points": 0, "r_unlocked": false, "cooldowns": {"Q": 0.0, "W": 0.0, "E": 0.0, "R": 0.0}, "respawn_left": 0.0, "lane": 1, "phase": "idle", "phase_left": 0.0, "locked": false, "power": 0.0, "armor": 0.0, "speed": 0.0, "attack_range": 0.0, "attack_interval": 1.0, "attack_windup": 0.18, "attack_damage": 0.0, "attack_left": 0.0, "target_id": -1, "path": [], "goal": position, "order": "idle", "cast": {}, "queued": {}, "root_left": 0.0, "stun_left": 0.0, "cc_history": [], "slows": [], "knockback": {}, "protected": 0.0, "siege_protected": false, "last_damage": -100.0, "last_hostile": -100.0, "contributors": {}, "pressure": 0, "pressure_left": 0.0, "empowered_left": 0.0, "empowered_damage": 0.0, "pins": [], "return_mark": {}, "passive_inside": {}, "passive_ready": {}, "investments": {"power": 0, "hp": 0, "armor": 0, "regen": 0, "speed": 0, "R": 0}, "credits": 0.0, "kills": 0, "deaths": 0, "assists": 0, "repath_at": 0.0, "last_seen": -100.0, "last_target_pos": position, "aggro_id": -1, "aggro_until": 0.0, "remove_at": INF, "lane_progress": 5.0, "ai_retreat": false, "ai_think": 0.0}
 	units[_next_unit] = entity
+	entity.merge({"attack_move_goal": position, "attack_move_arrived": false, "attack_move_origins": {}, "attack_move_blocked": {}})
 	_next_unit += 1
 	return entity
 
@@ -129,7 +132,10 @@ func _tick(delta: float) -> void:
 	if not _cells_spawned and time + 0.00001 >= 30.0:
 		_cells_spawned = true
 		for position: Vector2 in map.cell_positions:
-			_entity("cell", 2, position, 180.0, 0.55)
+			var cell: Dictionary = _entity("cell", 2, position, 180.0, 0.55)
+			var xp: float = 30.0 if absf(position.x) == 24.0 else (40.0 if position.x * position.y < 0.0 else 20.0)
+			cell.xp_reward = xp
+			cell.cell_tier = "high" if xp == 40.0 else ("medium" if xp == 30.0 else "low")
 	if time + 0.00001 >= _next_ai:
 		_ai.think(self)
 		_next_ai += 0.4
@@ -201,6 +207,9 @@ func _timers(unit: Dictionary, delta: float) -> void:
 
 
 func _advance_actor(unit: Dictionary, delta: float) -> void:
+	# Validate even during a basic windup: fog cannot authorize a new shot.
+	if unit.order == "attack_move":
+		_validate_attack_move_target(unit)
 	if not unit.knockback.is_empty():
 		var elapsed: float = minf(delta, unit.knockback.remaining)
 		unit.pos = map.clip_walk(unit.pos, unit.pos + unit.knockback.direction * unit.knockback.speed * elapsed, unit.radius)
@@ -231,6 +240,8 @@ func _advance_actor(unit: Dictionary, delta: float) -> void:
 		unit.queued.clear()
 		if queued.type == "move":
 			command_move(unit.id, queued.target)
+		elif queued.type == "attack_move":
+			command_attack_move(unit.id, queued.target)
 		elif queued.type == "attack":
 			command_attack(unit.id, queued.target_id)
 		elif queued.type == "cast":
@@ -239,6 +250,8 @@ func _advance_actor(unit: Dictionary, delta: float) -> void:
 				return
 		else:
 			command_stop(unit.id)
+	if unit.order == "attack_move" and _advance_attack_move(unit):
+		return
 	if unit.order == "attack" and units.has(unit.target_id):
 		var target: Dictionary = units[unit.target_id]
 		if not target.alive or target.locked:
@@ -263,6 +276,106 @@ func _advance_actor(unit: Dictionary, delta: float) -> void:
 			unit.path.clear()
 	if unit.root_left <= 0.00001 and unit.speed > 0.0:
 		_walk(unit, delta)
+		if unit.order == "attack_move" and unit.target_id == -1 and unit.pos.distance_to(unit.attack_move_goal) <= 0.05:
+			unit.attack_move_arrived = true
+			unit.path.clear()
+			unit.phase = "idle"
+
+
+func _clear_attack_move(unit: Dictionary) -> void:
+	unit.attack_move_goal = unit.pos
+	unit.attack_move_arrived = false
+	unit.attack_move_origins.clear()
+	unit.attack_move_blocked.clear()
+
+
+func _drop_attack_move_target(unit: Dictionary, exhausted: bool = false) -> void:
+	if exhausted:
+		unit.attack_move_blocked[unit.target_id] = true
+	unit.target_id = -1
+	unit.path.clear()
+	unit.repath_at = 0.0
+	if unit.phase == "basic":
+		# Losing an automatic target must not discard an accepted player queue.
+		var queued: Dictionary = unit.queued.duplicate()
+		cancel_action(unit)
+		unit.queued = queued
+
+
+func _basic_in_range(unit: Dictionary, target: Dictionary) -> bool:
+	return unit.pos.distance_to(target.pos) <= unit.attack_range + target.radius and map.has_line_of_sight(unit.pos, target.pos)
+
+
+func _validate_attack_move_target(unit: Dictionary) -> void:
+	if unit.target_id == -1:
+		return
+	if not is_attackable_target(unit.team, unit.target_id):
+		_drop_attack_move_target(unit)
+		return
+	var target: Dictionary = units[unit.target_id]
+	if unit.attack_move_arrived:
+		if not _basic_in_range(unit, target):
+			_drop_attack_move_target(unit)
+	elif unit.attack_move_origins.has(target.id) and unit.pos.distance_to(unit.attack_move_origins[target.id]) >= ATTACK_MOVE_CHASE - 0.001:
+		# A target cannot refresh its leash merely by being acquired again.
+		_drop_attack_move_target(unit, true)
+
+
+func _advance_attack_move(unit: Dictionary) -> bool:
+	if not unit.attack_move_arrived and unit.pos.distance_to(unit.attack_move_goal) <= 0.05:
+		unit.attack_move_arrived = true
+		unit.path.clear()
+	_validate_attack_move_target(unit)
+	if unit.target_id == -1:
+		var best_distance: float = INF
+		var best_id: int = -1
+		for candidate: Dictionary in units.values():
+			if candidate.kind not in ["hero", "minion", "tower", "core"] or not is_attackable_target(unit.team, candidate.id):
+				continue
+			var distance: float = unit.pos.distance_squared_to(candidate.pos)
+			if unit.attack_move_arrived:
+				if not _basic_in_range(unit, candidate):
+					continue
+			else:
+				if distance > ATTACK_MOVE_SEARCH * ATTACK_MOVE_SEARCH or unit.attack_move_blocked.has(candidate.id):
+					continue
+				if unit.attack_move_origins.has(candidate.id) and unit.pos.distance_to(unit.attack_move_origins[candidate.id]) >= ATTACK_MOVE_CHASE - 0.001:
+					unit.attack_move_blocked[candidate.id] = true
+					continue
+			if distance < best_distance - 0.000001 or (absf(distance - best_distance) <= 0.000001 and (best_id == -1 or candidate.id < best_id)):
+				best_distance = distance
+				best_id = candidate.id
+		if best_id != -1:
+			unit.target_id = best_id
+			if not unit.attack_move_origins.has(best_id):
+				unit.attack_move_origins[best_id] = unit.pos
+			unit.path.clear()
+			unit.repath_at = 0.0
+	if unit.target_id != -1:
+		var target: Dictionary = units[unit.target_id]
+		unit.last_seen = time
+		unit.last_target_pos = target.pos
+		if _basic_in_range(unit, target):
+			unit.path.clear()
+			if unit.attack_left <= 0.00001:
+				_start_basic(unit, target)
+			return true
+		if time >= unit.repath_at:
+			var direction: Vector2 = (unit.pos - target.pos).normalized()
+			var goal: Vector2 = target.pos + direction * maxf(target.radius + unit.radius + 0.15, unit.attack_range * 0.82 + target.radius)
+			var origin: Vector2 = unit.attack_move_origins[target.id]
+			goal = origin + (goal - origin).limit_length(ATTACK_MOVE_CHASE)
+			if not _set_path(unit, goal):
+				_drop_attack_move_target(unit, true)
+			unit.repath_at = time + 0.6
+	if unit.target_id == -1:
+		if unit.attack_move_arrived:
+			unit.path.clear()
+			unit.phase = "idle"
+			return true
+		if unit.path.is_empty() or unit.goal.distance_to(unit.attack_move_goal) > 0.01:
+			_set_path(unit, unit.attack_move_goal)
+	return false
 
 
 func _start_basic(unit: Dictionary, target: Dictionary) -> void:
@@ -348,6 +461,9 @@ func _walk(unit: Dictionary, delta: float) -> void:
 					break
 			if not found:
 				break
+		if unit.order == "attack_move" and unit.target_id != -1 and not unit.attack_move_arrived:
+			var origin: Vector2 = unit.attack_move_origins[unit.target_id]
+			candidate = map.clip_walk(unit.pos, origin + (candidate - origin).limit_length(ATTACK_MOVE_CHASE), unit.radius)
 		var moved: float = unit.pos.distance_to(candidate)
 		unit.pos = candidate
 		remaining -= moved
@@ -384,13 +500,19 @@ func command_move(actor_id: int, target: Vector2) -> bool:
 	var actor: Dictionary = units[actor_id]
 	if actor.root_left > 0.0 or actor.stun_left > 0.0 or not map.is_walkable(target, actor.radius):
 		return _reject(actor_id, "Movement blocked by terrain or control")
+	var path: Array = map.find_path(actor.pos, target)
+	if path.is_empty():
+		return _reject(actor_id, "No walkable path")
 	if actor.phase in ["windup", "dash", "recovery"]:
 		actor.queued = {"type": "move", "target": target}
+		if actor_id == controlled_id:
+			last_error = ""
 		return true
 	if actor.phase == "basic":
 		cancel_action(actor)
-	if not _set_path(actor, target):
-		return _reject(actor_id, "No walkable path")
+	_clear_attack_move(actor)
+	actor.path = path
+	actor.goal = target
 	actor.order = "move"
 	actor.target_id = -1
 	actor.queued.clear()
@@ -399,16 +521,56 @@ func command_move(actor_id: int, target: Vector2) -> bool:
 	return true
 
 
+func command_attack_move(actor_id: int, target: Vector2) -> bool:
+	if not _valid_actor(actor_id) or not target.is_finite():
+		return _reject(actor_id, "Cannot attack-move now")
+	var actor: Dictionary = units[actor_id]
+	if actor.speed <= 0.0 or actor.root_left > 0.0 or actor.stun_left > 0.0 or not map.is_walkable(target, actor.radius):
+		return _reject(actor_id, "Movement blocked by terrain or control")
+	var path: Array = map.find_path(actor.pos, target)
+	if path.is_empty():
+		return _reject(actor_id, "No walkable path")
+	if actor.phase in ["windup", "dash", "recovery"]:
+		actor.queued = {"type": "attack_move", "target": target}
+	else:
+		if actor.phase == "basic":
+			cancel_action(actor)
+		_clear_attack_move(actor)
+		actor.attack_move_goal = target
+		actor.attack_move_arrived = actor.pos.distance_to(target) <= 0.05
+		actor.path = path
+		actor.goal = target
+		actor.order = "attack_move"
+		actor.target_id = -1
+		actor.repath_at = 0.0
+		actor.queued.clear()
+	if actor_id == controlled_id:
+		last_error = ""
+	return true
+
+
+func is_attackable_target(team: int, target_id: int) -> bool:
+	if not units.has(target_id):
+		return false
+	var target: Dictionary = units[target_id]
+	return target.alive and target.kind in ["hero", "minion", "tower", "core", "cell", "pin"] and target.team != team and not target.locked and is_visible(team, target_id)
+
+
 func command_attack(actor_id: int, target_id: int) -> bool:
 	if not _valid_actor(actor_id) or not units.has(target_id):
 		return _reject(actor_id, "Invalid attacker or target")
 	var actor: Dictionary = units[actor_id]
 	var target: Dictionary = units[target_id]
-	if not target.alive or target.team == actor.team or target.locked or not is_visible(actor.team, target_id) or actor.stun_left > 0.0:
+	if not is_attackable_target(actor.team, target_id) or actor.stun_left > 0.0:
 		return _reject(actor_id, "Target unavailable, hidden, allied, or locked")
 	if actor.phase in ["windup", "dash", "recovery"]:
 		actor.queued = {"type": "attack", "target_id": target_id}
+		if actor_id == controlled_id:
+			last_error = ""
 		return true
+	if actor.order == "attack_move":
+		actor.path.clear()
+	_clear_attack_move(actor)
 	actor.queued.clear()
 	actor.target_id = target_id
 	actor.order = "attack"
@@ -430,7 +592,10 @@ func command_cast(actor_id: int, slot: String, target: Vector2) -> bool:
 		return _reject(actor_id, plan.reason)
 	if actor.phase in ["windup", "dash", "recovery", "basic"]:
 		actor.queued = {"type": "cast", "slot": slot, "target": target}
+		if actor_id == controlled_id:
+			last_error = ""
 		return true
+	_clear_attack_move(actor)
 	actor.energy -= plan.cost
 	actor.cooldowns[slot] = plan.cooldown
 	actor.facing = plan.direction
@@ -460,6 +625,7 @@ func command_stop(actor_id: int) -> void:
 		return
 	if actor.phase == "basic":
 		cancel_action(actor)
+	_clear_attack_move(actor)
 	actor.path.clear()
 	actor.order = "idle"
 	actor.target_id = -1
@@ -536,9 +702,13 @@ func cancel_action(actor: Dictionary) -> void:
 
 
 func is_point_visible(team: int, position: Vector2) -> bool:
+	return is_point_visible_for_sources(team, position, units.values())
+
+
+func is_point_visible_for_sources(team: int, position: Vector2, sources: Array) -> bool:
 	if not position.is_finite():
 		return false
-	for observer: Dictionary in units.values():
+	for observer: Dictionary in sources:
 		if observer.team != team or not observer.alive or observer.kind not in ["hero", "minion", "tower", "core"]:
 			continue
 		var sight: float = 8.0 if observer.kind == "minion" else 12.0

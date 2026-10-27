@@ -1,6 +1,6 @@
 # Godot 빠른 시작과 실행 검증
 
-- 개정: 2026-10-26, Asia/Seoul.
+- 개정: 2026-10-27, Asia/Seoul.
 - 현재 범위: **3라인·세 영웅·오프라인 3대3·성장·공성·승패 프로토타입**.
 - 엔진: **Godot 4.7.2 Standard**, GDScript, Compatibility, GodotPhysics3D, 30Hz.
 - 프로젝트: [game/project-e/project.godot](../../game/project-e/project.godot).
@@ -24,10 +24,12 @@
 |---|---|
 | 지면 우클릭 | 길을 찾아 목적지로 이동 |
 | 보이는 적 우클릭 | 사거리까지 접근한 뒤 기본 공격 |
+| A → 지면 좌클릭 | 공격 이동; 교전 후 원래 목적지로 복귀 |
 | Q/W/E/R → 좌클릭 | 미리보기를 확인하고 기술 확정 |
 | Esc | 조준 취소, 패널 닫기 또는 일시정지 메뉴 |
 | S | 이동/공격 명령 정지 |
 | G | 성장 투자 패널; 읽는 동안 로컬 시간 정지 |
+| F1 | 조작·셀·시야·공성 안내; 닫으면 이전 진행 상태로 복귀 |
 | B | 기지로 걸어가기; 순간이동 아님 |
 | 가운데 버튼 드래그 | 카메라 이동 |
 | 휠 / Space | 확대·축소 / 조작 영웅으로 복귀 |
@@ -62,7 +64,7 @@ python tools/check_godot.py --godot /actual/path/to/godot
 python tools/check_godot.py --godot /actual/path/to/godot --long-match
 ```
 
-기본 명령은 버전/import와 기존 2개·신규 3개 검증 묶음 및 메인 장면 시작을 확인한다. **--long-match**는 원래 수치의 봇 경기를 핵 파괴 또는 최대 1,860초까지 연장한다. 경기 검사는 최대 300초의 실제 실행 시간을 허용한다. 장시간 검사와 일반 실행을 혼동하지 않는다.
+기본 명령은 버전/import와 이동·물리·전투·경기·장면·새 전투·시야·입력·경고 형상의9개 검증 묶음 및 메인 장면 시작을 확인한다. **--long-match**는 원래 수치의 봇 경기를 핵 파괴 또는 최대 1,860초까지 연장한다. 경기 검사는 최대 300초의 실제 실행 시간을 허용한다. 장시간 검사와 일반 실행을 혼동하지 않는다.
 
 PowerShell 예시에서 실제 Godot 실행 파일 경로를 지정한다.
 
@@ -80,6 +82,10 @@ godot --headless --path game/project-e --script tests/test_probe_scene.gd
 godot --headless --path game/project-e --script tests/test_battle_rules.gd
 godot --headless --path game/project-e --script tests/test_battle_match.gd
 godot --headless --path game/project-e --script tests/test_battle_scene.gd
+godot --headless --path game/project-e --script tests/test_next_combat.gd
+godot --headless --path game/project-e --script tests/test_team_vision.gd
+godot --headless --path game/project-e --script tests/test_next_input.gd
+godot --headless --path game/project-e --script tests/test_effect_geometry.gd
 ```
 
 검증 도구는 종료 코드뿐 아니라 ERROR/SCRIPT ERROR와 완료 문구를 확인한다. 최신 통과 수·자연 종료 시간·수정 이력은 [검증 기록](../../doc/design/09-verification.md)에 모은다.
@@ -92,7 +98,7 @@ godot --headless --path game/project-e --script tests/test_battle_scene.gd
 godot --path game/project-e --script tests/capture_battlefield.gd
 ```
 
-출력은 build/screenshots이다. **--headless에서는 실행하지 않는다.** 경기 화면은 시뮬레이션을 빠르게 진행한 렌더링이며 사람이 조작해 플레이한 기록이 아니다. 자동 검사·프레임 확인·사람 플레이의 범위를 구분한다.
+새 기능의 셀·시야 전후·A 조준·F1 안내·벽 경고는 `tests/capture_next_features.gd`로 캡처하며 출력은 build/screenshots-next다. 기존 도우미 출력은 build/screenshots이다. **--headless에서는 실행하지 않는다.** 경기 화면은 시뮬레이션을 빠르게 진행한 렌더링이며 사람이 조작해 플레이한 기록이 아니다. 자동 검사·프레임 확인·사람 플레이의 범위를 구분한다.
 
 ## 6. 기존 이동 진단
 
@@ -100,17 +106,16 @@ scenes/combat_probe.tscn을 열고 **F6**을 누르면 이전 진단을 실행�
 
 2026-10-22 기반 작업은 동일한 엔진에서 이동 규칙 40개와 실제 진단 장면 19개를 통과했다. 이 과거 기록은 당시 Windows 실행이나 온라인 검증을 포함하지 않았다. 현재 검증 도구는 이 두 묶음을 계속 회귀 검사한다.
 
-## 7. Windows 독립 실행 파일 — 아직 별도 검증 필요
+## 7. Windows 독립 실행 패키지
 
-1. Godot **Editor → Manage Export Templates**에서 동일한 **4.7.2 Standard** templates를 설치한다.
-2. 저장소 루트에 build/windows 폴더를 만든다.
-3. **Project → Export → Windows Desktop**에서 x86_64로 내보낸다.
-4. 생성된 ProjectE.exe와 ProjectE.pck를 함께 보관한다.
-5. [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)와 [폰트 라이선스](../../game/project-e/assets/fonts/OFL.txt)를 배포에 함께 포함한다.
-6. Windows에서 에디터 없이 실행해 조작·폰트·창 크기·포커스·재시작을 확인한다.
+테스트 ZIP을 받았다면 **전체 압축을 풀고 ProjectE.exe를 실행**한다. ProjectE.pck를 같은 폴더에 둔다. 플레이에 Godot 에디터나 Python 설치는 필요하지 않다. 프로젝트 소스 ZIP과 실행 패키지는 서로 다른 파일이다.
+
+개발용으로 직접 빌드하려면 고정된4.7.2 Standard 실행 파일, 같은 버전의 공식 export templates TPZ와 엔진 라이선스 고지를 준비한다. [Windows 빌드 안내](04-windows-build.md)의 옵션에 따라 다음 CLI를 사용한다.
 
 ```sh
-godot --headless --path game/project-e --export-debug "Windows Desktop"
+python tools/package_windows.py --godot /actual/path/to/godot
 ```
 
-preset은 준비했지만 이 작업의 검증 환경은 Linux다. **Windows export/실제 실행, Steam SDK·로비·배포, 온라인 지연/손실은 아직 검증하지 않았다.** [Windows export 공식 안내](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_windows.html).
+CLI는 버전 확인→별도 소스 사본 import→Windows release export→EXE/PCK 검증→안내/고지/manifest→ZIP·SHA-256 검사를 수행한다. 기본 출력은 build/windows/ProjectE-windows-x86_64.zip이다. 명령의 성공과 실제 Windows PC의 실행은 [검증 기록](../../doc/design/09-verification.md)에 나누어 기록한다.
+
+실제 PC에서는 Godot이 없는 상태로 실행→영웅 선택→일반 경기→재시작→종료, 한국어 글자, 마우스, 창 크기, Alt-Tab 복귀를 확인한다. 사람 플레이는 [기록표](../../doc/design/12-local-playtest-record.md)에 남긴다. 온라인·Steam 연동과 실제 Windows 하드웨어 성능은 이 export 절차의 완료만으로 검증되지 않는다.
