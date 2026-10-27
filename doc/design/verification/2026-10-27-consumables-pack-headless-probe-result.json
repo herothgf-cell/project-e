@@ -1,0 +1,23 @@
+{
+  "mode": "headless-probe",
+  "exit_code": 0,
+  "errors": [],
+  "elapsed_seconds": 1.737,
+  "windows_exe_executed": false,
+  "pack": "/workspace/scratch/d3eeca5f7e58/project-e-next/build/windows-consumables/ProjectE.pck",
+  "command": [
+    "/workspace/scratch/d3eeca5f7e58/godot-tools/Godot_v4.7.2-stable_linux.x86_64",
+    "--path",
+    "/tmp/project-e-pack-consumables-fw9511za",
+    "--main-pack",
+    "/workspace/scratch/d3eeca5f7e58/project-e-next/build/windows-consumables/ProjectE.pck",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--script",
+    "/tmp/project-e-pack-consumables-fw9511za/verify_exported_pack.gd"
+  ],
+  "log": "/workspace/scratch/d3eeca5f7e58/project-e-next/build/base-consumables/pack-headless-probe.log",
+  "source_project_path_used": false,
+  "outside_source_project": true
+}

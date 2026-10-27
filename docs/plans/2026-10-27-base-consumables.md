@@ -81,9 +81,11 @@ Catalog `battle_consumables.gd.ITEMS` has I01/I02 fields `name`, `cost`, `resour
 **Files:** update `tools/check_godot.py`, README and canonical design/controls/economy/backlog/verification docs; evidence under `doc/design/verification`, screenshots under `doc/design/assets`.
 
 - [x] Register three new suites with explicit completion markers and full9+3suites run.
-- [x] Independent task reviews + whole change review; fix actionable findings and record focused evidence. 전체 명세 PASS/코드 품질 APPROVE, 조치할 지적 없음. [최종 검토 원문과 범위](../../doc/design/verification/2026-10-27-consumables-reviews.md#whole-change-final-independent-review). 게시·새 Windows export·실제 Windows PC/사람 검증은 아래 별도 게이트로 유지한다.
+- [x] Independent task reviews + whole change review; fix actionable findings and record focused evidence. 전체 명세 PASS/코드 품질 APPROVE, 조치할 지적 없음. [최종 검토 원문과 범위](../../doc/design/verification/2026-10-27-consumables-reviews.md#whole-change-final-independent-review). 게시·새 Windows export 결과는 아래에 별도 기록하며 실제 Windows PC/사람 검증은 미실시로 유지한다.
 - [x] Render720p/1080p shop/inventory/recovery/guide, record conditions and selected source.
 - [x] Update implementation statuses without marking complete fullR06/R10/R11 or human/WindowsPC gates.
-- [ ] Verify whitespace/links and commit/push source through existing GitHub authorization with remote lease.
-- [ ] Build clean-source WindowsZIP with existing package tool, verify manifest/hash/ZIP/PCK startup; save durable package and record exact source commit.
-- [ ] Push final documentation/evidence, verify remoteSHA/tree and clean checkouts. Deliver Korean feature/controls/test/limitation summary and download.
+- [x] Verify whitespace/links and commit/push source through existing GitHub authorization with remote lease. 소스 `e56286a064063bda84ccd9eb309ab8fb80a575a1`, main 원격·tree 일치와 깨끗한 소스 확인. [게시 증거](../../doc/design/verification/2026-10-27-consumables-source-publication.json).
+- [x] Build clean-source WindowsZIP with existing package tool, verify manifest/hash/ZIP/PCK startup and record exact source commit. `e56286a` 공식 release export 종료0, ZIP39,428,780바이트·73소스/11ZIP항목 독립 PASS. 소스 밖 Linux PCK 메인90프레임·소모품 headless10/0·GL13/0/3프레임. [패키지 검토](../../doc/design/verification/2026-10-27-consumables-package-review.md).
+- [x] Preserve actual export/import, manifest/ZIP hash, independent package review, source-independent PCK results/probe and3actual frames under `doc/design/verification` and `doc/design/assets`; keep actual Windows PC/human gates not_run. [종합 증거](../../doc/design/13-consumables-verification.md).
+- [x] Save/update the durable download with its existing identity. 기존 사용자 다운로드 항목을 새 `e56286a`/`a2d88d…` ZIP으로 교체하고 메타데이터 적용 확인.
+- [x] Push final documentation/evidence, verify remoteSHA/tree and clean checkouts. 게임 소스는 `e56286a`로 유지하고 후속 문서 커밋에 새 산출물·실행 증거·다운로드 갱신 결과를 기록한다. 실제 Windows PC·사람 검증은 미실시로 전달한다.

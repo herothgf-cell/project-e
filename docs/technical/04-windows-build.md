@@ -145,7 +145,7 @@ ZIP 안에는 `ProjectE-windows-x86_64/` 폴더 하나가 있다. EXE/PCK와 모
 
 1. PC의 Windows 버전, GPU/드라이버, 디스플레이 배율과 패키지 ZIP 해시를 기록한다. 에디터가 없는 환경에서 전체 압축을 푼 후 `ProjectE.exe`를 실행한다.
 2. 바스·리오·네마 이름, 시작 버튼, 경기 HUD·성장 설명의 한국어가 깨지거나 빈 네모로 나오지 않는지 확인한다. 폰트는 패키지에 포함돼 있다.
-3. 영웅 선택과 경기 시작, 지면/보이는 적 우클릭, **A→지면 좌클릭 공격 이동**, S 정지, Q/W/E/R 조준·확정과 Esc 취소, G 성장 투자를 확인한다. 사람 1명+봇 5명 구조다.
+3. 영웅 선택과 경기 시작, 지면/보이는 적 우클릭, **A→지면 좌클릭 공격 이동**, S 정지, Q/W/E/R 조준·확정과 Esc 취소, **G 성장/B 기지로 걷기/P 상점**을 확인한다. 자기 기지에서 구매한 뒤 상점을 닫고 **I01/I02 슬롯 선택→D 또는 사용 버튼**을 확인한다. 슬롯 클릭은 선택만 하며 빈 선택에서 다른 품목을 대신 쓰지 않는지, 공유12초 대기·기지 밖/사망 중 구매 불가 안내와 P/Esc로 닫을 때 정지 상태 복원이 맞는지도 기록한다. 사람 1명+봇 5명 구조다.
 4. Esc 일시정지 후 Alt-Tab으로 다른 창으로 갔다가 돌아온다. 재개한 뒤 마우스·키보드 입력, 카메라·조준, 창 포커스를 확인한다.
 5. 창을 조절하고 100%/150% 디스플레이 배율에서 HUD·미니맵·조작 안내가 겹치거나 잘리는지 확인한다.
 6. Esc 메뉴의 **현재 영웅으로 다시 시작**으로 현재 영웅의 경기를 초기화한다. 별도의 **영웅 선택으로** 버튼을 눌러 다른 영웅을 시작한다. 종료 후 EXE를 다시 켜 새 프로세스에서도 같은 절차가 되는지 확인한다.
@@ -174,13 +174,26 @@ Python 패키징 검사는 외부 Godot 프로세스의 실패 모드를 작은 
 
 이번 빌드 호스트에는 Wine/Wine64가 설치돼 있지 않다. Linux Godot로 같은 PCK를 실행할 경우에도 확인 범위는 플랫폼 공통 리소스/스크립트 시작이며 Windows EXE 실행 확인은 아니다. 실제 Windows PC, 사람 플레이, 장시간 GPU 성능, Steam SDK·로비·배포와 온라인 환경은 별도 검증 대상이다.
 
-## 7. 이번에 생성한 테스트 패키지
+## 7. 현재 소모품 테스트 패키지
 
-2026-10-27에 깨끗한 소스 commit `a11834fc0da7ad1aa75292c03661d86b989d00ec`로 실제 Windows release export를 완료했다. ZIP은39,413,375bytes이며 EXE/PCK·한국어 실행 안내·고지·manifest·빌드 로그11개 항목을 포함한다.
+2026-10-27에 깨끗한 소스 commit **`e56286a064063bda84ccd9eb309ab8fb80a575a1`**에서 공식 Godot4.7.2 release export를 실행해 종료0으로 새 Windows x86_64 패키지를 만들었다. 현재 전달 기준은 이 소모품 포함 빌드이며 기존 사용자 다운로드 항목도 이 새 ZIP으로 갱신했다. [소스 게시 확인](../../doc/design/verification/2026-10-27-consumables-source-publication.json)과 [manifest](../../doc/design/verification/2026-10-27-consumables-windows-manifest.json)가 소스를 식별한다.
 
-ZIP SHA-256: `4bcccb9aac03bc20557d74a4b40e8baf7718ec41e20e05c756b397babc772fb0`.
+| 항목 | 현재 산출물 |
+|---|---|
+| ZIP | `ProjectE-windows-x86_64.zip` |
+| ZIP 크기 | **39,428,780바이트** |
+| ZIP SHA-256 | `a2d88d42da7623d4ddb71420af2fce2dd7b30a67cac87bca7616fd153a43ae4d` |
+| Git 소스 tree | `b49c8c1f396047753ea3d0627d573f6f12b8ea46` |
+| 소스와 내용 검토 |73개 원본 파일이 commit·현재 파일·manifest와 일치. ZIP11항목 CRC/크기/해시·EXE PE/x86_64·PCK 헤더 검증, 독립 검토 **PASS** |
+| 실제 Windows PC / 사람 플레이 | **미실시** |
 
-실제 import/export, ZIP CRC와 파일별 해시, 소스63개 파일 일치를 확인했다. 소스 폴더 밖에서 Linux 엔진으로 exported-PCK90프레임 시작과 실제 GL 선택/경기 화면2장을 확인했다. **Windows PE 파일을 실제 Windows에서 실행한 검사는 미실시**다. [전체 산출물·로그·검증 범위](../../doc/design/09-verification.md#6-windows-패키지-검증), [PC/사람 기록표](../../doc/design/12-local-playtest-record.md)를 따른다.
+[실제 import](../../doc/design/verification/2026-10-27-consumables-windows-import.log)·[release export](../../doc/design/verification/2026-10-27-consumables-windows-export.log)·[ZIP 해시](../../doc/design/verification/2026-10-27-consumables-windows.zip.sha256)와 [독립 패키지 검토](../../doc/design/verification/2026-10-27-consumables-package-review.md)를 보존했다. ZIP에는 EXE/PCK·P/D를 포함한 한국어 안내·고지·라이선스·manifest·실제 빌드 로그를 함께 넣었다.
+
+원본 프로젝트 밖의 임시 경로에서 Linux 엔진의 `--main-pack`으로 **PCK 메인90프레임 시작 종료0**, 소모품 headless probe **10개 검사 실패0**, 실제 GL probe **13개 검사 실패0·3프레임**을 확인했다. [메인 결과](../../doc/design/verification/2026-10-27-consumables-pack-headless-main-result.json), [headless 소모품 결과](../../doc/design/verification/2026-10-27-consumables-pack-headless-probe-result.json), [GL 결과](../../doc/design/verification/2026-10-27-consumables-pack-graphical-probe-result.json)와 [probe 소스](../../doc/design/verification/2026-10-27-consumables-pack-probe.gd)를 함께 남겼다.
+
+이 probe는 **일반 경기 바스L1·시작100크레딧**을 확인하고 실제 UI 구매로 병+패치를 구입해10크레딧이 남는지 검사했다. 기지 밖 위치 `(-45,0)`와 에너지50을 배치한 뒤 실제 D 사용과0.5초 시간 진행으로 내부 에너지가64(병10+기본 회복4)와0.001 미만 차이인지 상태 assertion으로 검사했다. 상점 사진은 구매 전100크레딧·재고0이며, 회복 사진에서는 병 재고0/패치1·공유 대기11.5초·회복1.5초를 확인했다. 회복 사진의 정수 에너지 HUD는63/100이므로 내부 상태 검증값64와 구별한다. [선택](../../doc/design/assets/consumables-pack-selection-720p.png)·[상점](../../doc/design/assets/consumables-pack-shop-720p.png)·[회복](../../doc/design/assets/consumables-pack-recovery-720p.png)3장은 해당 내보낸 PCK의 실제 GL 프레임이다. 이는 소스 밖의 내보낸 스크립트·리소스와 소모품 경로 확인이며 **Windows EXE를 실제 실행한 증거가 아니다**.
+
+이전 `a11834fc0da7ad1aa75292c03661d86b989d00ec`의39,413,375바이트 ZIP과 SHA-256 `4bcccb9aac03bc20557d74a4b40e8baf7718ec41e20e05c756b397babc772fb0`는 소모품 추가 전 과거 패키지다. 당시 소스63개·Linux PCK90프레임·GL2장 기록은 [이전 검증](../../doc/design/09-verification.md#6-windows-패키지-검증)에 보존하며 현재 빌드와 혼합하지 않는다. 최신 종합 결과는 [소모품 검증](../../doc/design/13-consumables-verification.md), 실제 PC/사람 관찰은 [미실시 기록표](../../doc/design/12-local-playtest-record.md)를 따른다.
 
 ## 공식 참고 자료
 

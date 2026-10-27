@@ -1,11 +1,11 @@
 # 기지 상점·소모품 구현과 검증
 
 - 기준일: **2026-10-27, Asia/Seoul**.
-- 기준 소스: `0b1234f8918e0d5bbea2cefbab5f83c4434a9da7`에서 R09와 R10 중 소모품 경제 판단을 구현했다. [설계](../../docs/plans/2026-10-27-base-consumables-design.md)와 [구현 계획](../../docs/plans/2026-10-27-base-consumables.md)을 따른다.
+- 구현 소스: **`e56286a064063bda84ccd9eb309ab8fb80a575a1`**. 기준 `0b1234f8918e0d5bbea2cefbab5f83c4434a9da7`에서 R09와 R10 중 소모품 경제 판단을 구현하고 GitHub `main`에 게시했다. [설계](../../docs/plans/2026-10-27-base-consumables-design.md)와 [구현 계획](../../docs/plans/2026-10-27-base-consumables.md)을 따른다.
 - 통합 결과: **임포트, 12개 묶음의 3,453개 assertion, 메인 장면90프레임 시작 통과**. 종료0·실패0, `ERROR:`/`SCRIPT ERROR:` 없음.
 - 실제 렌더: Linux Compatibility에서 **720p와1080p, 총16프레임** 저장 및 확인. 선택 화면, 구매·재고·회복·중단·도움말·기지 밖·사망 상태를 확인했다.
 - 별도 6봇 자연 경기: **431.8초(약7분12초), 서쪽 승리**, 실제 동쪽 핵 파괴. 사람의 균형이나 목표 경기 시간을 검증한 결과가 아니다.
-- 새 Windows 패키지는 이 검증 소스를 커밋한 뒤 export하고 산출물과 소스 식별자를 아래에 기록한다. **실제 Windows PC 실행·사람 플레이는 미실시**다.
+- 새 Windows release 패키지를 위의 깨끗한 커밋에서 생성했다. 소스73개와 ZIP11개 항목을 대조했고, 소스 폴더 밖에서 exported PCK의 시작·구매·사용·실제 화면3장을 확인했다. **실제 Windows PC 실행·사람 플레이는 미실시**다.
 
 ## 1. 구현한 사용자 흐름
 
@@ -126,8 +126,53 @@ Godot_v4.7.2-stable_linux.x86_64 --path game/project-e \
 
 ## 6. 패키지·독립 검토·남은 실제 확인
 
-기존 패키징 도구의9개 경계 검사는 [출력](verification/2026-10-27-consumables-packaging-tests.log)에서 모두 통과했다. 새 조작/상점/소모품 설명을 ZIP 안 한국어 실행 안내에도 반영했다. 새 소스의 실제 Windows export·ZIP 해시·exported PCK 확인은 산출물 제작 뒤 이 절에 추가한다. 이전 `a11834f` 패키지와 새 소스 검증을 혼합하지 않는다.
+### 6.1 새 Windows release 산출물
 
-권한·UI·봇의 개별 검토와 전체 변경 검토를 모두 마쳤다. [독립 검토 기록](verification/2026-10-27-consumables-reviews.md)의 명세 결과는 PASS, 코드 품질은 PASS/APPROVE이며 남은 실행 가능한 P0–P3 지적은 없다. 이 검토는 소스와 기존 실행 증거를 대상으로 하며 아직 만들지 않은 새 export나 실제 Windows PC 실행을 승인한 것은 아니다. 사거리·XP·보상·시야·행동 순서를 추가로 변경하지 않았다.
+기존 패키징 도구의9개 경계 검사는 [출력](verification/2026-10-27-consumables-packaging-tests.log)에서 모두 통과했다. 이어 공식4.7.2 엔진과 같은 버전 templates로 실제 Windows x86_64 release를 export했다. 실행 안내에는 P/D, 구매 조건, 가격·회복·합산 한도·공유 대기와 실제 PC 점검 항목을 포함했다.
+
+```sh
+python tools/package_windows.py \
+  --godot /workspace/scratch/d3eeca5f7e58/godot-tools/Godot_v4.7.2-stable_linux.x86_64 \
+  --output-dir /workspace/scratch/d3eeca5f7e58/project-e-next/build/windows-consumables
+```
+
+이 명령은 위2절과 같은 XDG 데이터·설정·캐시 경로에서 실행했고 종료0이었다. [소스 게시 영수증](verification/2026-10-27-consumables-source-publication.json)의 원격 Git tree와 로컬 index tree가 같고, export 당시 Git 상태는 깨끗했다. [manifest 원본](verification/2026-10-27-consumables-windows-manifest.json), [실제 import 로그](verification/2026-10-27-consumables-windows-import.log), [실제 export 로그](verification/2026-10-27-consumables-windows-export.log)를 보존했다. 두 엔진 로그에 `ERROR:`/`SCRIPT ERROR:`가 없다.
+
+| 산출물/기준 | 실제 값 |
+|---|---|
+| 소스 commit | `e56286a064063bda84ccd9eb309ab8fb80a575a1` |
+| Git tree | `b49c8c1f396047753ea3d0627d573f6f12b8ea46` |
+| manifest 생성 UTC | `2026-10-27T05:52:25.564768+00:00` |
+| ZIP | `ProjectE-windows-x86_64.zip`, **39,428,780바이트**, 내부11개 파일 |
+| EXE | `ProjectE.exe`,109,268,480바이트, PE x86_64 / PE32+ |
+| 게임 데이터 | `ProjectE.pck`,1,343,384바이트, GDPC / Godot4.7.2 |
+| 원본 프로젝트 snapshot |73개 파일, 해당 커밋 및 현재 파일과 내용·크기·SHA-256 모두 일치 |
+| 소스 snapshot SHA-256 | `c72929cec3509dbc7dc900c6d1f276fe9cffdfd05bde1bcb5469947fc20ae80e` |
+
+ZIP SHA-256은 [체크섬 파일](verification/2026-10-27-consumables-windows.zip.sha256)에 기록했다.
+
+```text
+a2d88d42da7623d4ddb71420af2fce2dd7b30a67cac87bca7616fd153a43ae4d
+```
+
+PCK SHA-256은 `fe6dd096f7a96487b966538975c2c106f00c988dd21dea0775e138589681e3f7`이다. ZIP의 CRC, 모든 내부 파일 크기·해시, ZIP 안팎 manifest 동일성과 외부 ZIP 체크섬을 확인했다. 게임·Godot MIT/구성 요소·폰트 고지를 포함한다. 전회 `a11834f` / ZIP `4bcccb9a…`의 패키지는 [지난 검증 기록](09-verification.md)에 남아 있으며 이번 산출물과 구별한다.
+
+### 6.2 실제 exported PCK 실행
+
+Linux 엔진의 `--main-pack`으로 **원본 프로젝트 밖의 임시 실행 폴더**에서 새 PCK를 열었다. 이 폴더에는 원본 프로젝트를 복사하지 않았으며 구매/사용 검사용 외부 스크립트만 두었다. 다음 결과는 플랫폼 공통 패키지 리소스와 실행 로직 확인이며 **Windows EXE 실행 결과가 아니다**.
+
+| 실행 | 결과 | 보존 증거 |
+|---|---|---|
+| headless 메인 장면 |90프레임, 종료0, 오류 없음 | [로그](verification/2026-10-27-consumables-pack-headless-main.log) · [명령/결과](verification/2026-10-27-consumables-pack-headless-main-result.json) |
+| headless 소모품 흐름 |10checks,0failures, 종료0 | [로그](verification/2026-10-27-consumables-pack-headless-probe.log) · [명령/결과](verification/2026-10-27-consumables-pack-headless-probe-result.json) |
+| 실제 GL 소모품 흐름 |13checks,0failures, 실제3프레임, 종료0 | [로그](verification/2026-10-27-consumables-pack-graphical-probe.log) · [명령/결과](verification/2026-10-27-consumables-pack-graphical-probe-result.json) |
+
+[외부 실행 검사 스크립트](verification/2026-10-27-consumables-pack-probe.gd)는 패키지 안의 실제 전장 장면을 불러와 일반 경기 바스 레벨1·시작금100을 확인한다. P로 상점을 열고 실제 구매 버튼 signal로 두 품목을 사면10크레딧이 남는다. 상점을 닫아 재개하고 기지 밖 위치·에너지50을 배치한 뒤, 실제 슬롯 선택과 D 처리로 병을 사용해0.5초 진행한다. 재고1개 소비, 패치1개 보존, 병 회복과 기본 회복의 합, 공유 대기11.5초를 검사한다. 그래픽 실행의 추가3개 assertion은 PNG 저장 성공을 확인한다.
+
+실제 캡처한 [선택 화면](assets/consumables-pack-selection-720p.png), [시작금100의 상점](assets/consumables-pack-shop-720p.png), [구매 후 병 사용·회복](assets/consumables-pack-recovery-720p.png)을 직접 확인했다. 한국어와 조작 안내·가격·재고·회복 표시가 그려졌다. 이3장은 위5절의 소스 직접 실행16장과 구별하며 자연 경기나 사람 플레이를 촬영한 것으로 해석하지 않는다. GL 로그에는 같은 llvmpipe의 VSync 경고1개만 있고 엔진 오류는 없다.
+
+### 6.3 독립 검토와 남은 실제 확인
+
+권한·UI·봇의 개별 검토와 전체 변경 검토를 모두 마쳤다. [독립 소스 검토 기록](verification/2026-10-27-consumables-reviews.md)의 명세 결과는 PASS, 코드 품질은 PASS/APPROVE이며 남은 실행 가능한 P0–P3 지적은 없다. 이어 별도의 [패키지 검토](verification/2026-10-27-consumables-package-review.md) / [기계 확인 결과](verification/2026-10-27-consumables-package-review.json)도 PASS/APPROVE다. 패키지 검토자는 소스·manifest·ZIP·헤더·로그·안내·고지를 독립 대조했고 프로그램을 다시 실행했다고 주장하지 않았다. 사거리·XP·보상·시야·행동 순서를 추가로 변경하지 않았다.
 
 실제 Windows PC 실행·Alt-Tab·디스플레이 배율·대상 장비 성능과 사람1명+봇5명 경기는 **미실시**다. [플레이 기록표](12-local-playtest-record.md)의 소모품 구매/선택/사용과 회복·중단/복귀 질문을 사용한다. R10 전체 전술, R06 동작·소리, R07 연습장, R08 설정, R12 이후 온라인은 별도 남은 개발이다.

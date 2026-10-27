@@ -20,7 +20,7 @@
 | 기획서 | 요청 경로인 [doc/design](doc/design/README.md)에 요소별 기획 |
 | 검증 | [실제 실행 명령·통과 범위·자연 봇 경기 결과](doc/design/09-verification.md) |
 
-초기 로드맵 M0–M2 일부를 오프라인에서 연결했다. 이전 `a11834f` 소스의 Windows 독립 실행 ZIP을 제작했고 [재현 가능한 패키징 절차](docs/technical/04-windows-build.md)와 자동 검증 도구를 제공한다. 이번 소모품 소스의 새 Windows export·패키지 결과는 [최신 검증](doc/design/13-consumables-verification.md)에서 별도로 확정한다. 실제 Windows PC의 실행·조작과 사람 경기는 미실시이며, 인터넷 대전과 Steam 연동도 별도 작업이다.
+초기 로드맵 M0–M2 일부를 오프라인에서 연결했다. **소모품이 포함된 `e56286a064063bda84ccd9eb309ab8fb80a575a1` 소스로 Windows release EXE/PCK/ZIP을 새로 제작·검증하고 기존 다운로드 항목을 같은 새 패키지로 갱신했다.** ZIP은39,428,780바이트이며 SHA-256은 `a2d88d42da7623d4ddb71420af2fce2dd7b30a67cac87bca7616fd153a43ae4d`다. 소스73개·ZIP11항목·CRC/해시/PE/PCK 독립 검토와 소스 밖 Linux PCK 실행/소모품 확인을 통과했다. [빌드·압축 해제 안내](docs/technical/04-windows-build.md#7-현재-소모품-테스트-패키지)와 [최신 검증](doc/design/13-consumables-verification.md)을 따른다. 이전 `a11834f` 패키지는 과거 산출물이다. **Windows EXE의 실제 Windows PC 실행·사람 경기는 미실시**이며, 인터넷 대전과 Steam 연동도 별도 작업이다.
 
 ## 바로 실행하기
 
@@ -69,7 +69,7 @@
 
 ## 문서와 개발
 
-- **개발 상태:** [남은 개발 사항과 추천 순서](doc/design/11-remaining-development.md) — 셀 XP·시야·포탑·A 공격 이동의 기존 증거, R09 상점·소모품 및 R10 경제 판단의 자동 검증 결과와 남은 화면/배포 확인, 실제 PC/사람 확인과 이후 개발 순서.
+- **개발 상태:** [남은 개발 사항과 추천 순서](doc/design/11-remaining-development.md) — 셀 XP·시야·포탑·A 공격 이동의 기존 증거와 R09·R10 경제 판단의 자동 검사·화면·패키지 결과, 남은 실제 PC/사람 확인과 개발 순서.
 - **사람 확인:** [Windows 빌드·실행 안내](docs/technical/04-windows-build.md) · [로컬 플레이 기록표](doc/design/12-local-playtest-record.md).
 - **현재 콘텐츠 기획:** [전체 목차](doc/design/README.md) · [경기 흐름](doc/design/01-match-loop.md) · [맵](doc/design/02-map-m01.md) · [전투](doc/design/03-combat.md) · [병력/AI](doc/design/04-units-and-ai.md) · [성장](doc/design/05-growth-and-economy.md) · [UI](doc/design/06-ui-and-controls.md).
 - **표현·진행:** [아트 방향](doc/design/07-art-direction.md) · [로드맵](doc/design/08-roadmap.md) · [검증](doc/design/09-verification.md) · [기존 설계와 현재 차이](doc/design/10-differences.md).

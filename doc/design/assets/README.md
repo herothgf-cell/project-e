@@ -63,7 +63,7 @@ Godot4.7.2 Compatibility, Linux/Xvfb/Mesa llvmpipe에서 `capture_next_features.
 
 자세한 준비 조건·실행 로그·표시 한계는 [검증](../09-verification.md)을 따른다.
 
-Windows release export에서 나온 PCK도 소스 폴더 밖에서 Linux 엔진으로 로딩했다. `windows-pack-startup.png`는 선택 화면, `windows-pack-match.png`는 일반 경기 시작이며 실제 Windows EXE 실행의 증거는 아니다. [exported-PCK 로그](../verification/2026-10-27-windows-pack-graphical.log)를 함께 확인한다.
+이전 소모품 없는 `a11834f` Windows release export의 PCK도 소스 폴더 밖에서 Linux 엔진으로 로딩했다. `windows-pack-startup.png`는 선택 화면, `windows-pack-match.png`는 일반 경기 시작이며 실제 Windows EXE 실행의 증거는 아니다. [exported-PCK 로그](../verification/2026-10-27-windows-pack-graphical.log)를 함께 확인한다.
 
 
 ## 2026-10-27 기지 상점·소모품의 실제 렌더
@@ -84,4 +84,19 @@ Windows release export에서 나온 PCK도 소스 폴더 밖에서 Linux 엔진�
 
 경기 프레임은 기술 체험의 바스L3와 재현용 크레딧210·자원 부족 상태를 준비하고 **실제 구매·사용·시간 진행·피해 명령**으로 만든 테스트 장면이다. 병40+패치50을 실제로 구입해120크레딧이 남는지 확인했다. 일반 경기의 시작금100이나 전투 수치를 바꾼 것이 아니며 자연6봇 경기의 특정 순간을 촬영한 것도 아니다.
 
-**1080p는 창 크기와 논리 UI 크기를 모두1920×1080으로 설정한 레이아웃 검사**다.720p 논리 화면을 단순 확대했다는 의미가 아니며, 실제 Windows100/150/200% DPI 배율·물리 키보드/마우스·Windows EXE 실행 검증으로 대신하지 않는다. 실제 Windows PC와 사람 플레이는 미실시다. 새 Windows export·게시 여부는 [최신 검증](../13-consumables-verification.md)의 별도 산출물 기록을 따른다.
+**1080p는 창 크기와 논리 UI 크기를 모두1920×1080으로 설정한 레이아웃 검사**다.720p 논리 화면을 단순 확대했다는 의미가 아니며, 실제 Windows100/150/200% DPI 배율·물리 키보드/마우스·Windows EXE 실행 검증으로 대신하지 않는다. 실제 Windows PC와 사람 플레이는 미실시다. 새 Windows export·패키지 검증은 아래 내보낸 PCK 화면과 [최신 검증](../13-consumables-verification.md)의 별도 산출물 기록을 따른다.
+
+
+## 새 Windows 패키지의 PCK를 소스 밖에서 실행한 화면
+
+다음3장은 소스 commit `e56286a064063bda84ccd9eb309ab8fb80a575a1`에서 실제 Windows release로 내보낸 **ProjectE.pck를 원본 프로젝트 밖에서 Linux Godot의 `--main-pack`으로 연 결과**다. 소스 실행 프레임이나 이전 `a11834f` 패키지 화면과 구별한다. [GL 실행 로그](../verification/2026-10-27-consumables-pack-graphical-probe.log)는13개 검사 실패0·3프레임이며 root가 실제 화면을 확인했다. [probe 소스](../verification/2026-10-27-consumables-pack-probe.gd)와 [실행 환경/결과](../verification/2026-10-27-consumables-pack-graphical-probe-result.json)를 함께 보존했다.
+
+| 파일 | 실제 내보낸 PCK의 촬영 상태 |
+|---|---|
+| [consumables-pack-selection-720p.png](consumables-pack-selection-720p.png) | 내보낸 메인 장면의 영웅 선택과 경기 중 P/D 조작 안내 |
+| [consumables-pack-shop-720p.png](consumables-pack-shop-720p.png) | 일반 바스L1의 구매 전 상점. 시작100크레딧·병/패치 재고0 상태이며 이 촬영 뒤에 실제 구매 수행 |
+| [consumables-pack-recovery-720p.png](consumables-pack-recovery-720p.png) | 기지 밖 위치 `(-45,0)`와 에너지50을 배치한 뒤 실제 D 사용·0.5초 진행. 병 재고0/패치1·공유 대기11.5초·회복1.5초 표시 확인 |
+
+상점 프레임 촬영 후 실제 구매로100→10크레딧이 되는지 검사했다. 회복 후 내부 에너지는64와의 차이가0.001 미만인지 probe의 상태 assertion으로 확인했다. 회복 사진의 정수 HUD는63/100이며, 상태 assertion의 근삿값을 사진에64가 표시된 증거로 쓰지 않는다.
+
+출력은1280×720이다. 이는 내보낸 스크립트·리소스·한국어 UI와 소모품 실행 경로의 확인이며 **Windows EXE를 실제 실행한 결과가 아니다**. 실제 Windows PC·물리 입력·DPI·Alt-Tab·사람 플레이는 계속 미실시다. ZIP 해시·소스73개 일치·독립 패키지 검토는 [현재 패키지 안내](../../../docs/technical/04-windows-build.md#7-현재-소모품-테스트-패키지)와 [최신 검증](../13-consumables-verification.md)을 따른다.

@@ -1,0 +1,403 @@
+{
+  "verdict": "PASS",
+  "source_revision": "e56286a064063bda84ccd9eb309ab8fb80a575a1",
+  "source_tree": "b49c8c1f396047753ea3d0627d573f6f12b8ea46",
+  "source_file_count": 73,
+  "source_results": [
+    {
+      "path": "assets/fonts/OFL.txt",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "assets/fonts/ProjectEKorean.woff2",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "assets/fonts/ProjectEKorean.woff2.import",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "assets/fonts/README.md",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "export_presets.cfg",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "project.godot",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scenes/battlefield.tscn",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scenes/combat_probe.tscn",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scenes/player.tscn",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/bas_motion.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/bas_motion.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_ai.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_ai.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_consumables.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_consumables.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_map.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_map.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_rules.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_rules.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_state.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/battle_state.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/hero_abilities.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/battle/hero_abilities.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/combat_probe.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/combat_probe.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/arena_view.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/arena_view.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/battle_hud.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/battle_hud.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/battlefield.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/battlefield.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/effects_view.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/effects_view.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/hero_portrait.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/hero_portrait.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/tactical_map.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/tactical_map.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/team_vision_view.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/team_vision_view.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/unit_overlay.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/presentation/unit_overlay.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/probe_player.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "scripts/probe_player.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/capture_battlefield.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/capture_battlefield.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/capture_consumables.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/capture_consumables.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/capture_next_features.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/capture_next_features.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_bas_motion.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_bas_motion.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_battle_match.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_battle_match.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_battle_rules.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_battle_rules.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_battle_scene.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_battle_scene.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_consumable_ai.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_consumable_ai.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_consumable_input.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_consumable_input.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_consumables.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_consumables.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_effect_geometry.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_effect_geometry.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_next_combat.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_next_combat.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_next_input.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_next_input.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_probe_scene.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_probe_scene.gd.uid",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_team_vision.gd",
+      "commit_and_current_match": true
+    },
+    {
+      "path": "tests/test_team_vision.gd.uid",
+      "commit_and_current_match": true
+    }
+  ],
+  "aggregate_source_digest": "c72929cec3509dbc7dc900c6d1f276fe9cffdfd05bde1bcb5469947fc20ae80e",
+  "zip_entry_count": 11,
+  "zip_size": 39428780,
+  "zip_sha256": "a2d88d42da7623d4ddb71420af2fce2dd7b30a67cac87bca7616fd153a43ae4d",
+  "zip_entries": [
+    "ProjectE-windows-x86_64/ProjectE.exe",
+    "ProjectE-windows-x86_64/ProjectE.pck",
+    "ProjectE-windows-x86_64/README-WINDOWS.txt",
+    "ProjectE-windows-x86_64/THIRD_PARTY_NOTICES.md",
+    "ProjectE-windows-x86_64/build-logs/export.log",
+    "ProjectE-windows-x86_64/build-logs/import.log",
+    "ProjectE-windows-x86_64/licenses/FONT-OFL.txt",
+    "ProjectE-windows-x86_64/licenses/FONT-README.md",
+    "ProjectE-windows-x86_64/licenses/GODOT-COPYRIGHT.txt",
+    "ProjectE-windows-x86_64/licenses/GODOT-LICENSE.txt",
+    "ProjectE-windows-x86_64/manifest.json"
+  ],
+  "artifacts": [
+    {
+      "path": "ProjectE.exe",
+      "size": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "ProjectE.pck",
+      "size": 1343384,
+      "sha256": "fe6dd096f7a96487b966538975c2c106f00c988dd21dea0775e138589681e3f7",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "README-WINDOWS.txt",
+      "size": 4540,
+      "sha256": "a384f9653e43389ecde11e915e1cb442362c7ca0a777d11063df8c78e0c8700e",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "size": 1411,
+      "sha256": "778f39afc057f8361c42293df3cb12d9c7b993cc2c17a4a6036a35291bb96cc4",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "build-logs/export.log",
+      "size": 4276,
+      "sha256": "0e220a1af1bc554bd2eb36708101850e2e22b6bb9de34c687a916fcf0755d239",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "build-logs/import.log",
+      "size": 2387,
+      "sha256": "6337bcb1595167daa0c2c41eb2c59ac9f04f814c196885e1833a6058b653ff3b",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "licenses/FONT-OFL.txt",
+      "size": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "licenses/FONT-README.md",
+      "size": 1005,
+      "sha256": "c9da6eb191c91b9828e81ba6421c37453b1119cfc7ee89dfb4295efc9604afac",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "licenses/GODOT-COPYRIGHT.txt",
+      "size": 100108,
+      "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d",
+      "manifest_and_zip_match": true
+    },
+    {
+      "path": "licenses/GODOT-LICENSE.txt",
+      "size": 1149,
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
+      "manifest_and_zip_match": true
+    }
+  ],
+  "pck_header_uint32": [
+    1129333831,
+    4,
+    4,
+    7,
+    2
+  ],
+  "pe_machine": "0x8664",
+  "pe_optional_header": "PE32+",
+  "logs": {
+    "import": {
+      "error_lines": [],
+      "completion_marker": true
+    },
+    "export": {
+      "error_lines": [],
+      "completion_marker": true
+    }
+  },
+  "actual_windows_pc": "not_run",
+  "human_playtest": "not_run",
+  "findings": [],
+  "license_content_review": "Godot MIT permission/copyright/warranty clauses, component copyright, font OFL and provenance included",
+  "review_check_correction": "Godot LICENSE contains the complete MIT clauses without the optional literal heading MIT License; checked full text after initial heading-only assertion."
+}

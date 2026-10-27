@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "project": "Project E",
+  "created_utc": "2026-10-27T05:52:25.564768+00:00",
+  "target": "Windows x86_64",
+  "export_mode": "release",
+  "engine": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "executable_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "official_archive": "https://godotengine.org/download/archive/4.7.2-stable/"
+  },
+  "templates": {
+    "version": "4.7.2.stable",
+    "archive": "Godot_v4.7.2-stable_export_templates.tpz",
+    "archive_sha256": "f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011",
+    "official_source": "https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=export_templates.tpz&platform=templates",
+    "windows_files": {
+      "windows_release_x86_64.exe": {
+        "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+        "size": 109268480
+      },
+      "windows_debug_x86_64.exe": {
+        "sha256": "51498b72b3a237f882ebd7d1787f06a4bc1eaf0572daab93837adcfd3cfdc107",
+        "size": 103176704
+      }
+    }
+  },
+  "engine_notice_sources": {
+    "GODOT-LICENSE.txt": "https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/LICENSE.txt",
+    "GODOT-COPYRIGHT.txt": "https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/COPYRIGHT.txt"
+  },
+  "source": {
+    "git": {
+      "revision": "e56286a064063bda84ccd9eb309ab8fb80a575a1",
+      "status": ""
+    },
+    "tree_sha256": "c72929cec3509dbc7dc900c6d1f276fe9cffdfd05bde1bcb5469947fc20ae80e",
+    "files": [
+      {
+        "path": "assets/fonts/OFL.txt",
+        "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+        "size": 4301
+      },
+      {
+        "path": "assets/fonts/ProjectEKorean.woff2",
+        "sha256": "1e5cba2fa8990d77d2ba24a8b0dd000617b887c3f3b815ca7a556308e56a3d23",
+        "size": 1128052
+      },
+      {
+        "path": "assets/fonts/ProjectEKorean.woff2.import",
+        "sha256": "ddc2bdb569f5084c6705f62f862b4ef91fe9bf4612ee62a98a7dd26c9cb9ec7e",
+        "size": 785
+      },
+      {
+        "path": "assets/fonts/README.md",
+        "sha256": "c9da6eb191c91b9828e81ba6421c37453b1119cfc7ee89dfb4295efc9604afac",
+        "size": 1005
+      },
+      {
+        "path": "export_presets.cfg",
+        "sha256": "218add13e2de9ccdd3084738ae60c7cae06f33067f04ccb86ce10d28d191b316",
+        "size": 828
+      },
+      {
+        "path": "project.godot",
+        "sha256": "3ff37270f0e77a93ac7c13406b310b0f12322a340135f3466bfcf38c9a1020c0",
+        "size": 3190
+      },
+      {
+        "path": "scenes/battlefield.tscn",
+        "sha256": "bac39e9eb023bc00a3516d5429812e7e2295f046729a5335a0b1c98287e18d23",
+        "size": 1301
+      },
+      {
+        "path": "scenes/combat_probe.tscn",
+        "sha256": "1f0b3df9bd11d7855e46910c014cfffc222120f03a22ce04bf6c13c9bb893cb4",
+        "size": 7454
+      },
+      {
+        "path": "scenes/player.tscn",
+        "sha256": "f313dfbdb3bb2df7be9ef235258325c2fce29f25d9114d7089d4b02217e65827",
+        "size": 1497
+      },
+      {
+        "path": "scripts/bas_motion.gd",
+        "sha256": "1ebb32eebcb279ad8174237227d225380b5914fd64a25acd680d6149ba77a7db",
+        "size": 3628
+      },
+      {
+        "path": "scripts/bas_motion.gd.uid",
+        "sha256": "2da00cd742fed3b1e764c2fbb9ed1e31b0ad9febf39904d7f2aa8c29ac4928fb",
+        "size": 18
+      },
+      {
+        "path": "scripts/battle/battle_ai.gd",
+        "sha256": "be8b74ae831dd8079e3b2e502e93488f30c41e6b4b5b9df2cc8b4009227765c0",
+        "size": 11187
+      },
+      {
+        "path": "scripts/battle/battle_ai.gd.uid",
+        "sha256": "1bb1399e7bb0433abe56b53e8367f23e60038107fdbc6a6006998370a836b195",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/battle_consumables.gd",
+        "sha256": "753c74be58f5d20f345918fcb6db1b79fecdbd808d2895dc347084b0e9f9b213",
+        "size": 6675
+      },
+      {
+        "path": "scripts/battle/battle_consumables.gd.uid",
+        "sha256": "8ab6b82d4b1c38bd20a814d0db5dc9883b62401f7b304daf71ee85f78e79f757",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/battle_map.gd",
+        "sha256": "57681aef088a852a14f9656e5817409fa3a208b9ebd21135572b69ea4a2088d4",
+        "size": 9642
+      },
+      {
+        "path": "scripts/battle/battle_map.gd.uid",
+        "sha256": "5154d2c9de5c3a60654e395dfb9db12e9b58fdf77353d058550d244ee70659ea",
+        "size": 20
+      },
+      {
+        "path": "scripts/battle/battle_rules.gd",
+        "sha256": "879e43a5e51946448cf901a0dd869ad92bcbd41843b0c101e773098f14d62c0a",
+        "size": 8366
+      },
+      {
+        "path": "scripts/battle/battle_rules.gd.uid",
+        "sha256": "dc197ca93aa211e932a12e5dbf66e4d0e08ad7f37c82c3df1d7a7883cb958577",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/battle_state.gd",
+        "sha256": "df4e0a9a27e00ef9063de891a58e063736683ca7afcc0759d3581a5aee479d80",
+        "size": 34554
+      },
+      {
+        "path": "scripts/battle/battle_state.gd.uid",
+        "sha256": "7e211581f6132acedbb344855f7520aa8f9b308f39f7e35367416cec811f9615",
+        "size": 20
+      },
+      {
+        "path": "scripts/battle/hero_abilities.gd",
+        "sha256": "18cf3d34b7ee333b4880c4137f04ba592af0b1fc77f1c5351d98739f93477306",
+        "size": 16752
+      },
+      {
+        "path": "scripts/battle/hero_abilities.gd.uid",
+        "sha256": "3cad7866d97e3b5cbf3899e2bad2cade566548e62d9aa76545c23adf836563fb",
+        "size": 20
+      },
+      {
+        "path": "scripts/combat_probe.gd",
+        "sha256": "ff4bb757aea274beb1739091d7cc84176246edb665ad167742d4e6e9fc964046",
+        "size": 4009
+      },
+      {
+        "path": "scripts/combat_probe.gd.uid",
+        "sha256": "7ff21b75a9b2b50c4726ec9c5b35274f611a11d9726803407f319b4a314eb7b9",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/arena_view.gd",
+        "sha256": "f28d18df8c4b08f6748346ab76d857282142d88964093256d9f5262113e3aa7a",
+        "size": 17154
+      },
+      {
+        "path": "scripts/presentation/arena_view.gd.uid",
+        "sha256": "2871ac81763924b144ff21232a9913a95b46beff56338202c6d9ab2fe7349f64",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/battle_hud.gd",
+        "sha256": "683defbd6d4a0ecf604bc07f78a615bc1a4a4187bcbdcf086d372507b5a5ac29",
+        "size": 37715
+      },
+      {
+        "path": "scripts/presentation/battle_hud.gd.uid",
+        "sha256": "252009166fadd6e781043fa6e008748559b40a28016afca81977041349253fbf",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/battlefield.gd",
+        "sha256": "b4f668c685d9eb25fe39a04ca6b0e79dfd15c9e3ccab34060c33a28718d3a854",
+        "size": 20796
+      },
+      {
+        "path": "scripts/presentation/battlefield.gd.uid",
+        "sha256": "d90102225a85b7a63c7d75af1c86ceeee9650676ecc184e09801ac205ef2083f",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/effects_view.gd",
+        "sha256": "beb6f01b5c76e810832f3d828ade54c52c85a88c30458d62a0ed73d70de2aacc",
+        "size": 20152
+      },
+      {
+        "path": "scripts/presentation/effects_view.gd.uid",
+        "sha256": "aaa644a60a0d41621a927f897763febea948616fd6e628113dcaad10016cbf7d",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/hero_portrait.gd",
+        "sha256": "cdd619ed0a25048ec375c05759e022fb8aadafbdd47c597531483f14105b142a",
+        "size": 2500
+      },
+      {
+        "path": "scripts/presentation/hero_portrait.gd.uid",
+        "sha256": "a9dbc166fd9bd2ee1c9857e268cead80164554481a15ba5c08f550c51e7b5524",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/tactical_map.gd",
+        "sha256": "1be29cb6572a9ead37d1c68613642dfb9f1cad89076d6f39aa7492f4dbd3855e",
+        "size": 6694
+      },
+      {
+        "path": "scripts/presentation/tactical_map.gd.uid",
+        "sha256": "c07f34af5283629be961aa7ea6a7d89562ab12f120ceb924842bcb4471f6b243",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/team_vision_view.gd",
+        "sha256": "4f56e72268cd29f613c21855384621f9f53e6d2357504e80d53f6f77a2340d91",
+        "size": 12099
+      },
+      {
+        "path": "scripts/presentation/team_vision_view.gd.uid",
+        "sha256": "cce70ad88549c6c659f63b79e6abc90812c463f52a49732098267619253cbbd9",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/unit_overlay.gd",
+        "sha256": "53848f8ebc56db8c590332c3be3e73136bbd4eac414724816c1022cfc4c1ce12",
+        "size": 5562
+      },
+      {
+        "path": "scripts/presentation/unit_overlay.gd.uid",
+        "sha256": "337f7e7e260be0e420b56a85f5a334b9bc36ef65bba2a37fa462ade39841e813",
+        "size": 20
+      },
+      {
+        "path": "scripts/probe_player.gd",
+        "sha256": "983a914328a06f1d0b33957abd38c951889cc8891f3eab6e3f96e3f07d727646",
+        "size": 1392
+      },
+      {
+        "path": "scripts/probe_player.gd.uid",
+        "sha256": "1d0f77d33c4cd0c8c871d839e3e4923628fc34488ce5dee596a150b90fb66e19",
+        "size": 20
+      },
+      {
+        "path": "tests/capture_battlefield.gd",
+        "sha256": "971fb2ba34b96675a66d19dda0711ef9d48bc8cbad996b8b946a2a15bc7f4dc3",
+        "size": 3739
+      },
+      {
+        "path": "tests/capture_battlefield.gd.uid",
+        "sha256": "e676a8f44a64a460b842523286e32861c57526f34f6a10489e4f483d1538f560",
+        "size": 19
+      },
+      {
+        "path": "tests/capture_consumables.gd",
+        "sha256": "5976c310eb98883834c13ef2ff57b33705bd5df6f2d84a6639b16345608c3ebd",
+        "size": 4697
+      },
+      {
+        "path": "tests/capture_consumables.gd.uid",
+        "sha256": "6b8fa80e640c131edeef73ddc0307ed312878979165004ac57d33850fee7ee30",
+        "size": 20
+      },
+      {
+        "path": "tests/capture_next_features.gd",
+        "sha256": "0c1bdee163191f6a068e9a5c66a3bc48fcf753bdea7c2cb93fbbcef5663c7a55",
+        "size": 6096
+      },
+      {
+        "path": "tests/capture_next_features.gd.uid",
+        "sha256": "60dd06d3d1d1775d0b4fd9be19a4211af60750e2aad4a0b4e38e2faeaaba6439",
+        "size": 20
+      },
+      {
+        "path": "tests/test_bas_motion.gd",
+        "sha256": "6847c41ddebbfaf8cbd640b5e1d1b4d07c495050ceb8922ddaa36877e1980d8a",
+        "size": 5474
+      },
+      {
+        "path": "tests/test_bas_motion.gd.uid",
+        "sha256": "25a6d1864afd25251db4b80be174ce0f01b474e012c20525cd3ce05531abeafe",
+        "size": 20
+      },
+      {
+        "path": "tests/test_battle_match.gd",
+        "sha256": "c96252a9aa3bc802194691a83789d1bcd71b6ebf5fb8168d9896a398d2459eeb",
+        "size": 10219
+      },
+      {
+        "path": "tests/test_battle_match.gd.uid",
+        "sha256": "b455f362ec853bf3e2edd2591a6d9cccfd950074ab97b7d5f15d1c5791734b5e",
+        "size": 20
+      },
+      {
+        "path": "tests/test_battle_rules.gd",
+        "sha256": "6dc0ccf94f5418558d3ca03f0e078c3fba427a177b38d4b0574da011846e13d1",
+        "size": 15452
+      },
+      {
+        "path": "tests/test_battle_rules.gd.uid",
+        "sha256": "9c6c04645d9e7dfb213b80bb9d57bd07f6516f0ca17ec95c54bd57adae24db78",
+        "size": 19
+      },
+      {
+        "path": "tests/test_battle_scene.gd",
+        "sha256": "79c6b58de0ec952038ab89fbae1db1a94ab9f64c1a8db9a51a035ba0a9f4cd6e",
+        "size": 18739
+      },
+      {
+        "path": "tests/test_battle_scene.gd.uid",
+        "sha256": "74c9d8ff93b860154c82de5fa6dc4e8130bb0ded177657e55a3ca8a6c5dc128e",
+        "size": 19
+      },
+      {
+        "path": "tests/test_consumable_ai.gd",
+        "sha256": "d7340452b9e1db9f3a55d06dcdd773d76ab37b6dc788b488122bcacf84281ada",
+        "size": 11748
+      },
+      {
+        "path": "tests/test_consumable_ai.gd.uid",
+        "sha256": "46d4a98d1eb6f54f85bddc9bd7d510565913a0929bf63eea6e0b92645e466d8d",
+        "size": 20
+      },
+      {
+        "path": "tests/test_consumable_input.gd",
+        "sha256": "b12b862d59f2fb4d1b6998846fd489c95a5243f1ff2ca7f40877e5f15ca4baea",
+        "size": 14022
+      },
+      {
+        "path": "tests/test_consumable_input.gd.uid",
+        "sha256": "21abc535a7b09fcff06af651716fd008f23cebb12de674ff227de683b40ecafb",
+        "size": 19
+      },
+      {
+        "path": "tests/test_consumables.gd",
+        "sha256": "c0b6076693eda2ea2f52385f59ac6f3477de272423bf11ad6bd5054b2584c32b",
+        "size": 18587
+      },
+      {
+        "path": "tests/test_consumables.gd.uid",
+        "sha256": "48e633ab7fca05d90adfaf4b0cbbae8a1d8b4c73aa8e9523cd3fdb30652e5000",
+        "size": 19
+      },
+      {
+        "path": "tests/test_effect_geometry.gd",
+        "sha256": "48ccf399892afe765298915b62cd2ebb904515144e32520b2f2b4908d8c97a03",
+        "size": 10094
+      },
+      {
+        "path": "tests/test_effect_geometry.gd.uid",
+        "sha256": "de37f2d3884d155846e87116502a4a0151c83f3e194fe2c95893d9ef47cb1e75",
+        "size": 20
+      },
+      {
+        "path": "tests/test_next_combat.gd",
+        "sha256": "1c2b262c5fe939facc1ac461211ca2d4fb6b2419e7bfe0dc00aaa9ca6dc4850d",
+        "size": 18135
+      },
+      {
+        "path": "tests/test_next_combat.gd.uid",
+        "sha256": "868f605a8fc1eb10b6457627a1d82a91b4392b83bedd14e9346616577df0054b",
+        "size": 20
+      },
+      {
+        "path": "tests/test_next_input.gd",
+        "sha256": "987e3b07536fc891fb94d11958741c832a5447762fc79b789670b16dab3b4e23",
+        "size": 6122
+      },
+      {
+        "path": "tests/test_next_input.gd.uid",
+        "sha256": "8055072cdd51b1898e92500418ff39648ed1a870fec19d6a4d8203653789ad21",
+        "size": 18
+      },
+      {
+        "path": "tests/test_probe_scene.gd",
+        "sha256": "62a21a55709fdd0a13343a061d72ed0f8ac2e2c329f457b977a645af656a6dbb",
+        "size": 2629
+      },
+      {
+        "path": "tests/test_probe_scene.gd.uid",
+        "sha256": "5d61f52a97869458a5f54d046e5311207e071fe7fe8e752065ffa9c0dd56bbf7",
+        "size": 19
+      },
+      {
+        "path": "tests/test_team_vision.gd",
+        "sha256": "62a0e0dc5a244626ae1cafcf953945218d6d6f4fc939e96a93856abba71381c8",
+        "size": 12188
+      },
+      {
+        "path": "tests/test_team_vision.gd.uid",
+        "sha256": "47e7811e76ce8061b1dbe700fc6d11f176244c292abffb7c38fcf19a21a35afd",
+        "size": 20
+      }
+    ]
+  },
+  "verification": {
+    "import": "passed",
+    "release_export": "passed",
+    "pe_x86_64_and_pck_headers": "passed",
+    "actual_windows_pc": "not_run",
+    "human_playtest": "not_run"
+  },
+  "files": [
+    {
+      "path": "ProjectE.exe",
+      "size": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+    },
+    {
+      "path": "ProjectE.pck",
+      "size": 1343384,
+      "sha256": "fe6dd096f7a96487b966538975c2c106f00c988dd21dea0775e138589681e3f7"
+    },
+    {
+      "path": "README-WINDOWS.txt",
+      "size": 4540,
+      "sha256": "a384f9653e43389ecde11e915e1cb442362c7ca0a777d11063df8c78e0c8700e"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "size": 1411,
+      "sha256": "778f39afc057f8361c42293df3cb12d9c7b993cc2c17a4a6036a35291bb96cc4"
+    },
+    {
+      "path": "build-logs/export.log",
+      "size": 4276,
+      "sha256": "0e220a1af1bc554bd2eb36708101850e2e22b6bb9de34c687a916fcf0755d239"
+    },
+    {
+      "path": "build-logs/import.log",
+      "size": 2387,
+      "sha256": "6337bcb1595167daa0c2c41eb2c59ac9f04f814c196885e1833a6058b653ff3b"
+    },
+    {
+      "path": "licenses/FONT-OFL.txt",
+      "size": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "licenses/FONT-README.md",
+      "size": 1005,
+      "sha256": "c9da6eb191c91b9828e81ba6421c37453b1119cfc7ee89dfb4295efc9604afac"
+    },
+    {
+      "path": "licenses/GODOT-COPYRIGHT.txt",
+      "size": 100108,
+      "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+    },
+    {
+      "path": "licenses/GODOT-LICENSE.txt",
+      "size": 1149,
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+    }
+  ]
+}

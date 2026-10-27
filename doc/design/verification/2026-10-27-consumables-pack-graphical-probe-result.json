@@ -1,0 +1,24 @@
+{
+  "mode": "graphical-probe",
+  "exit_code": 0,
+  "errors": [],
+  "elapsed_seconds": 20.66,
+  "windows_exe_executed": false,
+  "pack": "/workspace/scratch/d3eeca5f7e58/project-e-next/build/windows-consumables/ProjectE.pck",
+  "command": [
+    "/workspace/scratch/d3eeca5f7e58/godot-tools/Godot_v4.7.2-stable_linux.x86_64",
+    "--path",
+    "/tmp/project-e-pack-consumables-_ftootco",
+    "--main-pack",
+    "/workspace/scratch/d3eeca5f7e58/project-e-next/build/windows-consumables/ProjectE.pck",
+    "--audio-driver",
+    "Dummy",
+    "--script",
+    "/tmp/project-e-pack-consumables-_ftootco/verify_exported_pack.gd",
+    "--",
+    "--output=/workspace/scratch/d3eeca5f7e58/project-e-next/build/base-consumables/pack-screenshots"
+  ],
+  "log": "/workspace/scratch/d3eeca5f7e58/project-e-next/build/base-consumables/pack-graphical-probe.log",
+  "source_project_path_used": false,
+  "outside_source_project": true
+}
