@@ -25,8 +25,9 @@ func _run() -> void:
 	_check(map.is_walkable(north_lane) and map.is_walkable(north_ramp) and map.is_walkable(north_high), "existing cell approach remains continuously walkable")
 	var path: Array = map.find_path(north_lane, north_high)
 	_check(not path.is_empty() and Vector2(path.back()).distance_to(north_high) < 0.01, "pathfinding reaches the raised cell through the existing ramp")
-	_check(not map.has_line_of_sight(north_lane, north_high), "low observer cannot see onto the plateau")
-	_check(map.has_line_of_sight(north_high, north_lane), "high observer can see down from the plateau")
+	_check(map.has_line_of_sight(north_lane, north_high), "elevation does not fake a physical wall for projectiles or ground effects")
+	_check(not map.height_allows_sight(north_lane, north_high), "low mobile observer cannot reveal the plateau")
+	_check(map.height_allows_sight(north_high, north_lane), "high observer can see down from the plateau")
 	_check(map.has_line_of_sight(north_high, north_high + Vector2(1.0, 0)), "same high plateau keeps local line of sight")
 
 	var state: Variant = StateScript.new()
@@ -41,6 +42,11 @@ func _run() -> void:
 	high_enemy.pos = north_lane
 	state._visibility_cache.clear()
 	_check(state.is_visible(0, high_enemy.id), "high-ground observer reveals low target within range")
+	state.units.clear()
+	var tower: Dictionary = state._entity("tower", 0, north_lane, 100, 1.0)
+	var watched_high: Dictionary = state._entity("hero", 1, north_high, 100, 0.45)
+	state._visibility_cache.clear()
+	_check(state.is_visible(0, watched_high.id), "defensive tower sight prevents an untargetable high-ground siege pocket")
 
 	var packed: PackedScene = load("res://scenes/battlefield.tscn")
 	_check(packed != null, "battlefield scene loads for elevation integration")
