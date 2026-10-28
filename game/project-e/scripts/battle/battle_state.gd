@@ -742,7 +742,11 @@ func is_point_visible_for_sources(team: int, position: Vector2, sources: Array) 
 		if observer.team != team or not observer.alive or observer.kind not in ["hero", "minion", "tower", "core"]:
 			continue
 		var sight: float = 8.0 if observer.kind == "minion" else 12.0
-		if observer.pos.distance_squared_to(position) <= sight * sight and map.has_line_of_sight(observer.pos, position):
+		if observer.pos.distance_squared_to(position) > sight * sight or not map.has_line_of_sight(observer.pos, position):
+			continue
+		# Towers and cores watch their defensive footprint regardless of elevation;
+		# mobile observers must climb before they reveal a plateau to the team.
+		if observer.kind in ["tower", "core"] or map.height_allows_sight(observer.pos, position):
 			return true
 	return false
 
