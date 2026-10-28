@@ -94,7 +94,7 @@ func is_high_ground(point: Vector2) -> bool:
 	return ground_height(point) >= HIGH_GROUND_HEIGHT - 0.01
 
 
-func _height_allows_sight(start: Vector2, finish: Vector2) -> bool:
+func height_allows_sight(start: Vector2, finish: Vector2) -> bool:
 	# First prototype rule: a low observer cannot see onto the plateau. A high
 	# observer can see down, and observers already on the same plateau see normally.
 	return not is_high_ground(finish) or is_high_ground(start)
@@ -115,8 +115,6 @@ func is_ground(point: Vector2) -> bool:
 
 func has_line_of_sight(start: Vector2, finish: Vector2, radius: float = 0.0) -> bool:
 	if not start.is_finite() or not finish.is_finite():
-		return false
-	if not _height_allows_sight(start, finish):
 		return false
 	for wall: Rect2 in blockers:
 		var grown: Rect2 = wall.grow(radius)
