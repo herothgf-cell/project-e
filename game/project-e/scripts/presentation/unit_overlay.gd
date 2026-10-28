@@ -58,7 +58,7 @@ func _draw() -> void:
 		var kind: String = str(unit.kind)
 		if kind == "minion" and float(unit.hp) >= float(unit.max_hp):
 			continue
-		var world: Vector3 = status_anchor_world(unit)
+		var world: Vector3 = status_anchor_world(unit, float(battle.map.ground_height(unit.pos)))
 		if camera.is_position_behind(world):
 			continue
 		var point: Vector2 = camera.unproject_position(world)
@@ -86,7 +86,7 @@ func _draw() -> void:
 			var text: String = ("잠금" if use_korean else "LOCKED") if unit.get("locked", false) else ("병력 보호" if use_korean else "GUARDED")
 			_text_center(text, point - Vector2(0, 5), 11, Color("fff0cc"))
 	for floater: Dictionary in _floaters:
-		var world := Vector3(floater.pos.x, 2.5 + (0.85 - float(floater.life)) * 1.5, -floater.pos.y)
+		var world := Vector3(floater.pos.x, float(battle.map.ground_height(floater.pos)) + 2.5 + (0.85 - float(floater.life)) * 1.5, -floater.pos.y)
 		if camera.is_position_behind(world):
 			continue
 		var point: Vector2 = camera.unproject_position(world)
@@ -118,13 +118,13 @@ func cell_label(id: int) -> String:
 	return "%d XP" % int(unit.get("xp_reward", 30))
 
 
-static func status_anchor_world(unit: Dictionary) -> Vector3:
+static func status_anchor_world(unit: Dictionary, ground_height: float = 0.0) -> Vector3:
 	var height: float = 2.35 if unit.kind == "hero" else 1.25
 	if unit.kind in ["tower", "core"]:
 		height = 3.6
 	elif unit.kind == "cell":
 		height = 1.95
-	return Vector3(unit.pos.x, height, -unit.pos.y)
+	return Vector3(unit.pos.x, ground_height + height, -unit.pos.y)
 
 
 static func status_bar_width(unit: Dictionary) -> float:
