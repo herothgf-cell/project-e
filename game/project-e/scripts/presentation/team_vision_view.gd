@@ -163,7 +163,7 @@ func source_tooltip(id: int) -> String:
 	var unit: Dictionary = battle.units[id]
 	var radius: int = 8 if unit.kind == "minion" else 12
 	var names: Dictionary = {"hero": "영웅", "minion": "병력", "tower": "포탑", "core": "코어"}
-	var text := "팀 공유 시야 · %s\n밝은 실선: %dm 시야 · 벽에 막힘" % [names.get(str(unit.kind), "시야 제공원"), radius]
+	var text := "팀 공유 시야 · %s\n밝은 실선: %dm 시야 · 벽/고저차 반영" % [names.get(str(unit.kind), "시야 제공원"), radius]
 	if unit.kind == "tower":
 		text += "\n황색 점선: %.1fm 공격 사거리" % float(unit.attack_range)
 	return text
@@ -178,12 +178,15 @@ func source_boundary(id: int) -> PackedVector2Array:
 	for index: int in range(CONTOUR_STEPS):
 		var angle: float = TAU * index / CONTOUR_STEPS
 		var end: Vector2 = unit.pos + Vector2(cos(angle), sin(angle)) * radius
-		if not battle.map.has_line_of_sight(unit.pos, end):
+		var structure_sight: bool = unit.kind in ["tower", "core"]
+		var visible_end: bool = battle.map.has_line_of_sight(unit.pos, end) and (structure_sight or battle.map.height_allows_sight(unit.pos, end))
+		if not visible_end:
 			var near_value: float = 0
 			var far_value: float = 1
 			for _step: int in range(12):
 				var mid: float = (near_value + far_value) * 0.5
-				if battle.map.has_line_of_sight(unit.pos, unit.pos.lerp(end, mid)):
+				var probe: Vector2 = unit.pos.lerp(end, mid)
+				if battle.map.has_line_of_sight(unit.pos, probe) and (structure_sight or battle.map.height_allows_sight(unit.pos, probe)):
 					near_value = mid
 				else:
 					far_value = mid
