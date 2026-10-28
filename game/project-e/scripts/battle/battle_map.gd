@@ -1,6 +1,9 @@
 extends RefCounted
 ## M01 geometry. Simulation coordinates are x/east, y/north; presentation uses -z.
 
+const HIGH_GROUND_HEIGHT: float = 2.4
+const HIGH_GROUND_RAMP_LENGTH: float = 4.0
+
 var lane_paths: Array = [
 	[Vector2(-50, 0), Vector2(-26, 18), Vector2(26, 18), Vector2(50, 0)],
 	[Vector2(-50, 0), Vector2(50, 0)],
@@ -18,6 +21,9 @@ var blockers: Array[Rect2] = [
 var spawn_points: Array[Vector2] = [Vector2(-56, 0), Vector2(56, 0)]
 var core_positions: Array[Vector2] = [Vector2(-50, 0), Vector2(50, 0)]
 var cell_positions: Array[Vector2] = [Vector2(-18, 24), Vector2(18, 24), Vector2(-24, 6), Vector2(24, -6), Vector2(-18, -24), Vector2(18, -24)]
+# The two 40 XP cells are the first real elevation slice. The existing 3m
+# approaches remain the only walkable ramps, so 2D pathfinding stays authoritative.
+var high_ground_cells: Array[Vector2] = [Vector2(-18, 24), Vector2(18, -24)]
 var tower_specs: Array = []
 var structure_circles: Array = []
 var _grid: AStarGrid2D
@@ -68,6 +74,32 @@ func _ground(point: Vector2, margin: float = 0.0) -> bool:
 	return false
 
 
+func ground_height(point: Vector2) -> float:
+	# Elevation is presentation + visibility data layered on top of the existing
+	# walkable footprint. The 4m approach to each high-value cell is a ramp.
+	if not point.is_finite():
+		return 0.0
+	for center: Vector2 in high_ground_cells:
+		if point.distance_to(center) <= 2.25:
+			return HIGH_GROUND_HEIGHT
+		var direction: float = signf(center.y)
+		var lane_y: float = direction * 18.0
+		var along: float = (point.y - lane_y) * direction
+		if absf(point.x - center.x) <= 1.5 and along >= 0.0 and along <= HIGH_GROUND_RAMP_LENGTH:
+			return HIGH_GROUND_HEIGHT * along / HIGH_GROUND_RAMP_LENGTH
+	return 0.0
+
+
+func is_high_ground(point: Vector2) -> bool:
+	return ground_height(point) >= HIGH_GROUND_HEIGHT - 0.01
+
+
+func _height_allows_sight(start: Vector2, finish: Vector2) -> bool:
+	# First prototype rule: a low observer cannot see onto the plateau. A high
+	# observer can see down, and observers already on the same plateau see normally.
+	return not is_high_ground(finish) or is_high_ground(start)
+
+
 func is_walkable(point: Vector2, radius: float = 0.45) -> bool:
 	if not _ground(point, radius):
 		return false
@@ -83,6 +115,8 @@ func is_ground(point: Vector2) -> bool:
 
 func has_line_of_sight(start: Vector2, finish: Vector2, radius: float = 0.0) -> bool:
 	if not start.is_finite() or not finish.is_finite():
+		return false
+	if not _height_allows_sight(start, finish):
 		return false
 	for wall: Rect2 in blockers:
 		var grown: Rect2 = wall.grow(radius)
