@@ -214,7 +214,7 @@ func source_marker_screen_position(camera: Camera3D, id: int) -> Vector2:
 	if camera == null or not _sources.has(id) or not battle.units.has(id):
 		return Vector2(INF, INF)
 	var unit: Dictionary = battle.units[id]
-	var world: Vector3 = OverlayScript.status_anchor_world(unit)
+	var world: Vector3 = OverlayScript.status_anchor_world(unit, float(battle.map.ground_height(unit.pos)))
 	if not unit.alive or camera.is_position_behind(world):
 		return Vector2(INF, INF)
 	var anchor: Vector2 = camera.unproject_position(world)
@@ -296,4 +296,4 @@ func _add_segment(mesh: ImmediateMesh, a: Vector2, b: Vector2, width: float, col
 	var normal := Vector2(-(b - a).y, (b - a).x).normalized() * width * 0.5
 	mesh.surface_set_color(color)
 	for point: Vector2 in [a - normal, a + normal, b + normal, a - normal, b + normal, b - normal]:
-		mesh.surface_add_vertex(ArenaScript.to_world(point, 0.13))
+		mesh.surface_add_vertex(ArenaScript.to_world(point, float(battle.map.ground_height(point)) + 0.13))
