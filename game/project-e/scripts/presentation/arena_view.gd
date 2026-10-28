@@ -252,7 +252,8 @@ func _elevated_cell_access(map: Variant, position: Vector2, lane_y: float) -> vo
 	# the plateau. Its walkability still comes from battle_map.gd.
 	var direction: float = signf(position.y)
 	var start := Vector2(position.x, lane_y)
-	var finish := Vector2(position.x, lane_y + direction * map.HIGH_GROUND_RAMP_LENGTH)
+	var ramp_length: float = 4.0
+	var finish := Vector2(position.x, lane_y + direction * ramp_length)
 	var center2 := (start + finish) * 0.5
 	var horizontal: float = start.distance_to(finish)
 	var slope_length: float = sqrt(horizontal * horizontal + height * height)
