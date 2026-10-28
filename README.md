@@ -8,19 +8,21 @@
 
 | 항목 | 내용 |
 |---|---|
-| 기준일 | 2026-10-27 · 기지 상점·소모품 묶음 구현·자동 검증 완료 |
+| 기준일 | 2026-10-28 · 첫 고저차40XP 시험 구역 구현·Godot4.7.2 CI 검증 완료 |
 | 엔진 | **Godot 4.7.2 Standard + GDScript**, Compatibility, 30Hz 로컬 판정 |
 | 참가자 | 사람 1명 + 아군 봇 2명 + 상대 봇 3명; 팀별 세 영웅 1명씩 |
-| 전장 | M01 수로 공방, N/C/S 세 라인, 지원 연결로, 타워 12개와 핵 2개 |
+| 전장 | M01 수로 공방, N/C/S 세 라인, 지원 연결로, 타워12개·핵2개, 북서/남동40XP의2.4m 고지+경사 |
 | 전투 | 기본 공격, 세 영웅의 패시브·Q/W/E/R, 보호막·상태 이상·사망·부활 |
 | 성장 | 20/30/40 XP 셀·레벨·투자 포인트·R 해금; 일반 경기와 기술 체험 분리 |
 | 상점·소모품 | P 상점·I01/I02 재고 선택·D 사용과 봇 구매/사용 구현; 자동 검사 통과 |
 | 새 조작·시야 | A 공격 이동, 시야원 표식과 전장/미니맵 음영, 포탑 사거리8.5m, F1 안내 |
 | 승패 | 외곽/내곽/핵 잠금, 병력 유무에 따른 공성 보호, 핵 파괴·무승부·재시작 |
 | 기획서 | 요청 경로인 [doc/design](doc/design/README.md)에 요소별 기획 |
-| 검증 | [실제 실행 명령·통과 범위·자연 봇 경기 결과](doc/design/09-verification.md) |
+| 검증 | [첫 고저차 검증](doc/design/15-high-ground-verification.md) · [기존 실행/봇 경기](doc/design/13-consumables-verification.md) |
 
 초기 로드맵 M0–M2 일부를 오프라인에서 연결했다. **소모품이 포함된 `e56286a064063bda84ccd9eb309ab8fb80a575a1` 소스로 Windows release EXE/PCK/ZIP을 새로 제작·검증하고 기존 다운로드 항목을 같은 새 패키지로 갱신했다.** ZIP은39,428,780바이트이며 SHA-256은 `a2d88d42da7623d4ddb71420af2fce2dd7b30a67cac87bca7616fd153a43ae4d`다. 소스73개·ZIP11항목·CRC/해시/PE/PCK 독립 검토와 소스 밖 Linux PCK 실행/소모품 확인을 통과했다. [빌드·압축 해제 안내](docs/technical/04-windows-build.md#7-현재-소모품-테스트-패키지)와 [최신 검증](doc/design/13-consumables-verification.md)을 따른다. 이전 `a11834f` 패키지는 과거 산출물이다. **Windows EXE의 실제 Windows PC 실행·사람 경기는 미실시**이며, 인터넷 대전과 Steam 연동도 별도 작업이다.
+
+현재 `main`의 R28 고저차 소스는 [Godot regression #1](https://github.com/herothgf-cell/project-e/actions/runs/40649521194)에서 **13개 묶음·3,470 assertion 실패0과 메인 장면 시작**을 통과했다. 기존에 전달한 `e56286a` Windows ZIP은 소모품 단계의 이전 패키지이며 **R28 고저차는 아직 Windows ZIP으로 재생성하지 않았다**. [고저차 검증](doc/design/15-high-ground-verification.md)
 
 ## 바로 실행하기
 
@@ -69,7 +71,7 @@
 
 ## 문서와 개발
 
-- **참고 요청 재정리:** [맵·XP·타워·스킬·스피디함과 다음 우선순위](doc/design/14-tempest-reference-reprioritization.md) — 현재 코드 감사와 고저차/표현/동선의 권장안. 제공 영상의 실제 장면 분석은 접근 제한으로 미완료이며 신규 기능 구현을 뜻하지 않는다.
+- **참고 요청 재정리:** [맵·XP·타워·스킬·스피디함과 다음 우선순위](doc/design/14-tempest-reference-reprioritization.md) — R28 첫 고저차 슬라이스까지 구현·자동 검증. 다음 공간 작업은 고지40XP·지원로·외곽탑 배치 비교다. 제공 영상의 실제 장면 분석은 접근 제한으로 미완료다.
 - **개발 상태:** [남은 개발 사항과 추천 순서](doc/design/11-remaining-development.md) — 셀 XP·시야·포탑·A 공격 이동의 기존 증거와 R09·R10 경제 판단의 자동 검사·화면·패키지 결과, 남은 실제 PC/사람 확인과 개발 순서.
 - **사람 확인:** [Windows 빌드·실행 안내](docs/technical/04-windows-build.md) · [로컬 플레이 기록표](doc/design/12-local-playtest-record.md).
 - **현재 콘텐츠 기획:** [전체 목차](doc/design/README.md) · [경기 흐름](doc/design/01-match-loop.md) · [맵](doc/design/02-map-m01.md) · [전투](doc/design/03-combat.md) · [병력/AI](doc/design/04-units-and-ai.md) · [성장](doc/design/05-growth-and-economy.md) · [UI](doc/design/06-ui-and-controls.md).
