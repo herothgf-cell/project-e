@@ -11,6 +11,7 @@ var _map_signature: int = 0
 var _radial_shapes: Dictionary = {}
 var _observer_shapes: Dictionary = {}
 var _clipped_radials: Dictionary = {}
+var terrain_map: Variant
 const RADIAL_CACHE_LIMIT: int = 32
 
 
@@ -396,8 +397,12 @@ func _faces(polygons: Array) -> PackedVector2Array:
 func _emit_faces(faces: PackedVector2Array, color: Color, height: float) -> void:
 	_geometry.surface_set_color(color)
 	for point: Vector2 in faces:
-		_geometry.surface_add_vertex(Vector3(point.x, height, -point.y))
+		_geometry.surface_add_vertex(Vector3(point.x, _terrain_height(point) + height, -point.y))
 	_vertices += faces.size()
+
+
+func _terrain_height(point: Vector2) -> float:
+	return float(terrain_map.ground_height(point)) if terrain_map != null and terrain_map.has_method("ground_height") else 0.0
 
 
 func _cache_put(cache: Dictionary, key: Array, value: Dictionary) -> void:
@@ -461,5 +466,5 @@ func _triangle(a: Vector2, b: Vector2, c: Vector2, color: Color, height: float =
 				return
 	_geometry.surface_set_color(color)
 	for point: Vector2 in [a, b, c]:
-		_geometry.surface_add_vertex(Vector3(point.x, height, -point.y))
+		_geometry.surface_add_vertex(Vector3(point.x, _terrain_height(point) + height, -point.y))
 	_vertices += 3
