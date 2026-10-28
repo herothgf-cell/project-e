@@ -36,6 +36,7 @@ var _shop_was_paused: bool = false
 func _ready() -> void:
 	battle.reset("bas", false)
 	arena.build(battle.map, battle.units)
+	effects_view.terrain_map = battle.map
 	vision_view = VisionScript.new()
 	vision_view.name = "TeamVision"
 	add_child(vision_view)
@@ -428,10 +429,23 @@ func world_click(screen: Vector2, button: int) -> bool:
 func screen_to_ground(screen: Vector2) -> Variant:
 	if not screen.is_finite() or not get_viewport().get_visible_rect().has_point(screen):
 		return null
-	var point: Variant = Plane(Vector3.UP, 0).intersects_ray(camera.project_ray_origin(screen), camera.project_ray_normal(screen))
-	if point is Vector3 and point.is_finite():
-		return Vector2(point.x, -point.z)
-	return null
+	var origin: Vector3 = camera.project_ray_origin(screen)
+	var direction: Vector3 = camera.project_ray_normal(screen)
+	if absf(direction.y) < 0.000001:
+		return null
+	# Fixed-point intersection against the authority height field. Flat terrain
+	# converges in one pass; ramps and plateaus converge in a few cheap passes.
+	var height: float = 0.0
+	var point := Vector3.ZERO
+	for _iteration: int in range(5):
+		var distance: float = (height - origin.y) / direction.y
+		if distance < 0.0:
+			return null
+		point = origin + direction * distance
+		var sim := Vector2(point.x, -point.z)
+		height = float(battle.map.ground_height(sim))
+	var result := Vector2(point.x, -point.z)
+	return result if result.is_finite() else null
 
 
 func pick_visible_target(screen: Vector2) -> int:
@@ -444,7 +458,7 @@ func pick_visible_target(screen: Vector2) -> int:
 		var unit: Dictionary = battle.units[id]
 		if not battle.is_attackable_target(team, id):
 			continue
-		var floor_position := Vector3(unit.pos.x, 0, -unit.pos.y)
+		var floor_position := Vector3(unit.pos.x, battle.map.ground_height(unit.pos), -unit.pos.y)
 		if camera.is_position_behind(floor_position):
 			continue
 		var foot: Vector2 = camera.unproject_position(floor_position)
@@ -548,7 +562,7 @@ func _sync_visuals(delta: float) -> void:
 		node.visible = unit.alive and (unit.team == 0 or unit.kind in ["tower", "core"] or battle.is_visible(0, id))
 		if not node.visible:
 			continue
-		node.position = Vector3(unit.pos.x, 0, -unit.pos.y)
+		node.position = Vector3(unit.pos.x, battle.map.ground_height(unit.pos), -unit.pos.y)
 		var model: Node3D = node.get_node("Model")
 		if unit.kind in ["hero", "minion"]:
 			model.rotation.y = atan2(-unit.facing.x, unit.facing.y)
