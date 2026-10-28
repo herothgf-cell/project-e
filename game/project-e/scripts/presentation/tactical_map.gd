@@ -59,6 +59,14 @@ func _draw() -> void:
 	for blocker: Rect2 in battle.map.blockers:
 		var top_left: Vector2 = to_map(Vector2(blocker.position.x, blocker.end.y))
 		draw_rect(Rect2(top_left, blocker.size * scale_value), Color("406e65"))
+	# High ground is static terrain knowledge; fog may dim it, but it is never a
+	# hidden enemy-state reveal. Double chevrons distinguish it from XP circles.
+	for center: Vector2 in battle.map.high_ground_cells:
+		var high: Vector2 = to_map(center)
+		var r: float = 5.2 * scale_value
+		draw_arc(high, r, 0, TAU, 20, Color("d7c58f"), 1.4, true)
+		draw_line(high + Vector2(-r * 0.55, r * 0.15), high + Vector2(0, -r * 0.45), Color("f1dfad"), 1.2, true)
+		draw_line(high + Vector2(0, -r * 0.45), high + Vector2(r * 0.55, r * 0.15), Color("f1dfad"), 1.2, true)
 	if vision_view != null and vision_view.minimap_fog_texture != null:
 		# Texture rows follow simulation north; the minimap's screen y is south.
 		draw_set_transform(Vector2(0, size.y), 0, Vector2(1, -1))
