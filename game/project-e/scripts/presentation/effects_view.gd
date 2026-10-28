@@ -248,7 +248,10 @@ func _radial_sources(effect: Dictionary) -> Array[Dictionary]:
 	var radius: float = maxf(0, float(effect.get("radius", 0.0)))
 	for source: Dictionary in _sight_sources:
 		var reach: float = (8.0 if source.kind == "minion" else 12.0) + radius
-		if origin.distance_squared_to(source.pos) <= reach * reach:
+		if origin.distance_squared_to(source.pos) > reach * reach:
+			continue
+		var structure_sight: bool = source.kind in ["tower", "core"]
+		if structure_sight or _visibility_battle == null or _visibility_battle.map.height_allows_sight(source.pos, origin):
 			sources.append(source)
 	return sources
 
