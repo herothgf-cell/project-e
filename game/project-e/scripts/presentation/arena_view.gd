@@ -32,9 +32,11 @@ var _terrain_materials: Dictionary = {}
 var _building_terrain: bool = false
 var _vision_texture: Texture2D
 var _terrain_shader: Shader
+var terrain_map: Variant
 
 
 func build(map: Variant, units: Dictionary) -> void:
+	terrain_map = map
 	_building_terrain = true
 	_box(self, Vector3(124, 1.1, 84), Vector3(0, -1.15, 0), Color("326c69"))
 	_box(self, Vector3(121, 0.16, 81), Vector3(0, -0.48, 0), Color("62aaa0"))
@@ -68,9 +70,12 @@ func build(map: Variant, units: Dictionary) -> void:
 		if unit.kind in ["tower", "core"]:
 			_pad(unit.pos, 3.0, PALE)
 	for position: Vector2 in map.cell_positions:
-		_pad(position, 2.2, Color("e1d4af"))
 		var lane_y: float = 0.0 if absf(position.y) < 10.0 else signf(position.y) * 18.0
-		_corridor(Vector2(position.x, lane_y), position, 3.0, Color("e1d4af"))
+		if map.is_high_ground(position):
+			_elevated_cell_access(map, position, lane_y)
+		else:
+			_pad(position, 2.2, Color("e1d4af"))
+			_corridor(Vector2(position.x, lane_y), position, 3.0, Color("e1d4af"))
 	for blocker: Rect2 in map.blockers:
 		_blocker(blocker)
 	# These are deliberately recessed garden islands, never extra playable pads.
@@ -121,7 +126,7 @@ func create_unit(unit: Dictionary, parent: Node3D) -> Node3D:
 			_cell(model, unit)
 		"pin":
 			_pin(model, color)
-	root.position = to_world(unit.pos)
+	root.position = to_world(unit.pos, terrain_map.ground_height(unit.pos) if terrain_map != null else 0.0)
 	return root
 
 
@@ -235,6 +240,28 @@ func _pin(parent: Node3D, color: Color) -> void:
 	_cylinder(parent, 0.11, 1.2, Vector3(0, 0.72, 0), PALE, 6)
 	_box(parent, Vector3(0.60, 0.18, 0.16), Vector3(0, 1.22, 0), color)
 	_sphere(parent, 0.18, Vector3(0, 1.48, 0), color)
+
+
+func _elevated_cell_access(map: Variant, position: Vector2, lane_y: float) -> void:
+	var color := Color("e1d4af")
+	var height: float = float(map.ground_height(position))
+	# Raised circular pad. Simulation footprint is unchanged; only the surface
+	# follows the authority map's elevation.
+	_cylinder(self, 2.2, 0.58, to_world(position, height - 0.28), color, 32)
+	# The original straight 3m access becomes a visible ramp from lane height to
+	# the plateau. Its walkability still comes from battle_map.gd.
+	var direction: float = signf(position.y)
+	var start := Vector2(position.x, lane_y)
+	var finish := Vector2(position.x, lane_y + direction * map.HIGH_GROUND_RAMP_LENGTH)
+	var center2 := (start + finish) * 0.5
+	var horizontal: float = start.distance_to(finish)
+	var slope_length: float = sqrt(horizontal * horizontal + height * height)
+	var ramp := _box(self, Vector3(3.0, 0.18, slope_length), to_world(center2, height * 0.5 - 0.05), color)
+	ramp.rotation_degrees.x = rad_to_deg(atan2(height, horizontal)) * direction
+	# Copper rails make the route read as a deliberate high-ground entrance.
+	for side: float in [-1.0, 1.0]:
+		var rail := _box(self, Vector3(0.08, 0.16, slope_length), to_world(center2 + Vector2(side * 1.42, 0), height * 0.5 + 0.05), COPPER)
+		rail.rotation_degrees.x = ramp.rotation_degrees.x
 
 
 func _corridor(a: Vector2, b: Vector2, width: float, color: Color) -> void:
