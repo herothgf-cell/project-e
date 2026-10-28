@@ -52,6 +52,9 @@ func _run() -> void:
 		scene.start_match("bas", true)
 		scene.battle.bots_enabled = false
 		var camera: Camera3D = scene.get_node("Camera3D")
+		scene._camera_follow = false
+		scene._camera_focus = north_high
+		scene._update_camera(0.0)
 		var high_world := Vector3(north_high.x, map.ground_height(north_high), -north_high.y)
 		var high_screen: Vector2 = camera.unproject_position(high_world)
 		var projected: Variant = scene.screen_to_ground(high_screen)
