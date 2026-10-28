@@ -50,6 +50,7 @@ def main() -> int:
         ("Shared vision presentation and cell labels", "test_team_vision.gd", "Team vision"),
         ("Attack-move input, target priority and help", "test_next_input.gd", "Next input"),
         ("Wall-clipped area previews and effects", "test_effect_geometry.gd", "Effect geometry"),
+        ("Raised XP platforms, ramps and high-ground sight", "test_elevation.gd", "Elevation"),
         ("Consumable purchase, recovery and interruption rules", "test_consumables.gd", "Consumables"),
         ("Shop, inventory and consumable input", "test_consumable_input.gd", "Consumable input"),
         ("Bot purchase and consumable decisions", "test_consumable_ai.gd", "Consumable AI"),
