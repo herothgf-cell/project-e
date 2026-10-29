@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3]
 
-[ext_resource type="Script" path="res://scripts/presentation/battlefield.gd" id="1_controller"]
-[ext_resource type="Script" path="res://scripts/presentation/arena_view.gd" id="2_arena"]
+[ext_resource type="Script" path="res://scripts/presentation/playable_battlefield.gd" id="1_controller"]
+[ext_resource type="Script" path="res://scripts/presentation/workshop_arena.gd" id="2_arena"]
 [ext_resource type="Script" path="res://scripts/presentation/effects_view.gd" id="3_effects"]
 [ext_resource type="Script" path="res://scripts/presentation/support_ramp_view.gd" id="4_support_ramps"]
 
