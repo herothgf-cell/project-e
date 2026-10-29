@@ -8,17 +8,23 @@
 
 | 항목 | 내용 |
 |---|---|
-| 기준일 | **2026-10-29** · R30 고지40XP–지원로 동선 구현·Godot4.7.2 검증 완료 |
+| 기준일 | **2026-10-29** · R29 경험치 피드백 구현·Godot 4.7.2 자동 검증 완료 |
 | 엔진 | Godot4.7.2 Standard + GDScript, Compatibility,30Hz 로컬 권한 |
 | 참가자 | 사람1명 + 아군 봇2명 + 상대 봇3명 |
 | 전장 | M01 세 라인, 기존 연결로4개, 탑12개·핵2개 |
 | 고저차 | 북서/남동40XP 고지2곳, 높이2.4m, 각 라인 복귀 경사+지원 경사 |
 | 전투 | 평타, 세 영웅 패시브·Q/W/E/R, 보호막·CC·사망·부활 |
-| 성장 |20/30/40XP 셀, 레벨·투자 포인트·R 해금 |
+| 성장 | 20/30/40 XP 셀, 레벨·포인트·R 해금, 관측 중 셀 등장·실제 개인 지급·성장 안내·XP 막대 |
 | 경제 | P 상점, 에너지 병·수리 패치, D 사용, 봇 구매/사용 |
 | 조작·시야 | A 공격 이동, 팀 공유 시야, 전장/미니맵 음영, 시야원 표식 |
 | 승패 | 외곽/내곽/핵 잠금, 병력 공성 보호, 핵 파괴·무승부·재시작 |
-| 자동 검증 | Godot4.7.2, **14묶음·3,531 assertions·실패0**, 메인 장면 시작 PASS |
+| 자동 검증 | Godot 4.7.2, **16묶음·3,633개 검사·실패 0**, 메인 장면 시작 PASS |
+
+### R29 경험치 피드백
+
+관측 중인 셀이 생성·재생성되면 짧은 등장 고리와 보상량을 표시한다. 획득 안내는 셀의 총 보상이 아니라 **본인에게 실제 지급된 XP**다. 40 XP를 두 명이 나누면 각각 +20, 세 명이면 내부적으로 40/3을 유지하고 화면만 `≈13.33`으로 표시한다.
+
+레벨업은 도달 레벨·성장 포인트·G 투자와 조건부 R 해금 안내로 연결한다. 최고 레벨에 반영되지 않는 초과 XP는 표시하지 않는다. 숨겨진 셀의 생성 효과는 뒤늦게 시야를 확보해도 재생하지 않으며, 개인 보상 이벤트에 처치 대상의 위치를 담지 않는다. [구현·검증 상세](doc/design/17-xp-feedback-verification.md)
 
 ### R30의 새 동선
 
@@ -48,7 +54,7 @@
 
 ### Windows ZIP 주의
 
-현재 전달된 `ProjectE-windows-x86_64.zip`은 **소모품 단계의 `e56286a` 패키지**다. 패키지 자체는 검증됐지만 **R28/R30 고저차와 지원 경사는 포함하지 않는다.** 최신 기능은 현재 Godot 소스로 실행해야 한다. 최신 Windows ZIP 재생성·실제 Windows PC 확인은 다음 배포 작업으로 남아 있다. [Windows 빌드 기록](docs/technical/04-windows-build.md)
+현재 전달된 `ProjectE-windows-x86_64.zip`은 **소모품 단계의 `e56286a` 패키지**다. **R28/R30 고저차·지원 경사와 이번 R29 XP 피드백은 포함하지 않는다.** 최신 기능은 Godot 소스로 실행해야 한다. 이번 작업에서 Windows ZIP을 다시 제작하지 않았으며 실제 Windows PC 확인도 미실시다. [Windows 빌드 기록](docs/technical/04-windows-build.md)
 
 ## 조작
 
@@ -78,17 +84,16 @@
 
 ## 검증
 
-최신 R30 코드·표현 검증은 [Godot regression #19](https://github.com/herothgf-cell/project-e/actions/runs/40811635924)에서 통과했다.
+R29 최종 게임 코드는 [Godot regression #35](https://github.com/herothgf-cell/project-e/actions/runs/40821728887)에서 통과했다.
 
-- Godot `4.7.2.stable.official.ed1daf0bf`.
-- 프로젝트 import PASS.
-- 기존13개 묶음 PASS.
-- R30 레이아웃·표현 **61 checks /0 failures**.
-- 전체14묶음 **3,531 assertions /0 failures**.
-- 메인 장면90프레임 시작 PASS.
-- 새 지원 경사의 좌표·폭·높이·길찾기·포탑 충돌 회피·3D 기울기·시야 음영 재질·미니맵 일치 확인.
+- Godot `4.7.2.stable.official.ed1daf0bf`, Linux headless.
+- 기존 14묶음 3,531개, 새 XP 피드백 88개, 실제 HUD 막대 14개.
+- 전체 **16묶음, 3,633개 검사, 실패 0**.
+- 프로젝트 import 및 메인 장면 90프레임 시작 PASS.
+- 2/3인 분배·14m 경계·사망·레벨 상한·생성/재생성·시야 재획득·일시정지·재시작 확인.
+- 720p/1080p 실제 장면의 컨트롤 경계·겹침·모달 순서를 자동 확인. 렌더 캡처와 사람 가독성 검수는 별도 미실시.
 
-자동6봇 진단은431.8초에 서쪽 팀 승리로 종료됐다. 봇은 아직 XP 셀과 신규 경사를 전략적으로 선택하지 않으므로 이 기록은 R30 게임성 검증이 아니다.
+자동6봇 진단은431.8초에 서쪽 팀 승리로 종료됐다. 봇은 아직 XP 셀과 신규 경사를 전략적으로 선택하지 않으므로 이 기록은 R30 게임성 검증이 아니다. 과거 R30 검증은 [16번 문서](doc/design/16-r30-high-ground-flow-verification.md)에 보존한다.
 
 ```sh
 python tools/check_godot.py --godot /actual/path/to/Godot_v4.7.2-stable
@@ -103,16 +108,16 @@ python tools/check_godot.py --godot /actual/path/to/Godot_v4.7.2-stable --long-m
 - [시티 오브 템페스트 참고 관점과 독립 구현 방향](doc/design/14-tempest-reference-reprioritization.md)
 - [R28 첫 고저차 검증](doc/design/15-high-ground-verification.md)
 - [R30 고지 XP–지원로 검증](doc/design/16-r30-high-ground-flow-verification.md)
+- [R29 XP 등장·개인 지급·레벨업 검증](doc/design/17-xp-feedback-verification.md)
 - [로컬 사람 플레이 기록표](doc/design/12-local-playtest-record.md)
 - [온라인 아키텍처](docs/technical/02-architecture-and-networking.md)
 - [Steam 출시 계획](docs/release/01-steam-release-plan.md)
 
 ## 다음 우선순위
 
-1. **R29:** XP 등장·실제 개인 지급·레벨업 피드백.
-2. **R10 후속:** 봇의 핵/빈 라인 방어, 지원, 셀·핀 대응과 복귀.
-3. **R31:** 명령 접수/예약/실패와 공격·시전·피격·CC 최소 표현.
-4. **R32:** 사람 경기에서 고지→지원→공성의 합류 시간과 템포 비교.
-5. 최신 Windows ZIP·실제 PC 확인과 작은2클라이언트 진단 병행.
+1. **R10 후속:** 봇의 핵/빈 라인 방어, 지원, 셀·핀 대응과 복귀.
+2. **R31:** 명령 접수/예약/실패와 공격·시전·피격·CC 최소 표현.
+3. **R32:** 사람 경기에서 고지→지원→공성의 합류 시간과 템포 비교.
+4. 최신 Windows ZIP·실제 PC 확인과 작은2클라이언트 진단 병행.
 
-현재 자동 검증은 규칙과 회귀 안정성을 확인한다. 사람의 재미·균형, 실제 Windows 성능, 온라인 품질과 Steam 배포는 후속 검증이다.
+R29의 코드·자동 검증은 완료했고, 실제로 생성·공유·성장을 이해하기 쉬운지는 사람 플레이에서 확인한다. 사람의 재미·균형, 실제 Windows 성능, 온라인 품질과 Steam 배포도 후속 검증이다.
