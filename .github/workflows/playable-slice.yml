@@ -1,0 +1,52 @@
+name: Playable slice
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  playable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pinned engine
+        run: |
+          mkdir -p .ci
+          curl -fL --retry 3 -o .ci/godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          unzip -q .ci/godot.zip -d .ci
+          chmod +x .ci/Godot_v4.7.2-stable_linux.x86_64
+      - name: Real new behavioral contracts
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          python - <<'PY'
+          from tools.check_godot import run
+          import os
+          g = os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64')
+          b = [g, '--headless', '--path', 'game/project-e']
+          run(b + ['--editor', '--import'])
+          failed = []
+          for script, label in [('test_tactical_ai.gd','Tactical objectives'), ('test_playable_slice.gd','Playable slice')]:
+              try:
+                  run(b + ['--script', 'tests/' + script], label + r': \d+ checks, 0 failures', timeout=120)
+              except Exception as exc:
+                  failed.append(str(exc))
+          if failed:
+              raise SystemExit('\n'.join(failed))
+          PY
+      - name: Capture actual gameplay renderer
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          mkdir -p review
+          xvfb-run -a .ci/Godot_v4.7.2-stable_linux.x86_64 --path game/project-e --rendering-method gl_compatibility --audio-driver Dummy --script tests/capture_playable_slice.gd -- --output="$GITHUB_WORKSPACE/review"
+          test -s review/combat.png
+          test -s review/hero-lineup.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ProjectE-playable-review
+          path: review/
+          retention-days: 14
