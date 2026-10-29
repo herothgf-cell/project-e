@@ -3,6 +3,7 @@ extends RefCounted
 
 const HIGH_GROUND_HEIGHT: float = 2.4
 const HIGH_GROUND_PAD_RADIUS: float = 2.2
+const HIGH_GROUND_RAMP_START: float = 2.0
 
 var lane_paths: Array = [
 	[Vector2(-50, 0), Vector2(-26, 18), Vector2(26, 18), Vector2(50, 0)],
@@ -93,6 +94,13 @@ func ramps_for_high_ground(center: Vector2) -> Array:
 	return result
 
 
+func ramp_high_edge(ramp: Dictionary) -> Vector2:
+	var high: Vector2 = ramp.get("high", Vector2.ZERO)
+	var low: Vector2 = ramp.get("low", high)
+	var direction: Vector2 = low - high
+	return high if direction.length_squared() < 0.00001 else high + direction.normalized() * HIGH_GROUND_RAMP_START
+
+
 func ground_height(point: Vector2) -> float:
 	if not point.is_finite():
 		return 0.0
@@ -101,12 +109,8 @@ func ground_height(point: Vector2) -> float:
 		if point.distance_to(center) <= HIGH_GROUND_PAD_RADIUS + 0.001:
 			result = HIGH_GROUND_HEIGHT
 	for ramp: Dictionary in high_ground_ramps:
-		var high: Vector2 = ramp.high
 		var low: Vector2 = ramp.low
-		var direction: Vector2 = low - high
-		if direction.length_squared() < 0.00001:
-			continue
-		var high_edge: Vector2 = high + direction.normalized() * HIGH_GROUND_PAD_RADIUS
+		var high_edge: Vector2 = ramp_high_edge(ramp)
 		var slope: Vector2 = low - high_edge
 		if slope.length_squared() < 0.00001:
 			continue
