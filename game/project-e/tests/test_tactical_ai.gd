@@ -47,10 +47,14 @@ func _run() -> void:
 	state._visibility_cache.clear()
 	ai.think(state)
 	_check(bot.get("objective_kind", "") == "cell", "climbing enables observed-cell acquisition")
-	bot.pos = Vector2(-18, 18)
+	bot.pos = Vector2(-18, 19)
 	state._visibility_cache.clear()
 	ai.think(state)
-	_check(bot.get("objective_kind", "") == "return", "lost sight abandons task without chasing hidden position")
+	_check(bot.get("objective_kind", "") == "return" and bot.target_id == -1, "lost sight away from home clears target and begins lane return")
+	bot.pos = Vector2(-18, 18)
+	bot.path.clear()
+	ai.think(state)
+	_check(bot.get("objective_kind", "") == "" and bot.target_id == -1 and float(bot.get("objective_cooldown", 0)) > state.time, "already-home abort completes without continuing hidden pursuit")
 
 	state = _fixture()
 	bot = state.units[2]
