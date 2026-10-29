@@ -27,6 +27,23 @@ func _process(_delta: float) -> void:
 	_update_source_hover(get_local_mouse_position())
 
 
+func high_ground_ramp_segments() -> Array:
+	var result: Array = []
+	if battle == null or battle.map == null:
+		return result
+	for ramp: Dictionary in battle.map.high_ground_ramps:
+		var high: Vector2 = ramp.high
+		var low: Vector2 = ramp.low
+		result.append({
+			"kind": str(ramp.get("kind", "lane")),
+			"high": high,
+			"low": low,
+			"screen_high": to_map(high),
+			"screen_low": to_map(low),
+		})
+	return result
+
+
 func _update_source_hover(pointer: Vector2) -> void:
 	var hovered: int = -1
 	if battle != null and vision_view != null and Rect2(Vector2.ZERO, size).has_point(pointer):
@@ -53,6 +70,11 @@ func _draw() -> void:
 			draw_line(to_map(path[i]), to_map(path[i + 1]), Color("9ba993"), 6.0 * scale_value, true)
 	for link: Array in battle.map.connectors:
 		draw_line(to_map(link[0]), to_map(link[1]), Color("7f9988"), 4.0 * scale_value, true)
+	# R30 ramps are fixed terrain and may be drawn before fog. The warmer support
+	# route is distinct from the cream lane-return ramp without exposing cell state.
+	for segment: Dictionary in high_ground_ramp_segments():
+		var color := Color("c79768") if str(segment.kind) == "support" else Color("cabc92")
+		draw_line(segment.screen_high, segment.screen_low, color, 3.0 * scale_value, true)
 	for team: int in range(2):
 		var center := Vector2(-51.5 if team == 0 else 51.5, 0)
 		draw_rect(Rect2(to_map(center) - Vector2(7.5, 8) * scale_value, Vector2(15, 16) * scale_value), Color("9ba993"))
