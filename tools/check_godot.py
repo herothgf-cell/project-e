@@ -55,6 +55,7 @@ def main() -> int:
         ("Consumable purchase, recovery and interruption rules", "test_consumables.gd", "Consumables"),
         ("Shop, inventory and consumable input", "test_consumable_input.gd", "Consumable input"),
         ("Bot purchase and consumable decisions", "test_consumable_ai.gd", "Consumable AI"),
+        ("Observed cell spawns and actual personal XP feedback", "test_xp_feedback.gd", "XP feedback"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)
