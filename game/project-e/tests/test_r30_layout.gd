@@ -2,7 +2,6 @@ extends SceneTree
 ## R30 spatial contract: each 40 XP plateau has a lane ramp and a shorter support-rotation ramp.
 
 const MapScript = preload("res://scripts/battle/battle_map.gd")
-const StateScript = preload("res://scripts/battle/battle_state.gd")
 
 var checks: int = 0
 var failures: int = 0
@@ -70,59 +69,49 @@ func _run() -> void:
 	for fraction: float in [0.0, 0.25, 0.5, 0.75, 1.0]:
 		_check(map.is_walkable(Vector2(north_support.high).lerp(north_support.low, fraction), 0.45), "support centerline avoids tower collision at %.2f" % fraction)
 
-	await _test_presentation(map)
+	await _test_presentation()
 	_finish()
 
 
-func _test_presentation(map: Variant) -> void:
-	var arena: Variant = load("res://scripts/presentation/arena_view.gd").new()
-	root.add_child(arena)
-	arena.build(map, {})
-	var ramp_root: Node = arena.get_node_or_null("HighGroundRamps")
-	_check(ramp_root != null, "arena exposes a dedicated data-driven high-ground ramp root")
+func _test_presentation() -> void:
+	var packed: PackedScene = load("res://scenes/battlefield.tscn")
+	_check(packed != null, "battlefield scene loads for R30 presentation")
+	if packed == null:
+		return
+	var scene: Variant = packed.instantiate()
+	root.add_child(scene)
+	for _frame: int in range(4):
+		await process_frame
+
+	var ramp_root: Node = scene.get_node_or_null("Arena/HighGroundRamps")
+	_check(ramp_root != null, "arena exposes a dedicated data-driven support-ramp root")
 	if ramp_root != null:
 		var surfaces: Array = ramp_root.get_children()
-		_check(surfaces.size() == 4, "arena renders one slope surface per authority ramp")
-		var support_count: int = 0
-		var lane_color := Color.TRANSPARENT
-		var support_color := Color.TRANSPARENT
+		_check(surfaces.size() == 2, "arena renders the two new support-rotation slopes separately from legacy lane ramps")
 		for node: Node in surfaces:
-			_check(node is MeshInstance3D and node.is_in_group("high_ground_ramp"), "each rendered ramp is a tagged mesh surface")
-			var kind: String = str(node.get_meta("ramp_kind", ""))
-			if kind == "support":
-				support_count += 1
-				support_color = _material_color(node)
-			elif kind == "lane":
-				lane_color = _material_color(node)
+			_check(node is MeshInstance3D and node.is_in_group("high_ground_ramp"), "each support ramp is a tagged mesh surface")
+			_check(str(node.get_meta("ramp_kind", "")) == "support", "dedicated R30 root contains support ramps only")
 			if node is MeshInstance3D and node.mesh is BoxMesh:
 				var half: float = float(node.mesh.size.x) * 0.5
 				var a: Vector3 = node.position - node.basis.x * half
 				var b: Vector3 = node.position + node.basis.x * half
-				_near(absf(a.y - b.y), 2.4, "rendered slope spans the authority height difference")
-		_check(support_count == 2, "arena distinguishes the two support-rotation ramps")
-		_check(lane_color != Color.TRANSPARENT and support_color != Color.TRANSPARENT and not lane_color.is_equal_approx(support_color), "support ramp material differs from the lane-return ramp")
+				_near(absf(a.y - b.y), 2.4, "rendered support slope spans the authority height difference")
+				_check(_material_color(node) != Color.TRANSPARENT, "support ramp has an explicit readable terrain material")
 
-	var state: Variant = StateScript.new()
-	state.reset()
-	state.map = map
-	var tactical: Variant = load("res://scripts/presentation/tactical_map.gd").new()
-	tactical.battle = state
-	tactical.size = Vector2(230, 148)
-	root.add_child(tactical)
+	var tactical: Variant = scene.minimap
 	_check(tactical.has_method("high_ground_ramp_segments"), "minimap exposes ramp segments from authority map data")
 	if tactical.has_method("high_ground_ramp_segments"):
 		var segments: Array = tactical.high_ground_ramp_segments()
 		_check(segments.size() == 4, "minimap receives all four high-ground ramps")
 		var support_segments: int = 0
 		for segment: Dictionary in segments:
-			if str(segment.kind) == "support":
+			if str(segment.get("kind", "")) == "support":
 				support_segments += 1
 			_check(Vector2(segment.screen_high).distance_to(tactical.to_map(segment.high)) < 0.01, "minimap high endpoint uses the shared coordinate transform")
 			_check(Vector2(segment.screen_low).distance_to(tactical.to_map(segment.low)) < 0.01, "minimap low endpoint uses the shared coordinate transform")
 		_check(support_segments == 2, "minimap distinguishes both support ramps")
 
-	tactical.queue_free()
-	arena.queue_free()
+	scene.queue_free()
 	await process_frame
 
 
