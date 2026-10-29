@@ -83,6 +83,9 @@ func _test_presentation() -> void:
 	for _frame: int in range(4):
 		await process_frame
 
+	var arena: Variant = scene.get_node("Arena")
+	var expected_material: Material = arena._terrain_materials.get(Color("d9d0ae"))
+	_check(expected_material is ShaderMaterial, "support routes reuse the arena vision-mask shader material")
 	var ramp_root: Node = scene.get_node_or_null("Arena/HighGroundRamps")
 	_check(ramp_root != null, "arena exposes a dedicated data-driven support-ramp root")
 	if ramp_root != null:
@@ -96,7 +99,7 @@ func _test_presentation() -> void:
 				var a: Vector3 = node.position - node.basis.x * half
 				var b: Vector3 = node.position + node.basis.x * half
 				_near(absf(a.y - b.y), 2.4, "rendered support slope spans the authority height difference")
-				_check(_material_color(node) != Color.TRANSPARENT, "support ramp has an explicit readable terrain material")
+				_check(node.material_override == expected_material, "support slope shares the exact fog-aware connector material")
 
 	var tactical: Variant = scene.minimap
 	_check(tactical.has_method("high_ground_ramp_segments"), "minimap exposes ramp segments from authority map data")
@@ -113,15 +116,6 @@ func _test_presentation() -> void:
 
 	scene.queue_free()
 	await process_frame
-
-
-func _material_color(node: MeshInstance3D) -> Color:
-	var material: Material = node.material_override
-	if material is ShaderMaterial:
-		return material.get_shader_parameter("base_color")
-	if material is StandardMaterial3D:
-		return material.albedo_color
-	return Color.TRANSPARENT
 
 
 func _ramp(ramps: Array, kind: String) -> Dictionary:
