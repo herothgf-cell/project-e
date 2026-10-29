@@ -19,6 +19,9 @@ var controlled_id: int = -1
 var time: float = 0.0
 var winner: int = -1
 var events: Array = []
+# Separate bounded snapshots keep combat damage bursts from evicting XP feedback.
+var feedback_events: Array = []
+var match_serial: int = 0
 var map: Variant
 var last_error: String = ""
 var bots_enabled: bool = true
@@ -47,6 +50,8 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 	effects.clear()
 	projectiles.clear()
 	events.clear()
+	feedback_events.clear()
+	match_serial += 1
 	hit_registry.clear()
 	_visibility_cache.clear()
 	time = 0.0
@@ -140,6 +145,7 @@ func _tick(delta: float) -> void:
 			var xp: float = 30.0 if absf(position.x) == 24.0 else (40.0 if position.x * position.y < 0.0 else 20.0)
 			cell.xp_reward = xp
 			cell.cell_tier = "high" if xp == 40.0 else ("medium" if xp == 30.0 else "low")
+			_log_cell_spawn(cell, false)
 	if time + 0.00001 >= _next_ai:
 		_ai.think(self)
 		_next_ai += 0.4
@@ -199,6 +205,8 @@ func _timers(unit: Dictionary, delta: float) -> void:
 					unit.passive_inside.clear()
 					unit.passive_ready.clear()
 					unit.ai_retreat = false
+				else:
+					_log_cell_spawn(unit, true)
 		return
 	if unit.kind == "pin":
 		if unit.expires <= time:
@@ -806,6 +814,18 @@ func log_event(type: String, message: String, extra: Dictionary = {}) -> void:
 	events.append(item)
 	if events.size() > 96:
 		events.pop_front()
+	if type in ["cell_spawn", "xp_gain"]:
+		feedback_events.append(item.duplicate(true))
+		if feedback_events.size() > 128:
+			feedback_events.pop_front()
+
+
+func _log_cell_spawn(cell: Dictionary, is_respawn: bool) -> void:
+	var visible_to: Array[int] = []
+	for team: int in range(2):
+		if is_point_visible(team, cell.pos):
+			visible_to.append(team)
+	log_event("cell_spawn", "Experience cell appeared", {"target_id": cell.id, "visible_to": visible_to, "is_respawn": is_respawn, "xp_reward": cell.xp_reward})
 
 
 func spawn_pin(actor: Dictionary, position: Vector2) -> void:
@@ -868,7 +888,7 @@ func refresh_locks() -> void:
 		if unit.kind == "core" and unit.locked:
 			for inner: Dictionary in units.values():
 				if inner.kind == "tower" and inner.subtype == "inner" and inner.team == unit.team and not inner.alive:
-					unit.locked = false
+				unit.locked = false
 		if unit.kind in ["tower", "core"]:
 			unit.siege_protected = not has_siege_minion(1 - unit.team, unit.pos)
 

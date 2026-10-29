@@ -113,13 +113,24 @@ func cc(state: Variant, target_id: int, kind: String, duration: float, strength:
 	return allowed
 
 
-func award_xp(state: Variant, unit_id: int, amount: float) -> void:
+func award_xp(state: Variant, unit_id: int, amount: float, context: Dictionary = {}) -> float:
 	if not state.units.has(unit_id) or amount <= 0.0 or not is_finite(amount):
-		return
+		return 0.0
 	var unit: Dictionary = state.units[unit_id]
 	if unit.kind != "hero" or unit.level >= 12:
-		return
-	unit.xp += amount
+		return 0.0
+	var level_before: int = unit.level
+	var points_before: int = unit.points
+	var xp_before: float = unit.xp
+	# Clip only the overflow the existing level-12 rule already discarded. Compute
+	# capacity first so even a huge finite grant cannot lose its accepted amount.
+	var capacity: float = -xp_before
+	for level: int in range(level_before, 12):
+		capacity += 100.0 + 25.0 * (level - 1)
+	var applied: float = minf(amount, maxf(0.0, capacity))
+	if applied <= 0.0:
+		return 0.0
+	unit.xp += applied
 	while unit.level < 12:
 		var required: float = 100.0 + 25.0 * (unit.level - 1)
 		if unit.xp + 0.00001 < required:
@@ -134,9 +145,13 @@ func award_xp(state: Variant, unit_id: int, amount: float) -> void:
 		state.log_event("level", "%s Lv.%d" % [unit.name, unit.level], {"target_id": unit_id, "team": unit.team})
 	if unit.level >= 12:
 		unit.xp = 0.0
+	# A personal reward may be received beyond sight range. Expose the recipient,
+	# never the defeated object's position or identity, to the feedback consumer.
+	state.log_event("xp_gain", "XP awarded", {"target_id": unit_id, "amount": applied, "source_kind": str(context.get("source_kind", "")), "share_count": int(context.get("share_count", 1)), "level_before": level_before, "level_after": int(unit.level), "points_gained": int(unit.points) - points_before, "xp_before": xp_before, "xp_after": float(unit.xp)})
+	return applied
 
 
-func _share(state: Variant, team: int, position: Vector2, xp: float, credits: float) -> void:
+func _share(state: Variant, team: int, position: Vector2, xp: float, credits: float, source_kind: String = "") -> void:
 	var eligible: Array = []
 	for unit: Dictionary in state.units.values():
 		if unit.kind == "hero" and unit.team == team and unit.alive and unit.pos.distance_to(position) <= 14.0:
@@ -144,7 +159,7 @@ func _share(state: Variant, team: int, position: Vector2, xp: float, credits: fl
 	if eligible.is_empty():
 		return
 	for unit: Dictionary in eligible:
-		award_xp(state, unit.id, xp / eligible.size())
+		award_xp(state, unit.id, xp / eligible.size(), {"source_kind": source_kind, "share_count": eligible.size()})
 		unit.credits += credits / eligible.size()
 
 
@@ -191,15 +206,15 @@ func _kill(state: Variant, unit: Dictionary, source: Dictionary, team: int) -> v
 				if contributor_id != killer.id and state.units.has(contributor_id) and state.time - unit.contributors[contributor_id] <= 6.0:
 					state.units[contributor_id].credits += 20.0
 					state.units[contributor_id].assists += 1
-		_share(state, team, unit.pos, 60.0, 0.0)
+		_share(state, team, unit.pos, 60.0, 0.0, "hero")
 		state.log_event("death", "%s defeated" % unit.name, {"target_id": unit.id, "team": unit.team})
 	elif unit.kind == "minion":
-		_share(state, team, unit.pos, unit.reward_xp, unit.reward_credits)
+		_share(state, team, unit.pos, unit.reward_xp, unit.reward_credits, "minion")
 		if source.kind == "hero":
 			source.credits += 4.0
 		unit.remove_at = state.time + 0.8
 	elif unit.kind == "cell":
-		_share(state, team, unit.pos, unit.xp_reward, 10.0)
+		_share(state, team, unit.pos, unit.xp_reward, 10.0, "cell")
 		unit.respawn_left = 45.0
 	elif unit.kind == "pin":
 		state.remove_pin(unit.id)

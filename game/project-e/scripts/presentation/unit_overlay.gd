@@ -1,11 +1,14 @@
 extends Control
 ## Visible-unit status and short damage feedback from observed simulation changes.
 
+const XPFeedbackScript = preload("res://scripts/presentation/xp_feedback_view.gd")
+
 var battle: Variant
 var camera: Camera3D
 var ui_font: Font
 var use_korean: bool = false
 var enabled: bool = false
+var xp_feedback: Variant
 var _previous: Dictionary = {}
 var _floaters: Array[Dictionary] = []
 
@@ -13,14 +16,29 @@ var _floaters: Array[Dictionary] = []
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	xp_feedback = XPFeedbackScript.new()
+	xp_feedback.name = "XPFeedback"
+	add_child(xp_feedback)
 
 
 func reset_feedback() -> void:
 	_previous.clear()
 	_floaters.clear()
+	if xp_feedback != null:
+		xp_feedback.reset_feedback()
 
 
 func update_feedback(delta: float) -> void:
+	if xp_feedback != null:
+		xp_feedback.battle = battle
+		xp_feedback.camera = camera
+		xp_feedback.ui_font = ui_font
+		xp_feedback.enabled = enabled
+		xp_feedback.visible = enabled
+		var hud_owner: Node = get_parent().get_parent() if get_parent() != null else null
+		var label: Variant = hud_owner.get("_xp") if hud_owner != null else null
+		xp_feedback.xp_label = label if label is Label else null
+		xp_feedback.update_feedback(delta)
 	if battle == null:
 		return
 	for floater: Dictionary in _floaters:
