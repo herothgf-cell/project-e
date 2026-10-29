@@ -1,63 +1,50 @@
 # Playable Visual Slice Implementation Plan
 
-> Execute inline with superpowers:executing-plans. The user explicitly delegates implementation decisions and permits art review along the way. Do not restart product clarification.
+> Executed inline under the user's explicit autonomous implementation request. Existing main integration workflow is authorized. Final review is self-review; no subagent review tool was available.
 
-**Goal:** Deliver playable camera/character/map/skill presentation rather than another prose-only milestone, and connect visible XP objectives to bot rotations.
+**Goal:** Deliver actual playable camera/character/map/skill presentation and visible XP/support bot objectives.
 
-**Architecture:** Extend the existing battlefield and arena through focused scripts wired by battlefield.tscn. Preserve the 30Hz battle authority, existing terrain/vision/effect rules and all numeric balance. Inject an enhanced AI subclass in the playable scene; run dedicated enhanced-AI simulation tests in addition to legacy state regressions. Art consists of original in-engine modular meshes and articulated node animation: a first production-facing pass, not finished sculpted/skinned assets.
+**Architecture:** Extend the existing battlefield/arena with focused subclasses. Preserve battle authority and balance. New TacticalAI is injected by the playable scene; raw-state legacy AI remains a comparison baseline. Models are original modular engine meshes with visual joint posing, not final sculpted/skinned assets.
 
-**Tech:** Godot 4.7.2 Standard, GDScript, existing GitHub regression CI plus rendered preview capture. No external paid assets or new third-party game dependencies.
+**Tech:** Godot 4.7.2 Standard, GDScript, real Linux headless/GL and Windows CI, existing packaging tool.
 
-**Spec:** User request dated 2026-10-29; doc/design/07-art-direction.md; R10 follow-up in doc/design/11-remaining-development.md.
+**Spec:** User 2026-10-29 request; doc/design/07-art-direction.md; R10/R31 backlog. Final evidence: doc/design/18-playable-visual-slice.md.
 
-## Design decisions / evidence boundary
+## Design decisions
 
-- Keep ceramic, copper, dark workwear, mint waterways and team teal/orange. Bas is the primary quality reference; Rio/Nema remain compatible and get distinct articulated silhouettes where feasible.
-- The supplied YouTube video still cannot be fetched as continuous frames. Camera values below are Project E tuning proposals, NOT measured City of Tempest values.
-- Combat camera: fixed heading, oblique perspective, default vertical view span30m and pitch55degrees; tactical wider view and close art view selectable with F6. Y toggles hero follow, Space uses existing recenter, middle drag/minimap/wheel retained. Edge panning is enabled only in an active focused gameplay viewport, not on HUD/modal/aiming.
-- Terrain footprints, ramps, height queries, tower positions and vision authority remain unchanged. New masonry/props are cosmetic and must use existing fog-aware materials. Do not create apparent walkable bridges outside authority ground.
-- Hero rig pose follows actual unit phase/time; no new combat timing. Footprint/collision/attack ranges remain authoritative. Visual status and projectile flourishes must not reveal unseen units or home in through fog.
-- Tactical AI observes only current team vision for non-public targets. Healthy bots may acquire a visible nearby XP cell, help a nearby ally, then return to their saved lane position. Low HP, visible danger, target loss and timeout abort. Own-core defense has priority. Do not take over the controlled hero or change home lane.
-- Whole-roster final art, recorded sounds, online transport and full map reconstruction are out of this slice. Do not claim them done.
+- Camera proposal: perspective FOV42, pitch55; view spans30/50/18; F6 modes, Y follow, existing Space/drag/minimap, focused nonmodal edge pan. Not measured original-video values.
+- Preserve all hero/XP/tower/consumable numeric values, footprints and high-ground sight contracts.
+- Ceramic/copper/workwear palette; three original playable articulated silhouettes; Bas first close-review character.
+- Terrain detail uses fog-aware materials and does not create new collision/walkability.
+- Skill accents read current visibility and real phase/effect geometry; no damage logic.
+- Bots use observed targets and bounded tasks; own-core defense, support, cell reservation, lane return and respawn clearing.
+- Final roster art, detailed animation/audio, global team strategy and online transport remain outside this checkpoint.
 
-## Approaches
+## Completed tasks and evidence
 
-1. Finish all roster assets first: rejected; wastes effort before camera/readability review.
-2. Concept images only: rejected; user specifically needs to judge actual play.
-3. Playable modular art pass with adjustable camera and captures: chosen by implementation judgment under delegated autonomy.
+- [x] Wrote AI/camera behavioral tests before implementation. Playable slice #1 (40826102787) RED: missing policy/preset.
+- [x] Added bounded observed cell/support/defense AI using real authority commands.
+- [x] Added perspective presets/input and real height-field click intersection.
+- [x] Added hero rigs, cosmetic masonry and visible combat accents to actual battlefield.tscn.
+- [x] Existing full regression: #54 (40828433640), 16 suites/3,633 checks/zero failures.
+- [x] New regression: #14 (40828433627), 18 objective +34 playable +13 lifecycle checks/zero failures.
+- [x] Ran actual enhanced six-bot match to core destruction at1,333.0s, winner1; recorded objectives and XP grant count.
+- [x] Captured 102 actual renderer PNGs and reviewed representative combat/lineup/skill pixels.
+- [x] Built Windows release using verified official editor/template archives and existing packaging checks.
+- [x] Windows preview #3 (40828433632): exported EXE headless startup on Windows runner passed.
+- [x] Downloaded artifacts; verified archive CRC, hashes and PE/PCK headers locally. Local Godot execution was not claimed.
+- [x] Documented current implementation, old/new AI distinction, visual limitations and next review scope.
 
-## Files and contracts
-
-- `scripts/battle/tactical_ai.gd`: extends existing AI; `_hero` handles bounded objectives and falls back to legacy combat. Source state remains the same authoritative commands.
-- `scripts/presentation/playable_battlefield.gd`: extends battlefield; camera modes/edge pan and rig update; same public scene methods.
-- `scripts/presentation/workshop_arena.gd`: extends arena; original meshes and terrain detailing with unchanged footprints/fog.
-- `scripts/presentation/hero_rig.gd`: `build(key, team_color)`, `pose(unit, time)`; no simulation writes.
-- `scripts/presentation/combat_accents.gd`: observed status/projectile accents; no damage or hidden-target reads.
-- `scenes/battlefield.tscn`: wires new subclasses without rewriting the large existing controller/authority.
-- `tests/test_playable_slice.gd`: real battlefield, camera ray roundtrips, modal/input, rig movement, fog boundaries and lifecycle.
-- `tests/test_tactical_ai.gd`: real state, visible cell acquisition/abandon/return, reservations, support, player isolation, low HP and enhanced match diagnostic.
-- `tests/capture_playable_slice.gd`: real renderer preview harness only; no invented mock screenshot.
-- `.github/workflows/playable-slice.yml`: new tests and render capture artifacts; existing full regression stays mandatory.
-
-## Review focus
-
-1. New camera projection must not break elevated clicks, selection, HUD routing or minimap.
-2. Art must not change footprints or silently reveal hidden targets; procedural first pass must not be called final art.
-3. Objective AI must abort without reading hidden target positions and return without per-frame oscillation.
-4. Restart must clear rig/effect/AI task state and retain original XP feedback.
-5. Real rendering is a separate gate from headless assertions; capture must load the actual gameplay scene.
-
-## Tasks
-
-- [ ] Add failing behavioral tests and observe missing-feature RED on branch CI.
-- [ ] Implement tactical AI with real authority commands; pass its behavioral tests.
-- [ ] Implement camera presets/input and articulated hero/arena/status art; pass integration tests.
-- [ ] Run all legacy regressions and enhanced match diagnostic.
-- [ ] Capture real gameplay/art views and publish preview artifacts where supported.
-- [ ] Self-review (no subagent tool), update current design/backlog and verify exact integrated head.
-
-## Execution ledger
+## Rulings and review ledger
 
 Base: ecefca1a0e1367162380daac8f87a14eda44200a.
-Environment: container has no Godot/Blender/repository and direct network DNS fails; use isolated feature branch and actual pinned-engine GitHub CI. No local runtime claim.
-User authorization: autonomous continuation including camera/gameplay art and prior main-push workflow; art proposals may be reviewed after a playable checkpoint. No background-work promises.
+Game head: 032c8add4682f4e1e1da2bff9a71c38e9390c2df.
+Tested PR merge snapshot: c1c0cb49efb434be480406f43e023d1631e4ffe8.
+
+Ruling: no local engine/repo or working outbound DNS — use isolated GitHub feature branch and actual pinned-engine CI; obtain output bytes through the GitHub artifact download connector.
+Ruling: an abort at the exact home point correctly finishes return immediately — split test into off-home lost-sight and on-home completion assertions, preserving target/cooldown requirements.
+Bug: respawn reused a hero dictionary with stale objectives. Lifecycle test failed in #12 (40828003579); clear objectives when death count changes. #14 passed unchanged lifecycle requirement.
+Ruling: map/roster remains a first playable art pass. Capture review is not final-art approval, Windows headless is not manual graphics/input verification.
+Final review: self-review (no subagent tool). Read inheritance/lifecycle, fog/target filtering, input/modal boundaries, capture cleanup and artifact provenance separately. No unresolved blocking code issue found in this scope. Remaining visual polish, global AI and human balance are recorded, not silently completed.
+
+Integration: merge only this verified code plus documentation-only changes with an expected-SHA lease against the unchanged main base; confirm resulting main workflow status before final completion claim.
