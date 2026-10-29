@@ -7,6 +7,15 @@ const TASK_LIFE: float = 8.0
 const REST_TIME: float = 6.0
 
 func _hero(state: Variant, actor: Dictionary) -> void:
+	# Respawn reuses the hero dictionary. A task belongs to a life, not the ID.
+	var deaths: int = int(actor.deaths)
+	if int(actor.get("objective_deaths", deaths)) != deaths:
+		actor.objective_kind = ""
+		actor.objective_id = -1
+		actor.objective_until = 0.0
+		actor.objective_cooldown = state.time + REST_TIME
+		actor.erase("objective_return")
+	actor.objective_deaths = deaths
 	_spend_points(state, actor)
 	if actor.phase in ["basic", "windup", "dash", "recovery"] or actor.stun_left > 0.0:
 		return
@@ -87,7 +96,6 @@ func _return_home(state: Variant, actor: Dictionary) -> void:
 		actor.objective_cooldown = state.time + REST_TIME
 		state.command_stop(actor.id)
 		return
-	# Self-defense takes precedence, but the stored lane return is not lost.
 	if _near_enemy(state, actor, 5.0):
 		super._hero(state, actor)
 		return
