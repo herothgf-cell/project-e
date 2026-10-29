@@ -1,0 +1,79 @@
+name: Windows preview
+on:
+  pull_request:
+    paths: ['game/**', 'tools/**', '.github/workflows/windows-preview.yml']
+  push:
+    branches: [main]
+    paths: ['game/**', 'tools/**', '.github/workflows/windows-preview.yml']
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact official engine and templates
+        run: |
+          set -euo pipefail
+          mkdir -p .ci
+          curl -fL --retry 3 -o .ci/godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          curl -fL --retry 3 -o .ci/templates.tpz https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz
+          echo 'cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  .ci/godot.zip' | sha256sum -c -
+          echo 'f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011  .ci/templates.tpz' | sha256sum -c -
+          unzip -q .ci/godot.zip -d .ci
+          chmod +x .ci/Godot_v4.7.2-stable_linux.x86_64
+          curl -fL --retry 3 -o .ci/GODOT-LICENSE.txt https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/LICENSE.txt
+          curl -fL --retry 3 -o .ci/GODOT-COPYRIGHT.txt https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/COPYRIGHT.txt
+      - name: Export and verify release ZIP
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          python tools/package_windows.py --godot "$PWD/.ci/Godot_v4.7.2-stable_linux.x86_64" --templates-archive "$PWD/.ci/templates.tpz" --engine-notices-dir "$PWD/.ci" --output-dir "$PWD/build/windows"
+          printf 'F6: camera combat/tactical/detail\nY: toggle hero follow\nSpace: recenter on hero\nThis package includes R28/R30 terrain, R29 XP feedback and playable visual slice.\nWindows headless startup is tested separately; manual play and GPU performance are not certified.\n' > build/windows/PREVIEW-NOTES.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ProjectE-Windows-preview
+          path: |
+            build/windows/ProjectE-windows-x86_64.zip
+            build/windows/ProjectE-windows-x86_64.zip.sha256
+            build/windows/PREVIEW-NOTES.txt
+          if-no-files-found: error
+          retention-days: 14
+  windows-smoke:
+    needs: package
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ProjectE-Windows-preview
+          path: package
+      - name: Start exported EXE on Windows
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Expand-Archive -Path package/ProjectE-windows-x86_64.zip -DestinationPath smoke
+          $dir = (Resolve-Path smoke/ProjectE-windows-x86_64).Path
+          $log = Join-Path $dir 'windows-smoke.log'
+          $process = Start-Process -FilePath (Join-Path $dir 'ProjectE.exe') -ArgumentList @('--headless','--quit-after','120','--log-file',('"' + $log + '"')) -WorkingDirectory $dir -PassThru
+          if (-not $process.WaitForExit(90000)) {
+            $process.Kill()
+            throw 'Windows startup exceeded 90 seconds'
+          }
+          $process.Refresh()
+          if ($process.ExitCode -ne 0) { throw "EXE exited $($process.ExitCode)" }
+          if (-not (Test-Path $log)) { throw 'Windows engine log missing' }
+          $text = Get-Content -Raw $log
+          Write-Output $text
+          if ($text -match '(?m)^\s*(SCRIPT )?ERROR:') { throw 'Godot error in exported Windows startup' }
+          if ($text -notmatch 'Godot Engine v4.7.2') { throw 'Pinned engine banner missing' }
+          "PASS: Windows exported EXE headless startup; graphical/manual play NOT RUN" | Out-File -FilePath windows-smoke-result.txt -Encoding utf8
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ProjectE-Windows-smoke-log
+          path: |
+            smoke/**/windows-smoke.log
+            windows-smoke-result.txt
+          retention-days: 14
