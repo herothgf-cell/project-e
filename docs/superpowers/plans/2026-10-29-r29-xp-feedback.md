@@ -1,14 +1,14 @@
 # R29 XP Feedback Implementation Plan
 
-> **For agentic workers:** Use superpowers:executing-plans. Execute the already requested R29 scope without reopening product decisions. Track the checks below.
+> **For agentic workers:** Use superpowers:executing-plans. The requested R29 implementation and regression checks below are complete. Integration is tracked by [PR #2](https://github.com/herothgf-cell/project-e/pull/2) and its exact head/main refs.
 
 **Goal:** Make observed cell creation, actual personal XP awards, and level/growth progression readable without changing rewards or leaking fog-of-war information.
 
-**Architecture:** Keep battle_state.gd as authority. Emit immutable cell-spawn and XP-award snapshots into a bounded, damage-independent feedback queue. A dedicated Control under the existing unit overlay consumes only the local player's authorized feedback; the existing HUD remains authoritative for XP and growth.
+**Architecture:** Keep battle_state.gd as authority. Emit immutable cell-spawn and XP-award snapshots into a bounded, damage-independent feedback queue. A dedicated Control under the existing unit overlay consumes only the local player's authorized feedback. Its progression meter is a child of the existing HUD XP label so the opaque HUD cannot hide it.
 
 **Tech Stack:** Godot 4.7.2 Standard, GDScript, existing GitHub Actions regression runner.
 
-**Spec:** doc/design/11-remaining-development.md, section 4 / R29; design decisions below refine that approved scope.
+**Spec:** doc/design/11-remaining-development.md, section 4 / R29; design decisions below refine that approved scope. Evidence: doc/design/17-xp-feedback-verification.md.
 
 ## Scope and design decisions
 
@@ -20,49 +20,56 @@
 - Max-level recipients retain existing credit eligibility but receive no fictitious XP. At level 11 with 340 XP, a 40 XP allocation produces 10 applied XP and reaches level 12.
 - Nonintegral XP remains full precision in rules/events; the display explicitly marks two-decimal approximations.
 - Draw a short spawn pulse, local recipient floating reward, and a compact personal notification with level/growth and G/R guidance. Add a slim progression meter next to the current XP label. All feedback controls ignore mouse input.
-- Feedback uses simulation time (pause freezes it), a match serial (restart cannot replay old events), a 128-event feedback buffer and a 16-cue presentation cap.
+- Pause freezes feedback lifetime. A match serial prevents restart replay. Bound the feedback buffer to 128 events and presentation to 16 cues.
 - No new sounds/assets, online transport, bot strategy or balance changes in R29. Windows export/human play are not silently marked complete.
 
 ## Interfaces and files
 
 1. `battle_state.gd`: `match_serial`, `feedback_events`, `_log_cell_spawn(cell, is_respawn)`; initial/respawn hooks; log_event copies only cell_spawn/xp_gain to bounded feedback storage.
 2. `battle_rules.gd`: `award_xp(state, unit_id, amount, context={}) -> float` returns accepted progression; `_share(..., source_kind="")` supplies share metadata. Existing callers may ignore the return value.
-3. New `presentation/xp_feedback_view.gd`: battle/camera/ui_font/xp_label/enabled bindings; reset_feedback(), update_feedback(delta), progression_ratio(), progress_rect(), reward_text(cue), cues. Rendering is driven by that same cue list.
-4. `unit_overlay.gd`: creates the view, propagates bindings and calls update/reset; existing HP/damage handling remains unchanged.
-5. `tests/test_xp_feedback.gd`: real state and real battlefield fixtures; register in tools/check_godot.py.
+3. `presentation/xp_feedback_view.gd`: state/camera/font/label bindings, event filtering, lifecycle, public progression_ratio()/progress_rect()/reward_text() and actual drawing.
+4. `unit_overlay.gd`: creates the view and propagates update/reset. Existing HP/damage handling stays unchanged.
+5. `tests/test_xp_feedback.gd` and `tests/test_xp_meter.gd`: real state and battlefield tests, registered in tools/check_godot.py.
 
 ## Review focus
 
-- Hidden spawn then late reveal; lose/regain vision during a cue. Must not create/replay a spawn.
-- 40 XP shared by 2 or 3 heroes; dead/distant allies and level-cap overflow. Display must follow actual grant, not object value or XP gauge delta.
-- Repeated render, pause, restart with reused IDs and sequence numbers. Never duplicate or retain stale feedback.
-- Damage event bursts must not evict recent XP events; queues must remain bounded.
-- High-ground projection, 720p/1080p HUD layout and mouse-through behavior. No click interception or hidden-source coordinate leak.
+- Hidden spawn then late reveal; lose/regain vision during a cue. No spawn replay.
+- Fractional sharing, dead/distant allies and cap overflow. Show accepted grant, not object value or XP gauge delta.
+- Repeated render, pause, restart with reused IDs/sequences. No stale or duplicated feedback.
+- Damage bursts must not evict recent XP; buffers stay bounded.
+- High-ground projection and 720p/1080p control bounds; actual HUD draw order and input passthrough.
 
-## Task 1 — Authority events
+## Task 1 — Authority events: complete
 
-- [ ] Add tests for actual cell kills, shares, cap/invalid amounts, initial spawn and respawn visibility snapshots.
-- [ ] Run existing suite plus new test in PR CI; record expected RED with missing events (not syntax errors).
-- [ ] Add the authority hooks and reward metadata; preserve gameplay results.
-- [ ] Run tests to GREEN.
+- [x] Added real kills, shares, cap/invalid amounts, spawn/respawn visibility tests.
+- [x] Observed missing-feature RED in CI #29, not a parse-error substitute.
+- [x] Added authority hooks and recipient-only reward metadata.
+- [x] Passed real Godot tests without changing reward values or map rules.
 
-## Task 2 — Feedback presentation
+## Task 2 — Feedback presentation: complete
 
-- [ ] Add real scene tests for player-only cues, no fog replay, duplicate prevention, reset/pause and progression meter.
-- [ ] Confirm RED for missing XPFeedback view.
-- [ ] Implement the Control and unit-overlay integration.
-- [ ] Run entire Godot suite, not only the new file.
+- [x] Added real scene tests for authorized cues, deduplication, pause/reset and meter.
+- [x] Confirmed missing view RED in #29 and actual HUD meter RED in #34.
+- [x] Implemented the Control, HUD-owned ProgressBar and overlay integration.
+- [x] Passed the entire 16-suite runner in #35.
 
-## Task 3 — Review, documentation and integration
+## Task 3 — Review and documentation: complete
 
-- [ ] Separate self-review of diff and boundaries (no subagent tool available).
-- [ ] Resolve important findings with regression tests.
-- [ ] Record actual CI evidence and limitations in doc/design/17-xp-feedback-verification.md.
-- [ ] Update current README/backlog without erasing historical verification.
-- [ ] Integrate only a green feature head into main with an expected-SHA check; verify main.
+- [x] Re-read complete feature diff and boundary contracts. No subagent was available; this is self-review, not independent review.
+- [x] Fixed the opaque-HUD layering finding with a failing regression before the fix.
+- [x] Fixed transcription errors caught by import/diff checks; final movement/core-lock blocks match the base.
+- [x] Recorded CI results and limits in doc/design/17-xp-feedback-verification.md.
+- [x] Updated current README/backlog while preserving historical verification files.
+
+Integration rule: fast-forward only a green feature head into main using `expected_sha`; then verify the main push CI. PR #2 records the resulting merge state rather than claiming it in advance here.
 
 ## Execution ledger
 
-- Base: 10dc2225c60cd900769c717016543b4b77a94033 (R30).
-- Ruling: container has no usable repo/engine and external DNS fails; use an isolated GitHub feature branch and actual pinned-engine CI instead of claiming local runtime verification.
-- Pre-flight: authority events feed the new overlay; recipient-only payload and event-time visibility are common contracts for Tasks 1 and 2. No other subsystem consumes the new feedback queue.
+- Base: `10dc2225c60cd900769c717016543b4b77a94033`.
+- Ruling: no usable local repo/engine and external DNS unavailable; used isolated remote feature branch plus actual pinned-engine CI.
+- Pre-flight: recipient-only payload and creation-time visibility are shared contracts between authority and presentation.
+- RED: [#29](https://github.com/herothgf-cell/project-e/actions/runs/40819779205), missing events/view. Existing 14 suites passed.
+- Ruling: a world-overlay rectangle is hidden by the opaque bottom HUD; meter became a real XP-label child, preserving modal order. [#34](https://github.com/herothgf-cell/project-e/actions/runs/40821527117) demonstrates the missing-meter failure.
+- GREEN: code `cc2ae035fa658795b9544f828cdb12a13f29e1e7`, [#35](https://github.com/herothgf-cell/project-e/actions/runs/40821728887): 16 suites, 3,633 checks, zero failures; import and main-scene startup passed.
+- Command: `python tools/check_godot.py --godot <Godot 4.7.2 executable>` on the CI runner.
+- Not performed: real rendered-frame inspection, Windows execution/export, human play or online tests.
