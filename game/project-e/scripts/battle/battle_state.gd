@@ -526,7 +526,7 @@ func command_move(actor_id: int, target: Vector2) -> bool:
 		cancel_action(actor)
 	_clear_attack_move(actor)
 	actor.path = path
-	actor.goal = goal
+	actor.goal = target
 	actor.order = "move"
 	actor.target_id = -1
 	actor.queued.clear()
