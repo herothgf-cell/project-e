@@ -526,7 +526,7 @@ func command_move(actor_id: int, target: Vector2) -> bool:
 		cancel_action(actor)
 	_clear_attack_move(actor)
 	actor.path = path
-	actor.goal = target
+	actor.goal = goal
 	actor.order = "move"
 	actor.target_id = -1
 	actor.queued.clear()
@@ -888,7 +888,7 @@ func refresh_locks() -> void:
 		if unit.kind == "core" and unit.locked:
 			for inner: Dictionary in units.values():
 				if inner.kind == "tower" and inner.subtype == "inner" and inner.team == unit.team and not inner.alive:
-				unit.locked = false
+					unit.locked = false
 		if unit.kind in ["tower", "core"]:
 			unit.siege_protected = not has_siege_minion(1 - unit.team, unit.pos)
 
