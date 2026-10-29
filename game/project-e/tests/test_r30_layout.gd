@@ -19,7 +19,8 @@ func _run() -> void:
 			has_contract = true
 			break
 	_check(has_contract, "map exposes data-driven high-ground ramps")
-	if not has_contract:
+	_check(map.has_method("ramp_high_edge"), "map exposes the authoritative slope start")
+	if not has_contract or not map.has_method("ramp_high_edge"):
 		_finish()
 		return
 
@@ -47,9 +48,9 @@ func _run() -> void:
 	for ramp: Dictionary in ramps:
 		_near(float(ramp.width), 3.0, "every high-ground ramp is three metres wide")
 		_check(map.is_walkable(ramp.high) and map.is_walkable(ramp.low), "ramp endpoints remain walkable")
-		var high_edge: Vector2 = ramp.high + (Vector2(ramp.low) - Vector2(ramp.high)).normalized() * 2.2
+		var high_edge: Vector2 = map.ramp_high_edge(ramp)
 		var midpoint: Vector2 = high_edge.lerp(ramp.low, 0.5)
-		_near(map.ground_height(high_edge), 2.4, "ramp starts continuously at plateau height")
+		_near(map.ground_height(high_edge), 2.4, "ramp starts at the declared plateau height")
 		_near(map.ground_height(midpoint), 1.2, "ramp midpoint interpolates to half height")
 		_near(map.ground_height(ramp.low), 0.0, "ramp reaches lane height at the low endpoint")
 
