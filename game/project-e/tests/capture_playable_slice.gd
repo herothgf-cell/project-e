@@ -43,10 +43,10 @@ func _run() -> void:
 	scene.set_camera_mode("tactical")
 	await _save("tactical.png")
 
-	# Compare all three actual game rigs with identical camera and lighting.
+	# These are the actual playable rigs; the art review alone hides the HUD.
 	for unit: Dictionary in scene.battle.units.values():
 		if unit.kind == "hero" and unit.team == 0:
-			unit.pos = Vector2({"bas": -4.0, "rio": 0.0, "nema": 4.0}[str(unit.hero)], 0)
+			unit.pos = Vector2({"bas": -3.3, "rio": 0.0, "nema": 3.3}[str(unit.hero)], 0)
 			unit.facing = Vector2(0, -1)
 			unit.order = "idle"
 			unit.phase = "idle"
@@ -57,8 +57,8 @@ func _run() -> void:
 	scene.set_camera_mode("detail")
 	scene.camera.size = 12.5
 	scene._update_camera(0)
-	await _save("hero-lineup.png")
-	var camera: Camera3D = scene.get_node("Camera3D")
+	await _save("hero-lineup.png", true)
+	var review_labels: Array[Label3D] = []
 	for unit: Dictionary in scene.battle.units.values():
 		if unit.kind == "hero" and unit.team == 0:
 			var label := Label3D.new()
@@ -67,9 +67,13 @@ func _run() -> void:
 			label.font_size = 42
 			label.pixel_size = 0.013
 			label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-			label.position = Vector3(unit.pos.x, 2.8, -unit.pos.y)
+			label.position = Vector3(unit.pos.x, 3.2, -unit.pos.y)
 			scene.add_child(label)
-	await _save("hero-lineup-labelled.png")
+			review_labels.append(label)
+	await _save("hero-lineup-labelled.png", true)
+	for label: Label3D in review_labels:
+		label.queue_free()
+	await process_frame
 
 	# Four real Bas casts, with authority-generated telegraphs and effects.
 	for slot: String in ["Q", "W", "E", "R"]:
@@ -97,7 +101,6 @@ func _run() -> void:
 		scene.battle.step(0.20)
 		await _save("bas-" + slot + "-active.png")
 
-	# Compact preview sequence uses real movement and real Q/W/E/R command routing.
 	DirAccess.make_dir_recursive_absolute(output.path_join("frames"))
 	scene.start_match("bas", true)
 	scene.paused = true
@@ -119,9 +122,15 @@ func _run() -> void:
 	await process_frame
 	quit(0)
 
-func _save(filename: String) -> void:
+func _save(filename: String, art_review: bool = false) -> void:
 	scene.battle._visibility_cache.clear()
 	scene._process(0.0)
+	scene.hud._toast.hide()
+	scene.hud._toast_left = 0.0
+	scene.hud.root_control.visible = not art_review
+	if art_review:
+		scene.camera.position = Vector3(0, 5.8, 11.8)
+		scene.camera.look_at(Vector3(0, 1.1, 0), Vector3.UP)
 	await process_frame
 	await RenderingServer.frame_post_draw
 	var image: Image = root.get_texture().get_image()
