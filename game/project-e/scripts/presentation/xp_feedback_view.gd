@@ -19,11 +19,18 @@ var _last_seq: int = 0
 var _state_id: int = 0
 var _match_serial: int = -1
 var _flash_left: float = 0.0
+var _meter: ProgressBar
+var _meter_fill: StyleBoxFlat
 
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_meter):
+		_meter.queue_free()
 
 
 func reset_feedback() -> void:
@@ -32,6 +39,8 @@ func reset_feedback() -> void:
 	_state_id = 0
 	_match_serial = -1
 	_flash_left = 0.0
+	if is_instance_valid(_meter):
+		_meter.hide()
 	queue_redraw()
 
 
@@ -79,7 +88,46 @@ func update_feedback(delta: float) -> void:
 		cues.pop_front()
 	if not enabled:
 		cues.clear()
+	_sync_meter()
 	queue_redraw()
+
+
+func _sync_meter() -> void:
+	if not is_instance_valid(xp_label):
+		if is_instance_valid(_meter):
+			_meter.hide()
+		return
+	if is_instance_valid(_meter) and _meter.get_parent() != xp_label:
+		_meter.queue_free()
+		_meter = null
+	if not is_instance_valid(_meter):
+		# The world overlay is drawn BEFORE opaque HUD panels. The meter belongs
+		# inside the XP label's HUD branch, while modals retain their later order.
+		_meter = ProgressBar.new()
+		_meter.name = "XPProgress"
+		_meter.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_meter.min_value = 0.0
+		_meter.max_value = 1.0
+		_meter.step = 0.0
+		_meter.show_percentage = false
+		var background := StyleBoxFlat.new()
+		background.bg_color = DARK
+		background.content_margin_left = 0
+		background.content_margin_right = 0
+		background.content_margin_top = 0
+		background.content_margin_bottom = 0
+		_meter_fill = background.duplicate() as StyleBoxFlat
+		_meter_fill.bg_color = MINT
+		_meter.add_theme_stylebox_override("background", background)
+		_meter.add_theme_stylebox_override("fill", _meter_fill)
+		xp_label.add_child(_meter)
+	# The existing VBox has a four-pixel gap above its XP label. Use only its
+	# middle two pixels, without resizing the panel or covering either text row.
+	_meter.position = Vector2(0, -3)
+	_meter.size = Vector2(minf(245.0, xp_label.size.x), 2)
+	_meter.value = progression_ratio()
+	_meter_fill.bg_color = GOLD if _flash_left > 0.0 else MINT
+	_meter.visible = enabled
 
 
 func _spawn_visible(cue: Dictionary) -> bool:
@@ -102,10 +150,10 @@ func progression_ratio() -> float:
 
 
 func progress_rect() -> Rect2:
-	if not is_instance_valid(xp_label):
+	if not is_instance_valid(_meter):
 		return Rect2()
-	var origin: Vector2 = get_global_transform().affine_inverse() * xp_label.global_position
-	return Rect2(origin + Vector2(0, xp_label.size.y + 1.0), Vector2(minf(245.0, xp_label.size.x), 3.0))
+	var origin: Vector2 = get_global_transform().affine_inverse() * _meter.global_position
+	return Rect2(origin, _meter.size)
 
 
 func reward_text(cue: Dictionary) -> String:
@@ -142,10 +190,6 @@ func cue_world_position(cue: Dictionary) -> Vector3:
 func _draw() -> void:
 	if not enabled or battle == null or ui_font == null:
 		return
-	var meter: Rect2 = progress_rect()
-	if meter.has_area():
-		draw_rect(meter.grow(1), DARK)
-		draw_rect(Rect2(meter.position, Vector2(meter.size.x * progression_ratio(), meter.size.y)), GOLD if _flash_left > 0.0 else MINT)
 	var latest: Dictionary = {}
 	var latest_level: Dictionary = {}
 	var world_gains: Array = []
