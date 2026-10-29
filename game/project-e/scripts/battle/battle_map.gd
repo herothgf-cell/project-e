@@ -2,7 +2,7 @@ extends RefCounted
 ## M01 geometry. Simulation coordinates are x/east, y/north; presentation uses -z.
 
 const HIGH_GROUND_HEIGHT: float = 2.4
-const HIGH_GROUND_RAMP_LENGTH: float = 4.0
+const HIGH_GROUND_PAD_RADIUS: float = 2.2
 
 var lane_paths: Array = [
 	[Vector2(-50, 0), Vector2(-26, 18), Vector2(26, 18), Vector2(50, 0)],
@@ -21,9 +21,15 @@ var blockers: Array[Rect2] = [
 var spawn_points: Array[Vector2] = [Vector2(-56, 0), Vector2(56, 0)]
 var core_positions: Array[Vector2] = [Vector2(-50, 0), Vector2(50, 0)]
 var cell_positions: Array[Vector2] = [Vector2(-18, 24), Vector2(18, 24), Vector2(-24, 6), Vector2(24, -6), Vector2(-18, -24), Vector2(18, -24)]
-# The two 40 XP cells are the first real elevation slice. The existing 3m
-# approaches remain the only walkable ramps, so 2D pathfinding stays authoritative.
 var high_ground_cells: Array[Vector2] = [Vector2(-18, 24), Vector2(18, -24)]
+# Every elevated objective keeps its original lane return and gains one symmetric
+# support rotation toward the existing diagonal connector. Width is authoritative.
+var high_ground_ramps: Array = [
+	{"high": Vector2(-18, 24), "low": Vector2(-18, 18), "kind": "lane", "width": 3.0},
+	{"high": Vector2(-18, 24), "low": Vector2(-12, 18), "kind": "support", "width": 3.0},
+	{"high": Vector2(18, -24), "low": Vector2(18, -18), "kind": "lane", "width": 3.0},
+	{"high": Vector2(18, -24), "low": Vector2(12, -18), "kind": "support", "width": 3.0},
+]
 var tower_specs: Array = []
 var structure_circles: Array = []
 var _grid: AStarGrid2D
@@ -66,28 +72,50 @@ func _ground(point: Vector2, margin: float = 0.0) -> bool:
 		if point.distance_to(spec.pos) <= 3.0 - margin:
 			return true
 	for center: Vector2 in cell_positions:
-		if point.distance_to(center) <= 2.2 - margin:
+		if point.distance_to(center) <= HIGH_GROUND_PAD_RADIUS - margin:
 			return true
+		if high_ground_cells.has(center):
+			continue
 		var lane_y: float = 0.0 if absf(center.y) < 10.0 else 18.0 * signf(center.y)
 		if segment_distance(point, center, Vector2(center.x, lane_y)) <= 1.5 - margin:
+			return true
+	for ramp: Dictionary in high_ground_ramps:
+		if segment_distance(point, ramp.high, ramp.low) <= float(ramp.width) * 0.5 - margin:
 			return true
 	return false
 
 
+func ramps_for_high_ground(center: Vector2) -> Array:
+	var result: Array = []
+	for ramp: Dictionary in high_ground_ramps:
+		if Vector2(ramp.high) == center:
+			result.append(ramp)
+	return result
+
+
 func ground_height(point: Vector2) -> float:
-	# Elevation is presentation + visibility data layered on top of the existing
-	# walkable footprint. The 4m approach to each high-value cell is a ramp.
 	if not point.is_finite():
 		return 0.0
+	var result: float = 0.0
 	for center: Vector2 in high_ground_cells:
-		if point.distance_to(center) <= 2.25:
-			return HIGH_GROUND_HEIGHT
-		var direction: float = signf(center.y)
-		var lane_y: float = direction * 18.0
-		var along: float = (point.y - lane_y) * direction
-		if absf(point.x - center.x) <= 1.5 and along >= 0.0 and along <= HIGH_GROUND_RAMP_LENGTH:
-			return HIGH_GROUND_HEIGHT * along / HIGH_GROUND_RAMP_LENGTH
-	return 0.0
+		if point.distance_to(center) <= HIGH_GROUND_PAD_RADIUS + 0.001:
+			result = HIGH_GROUND_HEIGHT
+	for ramp: Dictionary in high_ground_ramps:
+		var high: Vector2 = ramp.high
+		var low: Vector2 = ramp.low
+		var direction: Vector2 = low - high
+		if direction.length_squared() < 0.00001:
+			continue
+		var high_edge: Vector2 = high + direction.normalized() * HIGH_GROUND_PAD_RADIUS
+		var slope: Vector2 = low - high_edge
+		if slope.length_squared() < 0.00001:
+			continue
+		var closest: Vector2 = Geometry2D.get_closest_point_to_segment(point, high_edge, low)
+		if point.distance_to(closest) > float(ramp.width) * 0.5 + 0.001:
+			continue
+		var fraction: float = clampf((point - high_edge).dot(slope) / slope.length_squared(), 0.0, 1.0)
+		result = maxf(result, HIGH_GROUND_HEIGHT * (1.0 - fraction))
+	return result
 
 
 func is_high_ground(point: Vector2) -> bool:
@@ -95,8 +123,7 @@ func is_high_ground(point: Vector2) -> bool:
 
 
 func height_allows_sight(start: Vector2, finish: Vector2) -> bool:
-	# First prototype rule: a low observer cannot see onto the plateau. A high
-	# observer can see down, and observers already on the same plateau see normally.
+	# A mobile low observer cannot reveal a plateau; high observers can see down.
 	return not is_high_ground(finish) or is_high_ground(start)
 
 
