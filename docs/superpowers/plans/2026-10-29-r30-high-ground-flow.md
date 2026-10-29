@@ -1,6 +1,6 @@
 # R30 High-Ground Support Flow Implementation Plan
 
-> **Execution status:** Completed on `feature/r30-high-ground-flow`; final integration follows green CI and review.
+> **Execution status:** Completed and integrated into `main` at `fed755c6b6cae661175cb26d34d3244b899d28b4`; PR #1 was merged after green CI and review.
 
 **Goal:** Connect each40XP high-ground platform to its adjacent support connector with a second ramp so collecting the objective creates a fast lane-support and tower-retreat choice.
 
@@ -48,13 +48,15 @@
 - [x] Recorded RED→GREEN CI runs and evidence boundaries.
 - [x] Recorded that Windows ZIP, human play, bot objective use and online sync remain unverified.
 - [x] Compared the feature branch with its base; only planned code, tests and docs changed.
-- [ ] Fast-forward `main` after the final branch CI and review complete.
+- [x] Fast-forwarded `main` with an expected-SHA lease after final branch CI and review.
+- [x] Verified PR #1 is closed as merged and `main` points to the integrated R30 commit.
 
-## Final automated result before integration
+## Final automated result
 
 - Godot `4.7.2.stable.official.ed1daf0bf`.
 -14 behavioral suites.
 - R30 layout/presentation:61checks,0failures.
 - Total:3,531 assertions,0failures.
 - Project import and main-scene90-frame startup PASS.
-- Evidence: [Godot regression #19](https://github.com/herothgf-cell/project-e/actions/runs/40811635924).
+- Branch evidence: [Godot regression #19](https://github.com/herothgf-cell/project-e/actions/runs/40811635924).
+- Integrated `main` evidence: [Godot regression #27](https://github.com/herothgf-cell/project-e/actions/runs/40812692202).
