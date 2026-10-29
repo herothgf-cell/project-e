@@ -15,6 +15,7 @@ jobs:
         run: |
           mkdir -p .ci
           curl -fL --retry 3 -o .ci/godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          echo 'cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  .ci/godot.zip' | sha256sum -c -
           unzip -q .ci/godot.zip -d .ci
           chmod +x .ci/Godot_v4.7.2-stable_linux.x86_64
       - name: Real new behavioral contracts
@@ -28,9 +29,9 @@ jobs:
           b = [g, '--headless', '--path', 'game/project-e']
           run(b + ['--editor', '--import'])
           failed = []
-          for script, label in [('test_tactical_ai.gd','Tactical objectives'), ('test_playable_slice.gd','Playable slice')]:
+          for script, label in [('test_tactical_ai.gd','Tactical objectives'), ('test_playable_slice.gd','Playable slice'), ('test_tactical_lifecycle.gd','Tactical lifecycle')]:
               try:
-                  run(b + ['--script', 'tests/' + script], label + r': \d+ checks, 0 failures', timeout=120)
+                  run(b + ['--script', 'tests/' + script], label + r': \d+ checks, 0 failures', timeout=300)
               except Exception as exc:
                   failed.append(str(exc))
           if failed:
@@ -42,11 +43,19 @@ jobs:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           mkdir -p review
-          xvfb-run -a .ci/Godot_v4.7.2-stable_linux.x86_64 --path game/project-e --rendering-method gl_compatibility --audio-driver Dummy --script tests/capture_playable_slice.gd -- --output="$GITHUB_WORKSPACE/review"
+          python - <<'PY'
+          from tools.check_godot import run
+          import os
+          g = os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64')
+          out = os.path.abspath('review')
+          run(['xvfb-run','-a',g,'--path','game/project-e','--rendering-method','gl_compatibility','--audio-driver','Dummy','--script','tests/capture_playable_slice.gd','--','--output=' + out], r'CAPTURE_OK:', timeout=300)
+          PY
           test -s review/combat.png
           test -s review/hero-lineup.png
+          printf 'source=%s\nrun=%s\nrenderer=Linux Mesa llvmpipe\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > review/CAPTURE-SOURCE.txt
       - uses: actions/upload-artifact@v4
         with:
           name: ProjectE-playable-review
           path: review/
           retention-days: 14
+          if-no-files-found: error
