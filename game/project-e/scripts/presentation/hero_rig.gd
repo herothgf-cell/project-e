@@ -106,9 +106,92 @@ func build(key: String, team_color: Color) -> void:
 			var leaf: MeshInstance3D = _sphere(head, 0.19, Vector3(side * 0.39, 0.33, 0.04), hair)
 			leaf.scale = Vector3(0.75, 1.65, 0.55)
 		_ring(head, 0.43, 0.045, Vector3(0, 0.24, 0.07), trim)
+	_build_fantasy_details(key, armor, trim, hair)
 	for part: String in _parts:
 		_rest[part] = _parts[part].position
 	_build_animations()
+
+func _build_fantasy_details(key: String, armor: Color, trim: Color, hair: Color) -> void:
+	# All V4 pieces are nested under original visual joints; hitboxes stay at 0.45m.
+	var head: Node3D = _parts["Head"]
+	var arm: Node3D = _parts["RightArm"]
+	var chest: Node3D = _parts["Torso"]
+	var hair_detail := Node3D.new()
+	hair_detail.name = "HairDetail"
+	head.add_child(hair_detail)
+	var weapon := Node3D.new()
+	weapon.name = "WeaponDetail"
+	arm.add_child(weapon)
+	var emblem := Node3D.new()
+	emblem.name = "RuneEmblem"
+	chest.add_child(emblem)
+	# Distinct triangular bangs and small layered hair volume.
+	for index: int in range(3):
+		var x: float = -0.31 + float(index) * 0.30
+		var strand: MeshInstance3D = _cylinder(hair_detail, 0.015, 0.125, 0.30, Vector3(x, 0.24, -0.29), hair, 6)
+		strand.rotation.z = 0.25 * (float(index) - 1.0)
+	_sphere(hair_detail, 0.13, Vector3(-0.40, 0.01, 0.0), hair).scale = Vector3(0.72, 1.8, 1.0)
+	_sphere(hair_detail, 0.13, Vector3(0.40, 0.01, 0.0), hair).scale = Vector3(0.72, 1.8, 1.0)
+	# Chest rune and polished gem, deliberately brighter than the muted road.
+	var medallion: MeshInstance3D = _ring(emblem, 0.16, 0.033, Vector3(0, 0.13, -0.43), trim)
+	medallion.rotation_degrees.x = 90
+	_sphere(emblem, 0.092, Vector3(0, 0.13, -0.47), _team).scale.z = 0.45
+	if key == "bas":
+		# Flame-like brass knuckle edge, not a borrowed weapon silhouette.
+		var crest: MeshInstance3D = _ring(weapon, 0.25, 0.05, Vector3(0, -0.47, -0.57), trim)
+		crest.rotation_degrees.x = 90
+		for side: float in [-1.0, 0.0, 1.0]:
+			var tooth: MeshInstance3D = _cylinder(weapon, 0.02, 0.10, 0.38, Vector3(side * 0.22, -0.40, -0.75), Color("ffc979"), 6)
+			tooth.rotation_degrees.x = -42
+	elif key == "rio":
+		# Enchanted disk spokes carry the motion of the actual arm.
+		var orbit: MeshInstance3D = _ring(weapon, 0.32, 0.035, Vector3(0.13, -0.43, -0.34), Color("a9ebff"))
+		orbit.rotation_degrees = Vector3(65, 0, 18)
+		for side: float in [-1.0, 1.0]:
+			var crystal: MeshInstance3D = _cylinder(weapon, 0.02, 0.13, 0.38, Vector3(side * 0.24 + 0.12, -0.43, -0.36), Color("82dcff"), 6)
+			crystal.rotation.z = side * 0.6
+	else:
+		# Guardian leaf talisman hangs from the binding-hand; creates no collider.
+		var twig: MeshInstance3D = _cylinder(weapon, 0.05, 0.09, 0.76, Vector3(0.14, -0.38, -0.22), Color("d6b57a"), 8)
+		twig.rotation_degrees.z = -14
+		for side: float in [-1.0, 1.0]:
+			var leaf: MeshInstance3D = _sphere(weapon, 0.19, Vector3(side * 0.22 + 0.14, -0.48, -0.30), Color("a1e39f"))
+			leaf.scale = Vector3(0.58, 1.55, 0.45)
+			leaf.rotation.z = side * -0.52
+
+
+func _secondary_motion(unit: Dictionary, time: float, clip: String, sample: float) -> void:
+	# Nonauthoritative body bob: no movement orders or collision changes.
+	match clip:
+		"walk":
+			var tempo: float = 10.2 if hero_key == "rio" else (8.8 if hero_key == "nema" else 9.0)
+			var stride: float = time * tempo
+			position.y = 0.095 * absf(sin(stride))
+			rotation.z += 0.036 * sin(stride)
+			_parts["Head"].rotation.x -= 0.036 * sin(stride)
+		"idle":
+			position.y = 0.013 * sin(time * 2.7)
+			_parts["Head"].rotation.z += 0.016 * sin(time * 1.8)
+			_parts["Torso"].rotation.x += 0.016 * sin(time * 2.4)
+		"basic":
+			var strike: float = sin(PI * clampf(sample, 0.0, 1.0))
+			position.y = 0.035 * strike
+			position.z = -0.06 * strike
+			_parts["Head"].rotation.x -= 0.045 * strike
+		"Q", "W", "E", "R":
+			var power: float = 0.075 if clip == "R" else 0.045
+			position.y = power * sin(PI * clampf(sample, 0.0, 1.0))
+			rotation.z += (0.05 if hero_key == "bas" else -0.035) * sin(PI * sample)
+		"hit":
+			position.y = -0.09 * sin(PI * clampf(sample / 0.26, 0.0, 1.0))
+		"respawn":
+			position.y = 0.07 * sin(PI * clampf(sample / 0.65, 0.0, 1.0))
+		"death":
+			position.y = -0.05 * clampf(sample / 0.85, 0.0, 1.0)
+	# A frozen or dead visual state does not drift over wall-clock time.
+	if not bool(unit.alive) and clip != "death":
+		position = Vector3.ZERO
+
 
 func _gauntlet(arm: Node3D, large: bool) -> void:
 	var factor: float = 1.15 if large else 0.88
@@ -201,6 +284,7 @@ func pose(unit: Dictionary, time: float) -> void:
 	current_clip = clip if _player.has_animation(clip) else "idle"
 	_player.play(current_clip)
 	_player.seek(sample, true)
+	_secondary_motion(unit, time, current_clip, sample)
 	if float(unit.stun_left) > 0:
 		_parts.Head.rotation.z += 0.23
 	if _parts.has("Cloth"):
