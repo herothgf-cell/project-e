@@ -27,7 +27,7 @@ func _run() -> void:
 		var rig: Node3D = model.get_node("HeroRig")
 		var head: Node3D = rig.get_node("Head")
 		var actual_head: MeshInstance3D = head.get_child(0) as MeshInstance3D
-		_check(actual_head != null and actual_head.mesh is SphereMesh and actual_head.mesh.radius >= 0.39, "three-head fantasy silhouette for " + key)
+		_check(actual_head != null and actual_head.mesh is SphereMesh and (actual_head.mesh as SphereMesh).radius >= 0.39, "three-head fantasy silhouette for " + key)
 		_check(head.has_node("FantasyFace"), "personalized fantasy face for " + key)
 		_check(rig.get_node("AnimationPlayer").has_animation("walk") and rig.get_node("AnimationPlayer").has_animation("R"), "retains walking and ultimate animation for " + key)
 		_check(is_equal_approx(hero.radius, 0.45), "fantasy art does not change hit box")
