@@ -177,7 +177,7 @@ func _build_bottom() -> void:
 	_bottom = _panel(root_control)
 	_bottom.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_bottom.offset_left = 18
-	_bottom.offset_right = -298
+	_bottom.offset_right = -18
 	_bottom.offset_top = -164
 	_bottom.offset_bottom = -18
 	var row: HBoxContainer = _row(_inset(_bottom, 14, 12), 14)
@@ -230,10 +230,10 @@ func _build_bottom() -> void:
 	_hint = _label(root_control, "우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말", 10, Color("fff5da"))
 	_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_hint.offset_left = 22
-	_hint.offset_right = -300
+	_hint.offset_right = -18
 	_hint.offset_top = -183
 	_hint.offset_bottom = -166
-	_hint.add_theme_color_override("font_shadow_color", Color("294943"))
+	_hint.add_theme_color_override("font_shadow_color", Color("182642"))
 	_hint.add_theme_constant_override("shadow_offset_y", 1)
 
 
@@ -243,7 +243,7 @@ func _build_inventory() -> void:
 	_inventory.name = "ConsumableInventory"
 	_inventory.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_inventory.offset_left = 18
-	_inventory.offset_right = -298
+	_inventory.offset_right = -18
 	_inventory.offset_top = -240
 	_inventory.offset_bottom = -184
 	var row: HBoxContainer = _row(_inset(_inventory, 10, 1), 8)
@@ -369,11 +369,12 @@ func _update_consumables(battle: Variant, hero: Dictionary) -> void:
 
 func _build_map() -> void:
 	_map_panel = _panel(root_control)
-	_map_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_map_panel.offset_left = -284
-	_map_panel.offset_right = -18
-	_map_panel.offset_top = -240
-	_map_panel.offset_bottom = -18
+	# The concept-board minimap sits below the top bar, preserving lane view.
+	_map_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	_map_panel.offset_left = 18
+	_map_panel.offset_right = 284
+	_map_panel.offset_top = 89
+	_map_panel.offset_bottom = 311
 	var column: VBoxContainer = _column(_inset(_map_panel, 10, 9), 5)
 	_label(column, "전장   N / C / S", 12, INK)
 	minimap = MapScript.new()

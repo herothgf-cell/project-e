@@ -99,6 +99,55 @@ func _blocker(rect: Rect2) -> void:
 			_box(self, Vector3(rect.size.x / pieces - 0.045, 0.34, rect.size.y + 0.025), to_world(Vector2(x, center.y), 0.18 + tier * 0.36), Color("c2b798") if (piece + tier) % 2 == 0 else Color("b1a58b"))
 	_box(self, Vector3(rect.size.x + 0.08, 0.16, rect.size.y + 0.08), to_world(center, 1.28), Color("e2d2af"))
 
+
+# The following overrides replace workshop props with fantasy-world ornaments.
+# They have no physics body, selection collider, simulation effect or path metadata.
+func _minion(parent: Node3D, subtype: String, color: Color) -> void:
+	var siege: bool = subtype == "siege"
+	var radius: float = 0.38 if siege else 0.28
+	_cylinder(parent, radius, 0.65 if siege else 0.52, Vector3(0, 0.37, 0), Color("e4d8b6"), 8)
+	_sphere(parent, radius * 0.86, Vector3(0, 0.84, 0), Color("f4ccab"))
+	_cylinder(parent, radius * 1.03, 0.22, Vector3(0, 1.10, 0), color, 10)
+	_box(parent, Vector3(0.38 if siege else 0.24, 0.12, 0.37), Vector3(0, 0.52, -0.30), color)
+	for side: float in [-1.0, 1.0]:
+		_cylinder(parent, 0.10, 0.38, Vector3(side * radius * 0.49, 0.12, 0), Color("373a59"), 6)
+	if subtype == "melee":
+		_box(parent, Vector3(0.13, 0.62, 0.14), Vector3(0.40, 0.70, -0.12), Color("e9eef1"))
+		_box(parent, Vector3(0.25, 0.27, 0.10), Vector3(-0.43, 0.52, -0.28), color)
+	elif subtype == "ranged":
+		_cylinder(parent, 0.055, 0.77, Vector3(0.38, 0.72, -0.10), Color("e4bd7e"), 8)
+		_sphere(parent, 0.18, Vector3(0.38, 1.14, -0.10), Color("9de9ff"))
+	else:
+		_sphere(parent, 0.36, Vector3(0, 1.42, 0), Color("addafb")).scale = Vector3(0.8, 1.3, 0.8)
+
+func _workbench(position: Vector3, team: int) -> void:
+	var side_color: Color = TEAL if team == 0 else ORANGE
+	_cylinder(self, 0.80, 0.30, position + Vector3(0, 0.18, 0), Color("d9ceb2"), 10)
+	for angle: float in [0.0, PI * 0.5, PI, PI * 1.5]:
+		var offset := Vector3(cos(angle) * 0.58, 0, sin(angle) * 0.58)
+		_cylinder(self, 0.10, 1.05, position + offset + Vector3.UP * 0.82, Color("acb9aa"), 7)
+	_sphere(self, 0.40, position + Vector3.UP * 1.50, side_color).scale.y = 1.25
+	_sphere(self, 0.16, position + Vector3.UP * 1.86, Color("e5f8ef"))
+
+func _boundary_workshop(position: Vector3, mirror: float) -> void:
+	# Stone arch ruin beyond the traversable field.
+	for side: float in [-1.0, 1.0]:
+		_box(self, Vector3(0.65, 2.8, 0.65), position + Vector3(side * 1.55, 1.2, 0), Color("b7c8b5"))
+		_box(self, Vector3(0.82, 0.23, 0.82), position + Vector3(side * 1.55, 2.55, 0), Color("e0d8ba"))
+	_box(self, Vector3(3.7, 0.36, 0.72), position + Vector3(0, 2.75, 0), Color("d3cfb9"))
+	var sigil: MeshInstance3D = ring_mesh(0.62, 0.09, Color("a9f0da") if mirror < 0 else Color("f1aeec"))
+	sigil.position = position + Vector3(0, 1.65, 0)
+	sigil.rotation.x = PI * 0.5
+	add_child(sigil)
+
+func _drying_rack(position: Vector3) -> void:
+	# Crystal shrine, not a misleading traversable bridge.
+	_cylinder(self, 0.95, 0.32, position + Vector3(0, 0.16, 0), Color("b8bca7"), 8)
+	for side: float in [-1.0, 1.0]:
+		_cylinder(self, 0.14, 1.5, position + Vector3(side * 0.57, 0.86, 0), Color("e7d8ae"), 6)
+		var gem: MeshInstance3D = _sphere(self, 0.24, position + Vector3(side * 0.57, 1.78, 0), Color("91dffa"))
+		gem.scale.y = 1.42
+
 func _tower(parent: Node3D, subtype: String, color: Color) -> void:
 	super._tower(parent, subtype, color)
 	for angle: float in [0.0, PI * 0.5, PI, PI * 1.5]:
