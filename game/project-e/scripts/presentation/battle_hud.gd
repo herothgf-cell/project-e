@@ -23,20 +23,20 @@ const PortraitScript = preload("res://scripts/presentation/hero_portrait.gd")
 const MapScript = preload("res://scripts/presentation/tactical_map.gd")
 const OverlayScript = preload("res://scripts/presentation/unit_overlay.gd")
 const AbilityScript = preload("res://scripts/battle/hero_abilities.gd")
-const INK := Color("294943")
-const MUTED := Color("65776b")
-const PAPER := Color("faf2dc")
-const TEAL := Color("2c8e80")
-const COPPER := Color("b8754b")
+const INK := Color("f7f0e9")
+const MUTED := Color("b8bfd9")
+const PAPER := Color("202941")
+const TEAL := Color("73d4e6")
+const COPPER := Color("f0c47d")
 const HEROES: Dictionary = {
-	"bas": ["바스", "전선의 압력", "큰 장갑으로 파고들어\n가까운 적을 밀어내고 아군을 엄호합니다."],
-	"rio": ["리오", "왕복하는 궤적", "원반의 출발과 귀환을 설계하고\n가로디딤으로 공격의 각도를 바꿉니다."],
-	"nema": ["네마", "두 핀 사이의 약속", "연결 핀을 세워 길목을 지키고\n부채 모양 보호막으로 동료를 돕습니다."],
+	"bas": ["바스", "룬 건틀릿 전사", "거대한 마력 장갑으로 파고들어\n가까운 적을 밀어내고 아군을 엄호합니다."],
+	"rio": ["리오", "별빛 원반 마법사", "마법 원반의 출발과 귀환을 제어하고\n가로디딤으로 공격의 각도를 바꿉니다."],
+	"nema": ["네마", "숲의 결계술사", "정령 룬핀을 세워 길목을 지키고\n부채 모양 보호막으로 동료를 돕습니다."],
 }
 const SKILLS: Dictionary = {
-	"bas": ["벼림 부채", "받침 펼치기", "엇박 발판", "세로 파열"],
-	"rio": ["왕복 절삭", "회수 매듭", "가로디딤", "삼각 봉합"],
-	"nema": ["짝핀 놓기", "직조 박동", "수선 부채", "결박 봉합"],
+	"bas": ["화염 원호", "룬 수호", "대지 도약", "천둥 균열"],
+	"rio": ["혜성 원반", "성운 고리", "월광 발걸음", "삼각 성좌"],
+	"nema": ["씨앗 룬핀", "숲결 진동", "자연 수호", "덩굴 결박"],
 }
 const SKILL_HELP: Dictionary = {
 	"bas": ["짧고 넓은 부채로 공격합니다.", "가까운 지점의 아군에게 보호막을 줍니다.", "지형에 막히는 짧은 돌진입니다.", "넓은 직선에 피해와 속박을 줍니다."],
@@ -77,6 +77,7 @@ var _practice: CheckButton
 var _start: Button
 var _hero_buttons: Dictionary = {}
 var _skill_buttons: Dictionary = {}
+var _skill_icons: Dictionary = {}
 var _skill_labels: Dictionary = {}
 var _growth_buttons: Dictionary = {}
 var _top: PanelContainer
@@ -154,8 +155,8 @@ func _build_top() -> void:
 	var row: HBoxContainer = _row(_inset(_top, 16, 8), 18)
 	var title: VBoxContainer = _column(row, 0)
 	title.custom_minimum_size.x = 226
-	_label(title, "PROJECT E  /  수로 공방", 20, INK)
-	_label(title, "M01 · 세 라인 · 오프라인 3 대 3", 12, MUTED)
+	_label(title, "PROJECT E  /  아스트라 전장", 20, INK)
+	_label(title, "판타지 전장 · 세 라인 · 3 대 3", 12, MUTED)
 	_west_core = _label(row, "청록 핵 · 잠금", 16, TEAL)
 	_west_core.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_west_core.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -176,7 +177,7 @@ func _build_bottom() -> void:
 	_bottom = _panel(root_control)
 	_bottom.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_bottom.offset_left = 18
-	_bottom.offset_right = -298
+	_bottom.offset_right = -18
 	_bottom.offset_top = -164
 	_bottom.offset_bottom = -18
 	var row: HBoxContainer = _row(_inset(_bottom, 14, 12), 14)
@@ -201,15 +202,24 @@ func _build_bottom() -> void:
 		var margin: MarginContainer = _inset(button, 7, 7)
 		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var column: VBoxContainer = _column(margin, 3)
+		var column: VBoxContainer = _column(margin, 2)
 		column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var key_label: Label = _label(column, slot, 27, INK)
+		var key_label: Label = _label(column, slot, 14, INK)
 		key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var name_label: Label = _label(column, "", 12, INK)
+		var icon: TextureRect = TextureRect.new()
+		icon.name = "SkillIcon" + slot
+		icon.custom_minimum_size = Vector2(34, 26)
+		icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		column.add_child(icon)
+		_skill_icons[slot] = icon
+		var name_label: Label = _label(column, "", 11, INK)
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var state_label: Label = _label(column, "", 12, TEAL)
+		var state_label: Label = _label(column, "", 11, TEAL)
 		state_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var cost_label: Label = _label(column, "", 10, MUTED)
+		var cost_label: Label = _label(column, "", 9, MUTED)
 		cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_skill_buttons[slot] = button
 		_skill_labels[slot] = [name_label, state_label, cost_label]
@@ -220,10 +230,10 @@ func _build_bottom() -> void:
 	_hint = _label(root_control, "우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말", 10, Color("fff5da"))
 	_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_hint.offset_left = 22
-	_hint.offset_right = -300
+	_hint.offset_right = -18
 	_hint.offset_top = -183
 	_hint.offset_bottom = -166
-	_hint.add_theme_color_override("font_shadow_color", Color("294943"))
+	_hint.add_theme_color_override("font_shadow_color", Color("182642"))
 	_hint.add_theme_constant_override("shadow_offset_y", 1)
 
 
@@ -233,7 +243,7 @@ func _build_inventory() -> void:
 	_inventory.name = "ConsumableInventory"
 	_inventory.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_inventory.offset_left = 18
-	_inventory.offset_right = -298
+	_inventory.offset_right = -18
 	_inventory.offset_top = -240
 	_inventory.offset_bottom = -184
 	var row: HBoxContainer = _row(_inset(_inventory, 10, 1), 8)
@@ -359,11 +369,12 @@ func _update_consumables(battle: Variant, hero: Dictionary) -> void:
 
 func _build_map() -> void:
 	_map_panel = _panel(root_control)
-	_map_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_map_panel.offset_left = -284
-	_map_panel.offset_right = -18
-	_map_panel.offset_top = -240
-	_map_panel.offset_bottom = -18
+	# The concept-board minimap sits below the top bar, preserving lane view.
+	_map_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	_map_panel.offset_left = 18
+	_map_panel.offset_right = 284
+	_map_panel.offset_top = 89
+	_map_panel.offset_bottom = 311
 	var column: VBoxContainer = _column(_inset(_map_panel, 10, 9), 5)
 	_label(column, "전장   N / C / S", 12, INK)
 	minimap = MapScript.new()
@@ -396,8 +407,8 @@ func _build_feedback() -> void:
 func _build_selection() -> void:
 	selection = _modal("HeroSelection", 1040)
 	var column: VBoxContainer = selection.get_meta("column") as VBoxContainer
-	_label(column, "수로 공방의 조율사", 32, INK)
-	_label(column, "영웅을 고르고, 세 라인에서 동료와 함께 상대 핵을 파괴하세요.", 16, MUTED)
+	_label(column, "아스트라 전장의 영웅들", 32, INK)
+	_label(column, "3등신 판타지 영웅과 함께 3라인에서 상대 마법 핵을 파괴하세요.", 16, MUTED)
 	var cards: HBoxContainer = _row(column, 14)
 	var group := ButtonGroup.new()
 	for key: String in ["bas", "rio", "nema"]:
@@ -571,6 +582,11 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 		var slot: String = ["Q", "W", "E", "R"][index]
 		var labels: Array = _skill_labels[slot]
 		var button: Button = _skill_buttons[slot]
+		var icon: TextureRect = _skill_icons[slot]
+		var icon_path: String = "res://assets/ui/skills/%s_%s.svg" % [key, slot.to_lower()]
+		if icon.get_meta("asset_path", "") != icon_path:
+			icon.texture = load(icon_path) as Texture2D
+			icon.set_meta("asset_path", icon_path)
 		var cost: float = AbilityScript.CONFIG[key][slot][0]
 		labels[0].text = SKILLS[key][index]
 		labels[2].text = "에너지 %d" % int(cost)
@@ -586,7 +602,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 		labels[1].text = state
 		labels[1].add_theme_color_override("font_color", COPPER if state != "준비" and aim_slot != slot else TEAL)
 		button.tooltip_text = "%s · %s\n에너지 %d / 재사용 %.1f초\n%s" % [slot, SKILLS[key][index], cost, AbilityScript.CONFIG[key][slot][1], SKILL_HELP[key][index]]
-		button.add_theme_stylebox_override("normal", _style(Color("d7eddb") if aim_slot == slot else Color("eee5cf"), TEAL if aim_slot == slot else Color("d2c5a7")))
+		button.add_theme_stylebox_override("normal", _style(Color("4b5279") if aim_slot == slot else Color("2d3554"), TEAL if aim_slot == slot else Color("a18d6f"), 2 if aim_slot == slot else 1))
 	growth_button.text = "G  성장\n+ %d 포인트" % hero.points
 	_growth_title.text = "성장  ·  사용 가능 %d포인트" % hero.points
 	_growth_stats.text = "현재 위력 %d · 방어 %d · 이동 %.2fm/초 · 에너지 회복 %.1f/초" % [hero.power, hero.armor, hero.speed, hero.energy_regen]
@@ -664,7 +680,7 @@ func blocks_point(point: Vector2) -> bool:
 func _modal(node_name: String, width: float) -> Control:
 	var backdrop := ColorRect.new()
 	backdrop.name = node_name
-	backdrop.color = Color(0.08, 0.18, 0.17, 0.65)
+	backdrop.color = Color(0.04, 0.07, 0.16, 0.74)
 	root_control.add_child(backdrop)
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -687,14 +703,14 @@ func _theme() -> Theme:
 	result_theme.set_color("font_color", "Button", INK)
 	result_theme.set_color("font_hover_color", "Button", INK)
 	result_theme.set_color("font_pressed_color", "Button", INK)
-	result_theme.set_color("font_disabled_color", "Button", Color("939b89"))
+	result_theme.set_color("font_disabled_color", "Button", Color("8993a8"))
 	result_theme.set_color("font_color", "CheckButton", INK)
 	result_theme.set_color("font_hover_color", "CheckButton", TEAL)
-	result_theme.set_stylebox("panel", "PanelContainer", _style(PAPER, Color("c7b899")))
-	result_theme.set_stylebox("normal", "Button", _style(Color("eee5cf"), Color("d2c5a7")))
-	result_theme.set_stylebox("hover", "Button", _style(Color("e0edda"), TEAL))
-	result_theme.set_stylebox("pressed", "Button", _style(Color("d1e8d3"), TEAL, 2))
-	result_theme.set_stylebox("disabled", "Button", _style(Color("e8e2d1"), Color("d8cfb8")))
+	result_theme.set_stylebox("panel", "PanelContainer", _style(PAPER, Color("d8b57b"), 2))
+	result_theme.set_stylebox("normal", "Button", _style(Color("303a59"), Color("a18d6f")))
+	result_theme.set_stylebox("hover", "Button", _style(Color("444e78"), TEAL, 2))
+	result_theme.set_stylebox("pressed", "Button", _style(Color("505b83"), TEAL, 2))
+	result_theme.set_stylebox("disabled", "Button", _style(Color("292e43"), Color("56576a")))
 	result_theme.set_stylebox("focus", "Button", _style(Color(0, 0, 0, 0), TEAL, 2))
 	return result_theme
 
@@ -704,7 +720,7 @@ func _style(fill: Color, border: Color, thickness: int = 1) -> StyleBoxFlat:
 	style.bg_color = fill
 	style.border_color = border
 	style.set_border_width_all(thickness)
-	style.set_corner_radius_all(8)
+	style.set_corner_radius_all(12)
 	style.content_margin_left = 8
 	style.content_margin_right = 8
 	style.content_margin_top = 6
@@ -763,8 +779,8 @@ func _button(parent: Node, value: String, minimum: Vector2, primary: bool = fals
 	button.focus_mode = Control.FOCUS_NONE
 	button.mouse_filter = Control.MOUSE_FILTER_STOP
 	if primary:
-		button.add_theme_stylebox_override("normal", _style(Color("d5e8d2"), TEAL))
-		button.add_theme_color_override("font_color", TEAL)
+		button.add_theme_stylebox_override("normal", _style(Color("344d69"), COPPER, 2))
+		button.add_theme_color_override("font_color", Color("fff2d4"))
 	parent.add_child(button)
 	return button
 
@@ -774,7 +790,7 @@ func _bar(parent: Node, fill: Color, height: float) -> ProgressBar:
 	bar.custom_minimum_size.y = height
 	bar.show_percentage = false
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bar.add_theme_stylebox_override("background", _style(Color("d6dac5"), Color("bdc7b3")))
+	bar.add_theme_stylebox_override("background", _style(Color("141f31"), Color("6b7694")))
 	bar.add_theme_stylebox_override("fill", _style(fill, fill, 0))
 	parent.add_child(bar)
 	return bar

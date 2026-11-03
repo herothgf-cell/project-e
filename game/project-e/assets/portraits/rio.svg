@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="340" viewBox="0 0 280 170">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#293858"/><stop offset="1" stop-color="#171d37"/></linearGradient><radialGradient id="halo"><stop stop-color="#8fdfff" stop-opacity=".45"/><stop offset="1" stop-color="#8fdfff" stop-opacity="0"/></radialGradient></defs>
+<rect width="280" height="170" rx="16" fill="url(#bg)"/><circle cx="140" cy="85" r="96" fill="url(#halo)"/>
+<circle cx="140" cy="90" r="74" fill="none" stroke="#8fdfff" stroke-opacity=".5" stroke-width="2"/>
+<path d="M22 21h25M22 21v25M258 21h-25M258 21v25M22 149h25M22 149v-25M258 149h-25M258 149v-25" fill="none" stroke="#e6c98e" stroke-width="2"/>
+<path d="M103 91 Q64 114 82 163 L119 160 127 115Z" fill="#6252ad" stroke="#293054" stroke-width="4"/><path d="M178 91 Q218 116 197 163 L164 159 152 115Z" fill="#7460c1" stroke="#293054" stroke-width="4"/><circle cx="207" cy="104" r="26" fill="none" stroke="#a5ccfa" stroke-width="9"/><circle cx="207" cy="104" r="12" fill="#78dcff"/><path d="M204 59 L205 142" stroke="#f0ce80" stroke-width="5"/>
+<!-- Boots, compact legs and fantasy armored tunic -->
+<path d="M121 123 L121 159 138 160 140 128 M145 128 L148 160 164 159 165 124" fill="#6650b4" stroke="#28304e" stroke-width="5" stroke-linejoin="round"/>
+<path d="M116 155 L140 155 141 165 113 165Z M146 156 L165 155 169 165 143 165Z" fill="#3b375e" stroke="#28304e" stroke-width="3"/>
+<path d="M118 80 Q140 73 164 81 L173 126 111 126Z" fill="#c5d9fc" stroke="#2e3452" stroke-width="4"/>
+<path d="M119 98 L162 98 M121 118 L162 118" stroke="#e6ae62" stroke-width="5"/><path d="M132 85 L140 101 149 85" fill="#6650b4" stroke="#e5c981" stroke-width="3"/>
+<path d="M117 86 Q95 88 101 124 L116 128 128 99Z M163 86 Q188 91 178 125 L166 128 154 98Z" fill="#6650b4" stroke="#2e3452" stroke-width="4"/>
+<circle cx="140" cy="48" r="28" fill="#f7c7a7" stroke="#31304d" stroke-width="3"/>
+<path d="M113 36 Q108 1 152 -6 L162 32Z" fill="#554399" stroke="#2d3055" stroke-width="4"/><path d="M98 31 Q141 17 182 32 Q176 45 101 41Z" fill="#5b4a9c" stroke="#293052" stroke-width="4"/><path d="M125 30 L155 30" stroke="#e9c778" stroke-width="5"/>
+<ellipse cx="130" cy="52" rx="4" ry="7" fill="#34324b"/><ellipse cx="152" cy="52" rx="4" ry="7" fill="#34324b"/><circle cx="131" cy="50" r="1.6" fill="#fff"/><circle cx="153" cy="50" r="1.6" fill="#fff"/>
+<ellipse cx="120" cy="61" rx="6" ry="3.5" fill="#e69394" opacity=".65"/><ellipse cx="160" cy="61" rx="6" ry="3.5" fill="#e69394" opacity=".65"/>
+<path d="M137 65 Q141 68 146 65" fill="none" stroke="#98556f" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

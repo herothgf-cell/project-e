@@ -61,15 +61,15 @@ func _update_source_hover(pointer: Vector2) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("204e4e"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("2d5b56"))
 	if battle == null:
 		return
 	var scale_value: float = size.x / 124.0
 	for path: Array in battle.map.lane_paths:
 		for i: int in range(path.size() - 1):
-			draw_line(to_map(path[i]), to_map(path[i + 1]), Color("9ba993"), 6.0 * scale_value, true)
+			draw_line(to_map(path[i]), to_map(path[i + 1]), Color("d6d5b9"), 6.0 * scale_value, true)
 	for link: Array in battle.map.connectors:
-		draw_line(to_map(link[0]), to_map(link[1]), Color("7f9988"), 4.0 * scale_value, true)
+		draw_line(to_map(link[0]), to_map(link[1]), Color("8bba9d"), 4.0 * scale_value, true)
 	# R30 ramps are fixed terrain and may be drawn before fog. The warmer support
 	# route is distinct from the cream lane-return ramp without exposing cell state.
 	for segment: Dictionary in high_ground_ramp_segments():
@@ -80,7 +80,7 @@ func _draw() -> void:
 		draw_rect(Rect2(to_map(center) - Vector2(7.5, 8) * scale_value, Vector2(15, 16) * scale_value), Color("9ba993"))
 	for blocker: Rect2 in battle.map.blockers:
 		var top_left: Vector2 = to_map(Vector2(blocker.position.x, blocker.end.y))
-		draw_rect(Rect2(top_left, blocker.size * scale_value), Color("406e65"))
+		draw_rect(Rect2(top_left, blocker.size * scale_value), Color("376e64"))
 	# High ground is static terrain knowledge; fog may dim it, but it is never a
 	# hidden enemy-state reveal. Double chevrons distinguish it from XP circles.
 	for center: Vector2 in battle.map.high_ground_cells:
@@ -98,7 +98,7 @@ func _draw() -> void:
 	for id: int in visible_unit_ids():
 		var unit: Dictionary = battle.units[id]
 		var point: Vector2 = to_map(unit.pos)
-		var color := Color("64ead8") if int(unit.team) == 0 else Color("ffa26b")
+		var color := Color("82d8f8") if int(unit.team) == 0 else Color("f6a1d2")
 		match str(unit.kind):
 			"hero":
 				draw_circle(point, 4.1, color)

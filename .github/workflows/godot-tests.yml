@@ -20,6 +20,8 @@ jobs:
           unzip -q .ci/godot.zip -d .ci
           chmod +x .ci/Godot_v4.7.2-stable_linux.x86_64
           .ci/Godot_v4.7.2-stable_linux.x86_64 --version
+      - name: Validate fantasy vector assets
+        run: python tools/check_art_assets.py
       - name: Run Project E behavioral suites
         shell: bash
         env:

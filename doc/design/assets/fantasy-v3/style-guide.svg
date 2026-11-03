@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs>
+<linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#233558"/><stop offset="1" stop-color="#12182e"/></linearGradient>
+<linearGradient id="grass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#93d1ac"/><stop offset="1" stop-color="#5caa87"/></linearGradient>
+<linearGradient id="gem" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d1f9ff"/><stop offset="1" stop-color="#53b7ee"/></linearGradient>
+</defs>
+<rect width="1280" height="720" fill="#121b30"/>
+<rect x="16" y="16" width="1248" height="115" rx="18" fill="url(#navy)" stroke="#e3bf82" stroke-width="3"/><text x="56" y="74" font-family="sans-serif" font-weight="700" font-size="34" fill="#f8ead5">PROJECT E  •  FANTASY SEMI-CARTOON  V3</text><text x="56" y="107" font-family="sans-serif" font-weight="700" font-size="18" fill="#c6d4e9">A: cute silhouette   +   D: taller 3-head proportions   +   A/B: bright magical forest</text>
+<rect x="20" y="153" width="405" height="382" rx="18" fill="url(#navy)" stroke="#e3bf82" stroke-width="3"/><g transform="translate(215 360) scale(2.25)">
+<ellipse cy="70" rx="51" ry="12" fill="#24324b" opacity=".28"/>
+<path d="M-25 7 L-40 64 L-12 67 -8 46 M26 7 L40 64 L12 67 8 46" fill="#d65262" stroke="#252d48" stroke-width="4"/>
+<rect x="-20" y="-2" width="40" height="39" rx="14" fill="#fff0d4" stroke="#27334d" stroke-width="4"/>
+<path d="M-15 32 L-18 61 M15 32 L18 61" stroke="#35405c" stroke-width="12" stroke-linecap="round"/>
+<circle cy="-33" r="30" fill="#f7c7a6" stroke="#2e3457" stroke-width="4"/>
+<path d="M-29 -42 Q-22 -70 7 -60 Q28 -65 31 -40 L5 -53 -17 -32Z" fill="#f6c66c" stroke="#33354f" stroke-width="4"/>
+<ellipse cx="-12" cy="-29" rx="4.2" ry="7" fill="#30304c"/><ellipse cx="12" cy="-29" rx="4.2" ry="7" fill="#30304c"/>
+<path d="M-15 -62 L0 -72 11 -58 22 -69" fill="none" stroke="#f9d99b" stroke-width="11"/>
+<path d="M45 28 L67 -77 78 -66 65 38Z" fill="#d3effa" stroke="#38496b" stroke-width="5"/>
+</g><text x="40" y="198" font-family="sans-serif" font-weight="700" font-size="27" fill="#f8ead5">BAS</text><text x="40" y="227" font-family="sans-serif" font-weight="700" font-size="16" fill="#c2cfe5">Frontline • ember armor</text><rect x="442" y="153" width="405" height="382" rx="18" fill="url(#navy)" stroke="#e3bf82" stroke-width="3"/><g transform="translate(637 360) scale(2.25)">
+<ellipse cy="70" rx="51" ry="12" fill="#24324b" opacity=".28"/>
+<path d="M-25 7 L-40 64 L-12 67 -8 46 M26 7 L40 64 L12 67 8 46" fill="#8473cf" stroke="#252d48" stroke-width="4"/>
+<rect x="-20" y="-2" width="40" height="39" rx="14" fill="#fff0d4" stroke="#27334d" stroke-width="4"/>
+<path d="M-15 32 L-18 61 M15 32 L18 61" stroke="#35405c" stroke-width="12" stroke-linecap="round"/>
+<circle cy="-33" r="30" fill="#f7c7a6" stroke="#2e3457" stroke-width="4"/>
+<path d="M-29 -42 Q-22 -70 7 -60 Q28 -65 31 -40 L5 -53 -17 -32Z" fill="#dfd5fa" stroke="#33354f" stroke-width="4"/>
+<ellipse cx="-12" cy="-29" rx="4.2" ry="7" fill="#30304c"/><ellipse cx="12" cy="-29" rx="4.2" ry="7" fill="#30304c"/>
+<path d="M-38 -57 L9 -110 35 -58Z" fill="#6759a7" stroke="#30354e" stroke-width="4"/><path d="M-52 -55 Q0 -74 51 -55" fill="none" stroke="#8473c5" stroke-width="12"/>
+<circle cx="59" cy="6" r="20" fill="none" stroke="#97d9f7" stroke-width="7"/>
+</g><text x="462" y="198" font-family="sans-serif" font-weight="700" font-size="27" fill="#f8ead5">RIO</text><text x="462" y="227" font-family="sans-serif" font-weight="700" font-size="16" fill="#c2cfe5">Mage • enchanted discs</text><rect x="864" y="153" width="405" height="382" rx="18" fill="url(#navy)" stroke="#e3bf82" stroke-width="3"/><g transform="translate(1059 360) scale(2.25)">
+<ellipse cy="70" rx="51" ry="12" fill="#24324b" opacity=".28"/>
+<path d="M-25 7 L-40 64 L-12 67 -8 46 M26 7 L40 64 L12 67 8 46" fill="#53ac78" stroke="#252d48" stroke-width="4"/>
+<rect x="-20" y="-2" width="40" height="39" rx="14" fill="#fff0d4" stroke="#27334d" stroke-width="4"/>
+<path d="M-15 32 L-18 61 M15 32 L18 61" stroke="#35405c" stroke-width="12" stroke-linecap="round"/>
+<circle cy="-33" r="30" fill="#f7c7a6" stroke="#2e3457" stroke-width="4"/>
+<path d="M-29 -42 Q-22 -70 7 -60 Q28 -65 31 -40 L5 -53 -17 -32Z" fill="#82ba75" stroke="#33354f" stroke-width="4"/>
+<ellipse cx="-12" cy="-29" rx="4.2" ry="7" fill="#30304c"/><ellipse cx="12" cy="-29" rx="4.2" ry="7" fill="#30304c"/>
+<path d="M-32 -50 Q-51 -75 -61 -51 Q-54 -31 -29 -46 M32 -50 Q50 -75 60 -51 Q53 -31 30 -46" fill="#9ada8a" stroke="#2c5c47" stroke-width="4"/>
+<path d="M55 -47 L55 65" stroke="#e8c987" stroke-width="7"/><circle cx="55" cy="-47" r="14" fill="#9fe9b8"/>
+</g><text x="884" y="198" font-family="sans-serif" font-weight="700" font-size="27" fill="#f8ead5">NEMA</text><text x="884" y="227" font-family="sans-serif" font-weight="700" font-size="16" fill="#c2cfe5">Support • runic links</text>
+<rect x="16" y="555" width="1248" height="148" rx="18" fill="url(#navy)" stroke="#e3bf82" stroke-width="3"/><text x="48" y="591" font-family="sans-serif" font-weight="700" font-size="21" fill="#f8ead5">PROPORTIONS</text>
+<text x="48" y="624" font-family="sans-serif" font-weight="700" font-size="18" fill="#d5e0ec">~3 heads tall  •  oversized equipment  •  clean silhouettes  •  toon materials  •  fog-aware scenery</text>
+<rect x="50" y="649" width="45" height="30" rx="7" fill="#f4c66c" stroke="#dcd3c2" stroke-width="2"/><text x="104" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Hair</text><rect x="222" y="649" width="45" height="30" rx="7" fill="#b3c4ff" stroke="#dcd3c2" stroke-width="2"/><text x="276" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Moon</text><rect x="394" y="649" width="45" height="30" rx="7" fill="#73c78a" stroke="#dcd3c2" stroke-width="2"/><text x="448" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Grove</text><rect x="566" y="649" width="45" height="30" rx="7" fill="#73d4e6" stroke="#dcd3c2" stroke-width="2"/><text x="620" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Friendly</text><rect x="738" y="649" width="45" height="30" rx="7" fill="#ef9a72" stroke="#dcd3c2" stroke-width="2"/><text x="792" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Enemy</text><rect x="910" y="649" width="45" height="30" rx="7" fill="#ba8bfa" stroke="#dcd3c2" stroke-width="2"/><text x="964" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Magic</text><rect x="1082" y="649" width="45" height="30" rx="7" fill="#e4bd81" stroke="#dcd3c2" stroke-width="2"/><text x="1136" y="671" font-family="sans-serif" font-weight="700" font-size="16" fill="#f8ead5">Gold</text>
+</svg>

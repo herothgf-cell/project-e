@@ -1,10 +1,10 @@
 extends Node3D
 ## Original game meshes, not concept-image billboards. Visual joints only;
 ## pose() reads authority state and never writes collision or combat data.
-const CLOTH := Color("253f49")
-const CERAMIC := Color("f0e5c9")
-const COPPER := Color("b97c51")
-const SKIN := Color("d5a47b")
+const CLOTH := Color("28315b")
+const CERAMIC := Color("fff1ce")
+const COPPER := Color("dbad5a")
+const SKIN := Color("f5c89e")
 var hero_key: String = "bas"
 var _parts: Dictionary = {}
 var _materials: Dictionary = {}
@@ -20,38 +20,52 @@ func build(key: String, team_color: Color) -> void:
 	hero_key = key
 	_team = team_color
 	var broad: float = 1.0 if key == "bas" else (0.7 if key == "rio" else 0.82)
+	var armor: Color = Color("fff0d2") if key == "bas" else (Color("c9d9ff") if key == "rio" else Color("e6edbf"))
+	var outfit: Color = Color("aa354b") if key == "bas" else (Color("5b4b9c") if key == "rio" else Color("377e61"))
+	var trim: Color = Color("e4ae55") if key == "bas" else (Color("b7a4ed") if key == "rio" else Color("d9b874"))
+	var hair: Color = Color("f6bf65") if key == "bas" else (Color("d9d0fb") if key == "rio" else Color("77b869"))
 	var body: Node3D = _joint(self, "Torso", Vector3(0, 1.48, 0))
-	_cylinder(body, broad * 0.37, broad * 0.43, 0.86, Vector3(0, 0.14, 0), CERAMIC, 8)
+	_cylinder(body, broad * 0.37, broad * 0.43, 0.86, Vector3(0, 0.14, 0), armor, 8)
 	_block(body, Vector3(broad * 0.67, 0.38, 0.12), Vector3(0, 0.15, -0.32), _team)
-	_cylinder(body, broad * 0.38, broad * 0.37, 0.12, Vector3(0, -0.19, 0), COPPER, 10)
-	_block(body, Vector3(0.21, 0.16, 0.10), Vector3(0, -0.18, -0.37), COPPER)
+	_cylinder(body, broad * 0.38, broad * 0.37, 0.12, Vector3(0, -0.19, 0), trim, 10)
+	_block(body, Vector3(0.21, 0.16, 0.10), Vector3(0, -0.18, -0.37), trim)
 	for side: float in [-1.0, 1.0]:
 		var leg: Node3D = _joint(self, "LeftLeg" if side < 0 else "RightLeg", Vector3(side * broad * 0.24, 1.06, 0))
-		_capsule(leg, 0.13 if key == "rio" else 0.17, 0.79, Vector3(0, -0.34, 0), CLOTH)
-		_block(leg, Vector3(0.22, 0.20, 0.16), Vector3(0, -0.47, -0.16), CERAMIC)
-		_capsule(leg, 0.17, 0.30, Vector3(0, -0.89, -0.09), CLOTH)
-		_block(leg, Vector3(0.32, 0.13, 0.43), Vector3(0, -0.97, -0.09), COPPER)
+		_capsule(leg, 0.13 if key == "rio" else 0.17, 0.79, Vector3(0, -0.34, 0), outfit)
+		_block(leg, Vector3(0.22, 0.20, 0.16), Vector3(0, -0.47, -0.16), armor)
+		_capsule(leg, 0.17, 0.30, Vector3(0, -0.89, -0.09), outfit)
+		_block(leg, Vector3(0.32, 0.13, 0.43), Vector3(0, -0.97, -0.09), trim)
 		var arm: Node3D = _joint(self, "LeftArm" if side < 0 else "RightArm", Vector3(side * broad * 0.51, 1.90, 0))
-		_capsule(arm, 0.15, 0.72, Vector3(0, -0.30, 0), CLOTH)
-		_sphere(arm, 0.22, Vector3.ZERO, CERAMIC)
+		_capsule(arm, 0.15, 0.72, Vector3(0, -0.30, 0), outfit)
+		_sphere(arm, 0.22, Vector3.ZERO, armor)
 		if key == "bas":
 			_gauntlet(arm, side > 0)
 		elif key == "rio":
-			_block(arm, Vector3(0.22, 0.30, 0.26), Vector3(0, -0.47, 0), COPPER)
-			var disc: MeshInstance3D = _ring(arm, 0.38, 0.10, Vector3(side * 0.12, -0.43, -0.22), COPPER)
+			_block(arm, Vector3(0.22, 0.30, 0.26), Vector3(0, -0.47, 0), trim)
+			var disc: MeshInstance3D = _ring(arm, 0.38, 0.10, Vector3(side * 0.12, -0.43, -0.22), trim)
 			disc.rotation_degrees = Vector3(65, 0, side * 15)
 			_ring(arm, 0.30, 0.025, Vector3(side * 0.12, -0.43, -0.22), _team).rotation = disc.rotation
 		else:
-			_block(arm, Vector3(0.24, 0.30, 0.25), Vector3(0, -0.45, -0.04), CERAMIC)
+			_block(arm, Vector3(0.24, 0.30, 0.25), Vector3(0, -0.45, -0.04), armor)
 			_sphere(arm, 0.12, Vector3(0, -0.60, -0.12), _team)
-	var head: Node3D = _joint(self, "Head", Vector3(0, 2.34, 0))
-	_sphere(head, 0.235, Vector3.ZERO, SKIN)
-	_cylinder(head, 0.235, 0.255, 0.18, Vector3(0, 0.18, 0.03), CLOTH, 10)
-	_block(head, Vector3(0.42, 0.11, 0.12), Vector3(0, 0.12, -0.23), _team)
+	# Camera-readable three-head stylisation: ~2.70m full model / 0.88m head.
+	var head: Node3D = _joint(self, "Head", Vector3(0, 2.19, 0))
+	_sphere(head, 0.44, Vector3.ZERO, SKIN)
+	var face := Node3D.new()
+	face.name = "FantasyFace"
+	head.add_child(face)
+	# The eyes/cheeks remain bold at the tactical 30m camera preset.
 	for side: float in [-1.0, 1.0]:
-		_sphere(head, 0.065, Vector3(side * 0.10, 0.025, -0.212), COPPER)
-		_sphere(head, 0.048, Vector3(side * 0.10, 0.025, -0.245), Color("a0e1d7"))
-	_block(head, Vector3(0.14, 0.045, 0.045), Vector3(0, -0.16, -0.25), CLOTH)
+		_sphere(face, 0.093, Vector3(side * 0.175, -0.055, -0.408), Color("242847"))
+		_sphere(face, 0.032, Vector3(side * 0.148, -0.020, -0.478), Color("ffffff"))
+		_sphere(face, 0.083, Vector3(side * 0.285, -0.18, -0.306), Color("ef9a9a"))
+	_block(face, Vector3(0.095, 0.035, 0.028), Vector3(0, -0.244, -0.398), Color("8a5066"))
+	# Side-swept colored hair + three exaggerated locks; independent of team tint.
+	var hair_cap: MeshInstance3D = _sphere(face, 0.441, Vector3(0, 0.205, 0.046), hair)
+	hair_cap.scale = Vector3(1.04, 0.62, 1.0)
+	for side: float in [-1.0, 0.0, 1.0]:
+		var lock: MeshInstance3D = _sphere(face, 0.17, Vector3(side * 0.235 - 0.04, 0.184 - absf(side) * 0.04, -0.318), hair)
+		lock.scale = Vector3(0.85, 1.42, 0.66)
 	if key == "bas":
 		var tank: MeshInstance3D = _cylinder(body, 0.23, 0.23, 0.60, Vector3(0, 0.18, 0.38), COPPER, 10)
 		tank.rotation_degrees.z = 90
@@ -73,16 +87,25 @@ func build(key: String, team_color: Color) -> void:
 		_cloth(cape, 0.70, 0.77, CLOTH)
 
 	if key == "bas":
-		_block(head, Vector3(0.44, 0.20, 0.12), Vector3(0, -0.07, -0.20), CLOTH)
+		# Golden fringe, heroic crimson cloak and shoulder armor; pressure gauntlets stay.
 		for side: float in [-1.0, 1.0]:
-			var plate: MeshInstance3D = _block(self, Vector3(0.44, 0.18, 0.53), Vector3(side * 0.57, 2.01, 0), CERAMIC)
+			var plate: MeshInstance3D = _block(self, Vector3(0.44, 0.18, 0.53), Vector3(side * 0.57, 2.01, 0), armor)
 			plate.rotation.z = side * -0.18
+			_sphere(head, 0.16, Vector3(side * 0.38, 0.28, 0.04), hair)
+		_cloth(body, 1.02, 0.98, Color("df4054"))
 	elif key == "rio":
-		var crest: MeshInstance3D = _block(head, Vector3(0.12, 0.22, 0.43), Vector3(0, 0.23, 0.10), COPPER)
-		crest.rotation.x = -0.30
+		# Distinctive witch hat; discs are the real Rio ability silhouette.
+		_cylinder(head, 0.065, 0.39, 0.52, Vector3(0, 0.55, 0.05), outfit, 10)
+		_cylinder(head, 0.56, 0.59, 0.085, Vector3(0, 0.34, 0.05), outfit, 12)
+		_ring(head, 0.43, 0.055, Vector3(0, 0.39, 0.05), trim)
+		_sphere(head, 0.11, Vector3(0.33, 0.42, -0.18), Color("77dfff"))
 	else:
-		_cylinder(head, 0.12, 0.34, 0.27, Vector3(0, 0.25, 0.04), CERAMIC, 6)
-		_ring(head, 0.33, 0.035, Vector3(0, 0.13, 0.04), COPPER)
+		# Forest rune-crafter hood, leaves and retained linking-pin backpack.
+		_cylinder(head, 0.24, 0.44, 0.20, Vector3(0, 0.31, 0.08), outfit, 10)
+		for side: float in [-1.0, 1.0]:
+			var leaf: MeshInstance3D = _sphere(head, 0.19, Vector3(side * 0.39, 0.33, 0.04), hair)
+			leaf.scale = Vector3(0.75, 1.65, 0.55)
+		_ring(head, 0.43, 0.045, Vector3(0, 0.24, 0.07), trim)
 	for part: String in _parts:
 		_rest[part] = _parts[part].position
 	_build_animations()
@@ -195,8 +218,9 @@ func _material(color: Color) -> StandardMaterial3D:
 	if not _materials.has(color):
 		var mat := StandardMaterial3D.new()
 		mat.albedo_color = color
-		mat.roughness = 0.65
-		mat.metallic = 0.45 if color == COPPER else 0.05
+		mat.roughness = 0.84
+		mat.diffuse_mode = BaseMaterial3D.DIFFUSE_TOON
+		mat.metallic = 0.12 if color == COPPER else 0.0
 		_materials[color] = mat
 	return _materials[color]
 
