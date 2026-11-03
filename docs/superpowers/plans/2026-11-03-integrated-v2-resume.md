@@ -1,23 +1,21 @@
 # Integrated V2 Recovery Implementation Plan
 
 **Goal:** Finish the interrupted integrated art/skill/terrain review build and deliver a verified executable.
-**Architecture:** Recover the saved Git tree instead of rewriting it. Keep authority unchanged; separate review state and rendering. Fix only reproduced integration failures.
+**Architecture:** Recover the saved Git tree instead of rewriting it. Keep authority unchanged; isolate review state and rendering. Fix reproduced failures only.
 **Tech Stack:** Godot 4.7.2 Standard, GDScript, Linux renderer, Windows x86_64 export.
 **Spec:** doc/design/19-integrated-v2.md
 
-## Constraints
-Preserve numeric balance, team visibility and authoritative ground height. No production-art or original-video measurement claims. The user already chose all-in-one integration followed by iterative feedback.
+## Constraints and review focus
+Preserve numeric balance, team visibility and authoritative ground height. No production-art or original-video measurement claims. User chose all-in-one integration followed by iterative feedback. Review state isolation, rendered/clicked height, Nema pin prerequisites, hidden effects/death, animation/reset lifecycles.
 
-## Review focus
-State isolation; renderer depth versus click height; all twelve real skills including Nema prerequisites; hidden effects/death concealment; animation/reset lifecycles.
+## Tasks and ledger
+- [x] Locate main 0834cc6, feature df4c9e4, saved uncommitted tree 9eeeaa7; recover, do not rewrite.
+- [x] Run recovered tests: 21 suites, 4,517 checks, zero failures.
+- [x] Inspect actual renderer. Find review objectives missing because spawn marked complete before entities existed.
+- [x] Add test_review_objectives: RED 3/5 failures; fix with authority initial-spawn boundary in isolated state; GREEN 5/5.
+- [x] Run full suite: 22 suites, 4,522 checks, zero failures; import/main startup pass.
+- [x] Capture/inspect all 12 real casts, three heroes, hit/death/respawn, hill and full map: 40 stills + 282 animation frames.
+- [ ] Verify final Windows CI package and Windows headless startup; separate human graphical gate.
+- [ ] Integrate verified branch into main without force; attach final exact-source artifacts.
 
-## Tasks
-- [x] Locate main, feature branch and uncommitted saved tree; preserve existing work.
-- [ ] Run recovered tests and identify exact failures before fixes.
-- [ ] Add regression tests for any additional integration defect, verify RED, fix, verify GREEN.
-- [ ] Run complete suite and actual renderer captures; inspect character/map/skill pixels.
-- [ ] Export current Windows package, verify exact source, CRC and file hashes.
-- [ ] Record evidence and limitations; integrate only verified code into main without force.
-
-## Recovery ledger
-2026-11-03: main 0834cc6, feature df4c9e4. Saved tree 9eeeaa7 contains the interrupted V2 implementation and tests but was not attached to a commit. Container Git network access failed; use connected GitHub for source recovery and pinned offline kit for local execution.
+Ruling: existing feature branch and fresh isolated snapshot are reused; no new worktree or redesign required. Container cannot resolve GitHub; connected GitHub transports exact source/toolkit. Local index tree 0b8acf526583aa7d61f06ad04378e5c7e4e0eb85 exactly matches remote verified game tree. Code review is self-review, not an independent subagent review.
