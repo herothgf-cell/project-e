@@ -1,10 +1,22 @@
 extends MeshInstance3D
 ## Per-kit readable additions. Authority telegraphs stay in Effects.
 ## Sample every decorative point against current team sight and real effect area.
+const MOTIFS: Dictionary = {
+	"bas": {"Q":"ember_arc", "W":"guardian_sigil", "E":"flame_dash", "R":"thunder_fissure"},
+	"rio": {"Q":"comet_disc", "W":"nebula_loop", "E":"moonstep", "R":"constellation"},
+	"nema": {"Q":"seed_rune", "W":"grove_pulse", "E":"forest_guard", "R":"vine_bind"}
+}
 var rendered_points: Array[Vector2] = []
+var rendered_motifs: Dictionary = {}
 var _mesh: ImmediateMesh
 var _state: Variant
 var _count: int = 0
+func style_for(hero_key: String, slot: String) -> Dictionary:
+	var motif: String = str(MOTIFS.get(hero_key, {}).get(slot, ""))
+	var tint: Color = Color("ffc979") if hero_key == "bas" else (Color("9fdfff") if hero_key == "rio" else Color("9ce3a8"))
+	return {"motif":motif, "tint":tint}
+
+
 func _ready() -> void:
 	var material := StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
@@ -16,6 +28,7 @@ func _ready() -> void:
 func refresh(state: Variant) -> void:
 	_state = state
 	rendered_points.clear()
+	rendered_motifs.clear()
 	_count = 0
 	_mesh = ImmediateMesh.new()
 	_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -24,10 +37,11 @@ func refresh(state: Variant) -> void:
 		var actor: Dictionary = state.units.get(int(effect.get("owner_id", -1)), {})
 		if actor.is_empty(): continue
 		var key: String = str(actor.hero)
-		var color: Color = Color("ffe1a5") if key == "bas" else (Color("9bf9ef") if key == "rio" else Color("a8e4ff"))
+		var color: Color = style_for(key, str(effect.get("slot", ""))).get("tint", Color("a8e4ff"))
 		if int(effect.get("team", 0)) != 0: color = Color("ffad72")
 		var fraction: float = clampf(1.0 - float(effect.get("remaining", 0.0)) / maxf(0.001, float(effect.get("duration", 0.22))), 0, 1)
 		var slot: String = str(effect.get("slot", ""))
+		var style: Dictionary = style_for(key, slot)
 		var power: float = 1.35 if slot == "R" else 0.65
 		var origin: Vector2 = effect.get("origin", Vector2.ZERO)
 		var target: Vector2 = effect.get("target", origin)
@@ -53,11 +67,21 @@ func refresh(state: Variant) -> void:
 			var source: Vector2 = state._abilities.effect_origin(effect, point)
 			if not _allowed(point) or not state._abilities.contains(effect, point, 0) or not state.map.has_line_of_sight(source, point): continue
 			var height: float = power * sin(PI * clampf(fraction + 0.10, 0, 1))
-			if key == "bas": _blade(point, maxf(0.12, height), 0.12, color)
-			elif key == "rio": _diamond(point, 0.25 + height * 0.25, 0.12, color)
+			var motif_id: String = str(style.get("motif", ""))
+			if not motif_id.is_empty():
+				rendered_motifs[motif_id] = int(rendered_motifs.get(motif_id, 0)) + 1
+			if key == "bas":
+				_blade(point, maxf(0.12, height), 0.12 if slot != "R" else 0.18, color)
+				if slot in ["W", "R"]: _rune(point, height + 0.14, 0.16, color)
+				if slot == "E": _ember(point, height + 0.15, 0.19, color)
+			elif key == "rio":
+				_diamond(point, 0.25 + height * 0.25, 0.12 if slot != "R" else 0.20, color)
+				if slot in ["W", "R"]: _rune(point, 0.22 + height * 0.45, 0.19, color)
+				if slot == "E": _ember(point, height * 0.55, 0.11, color)
 			else:
 				_blade(point, 0.20 + height, 0.055, color)
-				_diamond(point, 0.25 + height, 0.10, color)
+				if slot in ["Q", "W", "R"]: _leaf(point, 0.25 + height * 0.5, 0.13, color)
+				if slot == "E": _rune(point, 0.24 + height * 0.48, 0.15, color)
 	for actor: Dictionary in state.units.values():
 		if actor.kind != "hero" or not actor.alive or not state.is_visible(0, actor.id): continue
 		if actor.phase == "dash":
@@ -87,6 +111,24 @@ func _diamond(point: Vector2, height: float, size: float, color: Color) -> void:
 	var center: Vector3 = _world(point, height)
 	_triangle(center - Vector3.RIGHT * size, center + Vector3.RIGHT * size, center + Vector3.UP * size, color)
 	_triangle(center + Vector3.RIGHT * size, center - Vector3.RIGHT * size, center - Vector3.UP * size, color)
+func _rune(point: Vector2, height: float, size: float, color: Color) -> void:
+	# Original arcane diamond rune; all centers were approved by LOS/visibility.
+	var center: Vector3 = _world(point, height)
+	color.a = 0.60
+	_triangle(center + Vector3.UP * size, center + Vector3.RIGHT * size, center - Vector3.UP * size, color)
+	_triangle(center + Vector3.UP * size, center - Vector3.RIGHT * size, center - Vector3.UP * size, color)
+
+func _ember(point: Vector2, height: float, size: float, color: Color) -> void:
+	var center: Vector3 = _world(point, height)
+	color.a = 0.72
+	_triangle(center + Vector3.UP * size, center - Vector3.RIGHT * size * 0.5, center + Vector3.RIGHT * size * 0.5, color)
+
+func _leaf(point: Vector2, height: float, size: float, color: Color) -> void:
+	var center: Vector3 = _world(point, height)
+	color.a = 0.66
+	_triangle(center + Vector3.UP * size, center + Vector3.RIGHT * size * 0.65, center - Vector3.UP * size * 0.6, color)
+	_triangle(center + Vector3.UP * size, center - Vector3.RIGHT * size * 0.65, center - Vector3.UP * size * 0.6, color)
+
 func _triangle(a: Vector3, b: Vector3, c: Vector3, color: Color) -> void:
 	for vertex: Vector3 in [a, b, c]:
 		_mesh.surface_set_color(color)

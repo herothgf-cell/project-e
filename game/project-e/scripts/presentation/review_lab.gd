@@ -61,7 +61,7 @@ func _build_ui() -> void:
 	box.add_theme_constant_override("separation", 7)
 	panel.add_child(box)
 	var title := Label.new()
-	title.text = "PROJECT E  /  통합 연출실 V2   —   실제 게임 모델·판정 검토"
+	title.text = "PROJECT E  /  판타지 연출실 V4   —   3등신 모델 · 스킬 · 모션"
 	title.add_theme_font_size_override("font_size", 20)
 	box.add_child(title)
 	var row := HFlowContainer.new()
@@ -96,10 +96,10 @@ func _build_ui() -> void:
 		theme.default_font = stage.hud.ui_font
 		theme.default_font_size = 14
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("16272d")
-		style.border_color = Color("6e9a94")
+		style.bg_color = Color("202941")
+		style.border_color = Color("e4bb81")
 		style.set_border_width_all(1)
-		style.set_corner_radius_all(7)
+		style.set_corner_radius_all(12)
 		style.content_margin_left = 15
 		style.content_margin_right = 15
 		style.content_margin_top = 10

@@ -1,3 +1,5 @@
+> V4 최신: [전투 아트·사운드 규격](23-fantasy-v4-combat-presentation.md) · [실제 에셋/검토 가이드](24-fantasy-v4-asset-guide.md). V3는 [기존 스타일 가이드](22-fantasy-v3-asset-guide.md)에서 확인할 수 있다.
+
 > **현재 적용 미술 방향:** [판타지 3등신 아트 명세](21-fantasy-v3-art-spec.md) · [실행 연결 에셋/스타일·HUD·맵 시안](22-fantasy-v3-asset-guide.md). 이전 수로 공방 테마는 이력 자료다.
 
 # Project E 콘텐츠 설계
