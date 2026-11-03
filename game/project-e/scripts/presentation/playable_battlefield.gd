@@ -7,12 +7,20 @@ var camera_mode: String = "combat"
 var edge_pan_enabled: bool = true
 var _accents: MeshInstance3D
 var _camera_hint: Label
+var review_lab: Node
+var _review_button: Button
+var _skill_vfx: MeshInstance3D
+var _seen_alive: Dictionary = {}
+var _corpse_until: Dictionary = {}
 
 func _ready() -> void:
 	battle._ai = TacticalAI.new()
 	_accents = AccentView.new()
 	_accents.name = "CombatAccents"
 	add_child(_accents)
+	_skill_vfx = load("res://scripts/presentation/skill_vfx.gd").new()
+	_skill_vfx.name = "SkillVFX"
+	add_child(_skill_vfx)
 	super._ready()
 	_camera_hint = Label.new()
 	_camera_hint.name = "CameraHint"
@@ -25,8 +33,19 @@ func _ready() -> void:
 	_camera_hint.add_theme_constant_override("outline_size", 4)
 	hud.root_control.add_child(_camera_hint)
 	_camera_hint.hide()
+	if not has_meta("review_stage"):
+		_review_button = Button.new()
+		_review_button.text = "F7 통합 연출실"
+		_review_button.position = Vector2(22, 110)
+		_review_button.custom_minimum_size = Vector2(160, 30)
+		_review_button.add_theme_font_override("font", hud.ui_font)
+		_review_button.focus_mode = Control.FOCUS_NONE
+		hud.root_control.add_child(_review_button)
+		_review_button.pressed.connect(open_review_lab)
 
 func start_match(hero_key: String, practice: bool = false) -> void:
+	_seen_alive.clear()
+	_corpse_until.clear()
 	super.start_match(hero_key, practice)
 	camera_mode = "combat"
 	_camera_follow = false
@@ -76,6 +95,11 @@ func pan_camera(axis: Vector2, delta: float) -> void:
 	_update_camera(0.0)
 
 func handle_hotkey(keycode: int) -> bool:
+	if keycode == KEY_F7 and not has_meta("review_stage"):
+		var focus: Control = get_viewport().gui_get_focus_owner()
+		if focus is LineEdit or focus is TextEdit: return false
+		open_review_lab()
+		return true
 	if keycode in [KEY_F6, KEY_Y] and _camera_input_allowed():
 		if keycode == KEY_F6:
 			var modes: Array = ["combat", "tactical", "detail"]
@@ -146,12 +170,49 @@ func screen_to_ground(screen: Vector2) -> Variant:
 	return Vector2(flat.x, -flat.z)
 
 func _sync_visuals(delta: float) -> void:
-	super._sync_visuals(delta)
+	# Cache observed alive state BEFORE the base renderer hides dead units.
+	var newly_observed_deaths: Array[int] = []
 	for id: int in _unit_nodes:
-		if not battle.units.has(id) or not _unit_nodes[id].visible:
-			continue
-		var rig: Variant = _unit_nodes[id].get_node_or_null("Model/HeroRig")
-		if rig != null:
-			rig.pose(battle.units[id], float(battle.time))
+		if not battle.units.has(id): continue
+		var unit: Dictionary = battle.units[id]
+		if unit.kind != "hero": continue
+		if not unit.alive and bool(_seen_alive.get(id, false)) and _unit_nodes[id].visible:
+			newly_observed_deaths.append(id)
+		_seen_alive[id] = bool(unit.alive)
+	super._sync_visuals(delta)
+	for id: int in newly_observed_deaths:
+		_corpse_until[id] = battle.time + 0.85
+	for id: int in _unit_nodes:
+		if not battle.units.has(id): continue
+		var unit: Dictionary = battle.units[id]
+		if unit.kind != "hero": continue
+		var node: Node3D = _unit_nodes[id]
+		if not unit.alive and _corpse_until.has(id):
+			# Losing current sight discards the cosmetic corpse permanently.
+			if battle.time >= float(_corpse_until[id]) or (unit.team != 0 and not battle.is_point_visible(0, unit.pos)):
+				_corpse_until.erase(id)
+			else: node.visible = true
+		elif unit.alive:
+			_corpse_until.erase(id)
+			_seen_alive[id] = true
+		var rig: Variant = node.get_node_or_null("Model/HeroRig")
+		if rig != null and (node.visible or unit.team == 0):
+			rig.pose(unit, float(battle.time))
+		if node.has_node("Footprint"):
+			node.get_node("Footprint").visible = unit.alive
 	if _accents != null:
 		_accents.refresh(battle)
+	if _skill_vfx != null:
+		_skill_vfx.refresh(battle)
+
+func open_review_lab() -> void:
+	if review_lab != null or has_meta("review_stage"): return
+	var lab_script: Script = load("res://scripts/presentation/review_lab.gd")
+	review_lab = lab_script.new()
+	review_lab.original = self
+	get_tree().root.add_child(review_lab)
+
+func ui_blocks_point(point: Vector2) -> bool:
+	if _review_button != null and _review_button.is_visible_in_tree() and _review_button.get_global_rect().has_point(point):
+		return true
+	return super.ui_blocks_point(point)

@@ -57,6 +57,11 @@ def main() -> int:
         ("Bot purchase and consumable decisions", "test_consumable_ai.gd", "Consumable AI"),
         ("Observed cell spawns and actual personal XP feedback", "test_xp_feedback.gd", "XP feedback"),
         ("Visible XP meter and HUD layering", "test_xp_meter.gd", "XP meter"),
+        ("Visible tactical objective decisions", "test_tactical_ai.gd", "Tactical objectives"),
+        ("Playable camera, original art and vision", "test_playable_slice.gd", "Playable slice"),
+        ("Tactical respawn and full match", "test_tactical_lifecycle.gd", "Tactical lifecycle"),
+        ("Integrated animation review and isolation", "test_integrated_v2.gd", "Integrated V2"),
+        ("Skill readability, terrain and corpse concealment", "test_v2_visual_contract.gd", "V2 visual contract"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)
@@ -65,7 +70,7 @@ def main() -> int:
             command += ["--", "--long"]
         run(command,
             rf"{re.escape(result_label)}: \d+ checks, 0 failures",
-            timeout=300 if script == "test_battle_match.gd" else 60)
+            timeout=300 if script in ["test_battle_match.gd", "test_tactical_lifecycle.gd"] else 120)
     print("Starting the main scene", flush=True)
     run(base + ["--quit-after", "90"])
     print(f"PASS: Godot import, all {len(checks)} behavioral suites and main-scene startup")

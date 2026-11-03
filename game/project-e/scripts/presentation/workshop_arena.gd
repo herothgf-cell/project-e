@@ -56,6 +56,17 @@ func build(map: Variant, units: Dictionary) -> void:
 				_cylinder(detail, 0.45, 0.55, to_world(point + Vector2(offset, 0), 0.1), Color("98734d"), 10)
 				var bush: MeshInstance3D = _sphere(detail, 0.61, to_world(point + Vector2(offset, 0), 0.7), Color("729276"))
 				bush.scale = Vector3(1.2, 0.85, 1.0)
+	var relief: Node3D = load("res://scripts/presentation/terrain_relief.gd").new()
+	relief.name = "TerrainRelief"
+	add_child(relief)
+	# Acquire a fog-aware stone material via the existing terrain material cache.
+	var donor: MeshInstance3D = _box(detail, Vector3(0.01, 0.01, 0.01), Vector3(0, -2, 0), Color("958c75"))
+	relief.build(map, donor.material_override)
+	donor.queue_free()
+	# Quieter stone/river values keep bright ceramic heroes and skills readable.
+	var tones: Dictionary = {Color("e9dfbe"): Color("687c72"), Color("f8edd4"): Color("859483"), Color("e1d4af"): Color("93a58a"), Color("d9d0ae"): Color("809387"), Color("62aaa0"): Color("2f6863"), Color("326c69"): Color("1b4948"), Color("c2b798"): Color("84917b"), Color("b1a58b"): Color("71836f"), Color("e2d2af"): Color("a4b499"), Color("b8ad91"): Color("556c63"), Color("c3b896"): Color("8a9c87")}
+	for source: Color in tones:
+		if _terrain_materials.has(source): _terrain_materials[source].set_shader_parameter("base_color", tones[source])
 	_building_terrain = false
 
 func _blocker(rect: Rect2) -> void:
