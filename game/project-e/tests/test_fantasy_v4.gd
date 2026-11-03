@@ -22,12 +22,14 @@ func _run() -> void:
 		_check(rig.get_node_or_null("Torso/RuneEmblem") != null, key + " armor has role emblem")
 		var snapshot: Dictionary = hero.duplicate(true)
 		hero.phase = "walk"
-		rig.pose(hero, 1.13)
-		var pos_a: Vector3 = rig.position
-		rig.pose(hero, 1.34)
-		var pos_b: Vector3 = rig.position
-		_check(pos_a.distance_to(pos_b) > 0.008, key + " locomotion has visible body motion")
-		_check(absf(pos_a.y) < 0.14 and absf(pos_b.y) < 0.14, key + " locomotion remains grounded")
+		var min_bob: float = INF
+		var max_bob: float = -INF
+		for sample_time: float in [1.13, 1.34, 1.50, 1.70, 1.90]:
+			rig.pose(hero, sample_time)
+			min_bob = minf(min_bob, rig.position.y)
+			max_bob = maxf(max_bob, rig.position.y)
+		_check(max_bob - min_bob > 0.025, key + " locomotion changes over a stride, not a coincident sample pair")
+		_check(absf(min_bob) < 0.14 and absf(max_bob) < 0.14, key + " locomotion remains grounded")
 		hero.phase = "idle"
 		rig.pose(hero, 1.13)
 		_check(absf(rig.position.y) < 0.04, key + " idle pose removes walk bob")
