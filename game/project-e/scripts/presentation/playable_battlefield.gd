@@ -2,6 +2,7 @@ extends "res://scripts/presentation/battlefield.gd"
 ## Playable composition layer; inherited controller still owns commands/UI/lifecycle.
 const TacticalAI = preload("res://scripts/battle/tactical_ai.gd")
 const AccentView = preload("res://scripts/presentation/combat_accents.gd")
+const FantasyAudio = preload("res://scripts/presentation/fantasy_audio.gd")
 const CAMERA_MODES: Dictionary = {"combat": 30.0, "tactical": 50.0, "detail": 18.0}
 var camera_mode: String = "combat"
 var edge_pan_enabled: bool = true
@@ -10,6 +11,7 @@ var _camera_hint: Label
 var review_lab: Node
 var _review_button: Button
 var _skill_vfx: MeshInstance3D
+var _fantasy_audio: Node
 var _seen_alive: Dictionary = {}
 var _corpse_until: Dictionary = {}
 
@@ -21,6 +23,9 @@ func _ready() -> void:
 	_skill_vfx = load("res://scripts/presentation/skill_vfx.gd").new()
 	_skill_vfx.name = "SkillVFX"
 	add_child(_skill_vfx)
+	_fantasy_audio = FantasyAudio.new()
+	_fantasy_audio.name = "FantasyAudio"
+	add_child(_fantasy_audio)
 	super._ready()
 	_camera_hint = Label.new()
 	_camera_hint.name = "CameraHint"
@@ -44,6 +49,7 @@ func _ready() -> void:
 		_review_button.pressed.connect(open_review_lab)
 
 func start_match(hero_key: String, practice: bool = false) -> void:
+	if _fantasy_audio != null: _fantasy_audio.reset()
 	_seen_alive.clear()
 	_corpse_until.clear()
 	super.start_match(hero_key, practice)
@@ -204,6 +210,13 @@ func _sync_visuals(delta: float) -> void:
 		_accents.refresh(battle)
 	if _skill_vfx != null:
 		_skill_vfx.refresh(battle)
+	if _fantasy_audio != null:
+		_fantasy_audio.observe(battle, has_active_match and not has_meta("review_stage"), paused)
+
+func return_to_selection() -> void:
+	super.return_to_selection()
+	if _fantasy_audio != null:
+		_fantasy_audio.reset()
 
 func open_review_lab() -> void:
 	if review_lab != null or has_meta("review_stage"): return
