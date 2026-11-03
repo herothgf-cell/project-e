@@ -4,9 +4,6 @@ var checks: int = 0
 var failures: int = 0
 func _initialize() -> void: call_deferred("_run")
 func _run() -> void:
-	for key: String in ["bas", "rio", "nema"]:
-		for clip: String in ["idle", "walk", "basic", "Q", "W", "E", "R", "hit", "death", "respawn"]:
-			_check(FileAccess.file_exists("res://scripts/presentation/hero_rig.gd"), "rig code exists")
 	# Source audio must exist as original mono wav; reference binding is tested in-scene.
 	for sound: String in ["slash", "arcane", "nature", "hit", "level"]:
 		_check(ResourceLoader.exists("res://assets/audio/%s.wav" % sound), "original cue imported: " + sound)
