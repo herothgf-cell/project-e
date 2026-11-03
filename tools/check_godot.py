@@ -63,6 +63,7 @@ def main() -> int:
         ("Integrated animation review and isolation", "test_integrated_v2.gd", "Integrated V2"),
         ("Skill readability, terrain and corpse concealment", "test_v2_visual_contract.gd", "V2 visual contract"),
         ("Review objectives and live match isolation", "test_review_objectives.gd", "Review objectives"),
+        ("Fantasy 3-head hero art, map and skill icon binding", "test_fantasy_v3.gd", "Fantasy V3"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)
