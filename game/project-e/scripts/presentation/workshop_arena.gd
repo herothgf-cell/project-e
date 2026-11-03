@@ -11,8 +11,11 @@ func _hero(parent: Node3D, key: String, color: Color) -> void:
 func build(map: Variant, units: Dictionary) -> void:
 	super.build(map, units)
 	var detail := Node3D.new()
-	detail.name = "WorkshopDetail"
+	detail.name = "WorkshopDetail" # Existing integration tests rely on this name.
 	add_child(detail)
+	var fantasy_decor := Node3D.new()
+	fantasy_decor.name = "FantasyDecor"
+	detail.add_child(fantasy_decor)
 	_building_terrain = true
 	# Masonry joints lie on existing lane ground; they never declare new paths.
 	for lane: Array in map.lane_paths:
@@ -56,6 +59,9 @@ func build(map: Variant, units: Dictionary) -> void:
 				_cylinder(detail, 0.45, 0.55, to_world(point + Vector2(offset, 0), 0.1), Color("98734d"), 10)
 				var bush: MeshInstance3D = _sphere(detail, 0.61, to_world(point + Vector2(offset, 0), 0.7), Color("729276"))
 				bush.scale = Vector3(1.2, 0.85, 1.0)
+			# Non-walkable islands only; purely cosmetic fantasy tree and runestones.
+			_fantasy_tree(fantasy_decor, to_world(point, 0), mirror < 0)
+			_fantasy_crystal(fantasy_decor, to_world(point + Vector2(1.55 * mirror, 1.45), 0))
 	var relief: Node3D = load("res://scripts/presentation/terrain_relief.gd").new()
 	relief.name = "TerrainRelief"
 	add_child(relief)
@@ -64,10 +70,24 @@ func build(map: Variant, units: Dictionary) -> void:
 	relief.build(map, donor.material_override)
 	donor.queue_free()
 	# Quieter stone/river values keep bright ceramic heroes and skills readable.
-	var tones: Dictionary = {Color("e9dfbe"): Color("687c72"), Color("f8edd4"): Color("859483"), Color("e1d4af"): Color("93a58a"), Color("d9d0ae"): Color("809387"), Color("62aaa0"): Color("2f6863"), Color("326c69"): Color("1b4948"), Color("c2b798"): Color("84917b"), Color("b1a58b"): Color("71836f"), Color("e2d2af"): Color("a4b499"), Color("b8ad91"): Color("556c63"), Color("c3b896"): Color("8a9c87")}
+	var tones: Dictionary = {Color("e9dfbe"): Color("d9d1b0"), Color("f8edd4"): Color("e8dcba"), Color("e1d4af"): Color("bcd6a8"), Color("d9d0ae"): Color("b5d1af"), Color("62aaa0"): Color("549f89"), Color("326c69"): Color("316e68"), Color("c2b798"): Color("a4b59a"), Color("b1a58b"): Color("879e80"), Color("e2d2af"): Color("dce6be"), Color("b8ad91"): Color("91ae93"), Color("c3b896"): Color("becbab")}
 	for source: Color in tones:
 		if _terrain_materials.has(source): _terrain_materials[source].set_shader_parameter("base_color", tones[source])
 	_building_terrain = false
+
+func _fantasy_tree(parent: Node3D, base: Vector3, left: bool) -> void:
+	# All scenery has no collision or vision authority. Layer is hidden by fog shader.
+	_cylinder(parent, 0.25, 1.25, base + Vector3(0, 0.62, 0), Color("84634e"), 7)
+	for tier: int in range(3):
+		var crown: MeshInstance3D = _sphere(parent, 0.95 - tier * 0.13, base + Vector3(0, 1.35 + tier * 0.55, 0), Color("5ba76b") if left else Color("4a9c85"))
+		crown.scale = Vector3(1.15, 0.72, 1.08)
+	_sphere(parent, 0.13, base + Vector3(0.56, 1.84, 0.12), Color("ffe1a0"))
+
+func _fantasy_crystal(parent: Node3D, base: Vector3) -> void:
+	_cylinder(parent, 0.33, 0.30, base + Vector3(0, 0.16, 0), Color("637884"), 6)
+	var shard: MeshInstance3D = _cylinder(parent, 0.03, 0.29, base + Vector3(0, 0.75, 0), Color("94d9f8"), 6)
+	shard.rotation_degrees.z = -12
+	_sphere(parent, 0.14, base + Vector3(0.06, 1.12, 0), Color("d7f1ff"))
 
 func _blocker(rect: Rect2) -> void:
 	var center: Vector2 = rect.get_center()
