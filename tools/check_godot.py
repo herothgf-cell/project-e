@@ -62,6 +62,7 @@ def main() -> int:
         ("Tactical respawn and full match", "test_tactical_lifecycle.gd", "Tactical lifecycle"),
         ("Integrated animation review and isolation", "test_integrated_v2.gd", "Integrated V2"),
         ("Skill readability, terrain and corpse concealment", "test_v2_visual_contract.gd", "V2 visual contract"),
+        ("Review objectives and live match isolation", "test_review_objectives.gd", "Review objectives"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)

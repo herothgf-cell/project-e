@@ -126,7 +126,11 @@ func _reset_stage() -> Dictionary:
 	stage.battle.bots_enabled = false
 	stage.battle._next_ai = INF
 	stage.battle._next_wave = INF
-	stage.battle._cells_spawned = true
+	# Advance only this isolated clock to the real initial-spawn boundary.
+	# The authority creates the cells and their tier/reward data; no cloned rules.
+	stage.battle._next_income = INF
+	stage.battle.time = 30.0 - stage.battle.FIXED_STEP
+	stage.battle.step(stage.battle.FIXED_STEP)
 	var hero: Dictionary = stage.battle.units[stage.battle.controlled_id]
 	_dummy_id = -1
 	for id: int in stage.battle.units.keys():
@@ -211,6 +215,10 @@ func _redraw() -> void:
 	var hero: Dictionary = stage.battle.units[stage.battle.controlled_id]
 	if map_view:
 		stage.arena.set_vision_texture(null)
+		# Full objective disclosure belongs only to this separate review state.
+		for unit: Dictionary in stage.battle.units.values():
+			if unit.kind in ["cell", "tower", "core"] and stage._unit_nodes.has(unit.id):
+				stage._unit_nodes[unit.id].visible = bool(unit.alive)
 		stage.camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 		stage.camera.size = 90.0
 		stage.camera.position = Vector3(0, 108, 44)
