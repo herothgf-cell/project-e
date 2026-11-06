@@ -1,5 +1,6 @@
 extends MeshInstance3D
 ## Draws authoritative geometry without computing damage or inventing hit results.
+const ConsumablesScript = preload("res://scripts/battle/battle_consumables.gd")
 
 var _geometry: ImmediateMesh
 var _vertices: int = 0
@@ -53,9 +54,13 @@ func redraw(battle: Variant, preview: Dictionary, selected: int, destination: Va
 		if not known_skill and not battle.is_point_visible(0, point):
 			continue
 		var color := Color("76fff1") if int(projectile.get("team", 0)) == 0 else Color("ffb462")
-		var radius: float = 0.35 if "disc" in str(projectile.get("kind", "")) else 0.16
-		_disc(point, radius, color, 0.65)
-		_ring(point, radius + 0.07, 0.045, Color("fff4d8"), false, 0.66)
+		_visibility_battle = null if known_skill else battle
+		if str(projectile.get("kind", "")) == "rio_disc":
+			_comet(projectile, battle.time, color)
+		else:
+			_disc(point, 0.16, color, 0.65)
+			_ring(point, 0.23, 0.045, Color("fff4d8"), false, 0.66)
+		_visibility_battle = null
 	if not preview.is_empty():
 		var color := Color(0.29, 0.90, 0.78, 0.12) if bool(preview.get("valid", false)) else Color(0.96, 0.37, 0.31, 0.10)
 		_shape(preview, color, false, true)
@@ -97,8 +102,10 @@ func _persistent_cues(battle: Variant) -> void:
 			# Pin visibility is independent from the owner's visibility.
 			var link: Dictionary = battle.get_pin_link(actor.id)
 			if not link.is_empty():
-				var fill := Color(color.r, color.g, color.b, 0.16)
+				color = Color("9ce3a8") if not enemy else Color("f8a16b")
+				var fill := Color(color.r, color.g, color.b, 0.10)
 				_ground_line(link.origin, link.target, float(link.width), fill, color, 0.045, enemy)
+				_living_link(link.origin, link.target, color, battle.time)
 		elif actor.hero == "rio" and not actor.return_mark.is_empty():
 			var mark: Dictionary = actor.return_mark
 			var remaining: float = maxf(0.0, float(mark.expires) - float(battle.time))
@@ -108,7 +115,20 @@ func _persistent_cues(battle: Variant) -> void:
 				_ring(point, 0.54, 0.065, color, enemy, 0.085)
 				# W's two-second lifetime comes from the active mark's expiry timestamp.
 				_ring(point, 0.73, 0.06, Color("fff0b7"), false, 0.09, clampf(remaining / 2.0, 0.0, 1.0))
+				_star(point, 0.31, 0.0, Color("d6c1ff") if not enemy else color, 0.14)
+				for index: int in range(3):
+					var orbit: Vector2 = Vector2.from_angle(battle.time * 1.8 + index * TAU / 3.0)
+					_star(point + orbit * 0.45, 0.08, battle.time, Color("fff0b7"), 0.19)
 		_visibility_battle = null
+		if int(actor.id) == int(battle.controlled_id):
+			_visibility_battle = battle
+			if actor.hero == "bas" and int(actor.pressure) > 0:
+				for index: int in range(actor.pressure):
+					var rune: Vector2 = actor.pos + Vector2(-0.25 + index * 0.5, -0.58)
+					_star(rune, 0.14, PI / 4.0, Color("ffdc8f"), 0.65)
+			if not actor.consumable_effect.is_empty():
+				_recovery_cue(actor, battle.time)
+			_visibility_battle = null
 	for projectile: Dictionary in battle.projectiles:
 		if str(projectile.get("kind", "")) != "rio_disc" or str(projectile.get("phase", "")) != "return" or not projectile.has("target_pos"):
 			continue
@@ -125,6 +145,53 @@ func _persistent_cues(battle: Variant) -> void:
 		if not enemy or _point_visible(endpoint):
 			_ring(endpoint, 0.30, 0.045, color, enemy, 0.09)
 		_visibility_battle = null
+
+
+func _comet(projectile: Dictionary, time: float, color: Color) -> void:
+	var point: Vector2 = projectile.pos
+	var returning: bool = str(projectile.get("phase", "")) == "return"
+	var core := Color("fff0b7") if returning else Color("d8c7ff")
+	_disc(point, 0.28, Color(color.r, color.g, color.b, 0.34), 0.66)
+	_ring(point, 0.34, 0.045, color, false, 0.70)
+	_star(point, 0.32, time * 5.0, core, 0.77)
+	var direction: Vector2 = projectile.get("direction", Vector2.RIGHT)
+	for index: int in range(1, 4):
+		var trail: Vector2 = point - direction * (0.16 * index)
+		if _wall_map.has_line_of_sight(point, trail):
+			_star(trail, 0.11 - index * 0.02, time * 5.0, Color(core.r, core.g, core.b, 0.7 - index * 0.12), 0.73)
+
+
+func _living_link(origin: Vector2, target: Vector2, color: Color, time: float) -> void:
+	var delta: Vector2 = target - origin
+	var normal := Vector2(-delta.y, delta.x).normalized()
+	var count: int = maxi(6, ceili(delta.length() / 0.20))
+	for side: float in [-1.0, 1.0]:
+		for index: int in range(count):
+			var start: float = float(index) / count
+			var finish: float = float(index + 1) / count
+			var a: Vector2 = origin.lerp(target, start) + normal * sin(start * TAU * 2.0 + time) * 0.10 * side
+			var b: Vector2 = origin.lerp(target, finish) + normal * sin(finish * TAU * 2.0 + time) * 0.10 * side
+			_band(a, b, 0.045, color, false, 0.115)
+			if index % 4 == 2:
+				_leaf((a + b) * 0.5, 0.12, delta.angle() + side * 0.6, color, 0.16)
+
+
+func _recovery_cue(actor: Dictionary, time: float) -> void:
+	var item_id: String = actor.consumable_effect.get("item_id", "")
+	if not ConsumablesScript.ITEMS.has(item_id):
+		return
+	var item: Dictionary = ConsumablesScript.ITEMS[item_id]
+	var color: Color = item.tint
+	var remaining: float = float(actor.consumable_effect.remaining)
+	_ring(actor.pos, 0.68, 0.035, Color(color.r, color.g, color.b, 0.65), false, 0.12, remaining / float(item.duration))
+	for index: int in range(5):
+		var phase: float = time * 1.8 + index * TAU / 5.0
+		var point: Vector2 = actor.pos + Vector2.from_angle(phase) * 0.62
+		var height: float = 0.32 + fmod(time * 0.6 + index * 0.2, 1.0) * 0.9
+		if item.motif == "starlight":
+			_star(point, 0.12, -phase, color, height)
+		else:
+			_leaf(point, 0.17, phase + PI / 3.0, color, height)
 
 
 func _ground_line(a: Vector2, b: Vector2, width: float, fill: Color, edge: Color, stroke: float, dashed: bool) -> void:
@@ -449,6 +516,21 @@ func _disc(center: Vector2, radius: float, color: Color, height: float = 0.065) 
 		var a: Vector2 = center + Vector2.from_angle(TAU * float(i) / 48.0) * radius
 		var b: Vector2 = center + Vector2.from_angle(TAU * float(i + 1) / 48.0) * radius
 		_triangle(center, a, b, color, height)
+
+
+func _star(center: Vector2, radius: float, rotation: float, color: Color, height: float) -> void:
+	for index: int in range(8):
+		var a: Vector2 = center + Vector2.from_angle(rotation + index * PI / 4.0) * radius * (1.0 if index % 2 == 0 else 0.30)
+		var b: Vector2 = center + Vector2.from_angle(rotation + (index + 1) * PI / 4.0) * radius * (0.30 if index % 2 == 0 else 1.0)
+		_triangle(center, a, b, color, height)
+
+
+func _leaf(center: Vector2, radius: float, rotation: float, color: Color, height: float) -> void:
+	var axis: Vector2 = Vector2.from_angle(rotation) * radius
+	var side := Vector2(-axis.y, axis.x) * 0.48
+	_triangle(center - axis, center + side, center + axis, color, height)
+	_triangle(center - axis, center + axis, center - side, color.darkened(0.23), height)
+	_band(center - axis * 0.75, center + axis * 0.75, 0.015, Color("e4ffc4"), false, height + 0.008)
 
 
 func _ring(center: Vector2, radius: float, width: float, color: Color, dashed: bool = false, height: float = 0.08, fraction: float = 1.0) -> void:

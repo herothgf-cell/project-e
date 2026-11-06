@@ -30,22 +30,14 @@ const TEAL := Color("73d4e6")
 const COPPER := Color("f0c47d")
 const HEROES: Dictionary = {
 	"bas": ["바스", "룬 건틀릿 전사", "거대한 마력 장갑으로 파고들어\n가까운 적을 밀어내고 아군을 엄호합니다."],
-	"rio": ["리오", "별빛 원반 마법사", "마법 원반의 출발과 귀환을 제어하고\n가로디딤으로 공격의 각도를 바꿉니다."],
-	"nema": ["네마", "숲의 결계술사", "정령 룬핀을 세워 길목을 지키고\n부채 모양 보호막으로 동료를 돕습니다."],
+	"rio": ["리오", "별빛 원반 마법사", "왕복하는 혜성과 별무리 닻을 다루고\n별빛 도약으로 공격의 각도를 바꿉니다."],
+	"nema": ["네마", "숲의 결계술사", "정령목과 덩굴로 길목을 지키고\n잎새의 가호로 동료를 보호합니다."],
 }
-const SKILLS: Dictionary = {
-	"bas": ["화염 원호", "룬 수호", "대지 도약", "천둥 균열"],
-	"rio": ["혜성 원반", "성운 고리", "월광 발걸음", "삼각 성좌"],
-	"nema": ["씨앗 룬핀", "숲결 진동", "자연 수호", "덩굴 결박"],
-}
-const SKILL_HELP: Dictionary = {
-	"bas": ["짧고 넓은 부채로 공격합니다.", "가까운 지점의 아군에게 보호막을 줍니다.", "지형에 막히는 짧은 돌진입니다.", "넓은 직선에 피해와 속박을 줍니다."],
-	"rio": ["출발과 귀환에 각각 적중하는 원반입니다.", "지점에 파동을 만들고 회수점을 남깁니다.", "옆으로 이동한 뒤 기본 공격을 강화합니다.", "삼각형의 세 변을 공격합니다. 내부는 안전합니다."],
-	"nema": ["6m 안에 연결 핀을 설치합니다. 최대 2개입니다.", "핀 1개 주위 또는 연결된 핀 사이를 공격합니다.", "자신과 부채 안 아군을 보호하고 핀을 수선합니다.", "연결된 핀 2개를 소모해 띠를 속박합니다."],
-}
+const SKILLS: Dictionary = AbilityScript.SKILLS
+const SKILL_HELP: Dictionary = AbilityScript.SKILL_HELP
 const GROWTH: Dictionary = {
 	"power": ["위력", "+10 위력", 5], "hp": ["최대 체력", "+80 체력", 5],
-	"armor": ["방어", "+5 방어", 4], "regen": ["에너지 회복", "+1 /초", 3],
+	"armor": ["방어", "+5 방어", 4], "regen": ["마나 회복", "+1 /초", 3],
 	"speed": ["이동 속도", "+0.15m /초", 3], "R": ["특수기 R", "레벨 3부터 해금", 1],
 }
 
@@ -190,7 +182,7 @@ func _build_bottom() -> void:
 	_health_text = _bar_text(_health)
 	_energy = _bar(hero_column, Color("6eaeca"), 12)
 	_energy_text = _bar_text(_energy)
-	_passive = _label(hero_column, "압력 0 / 2", 11, TEAL)
+	_passive = _label(hero_column, "룬 심장 0 / 2", 11, TEAL)
 	_passive.clip_text = true
 	_passive.mouse_filter = Control.MOUSE_FILTER_PASS
 	var xp_gap := Control.new()
@@ -253,13 +245,16 @@ func _build_inventory() -> void:
 	_inventory.offset_top = -184
 	_inventory.offset_bottom = -130
 	var row: HBoxContainer = _row(_inset(_inventory, 8, 1), 8)
-	_inventory_credits = _label(row, "0 크레딧", 11, INK)
+	_inventory_credits = _label(row, "0 골드", 11, INK)
 	_inventory_credits.custom_minimum_size.x = 80
 	_inventory_credits.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	for item_id: String in ConsumablesScript.ITEMS:
-		var button: Button = _button(row, "", Vector2(124, 36))
+		var button: Button = _button(row, "", Vector2(136, 36))
 		button.name = "Select" + item_id
 		button.add_theme_font_size_override("font_size", 12)
+		button.icon = load(ConsumablesScript.ITEMS[item_id].icon) as Texture2D
+		button.add_theme_constant_override("icon_max_width", 24)
+		button.add_theme_constant_override("h_separation", 5)
 		button.pressed.connect(func() -> void: consumable_selected.emit(item_id))
 		_item_buttons[item_id] = button
 	_shop_button = _button(row, "P 상점", Vector2(72, 36))
@@ -276,6 +271,7 @@ func _build_inventory() -> void:
 func _build_shop() -> void:
 	shop = _modal("BaseShop", 750)
 	var column: VBoxContainer = shop.get_meta("column") as VBoxContainer
+	column.add_theme_constant_override("separation", 8)
 	_label(column, "기지 상점  /  소모품", 28, INK)
 	_shop_balance = _label(column, "", 16, TEAL)
 	_label(column, "자기 기지의 살아 있는 영웅만 구매 · 두 종류 합산 최대 2개", 14, MUTED)
@@ -286,11 +282,24 @@ func _build_shop() -> void:
 		var card: PanelContainer = _panel(cards)
 		card.custom_minimum_size.x = 334
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var content: VBoxContainer = _column(_inset(card, 15, 14), 10)
-		_label(content, item.name, 23, INK)
-		_label(content, "%d 크레딧" % item.cost, 20, TEAL)
-		_label(content, "에너지 40을 2초 동안 회복" if item_id == "I01" else "체력 200을 4초 동안 회복", 15, INK)
-		_label(content, "적 영웅 피해에도 회복 유지" if item_id == "I01" else "적 영웅 귀속 유효 피해를 받으면 중단", 12, MUTED)
+		var content: VBoxContainer = _column(_inset(card, 15, 12), 6)
+		var header: HBoxContainer = _row(content, 12)
+		var art := TextureRect.new()
+		art.name = "ItemArt" + item_id
+		art.texture = load(item.icon) as Texture2D
+		art.custom_minimum_size = Vector2(62, 62)
+		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		header.add_child(art)
+		var title: VBoxContainer = _column(header, 4)
+		_label(title, item.name, 23, INK)
+		_label(title, "%d 골드" % item.cost, 17, item.tint)
+		_label(content, item.effect_name, 15, item.tint)
+		_label(content, item.description, 15, INK)
+		var condition: Label = _label(content, item.condition, 12, MUTED)
+		condition.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		condition.custom_minimum_size = Vector2(280, 34)
 		var reason: Label = _label(content, "", 13, COPPER)
 		_shop_reasons[item_id] = reason
 		var button: Button = _button(content, "구매", Vector2(0, 42), true)
@@ -312,11 +321,11 @@ static func consumable_reason(reason: String) -> String:
 		"Unknown consumable": "알 수 없는 소모품입니다.",
 		"Return to home base": "자기 기지로 돌아오면 구매할 수 있습니다.",
 		"Consumable inventory full": "합산 2개까지 보유할 수 있습니다.",
-		"Not enough credits": "크레딧이 부족합니다.",
+		"Not enough credits": "골드가 부족합니다.",
 		"No selected consumable": "선택한 아이템의 재고가 없습니다.",
 		"Consumable cooldown": "소모품의 공유 사용 대기 중입니다.",
 		"Health already full": "체력이 이미 가득 찼습니다.",
-		"Energy already full": "에너지가 이미 가득 찼습니다.",
+		"Energy already full": "마나가 이미 가득 찼습니다.",
 		"Invalid consumable state": "소모품 상태를 확인하세요.",
 	}
 	return str(reasons.get(reason, "지금은 소모품을 사용할 수 없습니다."))
@@ -336,24 +345,24 @@ func show_consumable_message(message: String) -> void:
 
 func _update_consumables(battle: Variant, hero: Dictionary) -> void:
 	var stock: int = int(hero.consumables.I01) + int(hero.consumables.I02)
-	_inventory_credits.text = "%d 크레딧\n보유 %d / 2" % [floori(hero.credits), stock]
-	_shop_balance.text = "보유 %d 크레딧  ·  재고 %d / 2  ·  읽는 동안 경기 일시정지" % [floori(hero.credits), stock]
+	_inventory_credits.text = "%d 골드\n보유 %d / 2" % [floori(hero.credits), stock]
+	_shop_balance.text = "보유 %d 골드  ·  재고 %d / 2  ·  읽는 동안 경기 일시정지" % [floori(hero.credits), stock]
 	for item_id: String in ConsumablesScript.ITEMS:
 		var item: Dictionary = ConsumablesScript.ITEMS[item_id]
 		var button: Button = _item_buttons[item_id]
 		var selected: bool = hero.consumable_selected == item_id
 		button.text = "%s %s ×%d" % ["●" if selected else "○", item.name, hero.consumables[item_id]]
-		button.tooltip_text = "클릭: 선택만 / D: 선택한 아이템 사용"
+		button.tooltip_text = "%s · %s\n%s\n%s\n클릭으로 선택 · D로 사용 · 공유 대기 12초" % [item.name, item.effect_name, item.description, item.condition]
 		button.add_theme_stylebox_override("normal", _style(Color("30574e") if selected else Color("203c42"), TEAL if selected else Color("668178")))
 		var reason: String = battle.consumable_purchase_error(hero.id, item_id)
 		_shop_reasons[item_id].text = "구매 가능 · 보유 %d개" % hero.consumables[item_id] if reason.is_empty() else consumable_reason(reason)
 		_shop_buy_buttons[item_id].disabled = not reason.is_empty()
-		_shop_buy_buttons[item_id].text = "%d 크레딧 · 구매" % item.cost
+		_shop_buy_buttons[item_id].text = "%d 골드 · 구매" % item.cost
 	var cooldown: float = hero.consumable_cooldown
-	_inventory_status.text = "공유 대기 %.1f초" % cooldown if cooldown > 0.0 else "공유 대기: 준비"
+	_inventory_status.text = "공유 대기 %.1f초" % cooldown if cooldown > 0.0 else "공유 대기 · 준비"
 	if not hero.consumable_effect.is_empty():
 		var effect: Dictionary = hero.consumable_effect
-		_inventory_status.text += "\n%s 회복 %.1f초" % [ConsumablesScript.ITEMS[effect.item_id].name, effect.remaining]
+		_inventory_status.text += "\n%s %.1f초" % [ConsumablesScript.ITEMS[effect.item_id].effect_name, effect.remaining]
 	else:
 		_inventory_status.text += "\n선택 후 D로 사용"
 	_use_button.tooltip_text = consumable_reason(battle.consumable_use_error(hero.id)) if not battle.consumable_use_error(hero.id).is_empty() else "선택한 아이템 사용 · 공유 대기 12초"
@@ -617,7 +626,7 @@ func _build_help() -> void:
 	_label(right, "4  경험치 셀", 18, COPPER)
 	_label(right, "작은 셀 20 / 중간 셀 30 / 큰 셀 40 XP\n처치 팀의 14m 안 살아 있는 영웅이 보상을 나눔\n첫 생성 30초 · 파괴 후 45초에 같은 종류로 재생성", 14, INK)
 	_label(right, "5  우리 팀의 시야", 18, COPPER)
-	_label(right, "밝은 곳: 현재 관측 / 어두운 곳: 현재 보이지 않음\n아군 영웅·병력·포탑·핵이 시야를 제공합니다.\n시야원에 마우스를 올려 범위 확인 · 셀과 핀은 제공 안 함", 14, INK)
+	_label(right, "밝은 곳은 현재 관측 중인 영역입니다.\n아군 영웅·병력·포탑·핵이 시야를 제공합니다.\n셀과 정령목에는 시야가 없습니다.\n시야원에 마우스를 올려 범위를 확인하세요.", 14, INK)
 	_label(right, "6  병력과 함께 공성", 18, COPPER)
 	_label(right, "아군 라인 병력이 12m 안에 오면 구조물 보호 해제\n같은 라인의 외곽탑 → 내곽탑 → 상대 핵 공격\n포탑 공격 8.5m · 잠긴 구조물은 먼저 앞선 탑을 파괴", 14, INK)
 	_button(column, "F1 / Esc  ·  닫기", Vector2(0, 44), true).pressed.connect(func() -> void: help_closed.emit())
@@ -678,10 +687,11 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 	_health_text.text = "체력 %d / %d%s" % [ceili(hero.hp), hero.max_hp, "  +%d 보호막" % ceili(hero.shield) if hero.shield > 0 else ""]
 	_energy.max_value = hero.max_energy
 	_energy.value = hero.energy
-	_energy_text.text = "에너지 %d / %d" % [floori(hero.energy), hero.max_energy]
+	_energy_text.text = "마나 %d / %d" % [floori(hero.energy), hero.max_energy]
 	_xp.text = "XP %d / %d · K/D/A %d/%d/%d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · K/D/A %d/%d/%d" % [hero.kills, hero.deaths, hero.assists]
 	_passive.text = _passive_text(battle, hero)
-	_passive.tooltip_text = _passive.text
+	var passive: Dictionary = AbilityScript.PASSIVES[key]
+	_passive.tooltip_text = "%s · 패시브\n%s\n\n%s" % [passive.name, passive.description, _passive.text]
 	_xp.tooltip_text = "K / D / A · 처치 / 사망 / 도움"
 	_timer.text = "%02d:%02d" % [int(battle.time) / 60, int(battle.time) % 60]
 	_mode.text = "기술 체험 · Lv.3 / R" if practice else "일반 경기 · 봇 3 대 3"
@@ -702,23 +712,23 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 			icon.set_meta("asset_path", icon_path)
 		var cost: float = AbilityScript.CONFIG[key][slot][0]
 		labels[0].text = SKILLS[key][index]
-		labels[2].text = "에너지 %d" % int(cost)
+		labels[2].text = "마나 %d" % int(cost)
 		var state: String = "준비"
 		if slot == "R" and not hero.r_unlocked:
 			state = "Lv.3 해금"
 		elif hero.cooldowns[slot] > 0.0:
 			state = "%.1f초" % hero.cooldowns[slot]
 		elif hero.energy < cost:
-			state = "에너지 부족"
+			state = "마나 부족"
 		elif aim_slot == slot:
 			state = "좌클릭 확정"
 		labels[1].text = state
 		labels[1].add_theme_color_override("font_color", COPPER if state != "준비" and aim_slot != slot else TEAL)
-		button.tooltip_text = "%s · %s\n에너지 %d / 재사용 %.1f초\n%s" % [slot, SKILLS[key][index], cost, AbilityScript.CONFIG[key][slot][1], SKILL_HELP[key][index]]
+		button.tooltip_text = "%s · %s\n마나 %d / 재사용 %.1f초\n%s" % [slot, SKILLS[key][index], cost, AbilityScript.CONFIG[key][slot][1], SKILL_HELP[key][index]]
 		button.add_theme_stylebox_override("normal", _style(Color("305450") if aim_slot == slot else Color("19373d"), TEAL if aim_slot == slot else Color("a18d6f"), 2 if aim_slot == slot else 1))
 	growth_button.text = "G  성장\n+ %d 포인트" % hero.points
 	_growth_title.text = "성장  ·  사용 가능 %d포인트" % hero.points
-	_growth_stats.text = "현재 위력 %d · 방어 %d · 이동 %.2fm/초 · 에너지 회복 %.1f/초" % [hero.power, hero.armor, hero.speed, hero.energy_regen]
+	_growth_stats.text = "현재 위력 %d · 방어 %d · 이동 %.2fm/초 · 마나 회복 %.1f/초" % [hero.power, hero.armor, hero.speed, hero.energy_regen]
 	for stat: String in GROWTH:
 		var spec: Array = GROWTH[stat]
 		var used: int = int(hero.investments[stat])
@@ -734,14 +744,14 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 
 func _passive_text(battle: Variant, hero: Dictionary) -> String:
 	if hero.hero == "bas":
-		return "압력 %d / 2%s" % [hero.pressure, "  ·  %.1f초" % hero.pressure_left if hero.pressure > 0 else " · 기술 적중 시 충전"]
+		return "룬 심장 %d / 2%s" % [hero.pressure, "  ·  %.1f초" % hero.pressure_left if hero.pressure > 0 else " · 기술 적중 시 충전"]
 	if hero.hero == "rio":
-		var phase: String = "원반 준비"
+		var phase: String = "별의 순환 · 준비"
 		for projectile: Dictionary in battle.projectiles:
 			if projectile.get("owner_id", -1) == hero.id and projectile.kind == "rio_disc":
-				phase = {"outbound": "원반 출발", "turn": "원반 회전", "return": "원반 귀환"}.get(projectile.get("phase", ""), "원반 비행")
+				phase = {"outbound": "왕복 혜성 · 출발", "turn": "왕복 혜성 · 선회", "return": "왕복 혜성 · 귀환"}.get(projectile.get("phase", ""), "왕복 혜성 · 비행")
 		if not hero.return_mark.is_empty():
-			phase += " · 회수점 %.1f초" % maxf(0, hero.return_mark.expires - battle.time)
+			phase += " · 별무리 닻 %.1f초" % maxf(0, hero.return_mark.expires - battle.time)
 		if hero.empowered_left > 0:
 			phase += " · 강화 %.1f초" % hero.empowered_left
 		return phase
@@ -750,7 +760,7 @@ func _passive_text(battle: Variant, hero: Dictionary) -> String:
 		if battle.units.has(pin_id) and battle.units[pin_id].alive:
 			remaining.append("%.1f" % maxf(0, battle.units[pin_id].expires - battle.time))
 	var link: Dictionary = battle.get_pin_link(hero.id)
-	return "핀 %d / 2 · %s%s" % [remaining.size(), "연결 유효" if not link.is_empty() else "연결 대기", " · " + "/".join(remaining) + "초" if not remaining.is_empty() else ""]
+	return "정령목 %d / 2 · %s%s" % [remaining.size(), "숲의 품 활성" if not link.is_empty() else "연결 대기", " · " + "/".join(remaining) + "초" if not remaining.is_empty() else ""]
 
 
 func show_message(text: String, duration: float = 3.2) -> void:
@@ -763,7 +773,7 @@ func show_target(target: Dictionary) -> void:
 	_target.visible = not target.is_empty() and not selection.visible
 	if target.is_empty():
 		return
-	var name_text: String = HEROES[target.hero][0] if target.kind == "hero" else {"tower": "방어탑", "core": "핵", "minion": "라인 병력", "cell": "경험치 셀", "pin": "연결 핀"}.get(target.kind, "대상")
+	var name_text: String = HEROES[target.hero][0] if target.kind == "hero" else {"tower": "방어탑", "core": "핵", "minion": "라인 병력", "cell": "경험치 셀", "pin": "정령목"}.get(target.kind, "대상")
 	_target_text.text = "%s · %s\n체력 %d / %d%s" % ["적" if target.team == 1 else "중립", name_text, ceili(target.hp), target.max_hp, " · 잠금" if target.locked else (" · 병력 보호" if target.get("siege_protected", false) else "")]
 
 

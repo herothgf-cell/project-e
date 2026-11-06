@@ -1,6 +1,6 @@
 # 실행 자산 안내
 
-현재 기준은 **V5 수로 전장**이다. 자세한 미술 방향·소스 연결·수정 절차는 [V5 제작 안내](../../../doc/design/25-illustrated-canal.md), 수행된 확인은 [V5 검증 기록](../../../doc/design/verification/2026-11-05-v5-verification.md)을 따른다.
+현재 스킬·아이템은 **V7 판타지 개편**을 따른다. 영웅별 효과와 아이템은 [V7 구성](../../../doc/design/27-fantasy-skills-v7.md), 전장과 영웅 모델의 편집 절차는 [V5 제작 안내](../../../doc/design/25-illustrated-canal.md)를 참조한다.
 
 | 경로 | 현재 용도 |
 |---|---|
@@ -9,7 +9,8 @@
 | `heroes/painted.gdshader` | 영웅의 텍스처·색면 표현 |
 | `portraits/{bas,rio,nema}.webp` | 현재 영웅 선택 카드 초상화 |
 | `portraits/*.svg` | 이전 V3 초상화 자료 |
-| `ui/skills/*.svg` | 영웅별 Q/W/E/R 아이콘 12개 |
+| `ui/skills/*.svg` | 룬 건틀릿·별빛 원반·정령목 Q/W/E/R 아이콘 12개 |
+| `ui/items/*.svg` | 별샘 영약·숲빛 치유약의 상점 및 인벤토리 아이콘 |
 | `environment/*.glb` | 관측소·문루·회랑·포탑 왕관·수정·식생 등 환경 모델 11개 |
 | `environment/canal_flagstones.webp`, `canal_waterbed.webp` | 석재·수로 바닥 |
 | `environment/canal_surface.gdshader` | 전장 표면 표현 |

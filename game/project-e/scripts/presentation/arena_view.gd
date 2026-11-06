@@ -212,10 +212,31 @@ func _core(parent: Node3D, color: Color) -> void:
 
 
 func _pin(parent: Node3D, color: Color) -> void:
-	_cylinder(parent, 0.32, 0.15, Vector3(0, 0.12, 0), COPPER, 6)
-	_cylinder(parent, 0.11, 1.2, Vector3(0, 0.72, 0), PALE, 6)
-	_box(parent, Vector3(0.60, 0.18, 0.16), Vector3(0, 1.22, 0), color)
-	_sphere(parent, 0.18, Vector3(0, 1.48, 0), color)
+	var sapling := Node3D.new()
+	sapling.name = "SpiritSapling"
+	parent.add_child(sapling)
+	var bark := Color("836b48")
+	var foliage := Color("81ba76")
+	var trunk := _cylinder(sapling, 0.085, 0.86, Vector3(0, 0.49, 0), bark, 7)
+	trunk.name = "LivingTrunk"
+	trunk.rotation.z = -0.08
+	for index: int in range(3):
+		var angle: float = TAU * float(index) / 3.0
+		var direction := Vector3(cos(angle), 0, sin(angle))
+		var root := _sphere(sapling, 0.12, direction * 0.14 + Vector3.UP * 0.10, bark)
+		root.scale = Vector3(1.35, 0.35, 0.55)
+		root.rotation.y = -angle
+		var branch := _cylinder(sapling, 0.035, 0.38, direction * 0.10 + Vector3.UP * (0.66 + index * 0.10), bark, 6)
+		branch.rotation.z = -0.52
+		branch.rotation.y = -angle
+		for level: int in range(2):
+			var leaf := _sphere(sapling, 0.14, direction * (0.17 - level * 0.04) + Vector3.UP * (0.84 + index * 0.10 + level * 0.18), foliage.lightened(level * 0.15))
+			leaf.name = "SpiritLeaf_%d_%d" % [index, level]
+			leaf.scale = Vector3(0.70, 0.43, 1.20)
+			leaf.rotation = Vector3(0.18, -angle + PI * 0.5, 0.18)
+	var bud := _sphere(sapling, 0.13, Vector3(0.04, 1.28, 0), color.lightened(0.25))
+	bud.name = "SpiritBud"
+	bud.scale = Vector3(0.75, 1.35, 0.75)
 
 
 func _elevated_cell_access(map: Variant, position: Vector2, lane_y: float) -> void:

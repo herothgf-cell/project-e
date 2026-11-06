@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the original Project E Fantasy V3 SVG pack before Godot imports it."""
+"""Validate Project E hero, skill and consumable SVG assets before Godot imports."""
 
 from pathlib import Path
 import xml.etree.ElementTree as ET
@@ -11,6 +11,7 @@ HEROES = ("bas", "rio", "nema")
 SKILLS = ("q", "w", "e", "r")
 FILES = [ASSET / "portraits" / f"{hero}.svg" for hero in HEROES]
 FILES += [ASSET / "ui/skills" / f"{hero}_{slot}.svg" for hero in HEROES for slot in SKILLS]
+FILES += [ASSET / "ui/items" / f"{item}.svg" for item in ("starlight_elixir", "grove_salve")]
 FILES += [DESIGN / x for x in ("style-guide.svg", "arena-map.svg", "hud-mockup.svg", "skill-vfx-board.svg")]
 SVG_NS = "{http://www.w3.org/2000/svg}"
 

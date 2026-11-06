@@ -1,21 +1,21 @@
 extends MeshInstance3D
-## Per-kit readable additions. Authority telegraphs stay in Effects.
-## Sample every decorative point against current team sight and real effect area.
+## Decorative geometry follows the authority's shape, wall LOS and current sight.
 const MOTIFS: Dictionary = {
-	"bas": {"Q":"ember_arc", "W":"guardian_sigil", "E":"flame_dash", "R":"thunder_fissure"},
-	"rio": {"Q":"comet_disc", "W":"nebula_loop", "E":"moonstep", "R":"constellation"},
-	"nema": {"Q":"seed_rune", "W":"grove_pulse", "E":"forest_guard", "R":"vine_bind"}
+	"bas": {"Q":"runic_impact", "W":"guardian_sigil", "E":"stone_charge", "R":"earth_judgment"},
+	"rio": {"Q":"comet_disc", "W":"star_anchor", "E":"starlight_step", "R":"constellation"},
+	"nema": {"Q":"spirit_sapling", "W":"vine_wave", "E":"leaf_ward", "R":"ancient_roots"}
 }
 var rendered_points: Array[Vector2] = []
 var rendered_motifs: Dictionary = {}
 var _mesh: ImmediateMesh
 var _state: Variant
+var _effect: Dictionary = {}
+var _allowed_points: Dictionary = {}
 var _count: int = 0
-func style_for(hero_key: String, slot: String) -> Dictionary:
-	var motif: String = str(MOTIFS.get(hero_key, {}).get(slot, ""))
-	var tint: Color = Color("ffc979") if hero_key == "bas" else (Color("9fdfff") if hero_key == "rio" else Color("9ce3a8"))
-	return {"motif":motif, "tint":tint}
 
+func style_for(hero_key: String, slot: String) -> Dictionary:
+	var tint: Color = Color("ddc58a") if hero_key == "bas" else (Color("a8dfff") if hero_key == "rio" else Color("9ce3a8"))
+	return {"motif": str(MOTIFS.get(hero_key, {}).get(slot, "")), "tint": tint}
 
 func _ready() -> void:
 	var material := StandardMaterial3D.new()
@@ -25,6 +25,7 @@ func _ready() -> void:
 	material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	material_override = material
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
 func refresh(state: Variant) -> void:
 	_state = state
 	rendered_points.clear()
@@ -33,103 +34,234 @@ func refresh(state: Variant) -> void:
 	_mesh = ImmediateMesh.new()
 	_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	for effect: Dictionary in state.effects:
-		if bool(effect.get("telegraph", true)): continue
+		if bool(effect.get("telegraph", true)):
+			continue
 		var actor: Dictionary = state.units.get(int(effect.get("owner_id", -1)), {})
-		if actor.is_empty(): continue
+		if actor.is_empty():
+			continue
+		_effect = effect
+		_allowed_points.clear()
 		var key: String = str(actor.hero)
-		var color: Color = style_for(key, str(effect.get("slot", ""))).get("tint", Color("a8e4ff"))
-		if int(effect.get("team", 0)) != 0: color = Color("ffad72")
-		var fraction: float = clampf(1.0 - float(effect.get("remaining", 0.0)) / maxf(0.001, float(effect.get("duration", 0.22))), 0, 1)
 		var slot: String = str(effect.get("slot", ""))
 		var style: Dictionary = style_for(key, slot)
-		var power: float = 1.35 if slot == "R" else 0.65
-		var origin: Vector2 = effect.get("origin", Vector2.ZERO)
-		var target: Vector2 = effect.get("target", origin)
-		var shape: String = str(effect.get("shape", ""))
-		var samples: Array[Vector2] = []
-		if shape in ["circle", "cone"]:
-			var radius: float = float(effect.get("radius", 0.5)) * (0.30 + fraction * 0.62)
-			var direction: Vector2 = effect.get("direction", Vector2.RIGHT)
-			var angle: float = float(effect.get("angle", 360.0)) if shape == "cone" else 360.0
-			for i: int in range(25):
-				var theta: float = direction.angle() + deg_to_rad(angle) * (float(i) / 24.0 - 0.5)
-				samples.append(origin + Vector2(cos(theta), sin(theta)) * radius)
-		elif shape == "triangle":
-			var points: Array = effect.get("points", [])
-			for i: int in range(points.size()):
-				for j: int in range(12): samples.append(Vector2(points[i]).lerp(points[(i + 1) % points.size()], float(j) / 12))
-		else:
-			var normal: Vector2 = (target - origin).normalized().orthogonal()
-			for i: int in range(18):
-				var center: Vector2 = origin.lerp(target, float(i) / 17.0)
-				for side: float in [-0.35, 0.35]: samples.append(center + normal * float(effect.get("width", 0.5)) * side)
-		for point: Vector2 in samples:
-			var source: Vector2 = state._abilities.effect_origin(effect, point)
-			if not _allowed(point) or not state._abilities.contains(effect, point, 0) or not state.map.has_line_of_sight(source, point): continue
-			var height: float = power * sin(PI * clampf(fraction + 0.10, 0, 1))
-			var motif_id: String = str(style.get("motif", ""))
-			if not motif_id.is_empty():
-				rendered_motifs[motif_id] = int(rendered_motifs.get(motif_id, 0)) + 1
-			if key == "bas":
-				_blade(point, maxf(0.12, height), 0.12 if slot != "R" else 0.18, color)
-				if slot in ["W", "R"]: _rune(point, height + 0.14, 0.16, color)
-				if slot == "E": _ember(point, height + 0.15, 0.19, color)
-			elif key == "rio":
-				_diamond(point, 0.25 + height * 0.25, 0.12 if slot != "R" else 0.20, color)
-				if slot in ["W", "R"]: _rune(point, 0.22 + height * 0.45, 0.19, color)
-				if slot == "E": _ember(point, height * 0.55, 0.11, color)
-			else:
-				_blade(point, 0.20 + height, 0.055, color)
-				if slot in ["Q", "W", "R"]: _leaf(point, 0.25 + height * 0.5, 0.13, color)
-				if slot == "E": _rune(point, 0.24 + height * 0.48, 0.15, color)
+		var color: Color = style.tint if int(effect.get("team", 0)) == 0 else Color("ffad72")
+		var fraction: float = clampf(1.0 - float(effect.get("remaining", 0.0)) / maxf(0.001, float(effect.get("duration", 0.22))), 0, 1)
+		var before: int = _count
+		_draw_pattern(key + slot, fraction, color)
+		if _count > before:
+			rendered_motifs[style.motif] = _count - before
 	for actor: Dictionary in state.units.values():
-		if actor.kind != "hero" or not actor.alive or not state.is_visible(0, actor.id): continue
-		if actor.phase == "dash":
-			var color := Color("ffe1a5") if actor.hero == "bas" else Color("a8fff0")
-			if actor.team != 0: color = Color("ffad72")
-			var normal: Vector2 = actor.facing.orthogonal()
-			for i: int in range(9):
-				for side: float in [-1.0, 1.0]:
-					var point: Vector2 = actor.pos - actor.facing * float(i) * 0.10 + normal * side * 0.28
-					if _allowed(point) and state.map.has_line_of_sight(actor.pos, point): _blade(point, 0.35, 0.07, color)
-	if _count == 0: _triangle(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO, Color(0, 0, 0, 0))
+		if actor.kind != "hero" or not actor.alive or actor.phase != "dash" or not state.is_visible(0, actor.id):
+			continue
+		_effect = actor.cast
+		_allowed_points.clear()
+		var style: Dictionary = style_for(str(actor.hero), "E")
+		var color: Color = style.tint if actor.team == 0 else Color("ffad72")
+		var before: int = _count
+		_draw_dash(actor, color)
+		if _count > before:
+			rendered_motifs[style.motif] = _count - before
+	if _count == 0:
+		for index: int in range(3):
+			_mesh.surface_set_color(Color(0, 0, 0, 0))
+			_mesh.surface_add_vertex(Vector3.ZERO)
 	_mesh.surface_end()
 	mesh = _mesh
-func _allowed(point: Vector2) -> bool:
-	return _state.is_point_visible(0, point)
+
+func _draw_pattern(key: String, fraction: float, color: Color) -> void:
+	var origin: Vector2 = _effect.get("origin", Vector2.ZERO)
+	var direction: Vector2 = _effect.get("direction", Vector2.RIGHT)
+	var rise: float = sin(PI * clampf(fraction + 0.08, 0, 1))
+	var accent: Color = Color("82e5cd") if key.begins_with("bas") else Color("f4e7b5")
+	if int(_effect.get("team", 0)) != 0:
+		accent = Color("ffd6a0")
+	match key:
+		"basQ":
+			for point: Vector2 in _samples(9, 0.48 + fraction * 0.34):
+				_stone(point, 0.12, 0.16 + rise * 0.48, direction, color)
+				_stroke(point - direction * 0.25, point, 0.055, 0.13, accent)
+		"basW":
+			var points: Array[Vector2] = _samples(6, 0.68)
+			for index: int in range(points.size()):
+				var point: Vector2 = points[index]
+				var next: Vector2 = points[(index + 1) % points.size()]
+				_stroke(point, next, 0.075, 0.14, color)
+				_shield(point, (point - origin).orthogonal().normalized(), 0.24, 0.30 + rise * 0.42, accent)
+		"basE":
+			for point: Vector2 in _samples(8, 0.64):
+				_chevron(point, direction, 0.20, 0.10, accent)
+				_stone(point, 0.10, 0.25, direction, color)
+		"basR":
+			var points: Array[Vector2] = _samples(14, 0.70)
+			for index: int in range(points.size()):
+				var point: Vector2 = points[index]
+				var offset: Vector2 = direction.orthogonal() * (0.22 if index % 2 == 0 else -0.22)
+				_stone(point + offset, 0.23, 0.30 + rise * (0.65 + float(index % 3) * 0.12), direction, color.darkened(0.22))
+				_chevron(point, direction, 0.18, 0.12, accent)
+				if index > 0:
+					_stroke(points[index - 1], point, 0.07, 0.10, accent)
+		"rioQ":
+			for point: Vector2 in _samples(7, 0.66):
+				_star(point, 0.20, 0.22 + rise * 0.20, color)
+				_stroke(point - direction * 0.34, point, 0.045, 0.20, accent)
+		"rioW":
+			for point: Vector2 in _samples(8, 0.48 + fraction * 0.30):
+				_stroke(origin.lerp(point, 0.38), point, 0.045, 0.16, color)
+				_star(point, 0.14, 0.20 + rise * 0.18, accent)
+			_star(origin, 0.28, 0.24, color)
+		"rioE":
+			for point: Vector2 in _samples(5, 0.65):
+				_crescent(point, direction, 0.25, 0.20 + rise * 0.18, color)
+		"rioR":
+			var points: Array[Vector2] = _samples(24, 0.72)
+			for index: int in range(points.size()):
+				var point: Vector2 = points[index]
+				if index % 3 == 0:
+					_star(point, 0.14, 0.25 + rise * 0.20, accent)
+				if index > 0:
+					_stroke(points[index - 1], point, 0.055, 0.16, color)
+			if _effect.get("shape", "") == "triangle" and not points.is_empty():
+				_stroke(points[-1], points[0], 0.055, 0.16, color)
+				for vertex: Vector2 in _effect.get("points", []):
+					_star(vertex, 0.28, 0.30 + rise * 0.25, accent)
+		"nemaQ":
+			for point: Vector2 in _samples(5, 0.52):
+				var middle: Vector2 = origin.lerp(point, 0.55) + (point - origin).orthogonal() * 0.16
+				_stroke(origin, middle, 0.07, 0.11, color.darkened(0.30))
+				_stroke(middle, point, 0.055, 0.13, color)
+				_leaf(point, (point - origin).normalized(), 0.18, 0.25 + rise * 0.25, color)
+			_stone(origin, 0.10, 0.18 + rise * 0.70, direction, accent)
+			_leaf(origin + direction * 0.14, direction, 0.26, 0.38 + rise * 0.38, color)
+		"nemaW":
+			_vines(0.10, 0.08 + rise * 0.24, color, false)
+		"nemaE":
+			for point: Vector2 in _samples(11, 0.40 + fraction * 0.36):
+				_leaf(point, (point - origin).normalized(), 0.26, 0.38 + rise * 0.42, color)
+				_stroke(origin.lerp(point, 0.84), point, 0.035, 0.11, accent)
+		"nemaR":
+			_vines(0.23, 0.15 + rise * 0.48, color, true)
+
+func _samples(count: int, radius_fraction: float) -> Array[Vector2]:
+	var result: Array[Vector2] = []
+	var origin: Vector2 = _effect.get("origin", Vector2.ZERO)
+	var target: Vector2 = _effect.get("target", origin)
+	var shape: String = str(_effect.get("shape", ""))
+	var direction: Vector2 = _effect.get("direction", Vector2.RIGHT)
+	for index: int in range(count):
+		var fraction: float = float(index) / maxf(1, count - 1)
+		if shape in ["circle", "cone"]:
+			var angle: float = deg_to_rad(float(_effect.get("angle", 360.0))) if shape == "cone" else TAU
+			var theta: float = direction.angle() + angle * (float(index) / count - 0.5)
+			result.append(origin + Vector2.from_angle(theta) * float(_effect.get("radius", 0.5)) * radius_fraction)
+		elif shape == "triangle":
+			var points: Array = _effect.get("points", [])
+			if points.size() == 3:
+				var edge_position: float = float(index) / count * 3.0
+				var edge: int = int(edge_position)
+				result.append(Vector2(points[edge]).lerp(points[(edge + 1) % 3], fmod(edge_position, 1.0)))
+		else:
+			result.append(origin.lerp(target, 0.05 + fraction * 0.90))
+	return result
+
+func _vines(amplitude: float, height: float, color: Color, binding: bool) -> void:
+	var points: Array[Vector2] = _samples(22 if binding else 18, 0.66)
+	var direction: Vector2 = _effect.get("direction", Vector2.RIGHT)
+	if _effect.get("shape", "") == "line":
+		direction = (Vector2(_effect.target) - Vector2(_effect.origin)).normalized()
+	var normal: Vector2 = direction.orthogonal()
+	for side: float in [-1.0, 1.0]:
+		var previous := Vector2.ZERO
+		for index: int in range(points.size()):
+			var point: Vector2 = points[index] + normal * sin(float(index) * 0.85 + float(_state.time) * 3.0) * amplitude * side
+			if index > 0:
+				_stroke(previous, point, 0.065 if binding else 0.045, height, color.darkened(0.16))
+			if index % 3 == 1:
+				_leaf(point, normal * side, 0.17, height + 0.15, color)
+				if binding:
+					_stone(point, 0.07, height + 0.40, normal * side, color.darkened(0.32))
+			previous = point
+
+func _draw_dash(actor: Dictionary, color: Color) -> void:
+	var direction: Vector2 = actor.facing
+	for index: int in range(5):
+		var point: Vector2 = actor.pos - direction * float(index) * 0.18
+		if actor.hero == "bas":
+			_chevron(point, direction, 0.23, 0.12, Color("93e8d0") if actor.team == 0 else color)
+			for side: float in [-1.0, 1.0]:
+				_stone(point + direction.orthogonal() * side * 0.26, 0.075, 0.16 + float(4 - index) * 0.035, direction, color)
+		else:
+			_crescent(point, direction, 0.24, 0.22, color)
+			if index % 2 == 0:
+				_star(point, 0.12, 0.48, Color("f5e6bd") if actor.team == 0 else color)
+
 func _world(point: Vector2, height: float) -> Vector3:
 	return Vector3(point.x, _state.map.ground_height(point) + height, -point.y)
-func _blade(point: Vector2, height: float, width: float, color: Color) -> void:
-	rendered_points.append(point)
-	var bottom: Vector3 = _world(point, 0.10)
-	var top: Vector3 = _world(point, height + 0.10)
-	color.a = 0.75
-	_triangle(bottom - Vector3.RIGHT * width, bottom + Vector3.RIGHT * width, top, color)
-	_triangle(bottom - Vector3.FORWARD * width, bottom + Vector3.FORWARD * width, top, color)
-func _diamond(point: Vector2, height: float, size: float, color: Color) -> void:
-	rendered_points.append(point)
-	var center: Vector3 = _world(point, height)
-	_triangle(center - Vector3.RIGHT * size, center + Vector3.RIGHT * size, center + Vector3.UP * size, color)
-	_triangle(center + Vector3.RIGHT * size, center - Vector3.RIGHT * size, center - Vector3.UP * size, color)
-func _rune(point: Vector2, height: float, size: float, color: Color) -> void:
-	# Original arcane diamond rune; all centers were approved by LOS/visibility.
-	var center: Vector3 = _world(point, height)
-	color.a = 0.60
-	_triangle(center + Vector3.UP * size, center + Vector3.RIGHT * size, center - Vector3.UP * size, color)
-	_triangle(center + Vector3.UP * size, center - Vector3.RIGHT * size, center - Vector3.UP * size, color)
 
-func _ember(point: Vector2, height: float, size: float, color: Color) -> void:
-	var center: Vector3 = _world(point, height)
-	color.a = 0.72
-	_triangle(center + Vector3.UP * size, center - Vector3.RIGHT * size * 0.5, center + Vector3.RIGHT * size * 0.5, color)
+func _stroke(a: Vector2, b: Vector2, width: float, height: float, color: Color) -> void:
+	var normal: Vector2 = (b - a).normalized().orthogonal() * width * 0.5
+	_triangle(_world(a + normal, height), _world(a - normal, height), _world(b + normal, height), color)
+	_triangle(_world(a - normal, height), _world(b - normal, height), _world(b + normal, height), color)
 
-func _leaf(point: Vector2, height: float, size: float, color: Color) -> void:
-	var center: Vector3 = _world(point, height)
-	color.a = 0.66
-	_triangle(center + Vector3.UP * size, center + Vector3.RIGHT * size * 0.65, center - Vector3.UP * size * 0.6, color)
-	_triangle(center + Vector3.UP * size, center - Vector3.RIGHT * size * 0.65, center - Vector3.UP * size * 0.6, color)
+func _chevron(point: Vector2, direction: Vector2, size: float, height: float, color: Color) -> void:
+	var normal: Vector2 = direction.orthogonal()
+	_stroke(point - direction * size + normal * size, point, 0.055, height, color)
+	_stroke(point - direction * size - normal * size, point, 0.055, height, color)
+
+func _stone(point: Vector2, size: float, height: float, direction: Vector2, color: Color) -> void:
+	var normal: Vector2 = direction.orthogonal()
+	var corners: Array[Vector2] = [point + direction * size, point + normal * size, point - direction * size, point - normal * size]
+	var top: Vector3 = _world(point + direction * size * 0.18, height + 0.10)
+	for index: int in range(4):
+		_triangle(_world(corners[index], 0.10), _world(corners[(index + 1) % 4], 0.10), top, color.darkened(float(index % 2) * 0.20))
+
+func _shield(point: Vector2, tangent: Vector2, size: float, height: float, color: Color) -> void:
+	var bottom: Vector3 = _world(point, 0.13)
+	var left: Vector3 = _world(point - tangent * size, height)
+	var right: Vector3 = _world(point + tangent * size, height)
+	var top: Vector3 = _world(point, height + 0.18)
+	_triangle(bottom, left, right, Color(color, 0.44))
+	_triangle(left, top, right, Color(color, 0.72))
+
+func _star(point: Vector2, size: float, height: float, color: Color) -> void:
+	for index: int in range(4):
+		var direction: Vector2 = Vector2.from_angle(PI * 0.5 * index)
+		var normal: Vector2 = direction.orthogonal()
+		_triangle(_world(point + direction * size, height), _world(point + normal * size * 0.24, height), _world(point - normal * size * 0.24, height), color)
+
+func _crescent(point: Vector2, direction: Vector2, size: float, height: float, color: Color) -> void:
+	for index: int in range(8):
+		var angle: float = direction.angle() - PI * 0.65 + float(index) * PI * 1.3 / 8.0
+		var next_angle: float = angle + PI * 1.3 / 8.0
+		_stroke(point + Vector2.from_angle(angle) * size, point + Vector2.from_angle(next_angle) * size, 0.045, height, color)
+
+func _leaf(point: Vector2, direction: Vector2, size: float, height: float, color: Color) -> void:
+	var normal: Vector2 = direction.orthogonal()
+	var bottom: Vector3 = _world(point - direction * size * 0.30, height - size * 0.40)
+	var tip: Vector3 = _world(point + direction * size * 0.60, height + size)
+	var left: Vector3 = _world(point - normal * size * 0.48, height)
+	var right: Vector3 = _world(point + normal * size * 0.48, height)
+	_triangle(bottom, left, tip, color.darkened(0.16))
+	_triangle(bottom, tip, right, color)
+
+func _allowed(point: Vector2) -> bool:
+	if _allowed_points.has(point):
+		return bool(_allowed_points[point])
+	var source: Vector2 = _state._abilities.effect_origin(_effect, point)
+	var allowed: bool = _state._abilities.contains(_effect, point, 0.0) and _state.is_point_visible(0, point) and _state.map.has_line_of_sight(source, point)
+	_allowed_points[point] = allowed
+	return allowed
 
 func _triangle(a: Vector3, b: Vector3, c: Vector3, color: Color) -> void:
+	var first := Vector2(a.x, -a.z)
+	var second := Vector2(b.x, -b.z)
+	var third := Vector2(c.x, -c.z)
+	# Whole tiny triangles are checked so decorative corners never cross a wall,
+	# a sight boundary or the actual effect footprint.
+	for point: Vector2 in [first, second, third, (first + second) * 0.5, (second + third) * 0.5, (third + first) * 0.5, (first + second + third) / 3.0]:
+		if not _allowed(point):
+			return
+	rendered_points.append((first + second + third) / 3.0)
+	color.a *= 0.82
 	for vertex: Vector3 in [a, b, c]:
 		_mesh.surface_set_color(color)
 		_mesh.surface_add_vertex(vertex)

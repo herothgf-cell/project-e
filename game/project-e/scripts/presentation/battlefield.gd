@@ -273,7 +273,7 @@ func arm_ability(slot: String) -> bool:
 	elif hero.cooldowns[slot] > 0:
 		error = "%s 재사용까지 %.1f초 남았습니다." % [slot, hero.cooldowns[slot]]
 	elif hero.energy < float(AbilityScript.CONFIG[hero.hero][slot][0]):
-		error = "에너지가 부족합니다."
+		error = "마나가 부족합니다."
 	elif hero.stun_left > 0:
 		error = "기절 중에는 기술을 사용할 수 없습니다."
 	if error != "":
@@ -611,10 +611,10 @@ func _show_error() -> void:
 	var translations: Dictionary = {
 		"R requires level 3 and one growth point": "R은 레벨 3부터 성장 1포인트로 해금합니다.",
 		"Ability is cooling down": "아직 기술의 재사용 대기 중입니다.",
-		"Not enough energy": "에너지가 부족합니다.",
-		"Aim outside legal range or terrain / pins not linked": "사거리·지형을 확인하세요. 네마는 핀의 연결도 필요합니다.",
-		"Place two linked pins": "서로 연결된 핀 2개가 필요합니다.",
-		"Place a pin first": "먼저 Q로 핀을 설치하세요.",
+		"Not enough energy": "마나가 부족합니다.",
+		"Aim outside legal range or terrain / pins not linked": "사거리·지형을 확인하세요. 네마는 정령목의 연결도 필요합니다.",
+		"Place two linked pins": "서로 연결된 정령목 2그루가 필요합니다.",
+		"Place a pin first": "먼저 Q로 정령목을 심으세요.",
 		"Choose a direction": "시전할 방향을 선택하세요.",
 		"Finish the current action first": "현재 동작이 끝나면 기술을 사용할 수 있습니다.",
 		"Target unavailable, hidden, allied, or locked": "공격할 수 없는 대상입니다. 잠긴 구조물은 앞선 탑을 먼저 파괴하세요.",
