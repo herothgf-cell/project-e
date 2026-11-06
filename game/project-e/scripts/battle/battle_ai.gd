@@ -68,6 +68,7 @@ func _tower(state: Variant, actor: Dictionary) -> void:
 func _minion(state: Variant, actor: Dictionary) -> void:
 	if actor.phase in ["basic", "windup", "dash", "recovery"] or actor.stun_left > 0.0:
 		return
+	var reserves_last_hit: bool = actor.get("subtype", "") in ["melee", "ranged"]
 	if actor.get("returning_to_lane", false):
 		if _lane_distance(state, actor) > 0.6:
 			_advance_lane(state, actor)
@@ -77,7 +78,8 @@ func _minion(state: Variant, actor: Dictionary) -> void:
 	if not target.is_empty():
 		var chase_origin: Vector2 = actor.get("chase_origin", actor.pos)
 		var too_far: bool = actor.pos.distance_to(chase_origin) > 8.0 or _lane_distance(state, actor) > 6.0
-		if not target.alive or target.locked or too_far or (not state.is_visible(actor.team, target.id) and state.time - actor.last_seen > 1.0):
+		var exhausted: bool = reserves_last_hit and target.hp <= 1.0 and target.shield <= 0.0
+		if not target.alive or target.locked or too_far or exhausted or (not state.is_visible(actor.team, target.id) and state.time - actor.last_seen > 1.0):
 			state.command_stop(actor.id)
 			target = {}
 			if too_far:
@@ -88,6 +90,8 @@ func _minion(state: Variant, actor: Dictionary) -> void:
 		var best: float = INF
 		for candidate: Dictionary in state.units.values():
 			if candidate.kind not in ["minion", "hero", "tower", "core"] or not _available(state, actor, candidate, 8.0):
+				continue
+			if reserves_last_hit and candidate.hp <= 1.0 and candidate.shield <= 0.0:
 				continue
 			var rank: int = 0 if candidate.kind == "minion" else (1 if candidate.kind == "hero" else 2)
 			var score: float = rank * 1000.0 + actor.pos.distance_squared_to(candidate.pos)
