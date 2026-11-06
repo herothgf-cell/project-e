@@ -54,7 +54,7 @@ jobs:
           retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
-          name: ProjectE-Windows-preview
+          name: ProjectE-V6-Windows-preview
           path: |
             build/windows/ProjectE-windows-x86_64.zip
             build/windows/ProjectE-windows-x86_64.zip.sha256
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: ProjectE-Windows-preview
+          name: ProjectE-V6-Windows-preview
           path: package
       - name: Start exported EXE on Windows
         shell: pwsh
@@ -93,7 +93,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ProjectE-Windows-smoke-log
+          name: ProjectE-V6-Windows-smoke-log
           path: |
             smoke/**/windows-smoke.log
             windows-smoke-result.txt

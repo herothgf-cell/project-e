@@ -36,6 +36,11 @@ func _run() -> void:
 			var card: Control = scene.hud._hero_buttons[key]
 			_check(card.is_visible_in_tree(), "Visible hero choice " + key)
 			_check(bounds.encloses(card.get_global_rect()), "Hero choice fits " + key + " " + str(size))
+			var illustrated := false
+			for art in card.find_children("*", "TextureRect", true, false):
+				if art.texture != null and str(art.texture.resource_path) == "res://assets/portraits/" + key + ".webp":
+					illustrated = art.get_global_rect().size.y >= minf(180.0, bounds.size.y * 0.25)
+			_check(illustrated, "Large illustrated hero card " + key + " " + str(size))
 		await _save("selection-%dx%d" % [size.x, size.y])
 	var portraits: Dictionary = {}
 	for control in scene.hud.selection.find_children("*", "TextureRect", true, false):
@@ -70,7 +75,7 @@ func _run() -> void:
 	await _settle()
 	await _save("battle-v6")
 	var bottom: Control = scene.hud._bottom
-	_check(bottom.get_global_rect().size.y <= 150.0, "Compact battle HUD")
+	_check(bottom.get_global_rect().size.y <= 128.0, "Compact battle HUD")
 	_check(root.get_visible_rect().encloses(bottom.get_global_rect()), "Battle HUD fits viewport")
 	var document := {"version": "0.6.0", "engine": Engine.get_version_info().string,
 		"source": "exported PCK" if OS.get_cmdline_args().has("--main-pack") else "source checkout",
@@ -86,7 +91,7 @@ func _run() -> void:
 	quit(0 if failures == 0 else 1)
 
 func _settle() -> void:
-	for index in range(5):
+	for index in range(15):
 		await process_frame
 	await RenderingServer.frame_post_draw
 
