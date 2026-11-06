@@ -21,7 +21,7 @@ Godot 4.7.2 Standard로 만드는 독립 실행형 PC AOS다. 현재 실행판�
 | 캐릭터 표현 | 텍스처가 포함된 GLB 3종, 영웅당 10개 동작 클립, 영웅별 Q/W/E/R 12개 동작과 효과 |
 | 음향·검토 | 전투용 WAV 5개, F6 전장 보기와 F7 독립 검토실 |
 
-이 표는 구현 범위를 설명한다. 자동 검증, 실제 렌더 확인, Windows 사용자 PC 플레이는 별도 상태로 관리한다. 최신 결과와 증거는 [2026-11-05 V5 검증 기록](doc/design/verification/2026-11-05-v5-verification.md)을 기준으로 한다. **Windows 사용자 PC의 수동 플레이, 사람 간 온라인 대전, 재접속과 Steam 연동은 완료되지 않았다.**
+이 표는 구현 범위를 설명한다. 자동 검증, 실제 렌더 확인, Windows 사용자 PC 플레이는 별도 상태로 관리한다. 11월 5일의 실행·촬영·배포 결과는 [V5 검증 기록](doc/design/verification/2026-11-05-v5-verification.md)에 있다. **Windows 사용자 PC의 수동 플레이, 사람 간 온라인 대전, 재접속과 Steam 연동은 완료되지 않았다.**
 
 ## 실행
 
@@ -54,7 +54,7 @@ Windows 배포본을 사용하는 경우 `.exe`와 함께 제공된 `.pck`를 �
 - [설계와 실행판의 차이](doc/design/10-differences.md), [남은 개발](doc/design/11-remaining-development.md)
 - [V4 전투 표현](doc/design/23-fantasy-v4-combat-presentation.md), [V4 자산 안내](doc/design/24-fantasy-v4-asset-guide.md): 이전 단계의 제작 기록
 
-최종 GLB와 WebP는 저장소에 복구되어 있다. 현재 모델과 동일한 결과를 만드는 원본 생성기는 회수하지 못했으며, 이전 생성기로 재생성하면 현재 텍스처·관절 구성을 보존할 수 없다. 모델 수정 방법과 이 한계는 V5 안내에 명시했다.
+영웅의 얼굴·의상 WebP 6장과 복구된 Python 생성기 2개로 영웅 3종과 환경 11종의 GLB를 다시 만들었다. 14개 모두 V5 커밋 `6bd03beb`의 파일과 바이트 단위로 일치한다. [모델 수정·재생성 방법](doc/design/25-illustrated-canal.md#5-모델과-텍스처-수정-계약) · [입력·결과 해시와 실행 환경](doc/design/verification/2026-11-06-v5-model-reproduction.md)
 
 ## 자동 확인
 

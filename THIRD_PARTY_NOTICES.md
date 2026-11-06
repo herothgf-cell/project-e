@@ -8,7 +8,7 @@ Project E is developed with **Godot Engine 4.7.2**, distributed under the MIT li
 
 Include this notice with exported builds. For a release build, retain the applicable Godot and third-party component notices as required by their licenses. The engine's MIT license does not set the license for Project E's original code or game content.
 
-The playable prototype includes Project E GLB character and environment models, painted character textures, illustrated portraits, vector skill icons, procedural UI, and synthesized combat audio. Current asset locations and editing requirements are recorded in [the V5 asset guide](doc/design/25-illustrated-canal.md). The earlier concept images in `doc/design/assets` are art-direction references; images under `doc/design/assets/v5` are captures from the running game. Concept art, portraits, and gameplay captures are identified separately in the design documents.
+The V5 team created the hero cards, concept illustrations, face and costume textures, limestone and riverbed textures for Project E using image generation. Project scripts build the hero and environment meshes. The game also includes vector skill icons, procedural UI and synthesized combat audio. [Art prompts](doc/design/assets/fantasy-v5/art-prompts.md) · [V5 asset guide and gameplay captures](doc/design/25-illustrated-canal.md)
 
 ## Korean font
 
