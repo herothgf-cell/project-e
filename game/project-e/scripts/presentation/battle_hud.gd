@@ -193,6 +193,10 @@ func _build_bottom() -> void:
 	_passive = _label(hero_column, "압력 0 / 2", 11, TEAL)
 	_passive.clip_text = true
 	_passive.mouse_filter = Control.MOUSE_FILTER_PASS
+	var xp_gap := Control.new()
+	xp_gap.custom_minimum_size.y = 2
+	xp_gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hero_column.add_child(xp_gap)
 	_xp = _label(hero_column, "XP 0 / 100 · K/D/A 0/0/0", 10, MUTED)
 	_xp.mouse_filter = Control.MOUSE_FILTER_PASS
 	var divider := VSeparator.new()
