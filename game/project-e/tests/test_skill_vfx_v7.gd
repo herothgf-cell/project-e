@@ -3,6 +3,22 @@ extends SceneTree
 var checks: int = 0
 var failures: int = 0
 
+class CountedBattle extends "res://scripts/battle/battle_state.gd":
+	var sight_queries: int = 0
+	func is_point_visible_for_sources(team: int, position: Vector2, sources: Array) -> bool:
+		sight_queries += 1
+		return super.is_point_visible_for_sources(team, position, sources)
+
+class CountedMap extends "res://scripts/battle/battle_map.gd":
+	var wall_queries: int = 0
+	var height_queries: int = 0
+	func has_line_of_sight(start: Vector2, finish: Vector2, radius: float = 0.0) -> bool:
+		wall_queries += 1
+		return super.has_line_of_sight(start, finish, radius)
+	func ground_height(point: Vector2) -> float:
+		height_queries += 1
+		return super.ground_height(point)
+
 func _initialize() -> void:
 	call_deferred("_run")
 
@@ -40,6 +56,7 @@ func _run() -> void:
 	view.refresh(state)
 	_check(view.rendered_points.is_empty(), "unseen decoration geometry is immediately discarded")
 	_check_real_shapes(state, hero, view)
+	_check_visibility_cost(view)
 	state.effects.clear()
 	hero.hero = "nema"
 	state.spawn_pin(hero, Vector2(1, 0))
@@ -114,6 +131,44 @@ func _visible_and_clear(state: Variant, view: Variant, origin: Vector2) -> bool:
 				if not state.is_point_visible(0, point) or not state.map.has_line_of_sight(origin, point):
 					return false
 	return true
+
+func _check_visibility_cost(view: Variant) -> void:
+	var state := CountedBattle.new()
+	state.reset("bas", true)
+	state.map = CountedMap.new()
+	var hero: Dictionary = state.units[state.controlled_id]
+	hero.pos = Vector2.ZERO
+	for unit: Dictionary in state.units.values():
+		unit.alive = unit.id == hero.id
+	var effect: Dictionary = state._abilities.preview(state, hero, "R", Vector2(6, 0))
+	effect.merge({"telegraph":false, "remaining":0.10, "duration":0.22}, true)
+	state.effects = [effect]
+	state.map.wall_queries = 0
+	state.map.height_queries = 0
+	view.refresh(state)
+	_check(view.rendered_points.size() > 0 and state.sight_queries < 8, "a wholly visible impact avoids per-triangle whole-world sight queries")
+	_check(state.map.wall_queries < 8 and state.map.height_queries < 8, "an open flat impact avoids per-vertex wall and height scans")
+	state.map.blockers.append(Rect2(2.5, -1.5, 0.5, 3.0))
+	view.refresh(state)
+	_check(view.rendered_points.size() > 0 and _visible_and_clear(state, view, Vector2.ZERO), "changed blockers immediately restore exact visibility and wall checks")
+	state.map.blockers.pop_back()
+	state.map.high_ground_cells.append(Vector2(3, 0))
+	hero.pos = Vector2(3, 0)
+	view.refresh(state)
+	var elevated: bool = false
+	var follows_terrain: bool = true
+	for vertex: Vector3 in view.mesh.get_faces():
+		var ground: float = state.map.ground_height(Vector2(vertex.x, -vertex.z))
+		elevated = elevated or ground > 0.0
+		follows_terrain = follows_terrain and vertex.y >= ground + 0.099
+	_check(elevated and follows_terrain, "changed raised terrain immediately restores exact vertex heights")
+	hero.pos = Vector2(-30, 0)
+	view.refresh(state)
+	_check(view.rendered_points.is_empty(), "moving the sole observer immediately invalidates visible-area reuse")
+	hero.pos = Vector2.ZERO
+	hero.alive = false
+	view.refresh(state)
+	_check(view.rendered_points.is_empty(), "losing the sole observer immediately invalidates visible-area reuse")
 
 func _inside_circle(faces: PackedVector3Array, center: Vector2, radius: float) -> bool:
 	for vertex: Vector3 in faces:

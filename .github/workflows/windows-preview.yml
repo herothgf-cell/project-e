@@ -51,7 +51,7 @@ jobs:
                '--main-pack', os.path.abspath('build/windows/ProjectE.pck'),
                '--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy',
                '--script', os.path.abspath('tools/art/capture_player_view.gd'), '--',
-               '--output=' + os.path.abspath('build/player-review'), '--inline-preview'],
+               '--output=' + os.path.abspath('build/player-review'), '--inline-preview', '--exported-pck'],
               r'PLAYER_REVIEW_OK', timeout=180)
           PY
       - uses: actions/upload-artifact@v4

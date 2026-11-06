@@ -12,6 +12,11 @@ var _state: Variant
 var _effect: Dictionary = {}
 var _allowed_points: Dictionary = {}
 var _count: int = 0
+var _sight_sources: Array[Dictionary] = []
+var _raised_regions: Array[Rect2] = []
+var _effect_visible: bool = false
+var _effect_wall_clear: bool = false
+var _effect_flat: bool = false
 
 func style_for(hero_key: String, slot: String) -> Dictionary:
 	var tint: Color = Color("ddc58a") if hero_key == "bas" else (Color("a8dfff") if hero_key == "rio" else Color("9ce3a8"))
@@ -28,6 +33,7 @@ func _ready() -> void:
 
 func refresh(state: Variant) -> void:
 	_state = state
+	_prepare_sight()
 	rendered_points.clear()
 	rendered_motifs.clear()
 	_count = 0
@@ -39,8 +45,7 @@ func refresh(state: Variant) -> void:
 		var actor: Dictionary = state.units.get(int(effect.get("owner_id", -1)), {})
 		if actor.is_empty():
 			continue
-		_effect = effect
-		_allowed_points.clear()
+		_prepare_effect(effect)
 		var key: String = str(actor.hero)
 		var slot: String = str(effect.get("slot", ""))
 		var style: Dictionary = style_for(key, slot)
@@ -53,8 +58,7 @@ func refresh(state: Variant) -> void:
 	for actor: Dictionary in state.units.values():
 		if actor.kind != "hero" or not actor.alive or actor.phase != "dash" or not state.is_visible(0, actor.id):
 			continue
-		_effect = actor.cast
-		_allowed_points.clear()
+		_prepare_effect(actor.cast)
 		var style: Dictionary = style_for(str(actor.hero), "E")
 		var color: Color = style.tint if actor.team == 0 else Color("ffad72")
 		var before: int = _count
@@ -67,6 +71,58 @@ func refresh(state: Variant) -> void:
 			_mesh.surface_add_vertex(Vector3.ZERO)
 	_mesh.surface_end()
 	mesh = _mesh
+
+func _prepare_sight() -> void:
+	_sight_sources.clear()
+	for unit: Dictionary in _state.units.values():
+		if unit.team == 0 and unit.alive and unit.pos.is_finite() and unit.kind in ["hero", "minion", "tower", "core"]:
+			_sight_sources.append(unit)
+	_raised_regions.clear()
+	for center: Vector2 in _state.map.high_ground_cells:
+		_raised_regions.append(Rect2(center, Vector2.ZERO).grow(_state.map.HIGH_GROUND_PAD_RADIUS + 0.001))
+	for ramp: Dictionary in _state.map.high_ground_ramps:
+		_raised_regions.append(Rect2(ramp.low, Vector2.ZERO).expand(_state.map.ramp_high_edge(ramp)).grow(float(ramp.width) * 0.5 + 0.001))
+
+func _prepare_effect(effect: Dictionary) -> void:
+	_effect = effect
+	_allowed_points.clear()
+	var origin: Vector2 = effect.get("origin", Vector2.ZERO)
+	var bounds := Rect2(origin, Vector2.ZERO)
+	if effect.get("shape", "") in ["circle", "cone"]:
+		bounds = bounds.grow(float(effect.get("radius", 0.0)))
+	else:
+		bounds = bounds.expand(effect.get("target", origin))
+		for point: Vector2 in effect.get("points", []):
+			bounds = bounds.expand(point)
+		bounds = bounds.grow(float(effect.get("width", 0.0)) * 0.5)
+	_effect_flat = true
+	for region: Rect2 in _raised_regions:
+		if bounds.intersects(region, true):
+			_effect_flat = false
+			break
+	_effect_wall_clear = _clear_bounds(bounds)
+	_effect_visible = false
+	var corners: Array[Vector2] = [bounds.position, bounds.end, Vector2(bounds.position.x, bounds.end.y), Vector2(bounds.end.x, bounds.position.y)]
+	for source: Dictionary in _sight_sources:
+		var radius: float = 8.0 if source.kind == "minion" else 12.0
+		var covers: bool = true
+		for corner: Vector2 in corners:
+			if source.pos.distance_squared_to(corner) > radius * radius:
+				covers = false
+				break
+		if not covers or not _clear_bounds(bounds.expand(source.pos)):
+			continue
+		if _effect_flat or source.kind in ["tower", "core"] or _state.map.is_high_ground(source.pos):
+			_effect_visible = true
+			break
+
+func _clear_bounds(bounds: Rect2) -> bool:
+	# Every sight ray between points in this rectangle remains in the rectangle.
+	# Reject the broad-phase proof whenever any authoritative wall touches it.
+	for wall: Rect2 in _state.map.blockers:
+		if bounds.intersects(wall, true):
+			return false
+	return true
 
 func _draw_pattern(key: String, fraction: float, color: Color) -> void:
 	var origin: Vector2 = _effect.get("origin", Vector2.ZERO)
@@ -195,7 +251,8 @@ func _draw_dash(actor: Dictionary, color: Color) -> void:
 				_star(point, 0.12, 0.48, Color("f5e6bd") if actor.team == 0 else color)
 
 func _world(point: Vector2, height: float) -> Vector3:
-	return Vector3(point.x, _state.map.ground_height(point) + height, -point.y)
+	var ground: float = 0.0 if _effect_flat else _state.map.ground_height(point)
+	return Vector3(point.x, ground + height, -point.y)
 
 func _stroke(a: Vector2, b: Vector2, width: float, height: float, color: Color) -> void:
 	var normal: Vector2 = (b - a).normalized().orthogonal() * width * 0.5
@@ -246,8 +303,12 @@ func _leaf(point: Vector2, direction: Vector2, size: float, height: float, color
 func _allowed(point: Vector2) -> bool:
 	if _allowed_points.has(point):
 		return bool(_allowed_points[point])
-	var source: Vector2 = _state._abilities.effect_origin(_effect, point)
-	var allowed: bool = _state._abilities.contains(_effect, point, 0.0) and _state.is_point_visible(0, point) and _state.map.has_line_of_sight(source, point)
+	var allowed: bool = _state._abilities.contains(_effect, point, 0.0)
+	if allowed and not _effect_visible:
+		allowed = _state.is_point_visible_for_sources(0, point, _sight_sources)
+	if allowed and not _effect_wall_clear:
+		var source: Vector2 = _state._abilities.effect_origin(_effect, point)
+		allowed = _state.map.has_line_of_sight(source, point)
 	_allowed_points[point] = allowed
 	return allowed
 

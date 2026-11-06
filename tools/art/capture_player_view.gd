@@ -2,6 +2,7 @@ extends SceneTree
 ## Review the same visible UI in a source checkout and the exported Windows PCK.
 var output := ""
 var inline_preview := false
+var capture_source := "source checkout"
 var failures := 0
 var checks := 0
 var scene: Variant
@@ -13,6 +14,8 @@ func _initialize() -> void:
 			output = argument.trim_prefix("--output=")
 		if argument == "--inline-preview":
 			inline_preview = true
+		if argument == "--exported-pck":
+			capture_source = "exported PCK"
 	call_deferred("_run")
 
 func _run() -> void:
@@ -121,7 +124,7 @@ func _run() -> void:
 	await _save("battle-low-health-960x540")
 	await _capture_fantasy_kits()
 	var document := {"version": "0.7.0", "engine": Engine.get_version_info().string,
-		"source": "exported PCK" if OS.get_cmdline_args().has("--main-pack") else "source checkout",
+		"source": capture_source,
 		"checks": checks, "failures": failures, "captures": records}
 	var manifest := FileAccess.open(output.path_join("player-review.json"), FileAccess.WRITE)
 	manifest.store_string(JSON.stringify(document, "\t"))
