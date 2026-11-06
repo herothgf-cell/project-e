@@ -21,11 +21,11 @@ func _run() -> void:
 	scene._process(0.0)
 	var hint_rect: Rect2 = scene._camera_hint.get_global_rect()
 	var review_rect: Rect2 = scene._review_button.get_global_rect()
-	_check(hint_rect.position.is_equal_approx(Vector2(300, 80)) and hint_rect.size.is_equal_approx(Vector2(785, 30)), "camera hint occupies its right-anchored HUD row")
-	_check(review_rect.position.is_equal_approx(Vector2(1102, 80)) and review_rect.size.is_equal_approx(Vector2(160, 30)), "review button occupies the right edge of the camera row")
+	_check(hint_rect.position.is_equal_approx(Vector2(300, 90)) and hint_rect.size.is_equal_approx(Vector2(785, 30)), "camera hint occupies its right-anchored HUD row")
+	_check(review_rect.position.is_equal_approx(Vector2(1102, 90)) and review_rect.size.is_equal_approx(Vector2(160, 30)), "review button occupies the right edge of the camera row")
 	_check(not hint_rect.intersects(review_rect), "camera hint and review button do not overlap")
 	for control: Control in [scene.hud._top, scene.hud._map_panel, scene.hud._target]:
-		_check(not hint_rect.intersects(control.get_global_rect()) and not review_rect.intersects(control.get_global_rect()), "camera row avoids header, minimap and target panels")
+		_check(not hint_rect.intersects(control.get_global_rect()) and not review_rect.intersects(control.get_global_rect()), "camera row avoids HUD panel at %s" % control.get_global_rect())
 	if not scene.has_method("edge_pan_axis"):
 		_check(false, "camera exposes the shared edge input calculation")
 		scene.queue_free()

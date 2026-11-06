@@ -34,8 +34,8 @@ func _ready() -> void:
 	_camera_hint.anchor_left = 0.0
 	_camera_hint.offset_left = 300
 	_camera_hint.offset_right = -195
-	_camera_hint.offset_top = 80
-	_camera_hint.offset_bottom = 110
+	_camera_hint.offset_top = 90
+	_camera_hint.offset_bottom = 120
 	_camera_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_camera_hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_camera_hint.clip_text = true
@@ -53,8 +53,8 @@ func _ready() -> void:
 		_review_button.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 		_review_button.offset_left = -178
 		_review_button.offset_right = -18
-		_review_button.offset_top = 80
-		_review_button.offset_bottom = 110
+		_review_button.offset_top = 90
+		_review_button.offset_bottom = 120
 		_review_button.custom_minimum_size = Vector2(160, 30)
 		_review_button.add_theme_font_override("font", hud.ui_font)
 		_review_button.add_theme_font_size_override("font_size", 12)

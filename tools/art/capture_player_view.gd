@@ -115,6 +115,9 @@ func _run() -> void:
 	_check(not scene.hud._toast.get_global_rect().intersects(scene.hud._target.get_global_rect()), "Small-window toast avoids target")
 	_check(not scene._camera_hint.get_global_rect().intersects(scene.hud._toast.get_global_rect()), "Camera hint avoids toast")
 	_check(not scene._camera_hint.get_global_rect().intersects(scene.hud._map_panel.get_global_rect()), "Small-window camera hint avoids minimap")
+	for camera_control: Control in [scene._camera_hint, scene._review_button]:
+		for panel: Control in [scene.hud._top, scene.hud._target]:
+			_check(not camera_control.get_global_rect().intersects(panel.get_global_rect()), "Small-window camera row avoids HUD panels")
 	await _save("battle-low-health-960x540")
 	var document := {"version": "0.6.0", "engine": Engine.get_version_info().string,
 		"source": "exported PCK" if OS.get_cmdline_args().has("--main-pack") else "source checkout",
