@@ -1,0 +1,124 @@
+Checking the pinned engine version
+4.7.2.stable.official.ed1daf0bf
+Importing project
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
+Checking Original movement rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bas motion: 40 checks, 0 failures
+Checking Original physical scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Probe scene: 19 checks, 0 failures
+Checking Combat and hero abilities
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle rules: 115 checks, 0 failures
+Checking Lanes, bots and match lifecycle
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bot checkpoint: 60.0s; damage=18769.0; units=62
+Bot checkpoint: 210.5s; damage=94272.9; units=47
+Bot checkpoint: 360.5s; damage=161760.2; units=49
+Bot diagnostic: 431.8s; winner=0; towers=6; damage=201467.8; hero deaths=5; units=54
+Battle match: 1921 checks, 0 failures
+Checking Playable scene and UI routing
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle scene: 96 checks, 0 failures
+Checking Cell tiers, turret boundaries and attack-move
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next combat: 152 checks, 0 failures
+Checking Shared vision presentation and cell labels
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Team vision: 499 checks, 0 failures
+Checking Attack-move input, target priority and help
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next input: 32 checks, 0 failures
+Checking Wall-clipped area previews and effects
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Effect geometry: 35 checks, 0 failures
+Checking Raised XP platforms, ramps and high-ground sight
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Elevation: 17 checks, 0 failures
+Checking R30 high-ground support rotation layout
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R30 layout: 61 checks, 0 failures
+Checking Consumable purchase, recovery and interruption rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Consumables: 245 checks, 0 failures
+Checking Shop, inventory and consumable input
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Consumable input: 115 checks, 0 failures
+Checking Bot purchase and consumable decisions
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Consumable AI: 186 checks, 0 failures
+Checking Observed cell spawns and actual personal XP feedback
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+XP feedback: 88 checks, 0 failures
+Checking Visible XP meter and HUD layering
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+XP meter: 14 checks, 0 failures
+Checking Visible tactical objective decisions
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Tactical objectives: 18 checks, 0 failures
+Checking Playable camera, original art and vision
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Playable slice: 34 checks, 0 failures
+Checking Tactical respawn and full match
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+TACTICAL_MATCH time=1333.0 winner=1 damage=738287.8 cells=87 support=12 defend=45 cell_grants=42
+Tactical lifecycle: 13 checks, 0 failures
+Checking Integrated animation review and isolation
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Integrated V2: 329 checks, 0 failures
+Checking Skill readability, terrain and corpse concealment
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+V2 visual contract: 369 checks, 0 failures
+Checking Review objectives and live match isolation
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Review objectives: 5 checks, 0 failures
+Checking Fantasy 3-head hero art, map and skill icon binding
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Fantasy V3: 55 checks, 0 failures
+Checking V4 enhanced combat art, local audio and VFX motifs
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Fantasy V4: 48 checks, 0 failures
+Starting the main scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Godot import, all 24 behavioral suites and main-scene startup

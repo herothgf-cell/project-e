@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "project": "Project E V5",
+  "created_utc": "2026-11-05T08:41:58.609002+00:00",
+  "target": "Windows x86_64",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "pack_export_mode": "Windows Desktop preset export-pack",
+  "runtime": {
+    "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+    "reused_from": "https://github.com/herothgf-cell/project-e/actions/runs/41618150026/artifacts/13221329998",
+    "original_source_revision": "1aabd7dc9c7539fd1953ddcdbbb2fd3eb0ec4e65",
+    "official_template_archive_sha256": "f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011"
+  },
+  "verification": {
+    "fresh_source_import": "passed",
+    "fresh_windows_pck_export": "passed",
+    "runtime_hash_against_original_ci_template_manifest": "passed",
+    "pe_x86_64_and_pck_headers": "passed",
+    "exact_pck_linux_startup_90_frames": "passed",
+    "exact_pck_opengl_render_9_views": "passed",
+    "actual_windows_pc": "not_run",
+    "human_playtest": "not_run"
+  },
+  "files": [
+    {
+      "path": "ProjectE.exe",
+      "size": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+    },
+    {
+      "path": "ProjectE.pck",
+      "size": 12511208,
+      "sha256": "62344b84705f97eb040e758e406a2ad23c8d9dd490b8b01ce19e33d529e51482"
+    },
+    {
+      "path": "README-WINDOWS.txt",
+      "size": 4785,
+      "sha256": "ba43f8c039e20c97dd99f55d8150ba49e469ceb7e29c7a258312537c329a2192"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "size": 1772,
+      "sha256": "0c9a2d977b02c12ad89ddf9ebf74b59227c6e1caac3930e0a4e166952ba56a79"
+    },
+    {
+      "path": "build-logs/export.log",
+      "size": 14463,
+      "sha256": "f1273e1eee322b30cef6e87fe5e10cd0333810d4987997223d8d84e80556ddb2"
+    },
+    {
+      "path": "build-logs/import.log",
+      "size": 11940,
+      "sha256": "6cf19b460b5554ae2cf17182e322de4b4afdd0159846f6c9836144b7231ebc95"
+    },
+    {
+      "path": "build-logs/pack-capture.log",
+      "size": 555,
+      "sha256": "d5763413343fe28f7fa0f75e86c62a7bd9fcca119660872b4a065f3e8244b11b"
+    },
+    {
+      "path": "build-logs/pack-startup.log",
+      "size": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    {
+      "path": "licenses/FONT-OFL.txt",
+      "size": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "licenses/FONT-README.md",
+      "size": 1005,
+      "sha256": "c9da6eb191c91b9828e81ba6421c37453b1119cfc7ee89dfb4295efc9604afac"
+    },
+    {
+      "path": "licenses/GODOT-COPYRIGHT.txt",
+      "size": 100108,
+      "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+    },
+    {
+      "path": "licenses/GODOT-LICENSE.txt",
+      "size": 1149,
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+    }
+  ],
+  "source_snapshot_sha256": "07ffe4ee242057c2f4ef2393a9ebfe98f7333240f89741d6bb1033621845c1f6",
+  "runtime_files_match_current_worktree": true,
+  "zip": {
+    "file_name": "ProjectE-v5-20261105-windows-x86_64.zip",
+    "size": 50449041,
+    "sha256": "676e289a969e43873a4ebd95c90dc376d14b7e12a8ce27d2645d10d5a0b4fb3f"
+  }
+}

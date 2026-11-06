@@ -8,7 +8,7 @@ Project E is developed with **Godot Engine 4.7.2**, distributed under the MIT li
 
 Include this notice with exported builds. For a release build, retain the applicable Godot and third-party component notices as required by their licenses. The engine's MIT license does not set the license for Project E's original code or game content.
 
-The playable prototype uses project-authored primitive meshes and procedural UI. The two images in `doc/design/assets` are generated art-direction concepts, not gameplay captures or third-party game assets.
+The playable prototype includes Project E GLB character and environment models, painted character textures, illustrated portraits, vector skill icons, procedural UI, and synthesized combat audio. Current asset locations and editing requirements are recorded in [the V5 asset guide](doc/design/25-illustrated-canal.md). The earlier concept images in `doc/design/assets` are art-direction references; images under `doc/design/assets/v5` are captures from the running game. Concept art, portraits, and gameplay captures are identified separately in the design documents.
 
 ## Korean font
 

@@ -8,30 +8,16 @@ const DARK := Color("364e4a")
 const TEAL := Color("38c6bb")
 const ORANGE := Color("f08c55")
 
-const TERRAIN_SHADER := """
-shader_type spatial;
-uniform vec4 base_color : source_color = vec4(1.0);
-uniform sampler2D vision_mask : filter_nearest, repeat_disable;
-uniform bool vision_bound = false;
-varying vec2 world_point;
-void vertex() {
- vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
- world_point = vec2(world.x, -world.z);
-}
-void fragment() {
- float visible = vision_bound ? texture(vision_mask, (world_point + vec2(62.0,40.0)) / vec2(124.0,80.0)).r : 1.0;
- float grey = dot(base_color.rgb, vec3(0.2126,0.7152,0.0722));
- vec3 unseen = mix(vec3(grey), base_color.rgb, 0.18) * 0.40;
- ALBEDO = mix(unseen, base_color.rgb, visible);
- ROUGHNESS = 0.82;
-}
-"""
+const TERRAIN_SHADER := preload("res://assets/environment/canal_surface.gdshader")
+const FLAGSTONES := preload("res://assets/environment/canal_flagstones.webp")
+const WATERBED := preload("res://assets/environment/canal_waterbed.webp")
+const MOSAIC_BLUE := Color("879eb4")
+const PAVED: Array[Color] = [CREAM, PALE, Color("d9d0ae"), Color("e1d4af"), Color("c3d8c1")]
 
 var _materials: Dictionary = {}
 var _terrain_materials: Dictionary = {}
 var _building_terrain: bool = false
 var _vision_texture: Texture2D
-var _terrain_shader: Shader
 var terrain_map: Variant
 
 
@@ -39,10 +25,7 @@ func build(map: Variant, units: Dictionary) -> void:
 	terrain_map = map
 	_building_terrain = true
 	_box(self, Vector3(124, 1.1, 84), Vector3(0, -1.15, 0), Color("326c69"))
-	_box(self, Vector3(121, 0.16, 81), Vector3(0, -0.48, 0), Color("62aaa0"))
-	# Subtle recessed water stripes preserve a quiet, readable play surface.
-	for x: int in range(-58, 59, 8):
-		_box(self, Vector3(0.05, 0.015, 78), Vector3(x, -0.39, 0), Color("8bc5b3"))
+	_box(self, Vector3(210, 0.16, 140), Vector3(0, -0.48, 0), Color("62aaa0"))
 	for lane: Array in map.lane_paths:
 		for i: int in range(lane.size() - 1):
 			_corridor(lane[i], lane[i + 1], 6.0, CREAM)
@@ -64,8 +47,6 @@ func build(map: Variant, units: Dictionary) -> void:
 		_workbench(Vector3(sign_value * 58, 0, 5.8), team)
 	for north: float in [-18.0, 0.0, 18.0]:
 		_box(self, Vector3(12, 0.6, 9), Vector3(0, -0.27, -north), PALE)
-		for x: float in [-4.0, 0.0, 4.0]:
-			_box(self, Vector3(0.035, 0.02, 8.7), Vector3(x, 0.045, -north), Color("d7cdb2"))
 	for unit: Dictionary in units.values():
 		if unit.kind in ["tower", "core"]:
 			_pad(unit.pos, 3.0, PALE)
@@ -86,11 +67,6 @@ func build(map: Variant, units: Dictionary) -> void:
 			_garden(Vector3(mirror * 38, -0.25, z), 0.55)
 		_boundary_workshop(Vector3(mirror * 47, -0.2, -30), mirror)
 		_drying_rack(Vector3(mirror * 34, -0.2, 31))
-	# A continuous enclosing lip is kept outside the simulation bounds.
-	for z: float in [-41.0, 41.0]:
-		_box(self, Vector3(124, 0.75, 0.8), Vector3(0, -0.1, z), Color("c5b997"))
-	for x: float in [-61.0, 61.0]:
-		_box(self, Vector3(0.8, 0.75, 82), Vector3(x, -0.1, 0), Color("c5b997"))
 	for lane_index: int in range(3):
 		var y: float = [18.0, 0.0, -18.0][lane_index]
 		for x: float in [-5.7, 5.7]:
@@ -267,12 +243,10 @@ func _elevated_cell_access(map: Variant, position: Vector2, lane_y: float) -> vo
 
 func _corridor(a: Vector2, b: Vector2, width: float, color: Color) -> void:
 	_segment_box(a, b, width, 0.58, color, -0.28)
-	# Paired narrow insets read as paving joints, not collision boundaries.
-	var length: float = a.distance_to(b)
-	for distance: float in range(3, int(length), 4):
-		var point: Vector2 = a.lerp(b, distance / length)
-		var transverse: Vector2 = Vector2(-(b - a).y, (b - a).x).normalized()
-		_segment_box(point - transverse * (width * 0.48), point + transverse * (width * 0.48), 0.035, 0.015, Color("d3c7a9"), 0.023)
+	if width >= 6.0:
+		var inset := (b - a).normalized().orthogonal() * (width * 0.5 - 0.44)
+		for side: float in [-1.0, 1.0]:
+			_segment_box(a + inset * side, b + inset * side, 0.24, 0.01, MOSAIC_BLUE, 0.019)
 
 
 func _segment_box(a: Vector2, b: Vector2, width: float, height: float, color: Color, y: float) -> MeshInstance3D:
@@ -388,11 +362,16 @@ func _mesh(parent: Node3D, resource: Mesh, position_value: Vector3, color: Color
 func material(color: Color) -> Material:
 	if _building_terrain:
 		if not _terrain_materials.has(color):
-			if _terrain_shader == null:
-				_terrain_shader = Shader.new()
-				_terrain_shader.code = TERRAIN_SHADER
 			var terrain := ShaderMaterial.new()
-			terrain.shader = _terrain_shader
+			terrain.shader = TERRAIN_SHADER
+			if color in PAVED:
+				terrain.set_shader_parameter("finish", 1)
+				terrain.set_shader_parameter("flagstones", FLAGSTONES)
+			elif color == Color("62aaa0"):
+				terrain.set_shader_parameter("finish", 2)
+				terrain.set_shader_parameter("waterbed", WATERBED)
+			elif color == MOSAIC_BLUE:
+				terrain.set_shader_parameter("finish", 4)
 			terrain.set_shader_parameter("base_color", color)
 			terrain.set_shader_parameter("vision_mask", _vision_texture)
 			terrain.set_shader_parameter("vision_bound", _vision_texture != null)

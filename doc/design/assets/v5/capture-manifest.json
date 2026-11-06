@@ -1,0 +1,535 @@
+{
+  "date_utc": "2026-11-05",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "renderer": "OpenGL Compatibility / Mesa llvmpipe",
+  "script": "tools/art/capture_illustrated_pass.gd",
+  "capture_kind": "Actual game rendering with script-arranged combat and isolated review room; not an unassisted human playtest.",
+  "game_assets_and_scripts_sha256": "ad88e2fa8e1a0a642782510a27b2413737e3b59e76f65117f241bed144b09157",
+  "captured_images": [
+    {
+      "path": "bas.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "76f8bd4b376e04854f63fd5400068e180bf82fde8b951a34fa8137af63856692"
+    },
+    {
+      "path": "combat.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "3130c926acc6ea414ed636573e5ea1cf405ed73c169c5d43dacc3788e6a47021"
+    },
+    {
+      "path": "lane.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "94f1a71ba108fcd051143859ac465192a05ad8fef0b2de3660c11ae4d09fa920"
+    },
+    {
+      "path": "map.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "c9efaf40669d7cf299a7977ef47231700e58b8436908ccc5815e99ea8e88703c"
+    },
+    {
+      "path": "mid-clash.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "72dd514edb689732396863cc6e0e6a0a5190a550dd3ebaf3230d8c86438b3a85"
+    },
+    {
+      "path": "mid-detail.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "076a806b49f9232f4b802a7f3b8a281f212dfb00d28751bf712452f86e190abc"
+    },
+    {
+      "path": "nema.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "ce752b559db59e8bee024d248ebd024ea644a36b3e59cfea6ffc5079064945b7"
+    },
+    {
+      "path": "rio.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "7cc5caa19b90792c5c67eed2b3e7fa64efbf816af67ca7b58d54409e4cc4dec0"
+    },
+    {
+      "path": "selection.webp",
+      "size_pixels": [
+        1280,
+        720
+      ],
+      "sha256": "832aea85fe0b2df44c41f96172dcbb820114a89c675374a0a554c2d4dbb17ae2"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "assets/audio/arcane.wav",
+      "sha256": "ae5e452ebcf23046dc179e588211da0b4a9565b6eb5c5f7c79318c79d1bce4a2"
+    },
+    {
+      "path": "assets/audio/hit.wav",
+      "sha256": "d5557625d2f236b46c5e0541b87fb076dd9113f295d191ea570a6b1e78299849"
+    },
+    {
+      "path": "assets/audio/level.wav",
+      "sha256": "06b830cbb39ced027d67f36cfceeccc28fed4f5d76aa681703eadc2906255222"
+    },
+    {
+      "path": "assets/audio/nature.wav",
+      "sha256": "49cf6cb3a37eef67d44f2f87c83eb890d371b86a28009f543a9d9f5370c7ac75"
+    },
+    {
+      "path": "assets/audio/slash.wav",
+      "sha256": "a64dc120918eed6c14cd794ab349d11d45ced2dbf2cbf1869268389f071e42bf"
+    },
+    {
+      "path": "assets/environment/amber_fig.glb",
+      "sha256": "782513d25fcb9a61e26ebb0e69f9b071ee149c76a761f6881822407bb2b32857"
+    },
+    {
+      "path": "assets/environment/canal_flagstones.webp",
+      "sha256": "e481a301127a54770e953da20da41648dcd6ead1633e0364d64f65e32ce04005"
+    },
+    {
+      "path": "assets/environment/canal_surface.gdshader",
+      "sha256": "f180ec0bc3043672f10860b17f4aadd3ef00bc98c57b69076cb4b0ee680966ef"
+    },
+    {
+      "path": "assets/environment/canal_waterbed.webp",
+      "sha256": "0e7f0648375be4910a121041e2dafe90f9b9d2dacb84a27d6b62bcceb13dad56"
+    },
+    {
+      "path": "assets/environment/copper_millwheel.glb",
+      "sha256": "8280e4b6b93a9cbd60ddf73101763552d23823e84b2d6f8e0b9030538a4c7b3a"
+    },
+    {
+      "path": "assets/environment/core_observatory.glb",
+      "sha256": "fe11c6b8f053c0e294b7510446425027b5d11497ed15e6b0082a0b7d2929aaa3"
+    },
+    {
+      "path": "assets/environment/crown_crystal.glb",
+      "sha256": "cda8784a89a41ed78c0f6ee6d996ed49c512ce6d36c63aa358ca113be0baafa4"
+    },
+    {
+      "path": "assets/environment/garden_bank.glb",
+      "sha256": "69ffe60c6f12031e5b80956b4a4c0963430994b7c94170d41aecfe4eb992392a"
+    },
+    {
+      "path": "assets/environment/guild_mosaic.glb",
+      "sha256": "cf5d7492acae6929524117dead0888829b9612bce807edbca0210b09c2936f03"
+    },
+    {
+      "path": "assets/environment/ivy_cloister.glb",
+      "sha256": "26432445a7755c1942a335a561a09b4b540457b45cc4252a9b8e898c11bf0f96"
+    },
+    {
+      "path": "assets/environment/jade_willow.glb",
+      "sha256": "e6db6334739dae3b1fb28f586be235033179b09118bb9a8ff6947413eda304f2"
+    },
+    {
+      "path": "assets/environment/quay_rail.glb",
+      "sha256": "60f4bf2860ea2031dbccaa65f8cbfb8a87a001e63463789d9af0a49a197e351e"
+    },
+    {
+      "path": "assets/environment/sentinel_crown.glb",
+      "sha256": "def7f3bb37bf0a0ae9adb82283d44f9913e9d02e94edf4b18534d7961fe9c9da"
+    },
+    {
+      "path": "assets/environment/terracotta_gatehouse.glb",
+      "sha256": "5f5716024df1bd9bec29485020edbd24ce32b2a4711d0843caa85a37afb1df37"
+    },
+    {
+      "path": "assets/fonts/ProjectEKorean.woff2",
+      "sha256": "1e5cba2fa8990d77d2ba24a8b0dd000617b887c3f3b815ca7a556308e56a3d23"
+    },
+    {
+      "path": "assets/heroes/bas-face.webp",
+      "sha256": "1e5c9ca21dc21b7f7dcab0ec4329ee6e9eaae2a0234785823a94c3212fe6876a"
+    },
+    {
+      "path": "assets/heroes/bas-tunic.webp",
+      "sha256": "d0e63642095b7078c0681a9bfae8b301d2a195c4a3ce6ab3866bf0f41a806844"
+    },
+    {
+      "path": "assets/heroes/bas.glb",
+      "sha256": "f4aa9484f2eee799b8480f235cfa9871df5a7c48229ce215d17537ffb95495e2"
+    },
+    {
+      "path": "assets/heroes/nema-face.webp",
+      "sha256": "edb60eb021a1e53b62b3d2fdf23750ad5c29e0e0988e848ff6d908c8111c2e73"
+    },
+    {
+      "path": "assets/heroes/nema-tunic.webp",
+      "sha256": "016d1d72dd99263027043777d14bdcb0bc6f1a4a32b22d495021e66d983eb6aa"
+    },
+    {
+      "path": "assets/heroes/nema.glb",
+      "sha256": "8ec760361f1cf3ec4f0c439a7e7e1b2ced757072bc90f6b958ec5554b293840d"
+    },
+    {
+      "path": "assets/heroes/painted.gdshader",
+      "sha256": "66e3a93f9542b1e82b5e7188528753e310616cb8a30a64e4897367b0d55c4927"
+    },
+    {
+      "path": "assets/heroes/rio-face.webp",
+      "sha256": "c7fd9b63dd47ff6d0828f603ec0966919e0f9fcaef0533e4a3bec9a0c3034fbb"
+    },
+    {
+      "path": "assets/heroes/rio-tunic.webp",
+      "sha256": "74b292f3ce884d61dff34e2bfed8a5a7160f5e3a988537a880c31e4decf76df7"
+    },
+    {
+      "path": "assets/heroes/rio.glb",
+      "sha256": "836c5393192e0764d1f8ba4c00b734c1d3352184c709caa8306bfdca08cc4990"
+    },
+    {
+      "path": "assets/portraits/bas.svg",
+      "sha256": "2205a5336041a168a40a678736a11c9dd17890b1c7170e5cb5d60c6712b917a6"
+    },
+    {
+      "path": "assets/portraits/bas.webp",
+      "sha256": "c6f01da20bccdec7b7f258ffc2d5f6421ccd29d5a90f41de5de5282ea1927d62"
+    },
+    {
+      "path": "assets/portraits/nema.svg",
+      "sha256": "04d2f12c9c488bd3cb72a9ae0f612b68ac4b274283ba1671c3d0504332901be7"
+    },
+    {
+      "path": "assets/portraits/nema.webp",
+      "sha256": "d88249192ca269d95d94de1158d0e44437e977cf8aded12fa8371dbaf6b4e87e"
+    },
+    {
+      "path": "assets/portraits/rio.svg",
+      "sha256": "ccddfcb722fcd215dac5e1ffec4c23b8ce4940aefc248de38eee19c276b0efab"
+    },
+    {
+      "path": "assets/portraits/rio.webp",
+      "sha256": "b2bb1b074d2b256a0dfdb84e093ab12c78c53023e1cfb28d3860900ac02ba64c"
+    },
+    {
+      "path": "assets/ui/skills/bas_e.svg",
+      "sha256": "e72dda931fe648b3124d629cca3d79050c4307ade9acebb1da9f36e40afceed0"
+    },
+    {
+      "path": "assets/ui/skills/bas_q.svg",
+      "sha256": "ff8069a86deef0db179079842fa381a9158ff2f6107202edf0d8775850263a5f"
+    },
+    {
+      "path": "assets/ui/skills/bas_r.svg",
+      "sha256": "946cdb6aa569682955b6efbc8882fc3645d2ed67bebd628e133e3df049c9470c"
+    },
+    {
+      "path": "assets/ui/skills/bas_w.svg",
+      "sha256": "9b3abe144b1c16070df3f29dc6c4a14edefa47723e423be364b7e93ada675b10"
+    },
+    {
+      "path": "assets/ui/skills/nema_e.svg",
+      "sha256": "5509895677e2aaa035f2493cfae8ca509bbbfa95f76d0594d23c5fb81daf4810"
+    },
+    {
+      "path": "assets/ui/skills/nema_q.svg",
+      "sha256": "dd90e4008536aa0fc5c69cf173905d4f37c17b25b3cd603edffd0644257589f0"
+    },
+    {
+      "path": "assets/ui/skills/nema_r.svg",
+      "sha256": "775839cb5d7c696bbeed2dcd83fef8814f843f07046a0afe919f2dc10e91bea2"
+    },
+    {
+      "path": "assets/ui/skills/nema_w.svg",
+      "sha256": "04f7a7b309d3100be65dae79ab448095f19bd0e11880e5b91e9dbfaf25e2e6ba"
+    },
+    {
+      "path": "assets/ui/skills/rio_e.svg",
+      "sha256": "70adab80025b41e95e9267cd59e4fac20c350b4f594355c7bbfa1230c5eab046"
+    },
+    {
+      "path": "assets/ui/skills/rio_q.svg",
+      "sha256": "ba2e97849214465f8114e5cfa075aa6ee0864ecf42e8cac57667450e2ae0dc38"
+    },
+    {
+      "path": "assets/ui/skills/rio_r.svg",
+      "sha256": "930be30e4a6a3bf17b14e6d07d873b39ae38ff0d85f765832c30fcd95bd4e3bf"
+    },
+    {
+      "path": "assets/ui/skills/rio_w.svg",
+      "sha256": "e0f5013c9a62bedd8d047b609cf9dee961cb4e56c207fcc7df8c1241be7b9eb9"
+    },
+    {
+      "path": "project.godot",
+      "sha256": "87bdffa9f9c6b577a718355e450181a05383d9a5c5eeb55c0c720853d47860dd"
+    },
+    {
+      "path": "scenes/battlefield.tscn",
+      "sha256": "f43ae3958c6a4c5edc28312aa9d73213f1e28009136e277635c2affcc70e6019"
+    },
+    {
+      "path": "scenes/combat_probe.tscn",
+      "sha256": "1f0b3df9bd11d7855e46910c014cfffc222120f03a22ce04bf6c13c9bb893cb4"
+    },
+    {
+      "path": "scenes/player.tscn",
+      "sha256": "f313dfbdb3bb2df7be9ef235258325c2fce29f25d9114d7089d4b02217e65827"
+    },
+    {
+      "path": "scripts/bas_motion.gd",
+      "sha256": "1ebb32eebcb279ad8174237227d225380b5914fd64a25acd680d6149ba77a7db"
+    },
+    {
+      "path": "scripts/battle/battle_ai.gd",
+      "sha256": "be8b74ae831dd8079e3b2e502e93488f30c41e6b4b5b9df2cc8b4009227765c0"
+    },
+    {
+      "path": "scripts/battle/battle_consumables.gd",
+      "sha256": "753c74be58f5d20f345918fcb6db1b79fecdbd808d2895dc347084b0e9f9b213"
+    },
+    {
+      "path": "scripts/battle/battle_map.gd",
+      "sha256": "743667ca912a709de40bafa0792a459f00504466c398ef08a37d4c08d5cb07ec"
+    },
+    {
+      "path": "scripts/battle/battle_rules.gd",
+      "sha256": "c64d37f0f4da22e65a32a4c3cda67ce7581de3179facd03b43bde37b253508b3"
+    },
+    {
+      "path": "scripts/battle/battle_state.gd",
+      "sha256": "3599fb8d7d919529a51bc7e570bf5122d00d08c8a30dd386ae364f67c71be3ab"
+    },
+    {
+      "path": "scripts/battle/hero_abilities.gd",
+      "sha256": "18cf3d34b7ee333b4880c4137f04ba592af0b1fc77f1c5351d98739f93477306"
+    },
+    {
+      "path": "scripts/battle/tactical_ai.gd",
+      "sha256": "6f4d7658b92c6ff5fdb5beab1aa13e95e656fa34f8b3c0ddc4b80d3eb98c5c69"
+    },
+    {
+      "path": "scripts/combat_probe.gd",
+      "sha256": "ff4bb757aea274beb1739091d7cc84176246edb665ad167742d4e6e9fc964046"
+    },
+    {
+      "path": "scripts/presentation/arena_view.gd",
+      "sha256": "dd14501336994b0ca00ff52ca1aaea1fc046cd45fa05135168c9964367541f48"
+    },
+    {
+      "path": "scripts/presentation/battle_hud.gd",
+      "sha256": "1c41943b3ecc84906b5caf15e56dd89388f9adc95be8ff54e7d9871e9f39f7b6"
+    },
+    {
+      "path": "scripts/presentation/battlefield.gd",
+      "sha256": "67eb58aa481a99502eb63d062cee110a335c3f169ef8f0fe8d80bfc37d531d01"
+    },
+    {
+      "path": "scripts/presentation/combat_accents.gd",
+      "sha256": "5b4de38d42ee003f97a21bf6ee21d9199b389e9168b3f432cd3ac94d33804c19"
+    },
+    {
+      "path": "scripts/presentation/effects_view.gd",
+      "sha256": "d8b0f8ed77e8710be9d69e4690b9ab965cf0c7e564cfbd93505b15a03ef14f1c"
+    },
+    {
+      "path": "scripts/presentation/fantasy_audio.gd",
+      "sha256": "a46b1fe2a0e9341a9a12043a27a40a29000b27662bd22f240c5ebc08e07ee438"
+    },
+    {
+      "path": "scripts/presentation/hero_portrait.gd",
+      "sha256": "37526863f7289d91113db7e3529d5db5076de5881b5c09505d2c9b4d3914ac02"
+    },
+    {
+      "path": "scripts/presentation/hero_rig.gd",
+      "sha256": "6d2f85c75520b49f4dc118e24c20a611151560b358f61aad25f6de5a89dcc84f"
+    },
+    {
+      "path": "scripts/presentation/playable_battlefield.gd",
+      "sha256": "90e8f18f1509c876ab287a1bf37fde59a22cad238c7fc3266a0090a51079b4c8"
+    },
+    {
+      "path": "scripts/presentation/review_lab.gd",
+      "sha256": "b306c29c7f0d1062edbb715678a50f0062bfe2c1539af28cf270faed3a0b4bed"
+    },
+    {
+      "path": "scripts/presentation/skill_vfx.gd",
+      "sha256": "d2c090afc392adb026a99323980a2923261a45b2c3cd329c82220da8f47b6218"
+    },
+    {
+      "path": "scripts/presentation/support_ramp_view.gd",
+      "sha256": "eaac831a02afc6f65fadad911420c2c55a3342b7abc1a5946ec38cc739a157d9"
+    },
+    {
+      "path": "scripts/presentation/tactical_map.gd",
+      "sha256": "db4fcab0126a73f0a1cbb3a52e358f10ada612f1d3c174218d5e2972fb10f801"
+    },
+    {
+      "path": "scripts/presentation/team_vision_view.gd",
+      "sha256": "45409d9519317c8c38d3f30c38323052e52f5f2a327dd4e08ce56a02060da3fc"
+    },
+    {
+      "path": "scripts/presentation/terrain_relief.gd",
+      "sha256": "6fb98cd6db79bc805f869da5f3e58a548bbf1118ae60b345b024a332308b3ce6"
+    },
+    {
+      "path": "scripts/presentation/unit_overlay.gd",
+      "sha256": "d1414f199006acb326fe19b19dd7670f0c421dcfb4c71520e7b6841722a6ee5e"
+    },
+    {
+      "path": "scripts/presentation/workshop_arena.gd",
+      "sha256": "2b75531230792e52dd031cfa3518ab17bd8dbe39d14c8d23348c48bac90352ff"
+    },
+    {
+      "path": "scripts/presentation/xp_feedback_view.gd",
+      "sha256": "d8f2255fce607bdd54643e1c6a007ef1ada2bc23f1344b0cafc397325f485991"
+    },
+    {
+      "path": "scripts/probe_player.gd",
+      "sha256": "983a914328a06f1d0b33957abd38c951889cc8891f3eab6e3f96e3f07d727646"
+    },
+    {
+      "path": "tests/capture_battlefield.gd",
+      "sha256": "971fb2ba34b96675a66d19dda0711ef9d48bc8cbad996b8b946a2a15bc7f4dc3"
+    },
+    {
+      "path": "tests/capture_consumables.gd",
+      "sha256": "5976c310eb98883834c13ef2ff57b33705bd5df6f2d84a6639b16345608c3ebd"
+    },
+    {
+      "path": "tests/capture_integrated_v2.gd",
+      "sha256": "23b3c0e31fd9c543bfced883734ac2a1329abe45bf6f68dedc79015a5c9527fc"
+    },
+    {
+      "path": "tests/capture_next_features.gd",
+      "sha256": "0c1bdee163191f6a068e9a5c66a3bc48fcf753bdea7c2cb93fbbcef5663c7a55"
+    },
+    {
+      "path": "tests/capture_playable_slice.gd",
+      "sha256": "33dcfe0c3808b8d0708f83e2c5b8bc9ed5dd193816bc7537a4c74394ee3160c8"
+    },
+    {
+      "path": "tests/test_bas_motion.gd",
+      "sha256": "6847c41ddebbfaf8cbd640b5e1d1b4d07c495050ceb8922ddaa36877e1980d8a"
+    },
+    {
+      "path": "tests/test_battle_match.gd",
+      "sha256": "c96252a9aa3bc802194691a83789d1bcd71b6ebf5fb8168d9896a398d2459eeb"
+    },
+    {
+      "path": "tests/test_battle_rules.gd",
+      "sha256": "6dc0ccf94f5418558d3ca03f0e078c3fba427a177b38d4b0574da011846e13d1"
+    },
+    {
+      "path": "tests/test_battle_scene.gd",
+      "sha256": "79c6b58de0ec952038ab89fbae1db1a94ab9f64c1a8db9a51a035ba0a9f4cd6e"
+    },
+    {
+      "path": "tests/test_consumable_ai.gd",
+      "sha256": "d7340452b9e1db9f3a55d06dcdd773d76ab37b6dc788b488122bcacf84281ada"
+    },
+    {
+      "path": "tests/test_consumable_input.gd",
+      "sha256": "3723c6b54005d08d1315dda2d429f39e8dddf61822ce12536a7671eb898dd5a9"
+    },
+    {
+      "path": "tests/test_consumables.gd",
+      "sha256": "c0b6076693eda2ea2f52385f59ac6f3477de272423bf11ad6bd5054b2584c32b"
+    },
+    {
+      "path": "tests/test_effect_geometry.gd",
+      "sha256": "48ccf399892afe765298915b62cd2ebb904515144e32520b2f2b4908d8c97a03"
+    },
+    {
+      "path": "tests/test_elevation.gd",
+      "sha256": "0bbc4c0d6935e61f54b8f5be665e3c68aa1ac8b1a5097d3f8149f55e5aeb4c51"
+    },
+    {
+      "path": "tests/test_fantasy_v3.gd",
+      "sha256": "bfcc3eee11b7d80da8cf40da0249fcebe5400d9fa30dd22298be8b84c21d4304"
+    },
+    {
+      "path": "tests/test_fantasy_v4.gd",
+      "sha256": "cf4224c9997a331faefe20ef1d78b205dee07651d1820876879c9caad94badb3"
+    },
+    {
+      "path": "tests/test_integrated_v2.gd",
+      "sha256": "7a672af3331bf0211beb0189effc97496720d832ed4582793463b8fe3579e4f4"
+    },
+    {
+      "path": "tests/test_next_combat.gd",
+      "sha256": "1c2b262c5fe939facc1ac461211ca2d4fb6b2419e7bfe0dc00aaa9ca6dc4850d"
+    },
+    {
+      "path": "tests/test_next_input.gd",
+      "sha256": "987e3b07536fc891fb94d11958741c832a5447762fc79b789670b16dab3b4e23"
+    },
+    {
+      "path": "tests/test_playable_slice.gd",
+      "sha256": "f08ed041a099f8d32a8ed4bf43179c30397bba1d6adce42345e1318f123ede9b"
+    },
+    {
+      "path": "tests/test_probe_scene.gd",
+      "sha256": "62a21a55709fdd0a13343a061d72ed0f8ac2e2c329f457b977a645af656a6dbb"
+    },
+    {
+      "path": "tests/test_r30_layout.gd",
+      "sha256": "109af0c347706be7bb1e36436bca86f029ae65de80fb3a384b8859cb06c4613d"
+    },
+    {
+      "path": "tests/test_review_objectives.gd",
+      "sha256": "51490725e20c6500a8bd5c22f253112902153a3d4f64798ba969fcd9ea299748"
+    },
+    {
+      "path": "tests/test_tactical_ai.gd",
+      "sha256": "feb007091672ec7c7b01b2a05d4e8343e954cf5592677ec4717060582d809c9c"
+    },
+    {
+      "path": "tests/test_tactical_lifecycle.gd",
+      "sha256": "5a1ff8b4db799a9c37b064558eeb5ee9a9640058c0546f3afc1af086108060b7"
+    },
+    {
+      "path": "tests/test_team_vision.gd",
+      "sha256": "62a0e0dc5a244626ae1cafcf953945218d6d6f4fc939e96a93856abba71381c8"
+    },
+    {
+      "path": "tests/test_v2_visual_contract.gd",
+      "sha256": "a0290047c618ae727b8d3bc4e8434da44d3553868832fde8e36e9d7e9a5f030f"
+    },
+    {
+      "path": "tests/test_xp_feedback.gd",
+      "sha256": "d8bc81d389eb6a06a3b294313a3eb9d6f4d7e6b0bd6ac4369fc997c7b99857ee"
+    },
+    {
+      "path": "tests/test_xp_meter.gd",
+      "sha256": "1a1681b3160e096cbbd05229826856ee597b66002a07ee4ccddcad466136707e"
+    }
+  ],
+  "frame_metrics": {
+    "combat": {
+      "draw_calls": 1578,
+      "primitives": 1454336
+    },
+    "bas": {
+      "draw_calls": 141,
+      "primitives": 137491
+    },
+    "map": {
+      "draw_calls": 1053,
+      "primitives": 639144
+    }
+  },
+  "performance_note": "Frame counters from software rendering. No target PC FPS claim."
+}

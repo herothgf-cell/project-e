@@ -30,7 +30,7 @@ jobs:
           GODOT_SILENCE_ROOT_WARNING: '1'
         run: |
           python tools/package_windows.py --godot "$PWD/.ci/Godot_v4.7.2-stable_linux.x86_64" --templates-archive "$PWD/.ci/templates.tpz" --engine-notices-dir "$PWD/.ci" --output-dir "$PWD/build/windows"
-          printf 'F6: camera combat/tactical/detail\nY: toggle hero follow\nSpace: recenter on hero\nThis package includes R28/R30 terrain, R29 XP feedback and playable visual slice.\nWindows headless startup is tested separately; manual play and GPU performance are not certified.\n' > build/windows/PREVIEW-NOTES.txt
+          printf 'F7: integrated hero, skill and battlefield review\nF6: camera combat/tactical/detail\nY: toggle hero follow\nSpace: recenter on hero\nThis package includes V5 illustrated heroes, canal scenery and the complete offline three-lane prototype.\nWindows headless startup is tested separately; manual play and GPU performance are not certified.\n' > build/windows/PREVIEW-NOTES.txt
       - uses: actions/upload-artifact@v4
         with:
           name: ProjectE-Windows-preview

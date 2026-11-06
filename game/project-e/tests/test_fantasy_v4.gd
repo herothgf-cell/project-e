@@ -94,6 +94,11 @@ func _run() -> void:
 		_check(cues.size() == count_before, "enemy actor never triggers local cue")
 	scene.queue_free()
 	await process_frame
+	# Dummy audio releases recently stopped WAV playbacks on its own mixer thread.
+	var deadline: int = Time.get_ticks_msec() + 1500
+	while Time.get_ticks_msec() < deadline and ["slash", "hit", "level"].any(
+			func(cue: String) -> bool: return ResourceLoader.has_cached("res://assets/audio/%s.wav" % cue)):
+		await process_frame
 	print("Fantasy V4: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
 func _check(ok: bool, message: String) -> void:

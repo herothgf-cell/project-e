@@ -1,5 +1,5 @@
 extends SceneTree
-## V3 art integration contract: real 3D rigs, selectable SVGs and existing authority.
+## V3 art integration contract: real 3D rigs, selectable portraits and existing authority.
 var checks: int = 0
 var failures: int = 0
 
@@ -7,8 +7,6 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	for path: String in ["res://assets/portraits/bas.svg", "res://assets/portraits/rio.svg", "res://assets/portraits/nema.svg"]:
-		_check(ResourceLoader.exists(path), "game contains imported portrait " + path)
 	for hero_key: String in ["bas", "rio", "nema"]:
 		for slot: String in ["q", "w", "e", "r"]:
 			var path: String = "res://assets/ui/skills/%s_%s.svg" % [hero_key, slot]
@@ -19,15 +17,18 @@ func _run() -> void:
 	await process_frame
 	_check(scene.arena.has_node("WorkshopDetail/FantasyDecor"), "fantasy scenery lives in cosmetic-only layer")
 	for key: String in ["bas", "rio", "nema"]:
+		var portraits: Array[Node] = scene.hud._hero_buttons[key].find_children("*", "TextureRect", true, false)
+		_check(portraits.size() == 1 and portraits[0].texture != null and portraits[0].texture.resource_path == "res://assets/portraits/%s.webp" % key, "hero selection displays the illustrated card for " + key)
 		scene.start_match(key, true)
 		scene.paused = true
 		scene.battle.bots_enabled = false
 		var hero: Dictionary = scene.battle.units[scene.battle.controlled_id]
 		var model: Node3D = scene.get_node("Units/Unit_%d/Model" % hero.id)
 		var rig: Node3D = model.get_node("HeroRig")
+		_check(rig.has_node("LeftLeg/Shin") and rig.has_node("RightArm/WeaponDetail"), "articulated knees and weapon elbows for " + key)
 		var head: Node3D = rig.get_node("Head")
-		var actual_head: MeshInstance3D = head.get_child(0) as MeshInstance3D
-		_check(actual_head != null and actual_head.mesh is SphereMesh and (actual_head.mesh as SphereMesh).radius >= 0.39, "three-head fantasy silhouette for " + key)
+		var actual_head: MeshInstance3D = head as MeshInstance3D
+		_check(actual_head != null and actual_head.mesh is ArrayMesh and actual_head.mesh.get_aabb().size.x >= 0.78 and actual_head.mesh.get_aabb().size.y >= 0.78, "three-head fantasy silhouette for " + key)
 		_check(head.has_node("FantasyFace"), "personalized fantasy face for " + key)
 		_check(rig.get_node("AnimationPlayer").has_animation("walk") and rig.get_node("AnimationPlayer").has_animation("R"), "retains walking and ultimate animation for " + key)
 		_check(is_equal_approx(hero.radius, 0.45), "fantasy art does not change hit box")
