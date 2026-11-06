@@ -671,7 +671,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 	_energy.max_value = hero.max_energy
 	_energy.value = hero.energy
 	_energy_text.text = "에너지 %d / %d" % [floori(hero.energy), hero.max_energy]
-	_xp.text = "XP %d/%d · K/D/A %d/%d/%d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · K/D/A %d/%d/%d" % [hero.kills, hero.deaths, hero.assists]
+	_xp.text = "XP %d / %d · K/D/A %d/%d/%d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · K/D/A %d/%d/%d" % [hero.kills, hero.deaths, hero.assists]
 	_passive.text = _passive_text(battle, hero)
 	_passive.tooltip_text = _passive.text
 	_xp.tooltip_text = "K / D / A · 처치 / 사망 / 도움"
