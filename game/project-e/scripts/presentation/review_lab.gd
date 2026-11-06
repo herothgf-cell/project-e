@@ -61,7 +61,7 @@ func _build_ui() -> void:
 	box.add_theme_constant_override("separation", 7)
 	panel.add_child(box)
 	var title := Label.new()
-	title.text = "PROJECT E  /  판타지 연출실 V4   —   3등신 모델 · 스킬 · 모션"
+	title.text = "PROJECT E  /  아스트라 연출실   —   3등신 모델 · 스킬 · 모션"
 	title.add_theme_font_size_override("font_size", 20)
 	box.add_child(title)
 	var row := HFlowContainer.new()

@@ -1,0 +1,46 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+CAPTURE bas-character.png
+CAPTURE bas-Q-windup.png
+CAPTURE bas-Q-active.png
+CAPTURE bas-W-windup.png
+CAPTURE bas-W-active.png
+CAPTURE bas-E-windup.png
+CAPTURE bas-E-active.png
+CAPTURE bas-R-windup.png
+CAPTURE bas-R-active.png
+CAPTURE bas-hit.png
+CAPTURE bas-death.png
+CAPTURE bas-respawn.png
+CAPTURE rio-character.png
+CAPTURE rio-Q-windup.png
+CAPTURE rio-Q-active.png
+CAPTURE rio-W-windup.png
+CAPTURE rio-W-active.png
+CAPTURE rio-E-windup.png
+CAPTURE rio-E-active.png
+CAPTURE rio-R-windup.png
+CAPTURE rio-R-active.png
+CAPTURE rio-hit.png
+CAPTURE rio-death.png
+CAPTURE rio-respawn.png
+CAPTURE nema-character.png
+CAPTURE nema-Q-windup.png
+CAPTURE nema-Q-active.png
+CAPTURE nema-W-windup.png
+CAPTURE nema-W-active.png
+CAPTURE nema-E-windup.png
+CAPTURE nema-E-active.png
+CAPTURE nema-R-windup.png
+CAPTURE nema-R-active.png
+CAPTURE nema-hit.png
+CAPTURE nema-death.png
+CAPTURE nema-respawn.png
+CAPTURE hill-ramp.png
+CAPTURE hill-plateau.png
+CAPTURE map-layout-unmasked.png
+CAPTURE normal-gameplay.png
+INTEGRATED_CAPTURE_OK: all 12 real casts, 3 heroes, hit/death/respawn, terrain and 282 frames

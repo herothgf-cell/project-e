@@ -426,7 +426,7 @@ func _build_selection() -> void:
 		content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var portrait: Control = PortraitScript.new()
 		portrait.hero_key = key
-		portrait.custom_minimum_size = Vector2(180, 111)
+		portrait.custom_minimum_size = Vector2(180, 122)
 		content.add_child(portrait)
 		var name_label: Label = _label(content, HEROES[key][0], 25, INK)
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

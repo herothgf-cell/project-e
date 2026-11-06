@@ -65,6 +65,7 @@ def main() -> int:
         ("Review objectives and live match isolation", "test_review_objectives.gd", "Review objectives"),
         ("Fantasy 3-head hero art, map and skill icon binding", "test_fantasy_v3.gd", "Fantasy V3"),
         ("V4 enhanced combat art, local audio and VFX motifs", "test_fantasy_v4.gd", "Fantasy V4"),
+        ("V5 imported geometry, illustrations and articulated poses", "test_illustrated_v5.gd", "Illustrated V5"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)

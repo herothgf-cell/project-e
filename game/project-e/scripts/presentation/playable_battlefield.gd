@@ -41,12 +41,15 @@ func _ready() -> void:
 	if not has_meta("review_stage"):
 		_review_button = Button.new()
 		_review_button.text = "F7 통합 연출실"
-		_review_button.position = Vector2(22, 110)
+		_review_button.position = Vector2(22, 20)
 		_review_button.custom_minimum_size = Vector2(160, 30)
 		_review_button.add_theme_font_override("font", hud.ui_font)
 		_review_button.focus_mode = Control.FOCUS_NONE
 		hud.root_control.add_child(_review_button)
 		_review_button.pressed.connect(open_review_lab)
+		hud.selection.visibility_changed.connect(func() -> void:
+			_review_button.position.y = 20.0 if hud.selection.visible else 110.0
+		)
 
 func start_match(hero_key: String, practice: bool = false) -> void:
 	if _fantasy_audio != null: _fantasy_audio.reset()

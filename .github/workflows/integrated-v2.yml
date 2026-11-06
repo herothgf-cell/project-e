@@ -46,6 +46,13 @@ jobs:
           run(['xvfb-run','-a',os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),'--path','game/project-e','--rendering-method','gl_compatibility','--audio-driver','Dummy','--script','tests/capture_integrated_v2.gd','--','--output='+os.path.abspath('review')], r'INTEGRATED_CAPTURE_OK:', timeout=300)
           PY
           printf 'source=%s\nrun=%s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > review/CAPTURE-SOURCE.txt
+      - name: Capture V5 illustrated heroes and canal battlefield
+        run: |
+          python - <<'PY'
+          import os
+          from tools.check_godot import run
+          run(['xvfb-run','-a',os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),'--path','game/project-e','--rendering-method','gl_compatibility','--audio-driver','Dummy','--script',os.path.abspath('tools/art/capture_illustrated_pass.gd'),'--','--output='+os.path.abspath('review/v5')], r'CAPTURE_ART_OK', timeout=300)
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: ProjectE-V2-review
