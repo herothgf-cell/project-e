@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Project E - Astra Fantasy Arena"
+config/name="Project E V6 - Astra Fantasy Arena"
+config/version="0.6.0"
 config/description="Cartoon fantasy 3D three-lane offline 3v3 AOS: Bas, Rio and Nema with QWER combat and siege."
 run/main_scene="res://scenes/battlefield.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")

@@ -53,6 +53,16 @@ jobs:
           from tools.check_godot import run
           run(['xvfb-run','-a',os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),'--path','game/project-e','--rendering-method','gl_compatibility','--audio-driver','Dummy','--script',os.path.abspath('tools/art/capture_illustrated_pass.gd'),'--','--output='+os.path.abspath('review/v5')], r'CAPTURE_ART_OK', timeout=300)
           PY
+      - name: Capture V6 selection sizes and match HUD
+        run: |
+          python - <<'PY'
+          import os
+          from tools.check_godot import run
+          run(['xvfb-run', '-a', os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),
+               '--path', 'game/project-e', '--rendering-method', 'gl_compatibility',
+               '--audio-driver', 'Dummy', '--script', os.path.abspath('tools/art/capture_player_view.gd'),
+               '--', '--output=' + os.path.abspath('review/v6')], r'PLAYER_REVIEW_OK', timeout=180)
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: ProjectE-V2-review

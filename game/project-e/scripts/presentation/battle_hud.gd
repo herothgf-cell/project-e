@@ -24,8 +24,8 @@ const MapScript = preload("res://scripts/presentation/tactical_map.gd")
 const OverlayScript = preload("res://scripts/presentation/unit_overlay.gd")
 const AbilityScript = preload("res://scripts/battle/hero_abilities.gd")
 const INK := Color("f7f0e9")
-const MUTED := Color("b8bfd9")
-const PAPER := Color("202941")
+const MUTED := Color("b5c8c5")
+const PAPER := Color("132d35")
 const TEAL := Color("73d4e6")
 const COPPER := Color("f0c47d")
 const HEROES: Dictionary = {
@@ -76,6 +76,8 @@ var growth_button: Button
 var _practice: CheckButton
 var _start: Button
 var _hero_buttons: Dictionary = {}
+var _selection_frame: Control
+var _selection_tags: Dictionary = {}
 var _skill_buttons: Dictionary = {}
 var _skill_icons: Dictionary = {}
 var _skill_labels: Dictionary = {}
@@ -151,12 +153,12 @@ func _build_top() -> void:
 	_top.offset_left = 18
 	_top.offset_right = -18
 	_top.offset_top = 14
-	_top.offset_bottom = 76
-	var row: HBoxContainer = _row(_inset(_top, 16, 8), 18)
+	_top.offset_bottom = 70
+	var row: HBoxContainer = _row(_inset(_top, 10, 4), 8)
 	var title: VBoxContainer = _column(row, 0)
-	title.custom_minimum_size.x = 226
-	_label(title, "PROJECT E  /  아스트라 전장", 20, INK)
-	_label(title, "판타지 전장 · 세 라인 · 3 대 3", 12, MUTED)
+	title.custom_minimum_size.x = 174
+	_label(title, "PROJECT E  /  아스트라", 17, INK)
+	_label(title, "수로 전장 · 세 라인 · 3 대 3", 11, MUTED)
 	_west_core = _label(row, "청록 핵 · 잠금", 16, TEAL)
 	_west_core.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_west_core.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -167,102 +169,106 @@ func _build_top() -> void:
 	_east_core = _label(row, "주황 핵 · 잠금", 16, COPPER)
 	_east_core.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_east_core.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_mode = _label(row, "일반 경기", 13, MUTED)
-	_button(row, "F1 도움말", Vector2(88, 40)).pressed.connect(func() -> void: help_requested.emit())
-	var pause_button: Button = _button(row, "Esc  메뉴", Vector2(99, 40))
+	_mode = _label(row, "일반 경기", 12, MUTED)
+	_button(row, "F1 도움말", Vector2(78, 36)).pressed.connect(func() -> void: help_requested.emit())
+	var pause_button: Button = _button(row, "Esc  메뉴", Vector2(89, 36))
 	pause_button.pressed.connect(func() -> void: pause_requested.emit())
 
 
 func _build_bottom() -> void:
 	_bottom = _panel(root_control)
-	_bottom.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_bottom.offset_left = 18
-	_bottom.offset_right = -18
-	_bottom.offset_top = -164
-	_bottom.offset_bottom = -18
-	var row: HBoxContainer = _row(_inset(_bottom, 14, 12), 14)
-	var hero_column: VBoxContainer = _column(row, 4)
-	hero_column.custom_minimum_size.x = 245
-	hero_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_hero_name = _label(hero_column, "바스  /  Lv. 1", 21, INK)
-	_health = _bar(hero_column, Color("3bbda6"), 18)
+	_bottom.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	_bottom.offset_left = -402
+	_bottom.offset_right = 402
+	_bottom.offset_top = -124
+	_bottom.offset_bottom = -12
+	var row: HBoxContainer = _row(_inset(_bottom, 10, 4), 12)
+	var hero_column: VBoxContainer = _column(row, 1)
+	hero_column.custom_minimum_size.x = 230
+	_hero_name = _label(hero_column, "바스  /  Lv. 1", 17, INK)
+	_health = _bar(hero_column, Color("3bbda6"), 14)
 	_health_text = _bar_text(_health)
-	_energy = _bar(hero_column, Color("6eaeca"), 13)
+	_energy = _bar(hero_column, Color("6eaeca"), 12)
 	_energy_text = _bar_text(_energy)
-	_passive = _label(hero_column, "압력 0 / 2", 12, TEAL)
-	_xp = _label(hero_column, "경험치 0 / 100 · 0 / 0 / 0", 11, MUTED)
+	_passive = _label(hero_column, "압력 0 / 2", 11, TEAL)
+	_passive.clip_text = true
+	_passive.mouse_filter = Control.MOUSE_FILTER_PASS
+	var xp_gap := Control.new()
+	xp_gap.custom_minimum_size.y = 2
+	xp_gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hero_column.add_child(xp_gap)
+	_xp = _label(hero_column, "XP 0 / 100 · K/D/A 0/0/0", 10, MUTED)
+	_xp.mouse_filter = Control.MOUSE_FILTER_PASS
 	var divider := VSeparator.new()
 	row.add_child(divider)
-	var skill_row: HBoxContainer = _row(row, 8)
+	var skill_row: HBoxContainer = _row(row, 6)
 	skill_row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	for index: int in range(4):
 		var slot: String = ["Q", "W", "E", "R"][index]
-		var button: Button = _button(skill_row, "", Vector2(104, 108))
+		var button: Button = _button(skill_row, "", Vector2(80, 84))
 		button.pressed.connect(func() -> void: ability_requested.emit(slot))
-		var margin: MarginContainer = _inset(button, 7, 7)
-		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var column: VBoxContainer = _column(margin, 2)
-		column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var key_label: Label = _label(column, slot, 14, INK)
-		key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var icon: TextureRect = TextureRect.new()
+		var key_label: Label = _label(button, slot, 12, COPPER)
+		_place(key_label, Rect2(7, 4, 20, 18))
+		var icon := TextureRect.new()
 		icon.name = "SkillIcon" + slot
-		icon.custom_minimum_size = Vector2(34, 26)
-		icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		column.add_child(icon)
+		button.add_child(icon)
+		_place(icon, Rect2(27, 7, 30, 25))
 		_skill_icons[slot] = icon
-		var name_label: Label = _label(column, "", 11, INK)
+		var name_label: Label = _label(button, "", 12, INK)
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var state_label: Label = _label(column, "", 11, TEAL)
+		_place(name_label, Rect2(2, 34, 76, 18))
+		var state_label: Label = _label(button, "", 11, TEAL)
 		state_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var cost_label: Label = _label(column, "", 9, MUTED)
+		_place(state_label, Rect2(2, 51, 76, 16))
+		var cost_label: Label = _label(button, "", 10, MUTED)
 		cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_place(cost_label, Rect2(2, 67, 76, 15))
 		_skill_buttons[slot] = button
 		_skill_labels[slot] = [name_label, state_label, cost_label]
-	growth_button = _button(row, "G  성장\n+ 2", Vector2(100, 108))
+	growth_button = _button(row, "G  성장\n+ 2", Vector2(90, 84))
+	growth_button.add_theme_font_size_override("font_size", 12)
 	growth_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	growth_button.add_theme_color_override("font_color", TEAL)
 	growth_button.pressed.connect(func() -> void: growth_requested.emit())
 	_hint = _label(root_control, "우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말", 10, Color("fff5da"))
-	_hint.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_hint.offset_left = 22
-	_hint.offset_right = -18
-	_hint.offset_top = -183
-	_hint.offset_bottom = -166
-	_hint.add_theme_color_override("font_shadow_color", Color("182642"))
+	_hint.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	_hint.offset_left = -402
+	_hint.offset_right = 402
+	_hint.offset_top = -204
+	_hint.offset_bottom = -188
+	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hint.add_theme_color_override("font_shadow_color", Color("102a31"))
 	_hint.add_theme_constant_override("shadow_offset_y", 1)
-
 
 
 func _build_inventory() -> void:
 	_inventory = _panel(root_control)
 	_inventory.name = "ConsumableInventory"
-	_inventory.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_inventory.offset_left = 18
-	_inventory.offset_right = -18
-	_inventory.offset_top = -240
-	_inventory.offset_bottom = -184
-	var row: HBoxContainer = _row(_inset(_inventory, 10, 1), 8)
-	_inventory_credits = _label(row, "0 크레딧", 13, INK)
-	_inventory_credits.custom_minimum_size.x = 96
+	_inventory.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	_inventory.offset_left = -376
+	_inventory.offset_right = 376
+	_inventory.offset_top = -184
+	_inventory.offset_bottom = -130
+	var row: HBoxContainer = _row(_inset(_inventory, 8, 1), 8)
+	_inventory_credits = _label(row, "0 크레딧", 11, INK)
+	_inventory_credits.custom_minimum_size.x = 80
 	_inventory_credits.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	for item_id: String in ConsumablesScript.ITEMS:
-		var button: Button = _button(row, "", Vector2(145, 38))
+		var button: Button = _button(row, "", Vector2(124, 36))
 		button.name = "Select" + item_id
-		button.add_theme_font_size_override("font_size", 13)
+		button.add_theme_font_size_override("font_size", 12)
 		button.pressed.connect(func() -> void: consumable_selected.emit(item_id))
 		_item_buttons[item_id] = button
-	_shop_button = _button(row, "P 상점", Vector2(78, 38))
-	_shop_button.add_theme_font_size_override("font_size", 13)
+	_shop_button = _button(row, "P 상점", Vector2(72, 36))
+	_shop_button.add_theme_font_size_override("font_size", 12)
 	_shop_button.pressed.connect(func() -> void: shop_requested.emit())
-	_use_button = _button(row, "D 사용", Vector2(78, 38))
-	_use_button.add_theme_font_size_override("font_size", 13)
+	_use_button = _button(row, "D 사용", Vector2(72, 36))
+	_use_button.add_theme_font_size_override("font_size", 12)
 	_use_button.pressed.connect(func() -> void: consumable_use_requested.emit())
-	_inventory_status = _label(row, "공유 대기: 준비", 12, TEAL)
+	_inventory_status = _label(row, "공유 대기 · 준비", 11, TEAL)
 	_inventory_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_inventory_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
@@ -338,7 +344,7 @@ func _update_consumables(battle: Variant, hero: Dictionary) -> void:
 		var selected: bool = hero.consumable_selected == item_id
 		button.text = "%s %s ×%d" % ["●" if selected else "○", item.name, hero.consumables[item_id]]
 		button.tooltip_text = "클릭: 선택만 / D: 선택한 아이템 사용"
-		button.add_theme_stylebox_override("normal", _style(Color("d5e8d2") if selected else Color("eee5cf"), TEAL if selected else Color("d2c5a7")))
+		button.add_theme_stylebox_override("normal", _style(Color("30574e") if selected else Color("203c42"), TEAL if selected else Color("668178")))
 		var reason: String = battle.consumable_purchase_error(hero.id, item_id)
 		_shop_reasons[item_id].text = "구매 가능 · 보유 %d개" % hero.consumables[item_id] if reason.is_empty() else consumable_reason(reason)
 		_shop_buy_buttons[item_id].disabled = not reason.is_empty()
@@ -388,61 +394,164 @@ func _build_feedback() -> void:
 	_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_toast.offset_left = -310
 	_toast.offset_right = 310
-	_toast.offset_top = 91
-	_toast.offset_bottom = 133
+	_toast.offset_top = 124
+	_toast.offset_bottom = 166
 	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_toast_text = _label(_inset(_toast, 12, 8), "", 15, INK)
+	_toast_text = _label(_inset(_toast, 10, 4), "", 13, INK)
+	_toast_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toast_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_toast.hide()
 	_target = _panel(root_control)
 	_target.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_target.offset_left = -270
 	_target.offset_right = -18
-	_target.offset_top = 90
-	_target.offset_bottom = 145
+	_target.offset_top = 124
+	_target.offset_bottom = 179
 	_target_text = _label(_inset(_target, 12, 8), "", 13, INK)
 	_target.hide()
 
 
+	root_control.resized.connect(_layout_feedback)
+	_layout_feedback()
+
+
+func _layout_feedback() -> void:
+	var half_width: float = minf(310.0, maxf(160.0, (root_control.size.x - 600.0) * 0.5))
+	_toast.offset_left = -half_width
+	_toast.offset_right = half_width
+	# Initialize wrapped text before a hidden container receives its first message.
+	var panel_style: StyleBox = _toast.get_theme_stylebox("panel")
+	var padding: float = panel_style.get_content_margin(SIDE_LEFT) + panel_style.get_content_margin(SIDE_RIGHT) + 20.0
+	_toast_text.size.x = maxf(1.0, half_width * 2.0 - padding)
+
+
 func _build_selection() -> void:
-	selection = _modal("HeroSelection", 1040)
-	var column: VBoxContainer = selection.get_meta("column") as VBoxContainer
-	_label(column, "아스트라 전장의 영웅들", 32, INK)
-	_label(column, "3등신 판타지 영웅과 함께 3라인에서 상대 마법 핵을 파괴하세요.", 16, MUTED)
-	var cards: HBoxContainer = _row(column, 14)
+	selection = Control.new()
+	selection.name = "HeroSelection"
+	selection.mouse_filter = Control.MOUSE_FILTER_STOP
+	root_control.add_child(selection)
+	selection.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var backdrop := TextureRect.new()
+	backdrop.name = "CanalBackdrop"
+	backdrop.texture = preload("res://assets/ui/canal-backdrop.webp")
+	backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	selection.add_child(backdrop)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var gradient := Gradient.new()
+	gradient.offsets = PackedFloat32Array([0.0, 0.28, 0.65, 1.0])
+	gradient.colors = PackedColorArray([Color(0.025, 0.09, 0.11, 0.90), Color(0.025, 0.09, 0.11, 0.36), Color(0.025, 0.09, 0.11, 0.52), Color(0.025, 0.09, 0.11, 0.96)])
+	var shade_texture := GradientTexture2D.new()
+	shade_texture.gradient = gradient
+	shade_texture.fill_from = Vector2(0.0, 0.0)
+	shade_texture.fill_to = Vector2(0.0, 1.0)
+	var shade := TextureRect.new()
+	shade.texture = shade_texture
+	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	selection.add_child(shade)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_selection_frame = Control.new()
+	_selection_frame.name = "SelectionFrame"
+	_selection_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_selection_frame.size = Vector2(1280, 720)
+	selection.add_child(_selection_frame)
+	_place(_label(_selection_frame, "PROJECT E  /  아스트라 전장", 13, COPPER), Rect2(64, 30, 600, 25))
+	_place(_label(_selection_frame, "어떤 영웅과 함께할까요?", 38, INK), Rect2(64, 60, 1100, 54))
+	_place(_label(_selection_frame, "세 갈래 길, 하나의 목표. 적의 마법 핵을 파괴하세요.", 15, Color("d6e3dc")), Rect2(66, 116, 1100, 28))
+	var version: Label = _label(_selection_frame, "v" + str(ProjectSettings.get_setting("application/config/version", "0.6.0")), 12, MUTED)
+	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_place(version, Rect2(1036, 31, 180, 24))
 	var group := ButtonGroup.new()
-	for key: String in ["bas", "rio", "nema"]:
-		var button: Button = _button(cards, "", Vector2(308, 240))
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var accents: Dictionary = {"bas": Color("edbf7a"), "rio": Color("b9b4f2"), "nema": Color("a6dbae")}
+	for index: int in range(3):
+		var key: String = ["bas", "rio", "nema"][index]
+		var button: Button = _button(_selection_frame, "", Vector2(368, 350))
+		button.name = "HeroCard" + key.capitalize()
+		_place(button, Rect2(64 + index * 392, 160, 368, 350))
 		button.toggle_mode = true
 		button.button_group = group
-		button.button_pressed = key == "bas"
+		button.button_pressed = key == selected_hero
 		button.pressed.connect(func() -> void: select_hero(key))
+		var normal: StyleBoxFlat = _style(Color("102b32"), Color("69837b"), 1)
+		normal.shadow_color = Color(0.0, 0.025, 0.03, 0.60)
+		normal.shadow_size = 14
+		normal.shadow_offset = Vector2(0, 6)
+		button.add_theme_stylebox_override("normal", normal)
+		button.add_theme_stylebox_override("hover", _style(Color("1b3b40"), accents[key], 2))
+		button.add_theme_stylebox_override("pressed", _style(Color("234246"), COPPER, 3))
+		button.add_theme_stylebox_override("hover_pressed", _style(Color("294d4e"), COPPER, 3))
 		_hero_buttons[key] = button
-		var margin: MarginContainer = _inset(button, 13, 10)
-		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var content: VBoxContainer = _column(margin, 3)
-		content.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var portrait: Control = PortraitScript.new()
+		var portrait: TextureRect = PortraitScript.new()
 		portrait.hero_key = key
-		portrait.custom_minimum_size = Vector2(180, 122)
-		content.add_child(portrait)
-		var name_label: Label = _label(content, HEROES[key][0], 25, INK)
-		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var role_label: Label = _label(content, HEROES[key][1], 14, TEAL)
-		role_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var description: Label = _label(content, HEROES[key][2], 12, MUTED)
-		description.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_label(column, "나 + 아군 봇 2명  vs  상대 봇 3명 · 각 팀에 바스 / 리오 / 네마가 한 명씩 참가합니다.", 13, MUTED)
+		portrait.name = "HeroIllustration"
+		portrait.custom_minimum_size = Vector2(352, 232)
+		button.add_child(portrait)
+		_place(portrait, Rect2(8, 8, 352, 232))
+		var name_label: Label = _label(button, HEROES[key][0], 28, INK)
+		_place(name_label, Rect2(18, 249, 90, 40))
+		var role_label: Label = _label(button, HEROES[key][1], 14, accents[key])
+		_place(role_label, Rect2(106, 258, 244, 28))
+		var description: Label = _label(button, HEROES[key][2], 12, Color("d0ded7"))
+		_place(description, Rect2(18, 300, 332, 40))
+		var tag := PanelContainer.new()
+		tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tag.add_theme_stylebox_override("panel", _style(Color("163a3c"), COPPER, 1))
+		button.add_child(tag)
+		_place(tag, Rect2(18, 18, 114, 28))
+		_label(tag, "선택한 영웅", 12, Color("fff0c9")).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		tag.visible = key == selected_hero
+		_selection_tags[key] = tag
+	_place(_label(_selection_frame, "플레이 방식", 12, COPPER), Rect2(66, 526, 400, 22))
+	var mode_group := ButtonGroup.new()
+	var regular: Button = _button(_selection_frame, "일반 경기\n레벨 1 · 성장 2포인트", Vector2(268, 62))
+	regular.toggle_mode = true
+	regular.button_group = mode_group
+	regular.button_pressed = true
+	regular.add_theme_font_size_override("font_size", 14)
+	_place(regular, Rect2(64, 553, 268, 62))
 	_practice = CheckButton.new()
-	_practice.text = "기술 체험  ·  레벨 3 / R 해금으로 시작"
+	_practice.text = "기술 체험\n레벨 3 · R 해금"
 	_practice.focus_mode = Control.FOCUS_NONE
-	column.add_child(_practice)
-	_label(column, "일반 경기: 레벨 1 · 성장 2포인트 · R은 레벨 3부터 1포인트로 해금", 13, MUTED)
-	_start = _button(column, "바스로 경기 시작", Vector2(0, 52), true)
+	_practice.button_group = mode_group
+	_practice.add_theme_font_size_override("font_size", 14)
+	for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
+		_practice.add_theme_stylebox_override(state, _style(Color("244247") if state.contains("pressed") else Color("142e35"), TEAL if state != "normal" else Color("67857e"), 2 if state.contains("pressed") else 1))
+	_selection_frame.add_child(_practice)
+	_place(_practice, Rect2(344, 553, 280, 62))
+	_start = _button(_selection_frame, "바스로 경기 시작", Vector2(568, 62), true)
+	_start.add_theme_font_size_override("font_size", 22)
+	_start.add_theme_color_override("font_color", Color("142e32"))
+	_start.add_theme_color_override("font_hover_color", Color("142e32"))
+	_start.add_theme_color_override("font_pressed_color", Color("142e32"))
+	_start.add_theme_stylebox_override("normal", _style(Color("edc680"), Color("ffe4aa"), 2))
+	_start.add_theme_stylebox_override("hover", _style(Color("ffdea0"), Color("fff2cf"), 2))
+	_start.add_theme_stylebox_override("pressed", _style(Color("d4ac67"), Color("fff2cf"), 2))
+	_place(_start, Rect2(648, 553, 568, 62))
 	_start.pressed.connect(func() -> void: match_requested.emit(selected_hero, _practice.button_pressed))
-	_label(column, "경기 중: 우클릭 이동·공격 · A 공격 이동 · QWER 기술 · G 성장 · B 복귀 · P 상점 · D 사용 · F1 도움말", 13, MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var team_note: Label = _label(_selection_frame, "나 + 아군 봇 2명  vs  상대 봇 3명   ·   각 팀에 바스 / 리오 / 네마가 한 명씩 참가합니다.", 13, Color("d0ded7"))
+	team_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_place(team_note, Rect2(64, 630, 1152, 30))
+	_place(_label(_selection_frame, "우클릭 이동·공격   ·   A 공격 이동   ·   QWER 기술   ·   G 성장   ·   F1 도움말", 12, MUTED), Rect2(64, 680, 940, 24))
+	var review_hint: Label = _label(_selection_frame, "F7  전장 둘러보기", 12, MUTED)
+	review_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_place(review_hint, Rect2(984, 680, 232, 24))
+	selection.resized.connect(_layout_selection)
+	_layout_selection()
+	call_deferred("_layout_selection")
+
+
+func _layout_selection() -> void:
+	if not is_instance_valid(_selection_frame):
+		return
+	var fit: float = minf(selection.size.x / 1280.0, selection.size.y / 720.0)
+	_selection_frame.scale = Vector2.ONE * fit
+	_selection_frame.position = (selection.size - Vector2(1280, 720) * fit) * 0.5
+
+
+func _place(control: Control, rect: Rect2) -> void:
+	control.position = rect.position
+	control.size = rect.size
 
 
 func _build_growth() -> void:
@@ -521,6 +630,8 @@ func select_hero(key: String) -> void:
 	selected_hero = key
 	_hero_buttons[key].button_pressed = true
 	_start.text = "%s로 경기 시작" % HEROES[key][0]
+	for hero_key: String in _selection_tags:
+		_selection_tags[hero_key].visible = hero_key == key
 
 
 func show_selection() -> void:
@@ -568,8 +679,10 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 	_energy.max_value = hero.max_energy
 	_energy.value = hero.energy
 	_energy_text.text = "에너지 %d / %d" % [floori(hero.energy), hero.max_energy]
-	_xp.text = "XP %d / %d · 처치 / 사망 / 도움  %d / %d / %d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · 처치 / 사망 / 도움  %d / %d / %d" % [hero.kills, hero.deaths, hero.assists]
+	_xp.text = "XP %d / %d · K/D/A %d/%d/%d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · K/D/A %d/%d/%d" % [hero.kills, hero.deaths, hero.assists]
 	_passive.text = _passive_text(battle, hero)
+	_passive.tooltip_text = _passive.text
+	_xp.tooltip_text = "K / D / A · 처치 / 사망 / 도움"
 	_timer.text = "%02d:%02d" % [int(battle.time) / 60, int(battle.time) % 60]
 	_mode.text = "기술 체험 · Lv.3 / R" if practice else "일반 경기 · 봇 3 대 3"
 	_mode.add_theme_color_override("font_color", COPPER if practice else MUTED)
@@ -592,7 +705,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 		labels[2].text = "에너지 %d" % int(cost)
 		var state: String = "준비"
 		if slot == "R" and not hero.r_unlocked:
-			state = "Lv.3 · 성장 해금"
+			state = "Lv.3 해금"
 		elif hero.cooldowns[slot] > 0.0:
 			state = "%.1f초" % hero.cooldowns[slot]
 		elif hero.energy < cost:
@@ -602,7 +715,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 		labels[1].text = state
 		labels[1].add_theme_color_override("font_color", COPPER if state != "준비" and aim_slot != slot else TEAL)
 		button.tooltip_text = "%s · %s\n에너지 %d / 재사용 %.1f초\n%s" % [slot, SKILLS[key][index], cost, AbilityScript.CONFIG[key][slot][1], SKILL_HELP[key][index]]
-		button.add_theme_stylebox_override("normal", _style(Color("4b5279") if aim_slot == slot else Color("2d3554"), TEAL if aim_slot == slot else Color("a18d6f"), 2 if aim_slot == slot else 1))
+		button.add_theme_stylebox_override("normal", _style(Color("305450") if aim_slot == slot else Color("19373d"), TEAL if aim_slot == slot else Color("a18d6f"), 2 if aim_slot == slot else 1))
 	growth_button.text = "G  성장\n+ %d 포인트" % hero.points
 	_growth_title.text = "성장  ·  사용 가능 %d포인트" % hero.points
 	_growth_stats.text = "현재 위력 %d · 방어 %d · 이동 %.2fm/초 · 에너지 회복 %.1f/초" % [hero.power, hero.armor, hero.speed, hero.energy_regen]
@@ -621,7 +734,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 
 func _passive_text(battle: Variant, hero: Dictionary) -> String:
 	if hero.hero == "bas":
-		return "압력 %d / 2%s" % [hero.pressure, "  ·  %.1f초" % hero.pressure_left if hero.pressure > 0 else "  ·  영웅에게 기술 적중 시 충전"]
+		return "압력 %d / 2%s" % [hero.pressure, "  ·  %.1f초" % hero.pressure_left if hero.pressure > 0 else " · 기술 적중 시 충전"]
 	if hero.hero == "rio":
 		var phase: String = "원반 준비"
 		for projectile: Dictionary in battle.projectiles:
@@ -671,7 +784,7 @@ func show_result(battle: Variant, practice: bool) -> void:
 func blocks_point(point: Vector2) -> bool:
 	if selection.visible or growth.visible or pause_menu.visible or result.visible or help_panel.visible or shop.visible:
 		return true
-	for control: Control in [_top, _bottom, _inventory, _map_panel, _target, _hint, _toast]:
+	for control: Control in [_top, _bottom, _inventory, _map_panel, _target, _hint]:
 		if control.visible and control.get_global_rect().has_point(point):
 			return true
 	return false
@@ -707,10 +820,10 @@ func _theme() -> Theme:
 	result_theme.set_color("font_color", "CheckButton", INK)
 	result_theme.set_color("font_hover_color", "CheckButton", TEAL)
 	result_theme.set_stylebox("panel", "PanelContainer", _style(PAPER, Color("d8b57b"), 2))
-	result_theme.set_stylebox("normal", "Button", _style(Color("303a59"), Color("a18d6f")))
-	result_theme.set_stylebox("hover", "Button", _style(Color("444e78"), TEAL, 2))
-	result_theme.set_stylebox("pressed", "Button", _style(Color("505b83"), TEAL, 2))
-	result_theme.set_stylebox("disabled", "Button", _style(Color("292e43"), Color("56576a")))
+	result_theme.set_stylebox("normal", "Button", _style(Color("19373d"), Color("a18d6f")))
+	result_theme.set_stylebox("hover", "Button", _style(Color("294f50"), TEAL, 2))
+	result_theme.set_stylebox("pressed", "Button", _style(Color("345b55"), TEAL, 2))
+	result_theme.set_stylebox("disabled", "Button", _style(Color("203236"), Color("56576a")))
 	result_theme.set_stylebox("focus", "Button", _style(Color(0, 0, 0, 0), TEAL, 2))
 	return result_theme
 
@@ -797,7 +910,9 @@ func _bar(parent: Node, fill: Color, height: float) -> ProgressBar:
 
 
 func _bar_text(bar: ProgressBar) -> Label:
-	var label: Label = _label(bar, "", 10, Color("183f3d"))
+	var label: Label = _label(bar, "", 10, Color("fff4dc"))
+	label.add_theme_color_override("font_outline_color", Color("102a31"))
+	label.add_theme_constant_override("outline_size", 2)
 	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

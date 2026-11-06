@@ -21,6 +21,9 @@ func damage(state: Variant, source_id: int, target_id: int, raw: float, cast_id:
 			amount *= 0.5
 		if not state.has_siege_minion(source.team, target.pos):
 			amount *= 0.3
+	# Ordinary lane units reserve the final blow for heroes or major units.
+	if source.kind == "minion" and source.get("subtype", "") in ["melee", "ranged"]:
+		amount = minf(amount, target.shield + maxf(0.0, target.hp - 1.0))
 	var applied: float = minf(amount, target.hp + target.shield)
 	var left: float = amount
 	target.shields.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
