@@ -6,6 +6,7 @@ const FantasyAudio = preload("res://scripts/presentation/fantasy_audio.gd")
 const CAMERA_MODES: Dictionary = {"combat": 30.0, "tactical": 50.0, "detail": 18.0}
 var camera_mode: String = "combat"
 var edge_pan_enabled: bool = true
+var _edge_pan_armed: bool = false
 var _accents: MeshInstance3D
 var _camera_hint: Label
 var review_lab: Node
@@ -41,14 +42,15 @@ func _ready() -> void:
 	if not has_meta("review_stage"):
 		_review_button = Button.new()
 		_review_button.text = "F7 통합 연출실"
-		_review_button.position = Vector2(22, 20)
+		_review_button.position = Vector2(22, 110)
 		_review_button.custom_minimum_size = Vector2(160, 30)
 		_review_button.add_theme_font_override("font", hud.ui_font)
 		_review_button.focus_mode = Control.FOCUS_NONE
 		hud.root_control.add_child(_review_button)
 		_review_button.pressed.connect(open_review_lab)
+		_review_button.visible = not hud.selection.visible
 		hud.selection.visibility_changed.connect(func() -> void:
-			_review_button.position.y = 20.0 if hud.selection.visible else 110.0
+			_review_button.visible = not hud.selection.visible
 		)
 
 func start_match(hero_key: String, practice: bool = false) -> void:
@@ -57,7 +59,8 @@ func start_match(hero_key: String, practice: bool = false) -> void:
 	_corpse_until.clear()
 	super.start_match(hero_key, practice)
 	camera_mode = "combat"
-	_camera_follow = false
+	_camera_follow = true
+	_edge_pan_armed = false
 	_camera_focus = battle.units[battle.controlled_id].pos
 	set_camera_mode("combat")
 
@@ -73,9 +76,9 @@ func _update_camera(delta: float) -> void:
 		camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 		super._update_camera(delta)
 		return
-	if _camera_follow and battle.units.has(battle.controlled_id):
+	if _camera_follow and delta > 0.0 and battle.units.has(battle.controlled_id):
 		var target: Vector2 = battle.units[battle.controlled_id].pos
-		_camera_focus = _camera_focus.lerp(target, 1.0 - exp(-maxf(0, delta) * 12.0)) if delta > 0 else target
+		_camera_focus = _camera_focus.lerp(target, 1.0 - exp(-delta * 12.0))
 	_camera_focus.x = clampf(_camera_focus.x, -55.0, 55.0)
 	_camera_focus.y = clampf(_camera_focus.y, -31.0, 31.0)
 	camera.projection = Camera3D.PROJECTION_PERSPECTIVE
@@ -96,12 +99,35 @@ func _camera_input_allowed() -> bool:
 	var focus: Control = get_viewport().gui_get_focus_owner()
 	return not (focus is LineEdit or focus is TextEdit)
 
+func edge_pan_axis(mouse: Vector2, bounds: Rect2, over_ui: bool = false) -> Vector2:
+	if not mouse.is_finite() or not bounds.position.is_finite() or not bounds.size.is_finite() or bounds.size.x <= 0.0 or bounds.size.y <= 0.0 or not bounds.has_point(mouse):
+		return Vector2.ZERO
+	var local: Vector2 = mouse - bounds.position
+	var viewport_scale: float = minf(bounds.size.x, bounds.size.y) / 720.0
+	var margin: float = 32.0 * viewport_scale
+	var gutter: float = 10.0 * viewport_scale
+	var axis := Vector2.ZERO
+	if local.x < margin and (not over_ui or local.x < gutter):
+		axis.x = -(1.0 - local.x / margin)
+	elif local.x > bounds.size.x - margin and (not over_ui or local.x > bounds.size.x - gutter):
+		axis.x = 1.0 - (bounds.size.x - local.x) / margin
+	if local.y < margin and (not over_ui or local.y < gutter):
+		axis.y = -(1.0 - local.y / margin)
+	elif local.y > bounds.size.y - margin and (not over_ui or local.y > bounds.size.y - gutter):
+		axis.y = 1.0 - (bounds.size.y - local.y) / margin
+	return axis.limit_length(1.0)
+
 func pan_camera(axis: Vector2, delta: float) -> void:
-	if not _camera_input_allowed() or not axis.is_finite() or not is_finite(delta) or delta <= 0:
+	if not _camera_input_allowed() or not axis.is_finite() or axis.is_zero_approx() or not is_finite(delta) or delta <= 0:
 		return
 	_camera_follow = false
-	_camera_focus += Vector2(axis.x, -axis.y).limit_length(1.0) * 23.0 * minf(delta, 0.5)
+	_camera_focus += Vector2(axis.x, -axis.y).limit_length(1.0) * 23.0 * delta
 	_update_camera(0.0)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_camera_drag = false
+		_edge_pan_armed = false
 
 func handle_hotkey(keycode: int) -> bool:
 	if keycode == KEY_F7 and not has_meta("review_stage"):
@@ -109,28 +135,33 @@ func handle_hotkey(keycode: int) -> bool:
 		if focus is LineEdit or focus is TextEdit: return false
 		open_review_lab()
 		return true
+	if keycode == KEY_SPACE and _camera_input_allowed():
+		_edge_pan_armed = false
 	if keycode in [KEY_F6, KEY_Y] and _camera_input_allowed():
 		if keycode == KEY_F6:
 			var modes: Array = ["combat", "tactical", "detail"]
 			set_camera_mode(modes[(modes.find(camera_mode) + 1) % modes.size()])
 		else:
 			_camera_follow = not _camera_follow
-			_update_camera(0.0)
+			_edge_pan_armed = false
 		return true
 	return super.handle_hotkey(keycode)
 
 func _process(delta: float) -> void:
-	if edge_pan_enabled and _camera_input_allowed() and not _camera_follow and not _camera_drag and aim_slot.is_empty() and not attack_move_aim and get_window().has_focus():
+	if edge_pan_enabled and _camera_input_allowed() and not _camera_drag and aim_slot.is_empty() and not attack_move_aim and get_window().has_focus():
 		var mouse: Vector2 = get_viewport().get_mouse_position()
 		var bounds: Rect2 = get_viewport().get_visible_rect()
-		if bounds.has_point(mouse) and not ui_blocks_point(mouse):
-			var axis := Vector2.ZERO
-			if mouse.x < 12: axis.x = -1
-			elif mouse.x > bounds.size.x - 12: axis.x = 1
-			if mouse.y < 12: axis.y = -1
-			elif mouse.y > bounds.size.y - 12: axis.y = 1
-			if not axis.is_zero_approx():
+		if bounds.has_point(mouse):
+			var axis: Vector2 = edge_pan_axis(mouse, bounds, ui_blocks_point(mouse))
+			# A fresh edge entry releases follow. Opening a match at an edge keeps following.
+			if edge_pan_axis(mouse, bounds).is_zero_approx():
+				_edge_pan_armed = true
+			if not axis.is_zero_approx() and (not _camera_follow or _edge_pan_armed) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 				pan_camera(axis, delta)
+		else:
+			_edge_pan_armed = false
+	else:
+		_edge_pan_armed = false
 	super._process(delta)
 	if _camera_hint != null:
 		_camera_hint.visible = has_active_match and not hud.result.visible and not hud.selection.visible and not hud.help_panel.visible and not hud.shop.visible and not hud.growth.visible

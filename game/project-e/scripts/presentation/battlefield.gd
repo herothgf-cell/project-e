@@ -506,7 +506,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE and not event.pressed:
 		_camera_drag = false
-	if event is InputEventMouseMotion and _camera_drag and _accepts_commands():
+	if event is InputEventMouseMotion and _camera_drag and _accepts_commands() and get_window().has_focus() and get_viewport().get_visible_rect().has_point(event.position) and event.relative.is_finite():
 		_camera_follow = false
 		var units_per_pixel: float = camera.size / maxf(1, get_viewport().get_visible_rect().size.y)
 		_camera_focus += Vector2(-event.relative.x, event.relative.y * 1.35) * units_per_pixel
@@ -526,6 +526,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			camera.size = clampf(camera.size + 3.0, 24.0, 70.0)
 		MOUSE_BUTTON_MIDDLE:
 			_camera_drag = true
+			_camera_follow = false
 		MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT:
 			world_click(event.position, event.button_index)
 		_:
