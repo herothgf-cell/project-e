@@ -248,10 +248,10 @@ func _behavior() -> void:
 		var strip: Rect2 = scene.hud._inventory.get_global_rect()
 		var viewport_size: Vector2 = root.get_visible_rect().size
 		# Fantasy V3 moves the map to the upper-left. Inventory now spans to the right edge.
-		_check(is_equal_approx(strip.position.x, 18.0) and is_equal_approx(strip.end.x, viewport_size.x - 18.0), "inventory horizontal band " + str(dimensions))
+		_check(is_equal_approx(strip.position.x, viewport_size.x * 0.5 - 376.0) and is_equal_approx(strip.end.x, viewport_size.x * 0.5 + 376.0), "compact inventory centered " + str(dimensions))
 		var map_rect: Rect2 = scene.hud._map_panel.get_global_rect()
 		_check(is_equal_approx(map_rect.position.x, 18.0) and is_equal_approx(map_rect.position.y, 89.0) and map_rect.end.y <= strip.position.y, "fantasy map occupies top-left without overlapping items " + str(dimensions))
-		_check(is_equal_approx(strip.position.y, viewport_size.y - 240.0) and strip.end.y <= viewport_size.y - 184.0 + 1, "inventory vertical band " + str(dimensions))
+		_check(is_equal_approx(strip.position.y, viewport_size.y - 184.0) and strip.end.y <= viewport_size.y - 130.0 + 1, "compact inventory vertical band " + str(dimensions))
 		_check(not strip.intersects(scene.hud._bottom.get_global_rect()) and not strip.intersects(scene.hud._map_panel.get_global_rect()), "inventory avoids skills/map " + str(dimensions))
 		_check(not strip.intersects(scene.hud._hint.get_global_rect()), "hint avoids inventory " + str(dimensions))
 		for control: Control in [scene.hud._inventory, scene.hud._shop_button, scene.hud._use_button, scene.hud._item_buttons.I01, scene.hud._item_buttons.I02]:

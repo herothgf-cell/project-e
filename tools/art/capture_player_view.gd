@@ -3,6 +3,7 @@ extends SceneTree
 var output := ""
 var inline_preview := false
 var failures := 0
+var checks := 0
 var scene: Variant
 var records: Array[Dictionary] = []
 
@@ -48,6 +49,27 @@ func _run() -> void:
 			portraits[str(control.texture.resource_path)] = true
 	for key: String in ["bas", "rio", "nema"]:
 		_check(portraits.has("res://assets/portraits/" + key + ".webp"), "Illustrated portrait is rendered " + key)
+	# Route actual GUI pointer events at the smallest supported window size.
+	for key: String in ["bas", "rio", "nema"]:
+		await _click(scene.hud._hero_buttons[key])
+		_check(scene.hud.selected_hero == key, "Pointer selects " + key + " at 960x540")
+		for candidate: String in ["bas", "rio", "nema"]:
+			_check(scene.hud._selection_tags[candidate].visible == (candidate == key), "Exclusive selection tag " + candidate)
+	var regular: BaseButton
+	for mode: BaseButton in scene.hud._practice.button_group.get_buttons():
+		if mode != scene.hud._practice:
+			regular = mode
+	await _click(scene.hud._practice)
+	_check(scene.hud._practice.button_pressed and not regular.button_pressed, "Pointer chooses practice exclusively")
+	await _click(regular)
+	_check(regular.button_pressed and not scene.hud._practice.button_pressed, "Pointer returns to regular match")
+	await _click(scene.hud._practice)
+	await _click(scene.hud._start)
+	_check(scene.has_active_match and scene.is_practice, "Pointer starts the selected match mode")
+	_check(scene.battle.units[scene.battle.controlled_id].hero == "nema", "Pointer start uses selected hero")
+	scene.return_to_selection()
+	await _settle()
+	_check(scene.hud.selection.visible and not scene.has_active_match, "Returning to selection enables another match")
 	root.size = Vector2i(1280, 720)
 	scene.hud.select_hero("rio")
 	await _settle()
@@ -71,15 +93,32 @@ func _run() -> void:
 	scene._camera_focus = Vector2(-0.7, -0.8)
 	scene.set_camera_mode("combat")
 	scene._process(0.0)
+	scene.hud._toast_left = 0.0
 	scene.hud._toast.hide()
 	await _settle()
 	await _save("battle-v6")
 	var bottom: Control = scene.hud._bottom
 	_check(bottom.get_global_rect().size.y <= 128.0, "Compact battle HUD")
 	_check(root.get_visible_rect().encloses(bottom.get_global_rect()), "Battle HUD fits viewport")
+	root.size = Vector2i(960, 540)
+	player.hp = 48.0
+	player.energy = 7.0
+	scene.hud.update_state(scene.battle, "", true)
+	scene.hud.show_message("일반 병사는 마지막 체력을 남깁니다. 영웅으로 마무리하세요.", 8.0)
+	for enemy: Dictionary in scene.battle.units.values():
+		if enemy.kind == "hero" and enemy.team == 1:
+			scene.hud.show_target(enemy)
+			break
+	await _settle()
+	for control: Control in [scene.hud._bottom, scene.hud._inventory, scene.hud._toast, scene.hud._target, scene._review_button, scene._camera_hint]:
+		_check(root.get_visible_rect().encloses(control.get_global_rect()), "Small-window battle control fits " + control.name)
+	_check(not scene.hud._toast.get_global_rect().intersects(scene.hud._target.get_global_rect()), "Small-window toast avoids target")
+	_check(not scene._camera_hint.get_global_rect().intersects(scene.hud._toast.get_global_rect()), "Camera hint avoids toast")
+	_check(not scene._camera_hint.get_global_rect().intersects(scene.hud._map_panel.get_global_rect()), "Small-window camera hint avoids minimap")
+	await _save("battle-low-health-960x540")
 	var document := {"version": "0.6.0", "engine": Engine.get_version_info().string,
 		"source": "exported PCK" if OS.get_cmdline_args().has("--main-pack") else "source checkout",
-		"failures": failures, "captures": records}
+		"checks": checks, "failures": failures, "captures": records}
 	var manifest := FileAccess.open(output.path_join("player-review.json"), FileAccess.WRITE)
 	manifest.store_string(JSON.stringify(document, "\t"))
 	manifest.close()
@@ -87,8 +126,24 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	if failures == 0:
-		print("PLAYER_REVIEW_OK")
+		print("PLAYER_REVIEW_OK ", checks, " checks")
 	quit(0 if failures == 0 else 1)
+
+func _click(control: Control) -> void:
+	var point: Vector2 = control.get_global_rect().get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = point
+	motion.global_position = point
+	root.push_input(motion, true)
+	for pressed: bool in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.global_position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
+		event.pressed = pressed
+		root.push_input(event, true)
+		await process_frame
 
 func _settle() -> void:
 	for index in range(15):
@@ -96,6 +151,7 @@ func _settle() -> void:
 	await RenderingServer.frame_post_draw
 
 func _check(condition: bool, label: String) -> void:
+	checks += 1
 	if not condition:
 		failures += 1
 		print("PLAYER_REVIEW_FAIL ", label)
@@ -109,6 +165,6 @@ func _save(stem: String) -> void:
 	var entry: Dictionary = {"name": stem, "width": snapshot.get_width(),
 		"height": snapshot.get_height(), "sha256": FileAccess.get_sha256(path)}
 	records.append(entry)
-	if inline_preview and stem in ["selection-1280x720", "battle-v6"]:
+	if inline_preview and stem in ["selection-1280x720", "battle-v6", "battle-low-health-960x540"]:
 		snapshot.resize(1024, 576, Image.INTERPOLATE_LANCZOS)
 		print("PLAYER_PREVIEW_IMAGE ", stem, " ", Marshalls.raw_to_base64(snapshot.save_webp_to_buffer(false, 0.74)))

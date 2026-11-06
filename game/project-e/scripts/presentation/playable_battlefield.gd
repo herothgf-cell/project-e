@@ -30,7 +30,15 @@ func _ready() -> void:
 	super._ready()
 	_camera_hint = Label.new()
 	_camera_hint.name = "CameraHint"
-	_camera_hint.position = Vector2(22, 82)
+	_camera_hint.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_camera_hint.anchor_left = 0.0
+	_camera_hint.offset_left = 300
+	_camera_hint.offset_right = -195
+	_camera_hint.offset_top = 80
+	_camera_hint.offset_bottom = 110
+	_camera_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_camera_hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_camera_hint.clip_text = true
 	_camera_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_camera_hint.add_theme_font_override("font", hud.ui_font)
 	_camera_hint.add_theme_font_size_override("font_size", 12)
@@ -42,9 +50,19 @@ func _ready() -> void:
 	if not has_meta("review_stage"):
 		_review_button = Button.new()
 		_review_button.text = "F7 통합 연출실"
-		_review_button.position = Vector2(22, 110)
+		_review_button.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		_review_button.offset_left = -178
+		_review_button.offset_right = -18
+		_review_button.offset_top = 80
+		_review_button.offset_bottom = 110
 		_review_button.custom_minimum_size = Vector2(160, 30)
 		_review_button.add_theme_font_override("font", hud.ui_font)
+		_review_button.add_theme_font_size_override("font_size", 12)
+		for style_name: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+			var style: StyleBox = hud.root_control.theme.get_stylebox(style_name, "Button").duplicate() as StyleBox
+			style.content_margin_top = 3
+			style.content_margin_bottom = 3
+			_review_button.add_theme_stylebox_override(style_name, style)
 		_review_button.focus_mode = Control.FOCUS_NONE
 		hud.root_control.add_child(_review_button)
 		_review_button.pressed.connect(open_review_lab)
@@ -90,14 +108,6 @@ func _update_camera(delta: float) -> void:
 	var look := Vector3(_camera_focus.x, height + 0.65, -_camera_focus.y)
 	camera.position = look + Vector3(0, sin(pitch) * distance, cos(pitch) * distance)
 	camera.look_at(look, Vector3.UP)
-
-func _camera_input_allowed() -> bool:
-	if not has_active_match or paused or battle.winner != -1 or hud == null:
-		return false
-	if hud.selection.visible or hud.growth.visible or hud.help_panel.visible or hud.shop.visible or hud.result.visible or hud.pause_menu.visible:
-		return false
-	var focus: Control = get_viewport().gui_get_focus_owner()
-	return not (focus is LineEdit or focus is TextEdit)
 
 func edge_pan_axis(mouse: Vector2, bounds: Rect2, over_ui: bool = false) -> Vector2:
 	if not mouse.is_finite() or not bounds.position.is_finite() or not bounds.size.is_finite() or bounds.size.x <= 0.0 or bounds.size.y <= 0.0 or not bounds.has_point(mouse):
@@ -147,25 +157,26 @@ func handle_hotkey(keycode: int) -> bool:
 		return true
 	return super.handle_hotkey(keycode)
 
+func _process_edge_pan(mouse: Vector2, bounds: Rect2, delta: float) -> void:
+	if not bounds.has_point(mouse):
+		_edge_pan_armed = false
+		return
+	var axis: Vector2 = edge_pan_axis(mouse, bounds, ui_blocks_point(mouse))
+	# A fresh edge entry releases follow. Opening a match at an edge keeps following.
+	if edge_pan_axis(mouse, bounds).is_zero_approx():
+		_edge_pan_armed = true
+	if not axis.is_zero_approx() and (not _camera_follow or _edge_pan_armed) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		pan_camera(axis, delta)
+
 func _process(delta: float) -> void:
 	if edge_pan_enabled and _camera_input_allowed() and not _camera_drag and aim_slot.is_empty() and not attack_move_aim and get_window().has_focus():
-		var mouse: Vector2 = get_viewport().get_mouse_position()
-		var bounds: Rect2 = get_viewport().get_visible_rect()
-		if bounds.has_point(mouse):
-			var axis: Vector2 = edge_pan_axis(mouse, bounds, ui_blocks_point(mouse))
-			# A fresh edge entry releases follow. Opening a match at an edge keeps following.
-			if edge_pan_axis(mouse, bounds).is_zero_approx():
-				_edge_pan_armed = true
-			if not axis.is_zero_approx() and (not _camera_follow or _edge_pan_armed) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-				pan_camera(axis, delta)
-		else:
-			_edge_pan_armed = false
+		_process_edge_pan(get_viewport().get_mouse_position(), get_viewport().get_visible_rect(), delta)
 	else:
 		_edge_pan_armed = false
 	super._process(delta)
 	if _camera_hint != null:
 		_camera_hint.visible = has_active_match and not hud.result.visible and not hud.selection.visible and not hud.help_panel.visible and not hud.shop.visible and not hud.growth.visible
-		_camera_hint.text = "F6 시점: %s · Y 추적 %s · Space 내 영웅 · 가장자리/가운데 드래그 이동" % [{"combat": "전투", "tactical": "전술", "detail": "가까이"}.get(camera_mode, "전투"), "ON" if _camera_follow else "OFF"]
+		_camera_hint.text = "F6 시점 %s · Y 추적 %s · Space 영웅 · 가장자리/중클릭 이동" % [{"combat": "전투", "tactical": "전술", "detail": "가까이"}.get(camera_mode, "전투"), "ON" if _camera_follow else "OFF"]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN] and _camera_input_allowed() and not ui_blocks_point(event.position):

@@ -154,9 +154,9 @@ func _build_top() -> void:
 	_top.offset_right = -18
 	_top.offset_top = 14
 	_top.offset_bottom = 70
-	var row: HBoxContainer = _row(_inset(_top, 10, 4), 10)
+	var row: HBoxContainer = _row(_inset(_top, 10, 4), 8)
 	var title: VBoxContainer = _column(row, 0)
-	title.custom_minimum_size.x = 188
+	title.custom_minimum_size.x = 174
 	_label(title, "PROJECT E  /  아스트라", 17, INK)
 	_label(title, "수로 전장 · 세 라인 · 3 대 3", 11, MUTED)
 	_west_core = _label(row, "청록 핵 · 잠금", 16, TEAL)
@@ -169,7 +169,7 @@ func _build_top() -> void:
 	_east_core = _label(row, "주황 핵 · 잠금", 16, COPPER)
 	_east_core.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_east_core.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_mode = _label(row, "일반 경기", 13, MUTED)
+	_mode = _label(row, "일반 경기", 12, MUTED)
 	_button(row, "F1 도움말", Vector2(78, 36)).pressed.connect(func() -> void: help_requested.emit())
 	var pause_button: Button = _button(row, "Esc  메뉴", Vector2(89, 36))
 	pause_button.pressed.connect(func() -> void: pause_requested.emit())
@@ -192,7 +192,9 @@ func _build_bottom() -> void:
 	_energy_text = _bar_text(_energy)
 	_passive = _label(hero_column, "압력 0 / 2", 11, TEAL)
 	_passive.clip_text = true
+	_passive.mouse_filter = Control.MOUSE_FILTER_PASS
 	_xp = _label(hero_column, "XP 0 / 100 · K/D/A 0/0/0", 10, MUTED)
+	_xp.mouse_filter = Control.MOUSE_FILTER_PASS
 	var divider := VSeparator.new()
 	row.add_child(divider)
 	var skill_row: HBoxContainer = _row(row, 6)
@@ -211,15 +213,15 @@ func _build_bottom() -> void:
 		button.add_child(icon)
 		_place(icon, Rect2(27, 7, 30, 25))
 		_skill_icons[slot] = icon
-		var name_label: Label = _label(button, "", 10, INK)
+		var name_label: Label = _label(button, "", 12, INK)
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_place(name_label, Rect2(2, 34, 76, 16))
-		var state_label: Label = _label(button, "", 9, TEAL)
+		_place(name_label, Rect2(2, 34, 76, 18))
+		var state_label: Label = _label(button, "", 11, TEAL)
 		state_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_place(state_label, Rect2(2, 50, 76, 14))
-		var cost_label: Label = _label(button, "", 9, MUTED)
+		_place(state_label, Rect2(2, 51, 76, 16))
+		var cost_label: Label = _label(button, "", 10, MUTED)
 		cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_place(cost_label, Rect2(2, 65, 76, 14))
+		_place(cost_label, Rect2(2, 67, 76, 15))
 		_skill_buttons[slot] = button
 		_skill_labels[slot] = [name_label, state_label, cost_label]
 	growth_button = _button(row, "G  성장\n+ 2", Vector2(90, 84))
@@ -248,10 +250,10 @@ func _build_inventory() -> void:
 	_inventory.offset_bottom = -130
 	var row: HBoxContainer = _row(_inset(_inventory, 8, 1), 8)
 	_inventory_credits = _label(row, "0 크레딧", 11, INK)
-	_inventory_credits.custom_minimum_size.x = 84
+	_inventory_credits.custom_minimum_size.x = 80
 	_inventory_credits.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	for item_id: String in ConsumablesScript.ITEMS:
-		var button: Button = _button(row, "", Vector2(132, 36))
+		var button: Button = _button(row, "", Vector2(124, 36))
 		button.name = "Select" + item_id
 		button.add_theme_font_size_override("font_size", 12)
 		button.pressed.connect(func() -> void: consumable_selected.emit(item_id))
@@ -388,10 +390,11 @@ func _build_feedback() -> void:
 	_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_toast.offset_left = -310
 	_toast.offset_right = 310
-	_toast.offset_top = 91
-	_toast.offset_bottom = 133
+	_toast.offset_top = 124
+	_toast.offset_bottom = 166
 	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_toast_text = _label(_inset(_toast, 12, 8), "", 15, INK)
+	_toast_text = _label(_inset(_toast, 10, 4), "", 13, INK)
+	_toast_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toast_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_toast.hide()
 	_target = _panel(root_control)
@@ -402,6 +405,16 @@ func _build_feedback() -> void:
 	_target.offset_bottom = 179
 	_target_text = _label(_inset(_target, 12, 8), "", 13, INK)
 	_target.hide()
+
+
+	root_control.resized.connect(_layout_feedback)
+	_layout_feedback()
+
+
+func _layout_feedback() -> void:
+	var half_width: float = minf(310.0, maxf(160.0, (root_control.size.x - 600.0) * 0.5))
+	_toast.offset_left = -half_width
+	_toast.offset_right = half_width
 
 
 func _build_selection() -> void:
@@ -658,7 +671,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 	_energy.max_value = hero.max_energy
 	_energy.value = hero.energy
 	_energy_text.text = "에너지 %d / %d" % [floori(hero.energy), hero.max_energy]
-	_xp.text = "XP %d/%d · K/D/A %d/%d/%d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · K/D/A %d/%d/%d" % [hero.kills, hero.deaths, hero.assists]
+	_xp.text = "XP %d / %d · K/D/A %d/%d/%d" % [hero.xp, 100 + 25 * (hero.level - 1), hero.kills, hero.deaths, hero.assists] if hero.level < 12 else "최고 레벨 · K/D/A %d/%d/%d" % [hero.kills, hero.deaths, hero.assists]
 	_passive.text = _passive_text(battle, hero)
 	_passive.tooltip_text = _passive.text
 	_xp.tooltip_text = "K / D / A · 처치 / 사망 / 도움"
@@ -684,7 +697,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 		labels[2].text = "에너지 %d" % int(cost)
 		var state: String = "준비"
 		if slot == "R" and not hero.r_unlocked:
-			state = "Lv.3 · 성장 해금"
+			state = "Lv.3 해금"
 		elif hero.cooldowns[slot] > 0.0:
 			state = "%.1f초" % hero.cooldowns[slot]
 		elif hero.energy < cost:
@@ -889,7 +902,9 @@ func _bar(parent: Node, fill: Color, height: float) -> ProgressBar:
 
 
 func _bar_text(bar: ProgressBar) -> Label:
-	var label: Label = _label(bar, "", 10, Color("183f3d"))
+	var label: Label = _label(bar, "", 10, Color("fff4dc"))
+	label.add_theme_color_override("font_outline_color", Color("102a31"))
+	label.add_theme_constant_override("outline_size", 2)
 	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
