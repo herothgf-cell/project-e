@@ -34,6 +34,9 @@ func _run() -> void:
 	hud._start.pressed.emit()
 	_check(requests == [["nema", true], ["nema", false]], "regular match remains selectable")
 	hud.show_match()
+	hud.show_message("기술 체험 · 레벨 3 / R 해금 · P 상점 / D 사용 · F1 도움말", 5.0)
+	var feedback_point: Vector2 = hud._toast.get_global_rect().get_center()
+	_check(not hud.blocks_point(feedback_point), "informational toast is click-through immediately after opening a match at %s, rect %s" % [feedback_point, hud._toast.get_global_rect()])
 	await process_frame
 	await process_frame
 	_check(hud._bottom.size.y <= 120.0, "battle dock leaves the field visible")
