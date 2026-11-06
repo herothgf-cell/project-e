@@ -38,6 +38,12 @@ func _run() -> void:
 	await process_frame
 	_check(hud._bottom.size.y <= 120.0, "battle dock leaves the field visible")
 	_check(hud._skill_buttons.size() == 4, "compact dock retains all four skills")
+	_check(hud._passive.mouse_filter == Control.MOUSE_FILTER_PASS, "passive tooltip receives pointer hover")
+	_check(hud._xp.mouse_filter == Control.MOUSE_FILTER_PASS, "score tooltip receives pointer hover")
+	for slot: String in ["Q", "W", "E", "R"]:
+		_check(hud._skill_labels[slot][0].get_theme_font_size("font_size") >= 12, slot + " skill name remains readable")
+		_check(hud._skill_labels[slot][1].get_theme_font_size("font_size") >= 11, slot + " skill state remains readable")
+		_check(hud._skill_labels[slot][2].get_theme_font_size("font_size") >= 10, slot + " skill cost remains readable")
 	_check(hud._inventory.size.y <= 60.0, "consumables use a compact dock")
 	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1366, 768), Vector2i(960, 540)]:
 		root.content_scale_size = dimensions
