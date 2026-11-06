@@ -154,9 +154,9 @@ func _build_top() -> void:
 	_top.offset_right = -18
 	_top.offset_top = 14
 	_top.offset_bottom = 70
-	var row: HBoxContainer = _row(_inset(_top, 10, 4), 10)
+	var row: HBoxContainer = _row(_inset(_top, 10, 4), 8)
 	var title: VBoxContainer = _column(row, 0)
-	title.custom_minimum_size.x = 188
+	title.custom_minimum_size.x = 174
 	_label(title, "PROJECT E  /  아스트라", 17, INK)
 	_label(title, "수로 전장 · 세 라인 · 3 대 3", 11, MUTED)
 	_west_core = _label(row, "청록 핵 · 잠금", 16, TEAL)
@@ -169,7 +169,7 @@ func _build_top() -> void:
 	_east_core = _label(row, "주황 핵 · 잠금", 16, COPPER)
 	_east_core.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_east_core.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_mode = _label(row, "일반 경기", 13, MUTED)
+	_mode = _label(row, "일반 경기", 12, MUTED)
 	_button(row, "F1 도움말", Vector2(78, 36)).pressed.connect(func() -> void: help_requested.emit())
 	var pause_button: Button = _button(row, "Esc  메뉴", Vector2(89, 36))
 	pause_button.pressed.connect(func() -> void: pause_requested.emit())
@@ -248,10 +248,10 @@ func _build_inventory() -> void:
 	_inventory.offset_bottom = -130
 	var row: HBoxContainer = _row(_inset(_inventory, 8, 1), 8)
 	_inventory_credits = _label(row, "0 크레딧", 11, INK)
-	_inventory_credits.custom_minimum_size.x = 84
+	_inventory_credits.custom_minimum_size.x = 80
 	_inventory_credits.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	for item_id: String in ConsumablesScript.ITEMS:
-		var button: Button = _button(row, "", Vector2(132, 36))
+		var button: Button = _button(row, "", Vector2(124, 36))
 		button.name = "Select" + item_id
 		button.add_theme_font_size_override("font_size", 12)
 		button.pressed.connect(func() -> void: consumable_selected.emit(item_id))
