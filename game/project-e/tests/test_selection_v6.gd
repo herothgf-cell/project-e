@@ -39,6 +39,18 @@ func _run() -> void:
 	_check(hud._bottom.size.y <= 120.0, "battle dock leaves the field visible")
 	_check(hud._skill_buttons.size() == 4, "compact dock retains all four skills")
 	_check(hud._inventory.size.y <= 60.0, "consumables use a compact dock")
+	for dimensions: Vector2i in [Vector2i(1280, 720), Vector2i(1366, 768), Vector2i(960, 540)]:
+		root.content_scale_size = dimensions
+		root.size = dimensions
+		await process_frame
+		await process_frame
+		var visible: Rect2 = root.get_visible_rect()
+		_check(visible.encloses(hud._bottom.get_global_rect()), "battle dock fits " + str(dimensions))
+		_check(visible.encloses(hud._inventory.get_global_rect()), "inventory fits " + str(dimensions))
+		var toast_rect: Rect2 = hud._toast.get_global_rect()
+		_check(toast_rect.position.y >= 124.0, "toast clears the camera controls " + str(dimensions))
+		_check(not toast_rect.intersects(hud._target.get_global_rect()), "toast clears target details " + str(dimensions))
+		_check(not toast_rect.intersects(hud._map_panel.get_global_rect()), "toast clears minimap " + str(dimensions))
 	hud.queue_free()
 	await process_frame
 	print("Selection V6: %d checks, %d failures" % [checks, failures])
