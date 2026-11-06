@@ -419,6 +419,10 @@ func _layout_feedback() -> void:
 	var half_width: float = minf(310.0, maxf(160.0, (root_control.size.x - 600.0) * 0.5))
 	_toast.offset_left = -half_width
 	_toast.offset_right = half_width
+	# Initialize wrapped text before a hidden container receives its first message.
+	var panel_style: StyleBox = _toast.get_theme_stylebox("panel")
+	var padding: float = panel_style.get_content_margin(SIDE_LEFT) + panel_style.get_content_margin(SIDE_RIGHT) + 20.0
+	_toast_text.size.x = maxf(1.0, half_width * 2.0 - padding)
 
 
 func _build_selection() -> void:
@@ -780,7 +784,7 @@ func show_result(battle: Variant, practice: bool) -> void:
 func blocks_point(point: Vector2) -> bool:
 	if selection.visible or growth.visible or pause_menu.visible or result.visible or help_panel.visible or shop.visible:
 		return true
-	for control: Control in [_top, _bottom, _inventory, _map_panel, _target, _hint, _toast]:
+	for control: Control in [_top, _bottom, _inventory, _map_panel, _target, _hint]:
 		if control.visible and control.get_global_rect().has_point(point):
 			return true
 	return false
