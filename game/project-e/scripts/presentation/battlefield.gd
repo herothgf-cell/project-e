@@ -378,6 +378,13 @@ func _accepts_commands() -> bool:
 	return has_active_match and not paused and battle.winner == -1 and not hud.selection.visible and not hud.growth.visible and not hud.pause_menu.visible and not hud.result.visible and not help_visible() and not shop_visible()
 
 
+func _camera_input_allowed() -> bool:
+	if not _accepts_commands():
+		return false
+	var focus: Control = get_viewport().gui_get_focus_owner()
+	return not (focus is LineEdit or focus is TextEdit)
+
+
 func ui_blocks_point(point: Vector2) -> bool:
 	if not point.is_finite() or not get_viewport().get_visible_rect().has_point(point):
 		return true
@@ -491,6 +498,8 @@ func _on_minimap_point(point: Vector2, button: int) -> void:
 	if not _accepts_commands():
 		return
 	if button == MOUSE_BUTTON_LEFT:
+		if not _camera_input_allowed():
+			return
 		_camera_follow = false
 		_camera_focus = point
 		_update_camera(0)
@@ -506,7 +515,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE and not event.pressed:
 		_camera_drag = false
-	if event is InputEventMouseMotion and _camera_drag and _accepts_commands() and get_window().has_focus() and get_viewport().get_visible_rect().has_point(event.position) and event.relative.is_finite():
+	if event is InputEventMouseMotion and _camera_drag and _camera_input_allowed() and get_window().has_focus() and get_viewport().get_visible_rect().has_point(event.position) and event.relative.is_finite():
 		_camera_follow = false
 		var units_per_pixel: float = camera.size / maxf(1, get_viewport().get_visible_rect().size.y)
 		_camera_focus += Vector2(-event.relative.x, event.relative.y * 1.35) * units_per_pixel
@@ -516,6 +525,8 @@ func _input(event: InputEvent) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or not event.pressed or not _accepts_commands():
+		return
+	if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_MIDDLE] and not _camera_input_allowed():
 		return
 	if ui_blocks_point(event.position):
 		return

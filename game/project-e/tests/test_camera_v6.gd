@@ -18,6 +18,14 @@ func _run() -> void:
 	scene.battle.bots_enabled = false
 	_check(scene._camera_follow, "new matches follow the controlled hero")
 	_check(scene._review_button.visible, "review button remains available during the match")
+	scene._process(0.0)
+	var hint_rect: Rect2 = scene._camera_hint.get_global_rect()
+	var review_rect: Rect2 = scene._review_button.get_global_rect()
+	_check(hint_rect.position.is_equal_approx(Vector2(520, 80)) and hint_rect.size.is_equal_approx(Vector2(565, 30)), "camera hint occupies its right-anchored HUD row")
+	_check(review_rect.position.is_equal_approx(Vector2(1102, 80)) and review_rect.size.is_equal_approx(Vector2(160, 30)), "review button occupies the right edge of the camera row")
+	_check(not hint_rect.intersects(review_rect), "camera hint and review button do not overlap")
+	for control: Control in [scene.hud._top, scene.hud._map_panel, scene.hud._target]:
+		_check(not hint_rect.intersects(control.get_global_rect()) and not review_rect.intersects(control.get_global_rect()), "camera row avoids header, minimap and target panels")
 	if not scene.has_method("edge_pan_axis"):
 		_check(false, "camera exposes the shared edge input calculation")
 		scene.queue_free()
@@ -80,7 +88,73 @@ func _run() -> void:
 	scene.handle_hotkey(KEY_SPACE)
 	_check(scene._camera_follow and scene._camera_focus.is_equal_approx(hero.pos), "Space recenters on the controlled hero")
 	_check(not scene._edge_pan_armed, "recenter requires a fresh edge entry before releasing follow")
+	before = scene._camera_focus
+	scene._process_edge_pan(Vector2(1279, 360), bounds, 0.1)
+	_check(scene._camera_follow and scene._camera_focus == before, "an edge held during recenter keeps hero follow")
+	scene._process_edge_pan(Vector2(640, 360), bounds, 0.1)
+	_check(scene._edge_pan_armed and scene._camera_follow, "returning to the viewport interior arms fresh edge input")
+	scene._process_edge_pan(Vector2(1279, 360), bounds, 0.1)
+	_check(not scene._camera_follow and scene._camera_focus.x > before.x, "fresh edge entry moves the camera and releases follow")
+	scene.handle_hotkey(KEY_SPACE)
+	scene._process_edge_pan(Vector2(640, 360), bounds, 0.1)
+	before = scene._camera_focus
+	scene._process_edge_pan(Vector2(1280, 360), bounds, 0.1)
+	_check(not scene._edge_pan_armed and scene._camera_focus == before, "leaving the viewport clears edge intent without panning")
+
+	# Exercise the production event handlers while either editor owns GUI focus.
+	var wheel := InputEventMouseButton.new()
+	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
+	wheel.pressed = true
+	wheel.position = Vector2(640, 360)
+	var middle := InputEventMouseButton.new()
+	middle.button_index = MOUSE_BUTTON_MIDDLE
+	middle.pressed = true
+	middle.position = wheel.position
+	var motion := InputEventMouseMotion.new()
+	motion.position = Vector2(660, 370)
+	motion.relative = Vector2(20, 10)
+	for editor: Control in [LineEdit.new(), TextEdit.new()]:
+		editor.position = Vector2(360, 360)
+		editor.size = Vector2(180, 40)
+		scene.hud.root_control.add_child(editor)
+		editor.grab_focus()
+		_check(root.gui_get_focus_owner() == editor and not scene._camera_input_allowed(), "editor owns GUI focus and blocks the shared camera guard")
+		var size_before: float = scene.camera.size
+		before = scene._camera_focus
+		scene._camera_drag = false
+		scene._unhandled_input(wheel)
+		_check(is_equal_approx(scene.camera.size, size_before), "focused text editor blocks wheel zoom through inherited fallback")
+		scene._unhandled_input(middle)
+		_check(not scene._camera_drag and scene._camera_follow, "focused text editor blocks middle-button camera capture")
+		scene._camera_drag = true
+		scene._input(motion)
+		_check(scene._camera_focus == before, "focused text editor blocks an already captured camera drag")
+		scene._on_minimap_point(Vector2(20, 10), MOUSE_BUTTON_LEFT)
+		_check(scene._camera_focus == before and scene._camera_follow, "focused text editor blocks minimap camera repositioning")
+		scene._camera_drag = false
+		editor.release_focus()
+		editor.queue_free()
+	var zoom_before: float = scene.camera.size
+	scene._unhandled_input(wheel)
+	_check(scene.camera.size < zoom_before, "wheel zoom resumes after text focus is released")
+	scene._unhandled_input(middle)
+	_check(scene._camera_drag and not scene._camera_follow, "middle-button capture resumes after text focus is released")
+	middle.pressed = false
+	scene._input(middle)
+	_check(not scene._camera_drag, "middle-button release clears camera capture")
+
+	scene.handle_hotkey(KEY_SPACE)
+	scene._edge_pan_armed = true
+	scene.handle_hotkey(KEY_Y)
+	scene.handle_hotkey(KEY_Y)
+	_check(scene._camera_follow and not scene._edge_pan_armed, "Y follow toggle requires a new edge entry")
+	scene._edge_pan_armed = true
+	scene.open_growth()
+	scene._process(0.0)
+	_check(not scene._edge_pan_armed, "opening a modal clears pending edge intent")
+	scene.close_growth()
 	scene._camera_drag = true
+	scene._edge_pan_armed = true
 	scene._notification(Node.NOTIFICATION_WM_WINDOW_FOCUS_OUT)
 	_check(not scene._camera_drag and not scene._edge_pan_armed, "losing window focus clears camera gestures")
 	scene.queue_free()
