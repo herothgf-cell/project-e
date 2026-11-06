@@ -2,6 +2,7 @@ extends Node
 ## Original short local combat SFX. It observes only the controlled hero.
 ## No audible state from enemies, vision-hidden units or bots is inspected.
 signal cue_played(name: String)
+const ConsumablesScript = preload("res://scripts/battle/battle_consumables.gd")
 
 const CUES: Dictionary = {
 	"slash": "res://assets/audio/slash.wav",
@@ -17,6 +18,7 @@ var _last_phase: String = ""
 var _last_slot: String = ""
 var _last_damage_at: float = -1.0
 var _last_level: int = -1
+var _last_item_effect: String = ""
 
 func _ready() -> void:
 	_player = AudioStreamPlayer.new()
@@ -31,6 +33,7 @@ func reset() -> void:
 	_last_slot = ""
 	_last_damage_at = -1.0
 	_last_level = -1
+	_last_item_effect = ""
 	if _player != null:
 		_player.stop()
 
@@ -40,6 +43,7 @@ func _track(hero: Dictionary) -> void:
 	_last_slot = str(hero.get("cast", {}).get("slot", ""))
 	_last_damage_at = float(hero.get("last_damage", -1.0))
 	_last_level = int(hero.get("level", 1))
+	_last_item_effect = str(hero.get("consumable_effect", {}).get("item_id", ""))
 
 func _kit_sound(key: String) -> String:
 	match key:
@@ -65,12 +69,15 @@ func observe(battle: Variant, active: bool, paused: bool) -> void:
 	var slot: String = str(hero.get("cast", {}).get("slot", ""))
 	var damage_at: float = float(hero.get("last_damage", -1.0))
 	var level: int = int(hero.get("level", 1))
+	var item_effect: String = str(hero.get("consumable_effect", {}).get("item_id", ""))
 	var cue: String = ""
-	# Level > observed damage > cast > basic is intentional feedback priority.
+	# Level and observed damage take priority over item/cast activation feedback.
 	if level > _last_level:
 		cue = "level"
 	elif damage_at > 0.0 and damage_at > _last_damage_at:
 		cue = "hit"
+	elif item_effect != _last_item_effect and ConsumablesScript.ITEMS.has(item_effect):
+		cue = str(ConsumablesScript.ITEMS[item_effect].cue)
 	elif phase == "windup" and not slot.is_empty() and (phase != _last_phase or slot != _last_slot):
 		cue = _kit_sound(str(hero.hero))
 	elif phase == "basic" and _last_phase != "basic":

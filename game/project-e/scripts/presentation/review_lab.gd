@@ -20,6 +20,7 @@ var _original_process: bool = true
 var _original_physics: bool = true
 var _original_input: bool = true
 var _closing: bool = false
+var _action_buttons: Dictionary = {}
 
 func _ready() -> void:
 	_was_paused = original.paused
@@ -90,7 +91,7 @@ func _build_ui() -> void:
 	lower.add_child(actions)
 	for key: String in ["idle", "walk", "basic", "Q", "W", "E", "R", "hit", "death", "respawn"]:
 		var label: String = {"idle":"대기", "walk":"이동", "basic":"기본 공격", "hit":"피격", "death":"사망", "respawn":"부활"}.get(key, key)
-		_button(actions, label, func() -> void: play_action(key))
+		_action_buttons[key] = _button(actions, label, func() -> void: play_action(key))
 	for root_control: Control in [panel, footer]:
 		var theme := Theme.new()
 		theme.default_font = stage.hud.ui_font
@@ -107,17 +108,24 @@ func _build_ui() -> void:
 		theme.set_stylebox("panel", "PanelContainer", style)
 		root_control.theme = theme
 
-func _button(parent: Control, text: String, callback: Callable) -> void:
+func _button(parent: Control, text: String, callback: Callable) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.custom_minimum_size = Vector2(78, 31)
 	button.focus_mode = Control.FOCUS_NONE
 	parent.add_child(button)
 	button.pressed.connect(callback)
+	return button
 
 func select_hero(key: String) -> void:
 	if key not in ["bas", "rio", "nema"]: return
 	selected_hero = key
+	for index: int in range(4):
+		var slot: String = ["Q", "W", "E", "R"][index]
+		var button: Button = _action_buttons[slot]
+		button.text = "%s\n%s" % [slot, stage.hud.SKILLS[key][index]]
+		button.add_theme_font_size_override("font_size", 12)
+		button.tooltip_text = stage.hud.SKILL_HELP[key][index]
 	play_action("idle")
 
 func _reset_stage() -> Dictionary:
@@ -234,7 +242,11 @@ func _redraw() -> void:
 		stage.camera.fov = 42.0
 		stage.camera.position = target + (Vector3(0, 5.0, 9.0) if portrait else Vector3(0, 7.0, 12.0))
 		stage.camera.look_at(target, Vector3.UP)
-	status.text = "%s / %s · %.2f초 · %.1f× · 지면 %.2fm · %s" % [{"bas":"바스", "rio":"리오", "nema":"네마"}[selected_hero], action, elapsed, speed, stage.battle.map.ground_height(hero.pos), "전체 지형 공개 — 검토실 한정" if map_view else "실제 판정 / 별도 경기 · 수치 밸런스 변경 없음"]
+	var action_name: String = {"idle": "대기", "walk": "이동", "basic": "기본 공격", "hit": "피격", "death": "사망", "respawn": "부활", "hill": "언덕 이동"}.get(action, action)
+	var slot_index: int = ["Q", "W", "E", "R"].find(action)
+	if slot_index >= 0:
+		action_name = "%s %s" % [action, stage.hud.SKILLS[selected_hero][slot_index]]
+	status.text = "%s / %s · %.2f초 · %.1f× · 지면 %.2fm · %s" % [{"bas":"바스", "rio":"리오", "nema":"네마"}[selected_hero], action_name, elapsed, speed, stage.battle.map.ground_height(hero.pos), "연출실 전체 지형 보기" if map_view else "스킬 범위와 적중 확인"]
 
 func set_map_view(enabled: bool) -> void:
 	map_view = enabled

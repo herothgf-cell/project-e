@@ -1,7 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 72 72">
-<defs><linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a426b"/><stop offset="1" stop-color="#191e39"/></linearGradient></defs>
+<title>왕복 혜성</title>
+<defs>
+  <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#3a426b"/>
+    <stop offset="1" stop-color="#191e39"/>
+  </linearGradient>
+</defs>
 <rect x="3" y="3" width="66" height="66" rx="14" fill="url(#panel)" stroke="#dab37c" stroke-width="3"/>
-<circle cx="36" cy="36" r="26" fill="#8fdfff" opacity=".14"/>
-<g fill="none" stroke="#8fdfff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="36" cy="36" r="18"/><path d="M36 9 V20 M36 52 V63 M9 36 H20 M52 36 H63"/><circle cx="36" cy="36" r="7" fill="#f0f7ff"/></g>
-<path d="M12 16 L16 12 M56 60 L60 56" stroke="#f5d599" stroke-width="2"/>
+<circle cx="36" cy="36" r="26" fill="#c2a6ff" opacity=".12"/>
+<path d="M16 30 Q20 13 39 14 Q51 14 57 25 M56 22 L58 28 L51 27" fill="none" stroke="#f5d599" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M56 42 Q52 59 33 58 Q21 58 15 47 M16 50 L14 44 L21 45" fill="none" stroke="#81e4f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="36" cy="36" rx="17" ry="12" transform="rotate(-25 36 36)" fill="#605297" stroke="#c2a6ff" stroke-width="3"/>
+<ellipse cx="36" cy="36" rx="10" ry="6" transform="rotate(-25 36 36)" fill="none" stroke="#81e4f1" stroke-width="2"/>
+<path d="M36 25 L39 33 L47 36 L39 39 L36 47 L33 39 L25 36 L33 33 Z" fill="#fff0ce"/>
 </svg>

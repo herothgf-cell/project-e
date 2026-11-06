@@ -2,6 +2,7 @@ extends SceneTree
 ## Review the same visible UI in a source checkout and the exported Windows PCK.
 var output := ""
 var inline_preview := false
+var capture_source := "source checkout"
 var failures := 0
 var checks := 0
 var scene: Variant
@@ -13,6 +14,8 @@ func _initialize() -> void:
 			output = argument.trim_prefix("--output=")
 		if argument == "--inline-preview":
 			inline_preview = true
+		if argument == "--exported-pck":
+			capture_source = "exported PCK"
 	call_deferred("_run")
 
 func _run() -> void:
@@ -27,7 +30,7 @@ func _run() -> void:
 	scene.edge_pan_enabled = false
 	await _settle()
 	_check(scene.hud.selection.visible, "Hero selection is the initial screen")
-	_check(str(ProjectSettings.get_setting("application/config/version", "")) == "0.6.0", "V6 build identity")
+	_check(str(ProjectSettings.get_setting("application/config/version", "")) == "0.7.0", "V7 build identity")
 	for size: Vector2i in [Vector2i(1280, 720), Vector2i(1366, 768), Vector2i(960, 540)]:
 		root.size = size
 		await _settle()
@@ -96,7 +99,7 @@ func _run() -> void:
 	scene.hud._toast_left = 0.0
 	scene.hud._toast.hide()
 	await _settle()
-	await _save("battle-v6")
+	await _save("battle-v7")
 	var bottom: Control = scene.hud._bottom
 	_check(bottom.get_global_rect().size.y <= 128.0, "Compact battle HUD")
 	_check(root.get_visible_rect().encloses(bottom.get_global_rect()), "Battle HUD fits viewport")
@@ -119,8 +122,9 @@ func _run() -> void:
 		for panel: Control in [scene.hud._top, scene.hud._target]:
 			_check(not camera_control.get_global_rect().intersects(panel.get_global_rect()), "Small-window camera row avoids HUD panels")
 	await _save("battle-low-health-960x540")
-	var document := {"version": "0.6.0", "engine": Engine.get_version_info().string,
-		"source": "exported PCK" if OS.get_cmdline_args().has("--main-pack") else "source checkout",
+	await _capture_fantasy_kits()
+	var document := {"version": "0.7.0", "engine": Engine.get_version_info().string,
+		"source": capture_source,
 		"checks": checks, "failures": failures, "captures": records}
 	var manifest := FileAccess.open(output.path_join("player-review.json"), FileAccess.WRITE)
 	manifest.store_string(JSON.stringify(document, "\t"))
@@ -131,6 +135,65 @@ func _run() -> void:
 	if failures == 0:
 		print("PLAYER_REVIEW_OK ", checks, " checks")
 	quit(0 if failures == 0 else 1)
+
+func _capture_fantasy_kits() -> void:
+	root.size = Vector2i(1280, 720)
+	scene.start_match("bas", true)
+	scene.battle.bots_enabled = false
+	var hero: Dictionary = scene.battle.units[scene.battle.controlled_id]
+	hero.pos = Vector2(-56, 0)
+	hero.credits = 200
+	scene.open_shop()
+	for item_id: String in ["I01", "I02"]:
+		_check(scene.buy_consumable(item_id), "Shop buys fantasy item " + item_id)
+		_check(scene.hud._item_buttons[item_id].icon != null, "Inventory binds item icon " + item_id)
+	for size: Vector2i in [Vector2i(1280, 720), Vector2i(960, 540)]:
+		root.size = size
+		await _settle()
+		_check(root.get_visible_rect().encloses(scene.hud._shop_close.get_global_rect()), "Shop fits " + str(size))
+		for item_id: String in ["I01", "I02"]:
+			_check(root.get_visible_rect().encloses(scene.hud._shop_buy_buttons[item_id].get_global_rect()), "Shop item fits " + item_id + str(size))
+		await _save("shop-%dx%d" % [size.x, size.y])
+	scene.close_shop()
+	root.size = Vector2i(1280, 720)
+	for item_id: String in ["I01", "I02"]:
+		scene.start_match("rio" if item_id == "I01" else "nema", true)
+		scene.battle.bots_enabled = false
+		hero = scene.battle.units[scene.battle.controlled_id]
+		hero.pos = Vector2(-56, 0)
+		hero.credits = 100
+		scene.open_shop()
+		_check(scene.buy_consumable(item_id), "Recovery capture buys " + item_id)
+		scene.close_shop()
+		hero.pos = Vector2(-3, 0)
+		hero.energy = 10.0
+		hero.hp -= 320.0
+		_check(scene.select_consumable(item_id) and scene.use_consumable(), "Real item activation " + item_id)
+		scene.battle.step(0.6)
+		_check(hero.consumable_effect.get("item_id", "") == item_id, "Real recovery is active " + item_id)
+		scene._camera_follow = false
+		scene._camera_focus = hero.pos
+		scene.set_camera_mode("detail")
+		scene._process(0.0)
+		scene.hud._toast.hide()
+		await _settle()
+		await _save("item-" + item_id.to_lower() + "-active")
+	scene.open_review_lab()
+	await process_frame
+	var lab: Variant = scene.review_lab
+	lab.set_process(false)
+	for key: String in ["bas", "rio", "nema"]:
+		lab.select_hero(key)
+		for index: int in range(4):
+			var slot: String = ["Q", "W", "E", "R"][index]
+			_check(lab.play_action(slot), "V7 actual cast " + key + slot)
+			hero = lab.stage.battle.units[lab.stage.battle.controlled_id]
+			lab.advance_review(float(hero.cast.windup) + 0.14)
+			_check(lab.status.text.contains(scene.hud.SKILLS[key][index]), "V7 review skill identity " + key + slot)
+			await _settle()
+			await _save("skill-" + key + "-" + slot.to_lower())
+	lab.close_review()
+	await process_frame
 
 func _click(control: Control) -> void:
 	var point: Vector2 = control.get_global_rect().get_center()
@@ -168,6 +231,6 @@ func _save(stem: String) -> void:
 	var entry: Dictionary = {"name": stem, "width": snapshot.get_width(),
 		"height": snapshot.get_height(), "sha256": FileAccess.get_sha256(path)}
 	records.append(entry)
-	if inline_preview and stem in ["selection-1280x720", "battle-v6", "battle-low-health-960x540"]:
+	if inline_preview and stem in ["selection-1280x720", "battle-v7", "battle-low-health-960x540", "shop-1280x720", "item-i01-active", "item-i02-active", "skill-bas-r", "skill-rio-q", "skill-nema-r"]:
 		snapshot.resize(1024, 576, Image.INTERPOLATE_LANCZOS)
 		print("PLAYER_PREVIEW_IMAGE ", stem, " ", Marshalls.raw_to_base64(snapshot.save_webp_to_buffer(false, 0.74)))

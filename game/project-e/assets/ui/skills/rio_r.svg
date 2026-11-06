@@ -1,7 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 72 72">
-<defs><linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a426b"/><stop offset="1" stop-color="#191e39"/></linearGradient></defs>
+<title>삼각 성좌</title>
+<defs>
+  <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#3a426b"/>
+    <stop offset="1" stop-color="#191e39"/>
+  </linearGradient>
+</defs>
 <rect x="3" y="3" width="66" height="66" rx="14" fill="url(#panel)" stroke="#dab37c" stroke-width="3"/>
-<circle cx="36" cy="36" r="26" fill="#8fdfff" opacity=".14"/>
-<g fill="none" stroke="#8fdfff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M36 9 L44 28 64 36 44 44 36 64 28 44 9 36 28 28Z" /><path d="M15 14 L21 20 M52 52 L60 60"/></g>
-<path d="M12 16 L16 12 M56 60 L60 56" stroke="#f5d599" stroke-width="2"/>
+<circle cx="36" cy="36" r="26" fill="#c2a6ff" opacity=".12"/>
+<path d="M36 16 L56 53 L16 53 Z" fill="none" stroke="#81e4f1" stroke-width="4" stroke-linejoin="round"/>
+<path d="M36 9 L39 17 L47 20 L39 23 L36 31 L33 23 L25 20 L33 17 Z M16 43 L19 50 L26 53 L19 56 L16 63 L13 56 L6 53 L13 50 Z M56 43 L59 50 L66 53 L59 56 L56 63 L53 56 L46 53 L53 50 Z" fill="#fff0ce"/>
+<path d="M19 23 L21 27 L25 29 L21 31 L19 35 L17 31 L13 29 L17 27 Z M54 21 L55 24 L58 25 L55 26 L54 29 L53 26 L50 25 L53 24 Z" fill="#c2a6ff"/>
 </svg>

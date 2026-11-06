@@ -1,7 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 72 72">
-<defs><linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3a426b"/><stop offset="1" stop-color="#191e39"/></linearGradient></defs>
+<title>덩굴 물결</title>
+<defs>
+  <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#3a426b"/>
+    <stop offset="1" stop-color="#191e39"/>
+  </linearGradient>
+</defs>
 <rect x="3" y="3" width="66" height="66" rx="14" fill="url(#panel)" stroke="#dab37c" stroke-width="3"/>
-<circle cx="36" cy="36" r="26" fill="#9de79c" opacity=".14"/>
-<g fill="none" stroke="#9de79c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="25" r="8"/><circle cx="54" cy="48" r="8"/><path d="M23 30 L48 43 M13 59 L59 13"/></g>
-<path d="M12 16 L16 12 M56 60 L60 56" stroke="#f5d599" stroke-width="2"/>
+<circle cx="36" cy="36" r="26" fill="#9de79c" opacity=".12"/>
+<path d="M16 47 Q26 25 36 40 Q46 55 57 29 M14 53 Q27 33 37 47 Q48 61 59 38" fill="none" stroke="#9de79c" stroke-width="3" stroke-linecap="round"/>
+<path d="M18 45 L18 28 M54 38 L54 20" stroke="#dab37c" stroke-width="4" stroke-linecap="round"/>
+<path d="M18 32 Q7 31 10 20 Q21 20 18 32 Z M20 29 Q19 15 31 16 Q33 28 20 29 Z M54 24 Q43 24 44 13 Q56 13 54 24 Z M56 22 Q56 11 65 12 Q66 22 56 22 Z" fill="#70bd82" stroke="#b9efa1" stroke-width="2"/>
+<path d="M31 37 Q30 27 39 27 Q41 36 31 37 Z M44 51 Q42 41 51 41 Q53 50 44 51 Z" fill="#b9efa1"/>
 </svg>

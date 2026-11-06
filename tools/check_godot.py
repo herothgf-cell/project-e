@@ -69,6 +69,11 @@ def main() -> int:
         ("Illustrated hero selection and compact battle HUD", "test_selection_v6.gd", "Selection V6"),
         ("Smooth hero follow and four-edge camera input", "test_camera_v6.gd", "Camera V6"),
         ("COT ordinary lane unit last-hit reserve", "test_cot_reference_v6.gd", "COT reference V6"),
+        ("Fantasy skill and item names in actual controls", "test_fantasy_hud_v7.gd", "Fantasy HUD V7"),
+        ("All fantasy hero skill identities and icons", "test_skill_concepts_v7.gd", "Skill concepts V7"),
+        ("Fantasy consumable metadata and icons", "test_item_concepts_v7.gd", "Item concepts V7"),
+        ("Distinct bounded skill geometry and spirit trees", "test_skill_vfx_v7.gd", "Skill VFX V7"),
+        ("Live comet, spirit link and recovery feedback", "test_persistent_fx_v7.gd", "Persistent FX V7"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)

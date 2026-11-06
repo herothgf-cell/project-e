@@ -96,7 +96,7 @@ func _behavior() -> void:
 	scene.hud._item_buttons.I01.pressed.emit()
 	_check(scene.aim_slot == "Q" and hero.consumable_selected == "I01" and hero.consumables.I01 == 1, "slot selection preserves Q aim")
 	_refresh()
-	_check(scene.hud._inventory_status.text.contains("12.0") and scene.hud._inventory_status.text.contains("수리 패치"), "strip shows shared cooldown and active recovery")
+	_check(scene.hud._inventory_status.text.contains("12.0") and scene.hud._inventory_status.text.contains(scene.hud.ConsumablesScript.ITEMS.I02.effect_name), "strip shows shared cooldown and active recovery")
 	_key(KEY_P)
 	_check(scene.aim_slot == "" and not scene.attack_move_aim and hero.order == "move", "opening shop clears aim and preserves accepted order")
 	_key(KEY_ESCAPE)
@@ -139,7 +139,7 @@ func _behavior() -> void:
 	_check(scene.shop_visible(), "inventory shop button opens actual modal")
 	hero.credits = 0
 	scene.hud._shop_buy_buttons.I01.pressed.emit()
-	_check(hero.consumables.I01 == 0 and hero.credits == 0 and scene.hud._shop_feedback.text.contains("크레딧"), "stale credit button rejected with Korean reason")
+	_check(hero.consumables.I01 == 0 and hero.credits == 0 and scene.hud._shop_feedback.text.contains("골드"), "stale credit button rejected with Korean reason")
 	hero.credits = 300
 	_refresh()
 	hero.pos = Vector2.ZERO

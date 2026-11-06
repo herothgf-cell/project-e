@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="144" viewBox="0 0 72 72">
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#3a426b"/>
+      <stop offset="1" stop-color="#191e39"/>
+    </linearGradient>
+    <linearGradient id="elixir" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#78d5f6"/>
+      <stop offset="1" stop-color="#496ec1"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="66" height="66" rx="14" fill="url(#panel)" stroke="#dab37c" stroke-width="3"/>
+  <circle cx="36" cy="36" r="26" fill="#9fdfff" opacity=".14"/>
+  <path d="M29 21 V29 L21 43 Q16 57 27 59 H45 Q56 57 51 43 L43 29 V21" fill="#273b61" stroke="#9fdfff" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M23 43 Q30 39 36 43 T49 43 L51 49 Q53 56 45 57 H27 Q19 56 21 49 Z" fill="url(#elixir)"/>
+  <rect x="28" y="15" width="16" height="8" rx="3" fill="#dab37c" stroke="#f5d599" stroke-width="2"/>
+  <path d="M36 30 L39 38 L47 41 L39 44 L36 52 L33 44 L25 41 L33 38 Z" fill="#f0f7ff" stroke="#9fdfff" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M22 24 V30 M19 27 H25 M52 18 V24 M49 21 H55" stroke="#9fdfff" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 16 L16 12 M56 60 L60 56" stroke="#f5d599" stroke-width="2"/>
+</svg>

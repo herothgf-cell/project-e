@@ -2,8 +2,34 @@ extends RefCounted
 ## Small item authority shared by human commands and bots.
 
 const ITEMS: Dictionary = {
-	"I01": {"name": "에너지 병", "cost": 40, "resource": "energy", "amount": 40.0, "duration": 2.0},
-	"I02": {"name": "수리 패치", "cost": 50, "resource": "hp", "amount": 200.0, "duration": 4.0},
+	"I01": {
+		"name": "별샘 영약",
+		"cost": 40,
+		"resource": "energy",
+		"amount": 40.0,
+		"duration": 2.0,
+		"icon": "res://assets/ui/items/starlight_elixir.svg",
+		"description": "마나 40을 2초 동안 회복",
+		"condition": "적 영웅 피해에도 회복 유지",
+		"effect_name": "별샘의 마력",
+		"tint": Color("#9fdfff"),
+		"motif": "starlight",
+		"cue": "arcane",
+	},
+	"I02": {
+		"name": "숲빛 치유약",
+		"cost": 50,
+		"resource": "hp",
+		"amount": 200.0,
+		"duration": 4.0,
+		"icon": "res://assets/ui/items/grove_salve.svg",
+		"description": "체력 200을 4초 동안 회복",
+		"condition": "적 영웅에게 피해를 받으면 회복 중단",
+		"effect_name": "숲빛 재생",
+		"tint": Color("#9ce3a8"),
+		"motif": "nature",
+		"cue": "nature",
+	},
 }
 const CAPACITY: int = 2
 const USE_COOLDOWN: float = 12.0
