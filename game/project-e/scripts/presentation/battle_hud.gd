@@ -388,10 +388,11 @@ func _build_feedback() -> void:
 	_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_toast.offset_left = -310
 	_toast.offset_right = 310
-	_toast.offset_top = 91
-	_toast.offset_bottom = 133
+	_toast.offset_top = 124
+	_toast.offset_bottom = 166
 	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_toast_text = _label(_inset(_toast, 12, 8), "", 15, INK)
+	_toast_text = _label(_inset(_toast, 10, 4), "", 13, INK)
+	_toast_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toast_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_toast.hide()
 	_target = _panel(root_control)
@@ -402,6 +403,16 @@ func _build_feedback() -> void:
 	_target.offset_bottom = 179
 	_target_text = _label(_inset(_target, 12, 8), "", 13, INK)
 	_target.hide()
+
+
+	root_control.resized.connect(_layout_feedback)
+	_layout_feedback()
+
+
+func _layout_feedback() -> void:
+	var half_width: float = minf(310.0, maxf(160.0, (root_control.size.x - 600.0) * 0.5))
+	_toast.offset_left = -half_width
+	_toast.offset_right = half_width
 
 
 func _build_selection() -> void:
