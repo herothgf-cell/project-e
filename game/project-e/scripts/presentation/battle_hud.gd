@@ -192,7 +192,9 @@ func _build_bottom() -> void:
 	_energy_text = _bar_text(_energy)
 	_passive = _label(hero_column, "압력 0 / 2", 11, TEAL)
 	_passive.clip_text = true
+	_passive.mouse_filter = Control.MOUSE_FILTER_PASS
 	_xp = _label(hero_column, "XP 0 / 100 · K/D/A 0/0/0", 10, MUTED)
+	_xp.mouse_filter = Control.MOUSE_FILTER_PASS
 	var divider := VSeparator.new()
 	row.add_child(divider)
 	var skill_row: HBoxContainer = _row(row, 6)
@@ -211,15 +213,15 @@ func _build_bottom() -> void:
 		button.add_child(icon)
 		_place(icon, Rect2(27, 7, 30, 25))
 		_skill_icons[slot] = icon
-		var name_label: Label = _label(button, "", 10, INK)
+		var name_label: Label = _label(button, "", 12, INK)
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_place(name_label, Rect2(2, 34, 76, 16))
-		var state_label: Label = _label(button, "", 9, TEAL)
+		_place(name_label, Rect2(2, 34, 76, 18))
+		var state_label: Label = _label(button, "", 11, TEAL)
 		state_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_place(state_label, Rect2(2, 50, 76, 14))
-		var cost_label: Label = _label(button, "", 9, MUTED)
+		_place(state_label, Rect2(2, 51, 76, 16))
+		var cost_label: Label = _label(button, "", 10, MUTED)
 		cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_place(cost_label, Rect2(2, 65, 76, 14))
+		_place(cost_label, Rect2(2, 67, 76, 15))
 		_skill_buttons[slot] = button
 		_skill_labels[slot] = [name_label, state_label, cost_label]
 	growth_button = _button(row, "G  성장\n+ 2", Vector2(90, 84))
@@ -695,7 +697,7 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 		labels[2].text = "에너지 %d" % int(cost)
 		var state: String = "준비"
 		if slot == "R" and not hero.r_unlocked:
-			state = "Lv.3 · 성장 해금"
+			state = "Lv.3 해금"
 		elif hero.cooldowns[slot] > 0.0:
 			state = "%.1f초" % hero.cooldowns[slot]
 		elif hero.energy < cost:
