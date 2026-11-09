@@ -22,6 +22,13 @@ func _run() -> void:
 			_check(portrait.hero_key == key and portrait.texture != null, key + " binds its portrait")
 			if key in ["orin", "tere", "mua", "sera", "lume"]:
 				_check(portrait.get_node_or_null("ModelPortrait") != null, key + " portrait renders its real model")
+				var portrait_camera: Camera3D = portrait.get_node("ModelPortrait").get_camera_3d()
+				_check(portrait_camera != null and portrait_camera.size <= 2.2, key + " portrait frames expressive head and upper body")
+				var model: Node3D = rig_script.MODELS[key].instantiate()
+				for part: String in ["Head", "Torso"]:
+					var material: StandardMaterial3D = model.get_node(part).mesh.surface_get_material(0)
+					_check(material.albedo_texture != null, key + " preserves illustrated " + part + " detail")
+				model.free()
 			for index: int in range(4):
 				_check(hud._selection_skills[index].text.contains(hud.SKILLS[key][index]) and not hud._selection_skill_help[index].text.is_empty(), key + " presents skill " + str(index))
 		_check(rig_script.MODELS.has(key), key + " has an articulated model")
@@ -151,6 +158,9 @@ func _check_review() -> void:
 			_check(lab.play_action(slot), key + slot + " starts through real F7 authority")
 			var hero: Dictionary = lab.stage.battle.units[lab.stage.battle.controlled_id]
 			var origin: Vector2 = hero.pos
+			var dummy: Dictionary = lab.stage.battle.units[lab._dummy_id]
+			var dummy_hp: float = dummy.hp
+			var initial_distance: float = hero.pos.distance_to(dummy.pos)
 			if key == "mua" and slot in ["W", "E", "R"]:
 				_check(hero.zones.size() == 2, key + slot + " uses real pool preparation")
 			if key == "sera" and slot == "R":
@@ -158,6 +168,9 @@ func _check_review() -> void:
 			lab.advance_review(1.0)
 			if key in ["tere", "sera"] and slot == "E":
 				_check(hero.pos.distance_to(origin) > 1.0, key + " review E really moves")
+			if key == "tere" and slot == "E":
+				_check(hero.pos.distance_to(dummy.pos) > initial_distance, "Tere E review visibly retreats from the opponent")
+				_check(dummy.hp < dummy_hp, "Tere E review delayed counter actually damages the opponent")
 	lab.close_review()
 	await process_frame
 	scene.queue_free()

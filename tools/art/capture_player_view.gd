@@ -194,7 +194,10 @@ func _capture_fantasy_kits() -> void:
 			var slot: String = ["Q", "W", "E", "R"][index]
 			_check(lab.play_action(slot), "V8 actual cast " + key + slot)
 			hero = lab.stage.battle.units[lab.stage.battle.controlled_id]
-			lab.advance_review(float(hero.cast.windup) + 0.14)
+			var capture_time := float(hero.cast.windup) + 0.14
+			if key == "tere" and slot == "E":
+				capture_time += float(hero.cast.dash_distance) / float(hero.cast.dash_speed) + 0.35
+			lab.advance_review(capture_time)
 			_check(lab.status.text.contains(scene.hud.SKILLS[key][index]), "V8 review skill identity " + key + slot)
 			await _settle()
 			await _save("skill-" + key + "-" + slot.to_lower())

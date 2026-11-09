@@ -195,6 +195,7 @@ func play_action(key: String) -> bool:
 			hero.energy = hero.max_energy
 		var target := Vector2(1, 0)
 		if selected_hero == "bas" and key == "W": target = hero.pos
+		if selected_hero == "tere" and key == "E": target = hero.pos + Vector2.LEFT * 4.0
 		accepted = stage.battle.command_cast(hero.id, key, target) and accepted
 	elif key == "walk":
 		accepted = stage.battle.command_move(hero.id, Vector2(3, 0))
@@ -254,7 +255,8 @@ func _redraw() -> void:
 		var target := Vector3(focus.x, height + 0.9, -focus.y)
 		stage.camera.projection = Camera3D.PROJECTION_PERSPECTIVE
 		stage.camera.fov = 42.0
-		stage.camera.position = target + (Vector3(0, 5.0, 9.0) if portrait else Vector3(0, 7.0, 12.0))
+		var skill_camera_offset := Vector3(0, 8.0, 14.0) if selected_hero == "tere" and action == "R" else Vector3(0, 7.0, 12.0)
+		stage.camera.position = target + (Vector3(0, 5.0, 9.0) if portrait else skill_camera_offset)
 		stage.camera.look_at(target, Vector3.UP)
 	var action_name: String = {"idle": "대기", "walk": "이동", "basic": "기본 공격", "hit": "피격", "death": "사망", "respawn": "부활", "hill": "언덕 이동"}.get(action, action)
 	var slot_index: int = ["Q", "W", "E", "R"].find(action)

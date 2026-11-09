@@ -44,7 +44,7 @@
 
 ## 자산 재현
 
-저장소 루트에서 다음 명령으로 신규 GLB 5개와 SVG 20개를 재생성한다. 모델 생성기는 기존 메시 기록기와 관절 이름 규격을 사용한다. 신규 모델은 정점 색과 기하학적 얼굴·장비를 포함한다.
+저장소 루트에서 다음 명령으로 신규 GLB 5개와 SVG 20개를 재생성한다. 모델 생성기는 기존 메시 기록기와 관절 이름 규격을 사용한다. 신규 모델은 기존 GLB에 포함된 얼굴·의상 텍스처를 그대로 재사용하고 머리 장식, 외투, 장갑과 무기를 각 역할에 맞춰 구성한다. 원본 텍스처를 복사하는 과정은 이미지 데이터를 변형하지 않는다.
 
 ```sh
 python tools/build_roster_models_v8.py
@@ -52,7 +52,7 @@ python tools/art/build_roster_icons_v8.py
 python tools/check_art_assets.py
 ```
 
-출력 GLB는 `game/project-e/assets/heroes`, 기술 SVG는 `game/project-e/assets/ui/skills`에 저장된다. 실제 모델 초상은 같은 GLB를 `SubViewport`에서 렌더한다. 3종 기존 일러스트와 5종 모델 초상을 4열 × 2행 카드에 배치한 것은 이번 프로토타입의 표현 선택이다. [모델 생성기](../../tools/build_roster_models_v8.py) · [아이콘 생성기](../../tools/art/build_roster_icons_v8.py) · [미술 상세](content/09-art-and-audio.md)
+출력 GLB는 `game/project-e/assets/heroes`, 기술 SVG는 `game/project-e/assets/ui/skills`에 저장된다. 실제 모델 초상은 같은 GLB를 `SubViewport`에서 상반신 중심으로 렌더하고 영웅 고유색의 후광을 합성한다. 3종 기존 일러스트와 5종 모델 초상을 4열 × 2행 카드에 배치한 것은 이번 프로토타입의 표현 선택이다. [모델 생성기](../../tools/build_roster_models_v8.py) · [아이콘 생성기](../../tools/art/build_roster_icons_v8.py) · [미술 상세](content/09-art-and-audio.md)
 
 ## 문서 연결
 
