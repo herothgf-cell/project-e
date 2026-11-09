@@ -58,7 +58,7 @@ void fragment() {
 	vec4 portrait = texture(TEXTURE, UV);
 	vec2 center = (UV - vec2(0.5, 0.40)) * vec2(1.0, 0.8);
 	float radius = length(center);
-	float halo = smoothstep(0.65, 0.08, radius);
+	float halo = 1.0 - smoothstep(0.08, 0.65, radius);
 	vec3 background = mix(vec3(0.035, 0.085, 0.12), accent.rgb * 0.34, halo);
 	float ring = 1.0 - smoothstep(0.002, 0.008, abs(radius - 0.34));
 	float inner_ring = 1.0 - smoothstep(0.001, 0.004, abs(radius - 0.31));

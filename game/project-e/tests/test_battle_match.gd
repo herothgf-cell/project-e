@@ -22,6 +22,8 @@ func _run() -> void:
 		_finish()
 		return
 	_test_navigation()
+	_test_retreat_seams()
+	_test_core_passing()
 	_test_waves_and_siege()
 	_test_victory_and_restart()
 	_test_autonomous_minions_and_towers()
@@ -232,3 +234,50 @@ func _check(condition: bool, label: String) -> void:
 func _finish() -> void:
 	print("Battle match: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
+
+
+func _test_retreat_seams() -> void:
+	for side: float in [-1.0, 1.0]:
+		var state: Variant = _new_state()
+		state.bots_enabled = false
+		var actor: Dictionary = state.units[state.controlled_id]
+		state.units.clear()
+		state.units[actor.id] = actor
+		actor.pos = Vector2(side * 44.32628, 7.438248)
+		var goal: Vector2 = Vector2(side * 56.0, 2.0)
+		_check(not state.map.clear_walk(actor.pos, goal), "base seam shortcut crosses a narrow unwalkable gap")
+		_check(state.command_move(actor.id, goal), "base seam has a valid route around the gap")
+		var cursor: Vector2 = actor.pos
+		for waypoint: Vector2 in actor.path:
+			var steps: int = maxi(1, ceili(cursor.distance_to(waypoint) / 0.01))
+			var continuous: bool = true
+			for step_index: int in range(steps + 1):
+				continuous = continuous and state.map.is_walkable(cursor.lerp(waypoint, float(step_index) / steps), actor.radius)
+			_check(continuous, "base seam route has continuous clearance at 1cm resolution")
+			cursor = waypoint
+		state.step(5.0)
+		_check(actor.pos.distance_to(goal) < 0.1, "hero walks home across the base seam")
+
+
+func _test_core_passing() -> void:
+	for side: float in [-1.0, 1.0]:
+		var state: Variant = _new_state()
+		state.bots_enabled = false
+		var retreating: Dictionary = state.units[1]
+		var advancing: Dictionary = state.units[3]
+		state.units.clear()
+		state.units[retreating.id] = retreating
+		state.units[advancing.id] = advancing
+		retreating.pos = Vector2(side * 49.96177, -2.776423)
+		advancing.pos = Vector2(side * 50.82577, -2.517421)
+		var home: Vector2 = Vector2(side * 56.0, 0.0)
+		var lane: Vector2 = Vector2(side * 46.0, -3.0)
+		_check(state.command_move(retreating.id, home), "retreating hero gets core-side path")
+		_check(state.command_move(advancing.id, lane), "advancing hero gets opposing core-side path")
+		var legal: bool = true
+		for frame: int in range(300):
+			state.step(1.0 / 30.0)
+			legal = legal and state.map.is_walkable(retreating.pos, retreating.radius) and state.map.is_walkable(advancing.pos, advancing.radius)
+			legal = legal and retreating.pos.distance_to(advancing.pos) >= 0.899
+		_check(legal, "core-side passing never crosses terrain or another hero")
+		_check(retreating.pos.distance_to(home) < 0.1 and advancing.pos.distance_to(lane) < 0.1, "opposing heroes pass each other beside the core")

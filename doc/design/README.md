@@ -11,6 +11,7 @@
 | 8명 영웅의 역할과 정확한 기술 수치 | [캐릭터 시트](characters/README.md) |
 | 이번 프로토타입의 구현 범위와 실행 | [V8 8인 프로토타입](28-eight-hero-prototype.md) |
 | 수행한 검사와 배포 화면 | [V8 검증 기록](verification/2026-11-09-v8-verification.md) |
+| 8명 선택, 신규 모델과 기술의 실행 화면 | [V8 화면 모음](assets/v8/README.md) |
 | 설치·조작·자동 확인 명령 | [저장소 시작 안내](../../README.md) |
 
 ## 현재 게임 콘텐츠 상세 기획

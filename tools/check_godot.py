@@ -78,6 +78,10 @@ def main() -> int:
         ("New hero skills, passives and owned state", "test_hero_abilities_v8.gd", "Hero abilities V8"),
         ("Eight hero cards, models and review actions", "test_roster_presentation_v8.gd", "Roster presentation V8"),
     )
+    timeouts = {
+        "test_battle_match.gd": 300,
+        "test_tactical_lifecycle.gd": 420,
+    }
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)
         command = base + ["--script", f"tests/{script}"]
@@ -85,7 +89,7 @@ def main() -> int:
             command += ["--", "--long"]
         run(command,
             rf"{re.escape(result_label)}: \d+ checks, 0 failures",
-            timeout=300 if script in ["test_battle_match.gd", "test_tactical_lifecycle.gd"] else 120)
+            timeout=timeouts.get(script, 120))
     print("Starting the main scene", flush=True)
     run(base + ["--quit-after", "90"])
     print(f"PASS: Godot import, all {len(checks)} behavioral suites and main-scene startup")

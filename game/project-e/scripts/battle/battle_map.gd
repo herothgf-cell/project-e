@@ -159,11 +159,8 @@ func has_line_of_sight(start: Vector2, finish: Vector2, radius: float = 0.0) -> 
 
 
 func clear_walk(start: Vector2, finish: Vector2, radius: float = 0.45) -> bool:
-	var count: int = maxi(1, int(ceil(start.distance_to(finish) / 0.18)))
-	for index: int in range(count + 1):
-		if not is_walkable(start.lerp(finish, float(index) / count), radius):
-			return false
-	return true
+	# Path smoothing and real movement must test the same clearance samples.
+	return is_walkable(start, radius) and clip_walk(start, finish, radius).is_equal_approx(finish)
 
 
 func clip_walk(start: Vector2, finish: Vector2, radius: float = 0.45) -> Vector2:

@@ -476,8 +476,9 @@ func _walk(unit: Dictionary, delta: float) -> void:
 		if unit.kind == "hero" and _hero_overlap(unit, candidate):
 			var perpendicular: Vector2 = Vector2(-unit.facing.y, unit.facing.x)
 			var found: bool = false
-			for sign_value: float in [1.0, -1.0]:
-				var side: Vector2 = unit.pos + (unit.facing + perpendicular * sign_value).normalized() * travel
+			for sign_value: float in [1.0, -1.0, 2.0, -2.0]:
+				var direction: Vector2 = (unit.facing + perpendicular * sign_value).normalized() if absf(sign_value) == 1.0 else perpendicular * signf(sign_value)
+				var side: Vector2 = unit.pos + direction * travel
 				if map.clear_walk(unit.pos, side, unit.radius) and not _hero_overlap(unit, side):
 					candidate = side
 					found = true
@@ -491,6 +492,10 @@ func _walk(unit: Dictionary, delta: float) -> void:
 		unit.pos = candidate
 		remaining -= moved
 		if moved < travel - 0.001:
+			# A collision sidestep can put the old waypoint behind terrain.
+			if unit.kind == "hero" and time >= unit.repath_at:
+				_set_path(unit, unit.goal)
+				unit.repath_at = time + 0.4
 			break
 		if unit.pos.distance_to(unit.path[0]) < 0.05:
 			unit.path.pop_front()
