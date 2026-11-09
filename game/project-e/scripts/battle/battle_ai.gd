@@ -156,11 +156,11 @@ func _hero(state: Variant, actor: Dictionary) -> void:
 		else:
 			var base: Vector2 = state.map.spawn_points[actor.team] + Vector2(0, (1 - actor.lane) * 2.0)
 			if actor.shield < 1.0:
-				if actor.hero == "bas" and _cast(state, actor, "W", actor.pos):
+				if actor.hero in ["bas", "sera"] and _cast(state, actor, "W", actor.pos):
 					return
-				if actor.hero == "nema" and _cast(state, actor, "E", base):
+				if actor.hero in ["nema", "mua", "lume", "orin"] and _cast(state, actor, "E", base):
 					return
-			if actor.pos.distance_to(base) > 5.0 and actor.hero in ["bas", "rio"] and _cast(state, actor, "E", base):
+			if actor.pos.distance_to(base) > 5.0 and actor.hero in ["bas", "rio", "tere", "sera"] and _cast(state, actor, "E", base):
 				return
 			if actor.order != "move" or actor.goal.distance_to(base) > 0.1:
 				state.command_move(actor.id, base)
@@ -219,7 +219,7 @@ func _hero_skill(state: Variant, actor: Dictionary, target: Dictionary) -> bool:
 			return true
 		if distance <= 5.0 and _cast(state, actor, "W", target.pos):
 			return true
-	else:
+	elif actor.hero == "nema":
 		if actor.hp < actor.max_hp * 0.75 and actor.shield < 1.0 and _cast(state, actor, "E", target.pos):
 			return true
 		for slot: String in ["R", "W"]:
@@ -234,6 +234,22 @@ func _hero_skill(state: Variant, actor: Dictionary, target: Dictionary) -> bool:
 					point = target.pos - toward * (target.radius + 0.6)
 				if _cast(state, actor, "Q", point):
 					return true
+	else:
+		if actor.hp < actor.max_hp * 0.75:
+			var support_slot: String = "W" if actor.hero in ["tere", "sera"] else "E"
+			if _cast(state, actor, support_slot, target.pos):
+				return true
+		if actor.hero == "mua" and not actor.zones.is_empty() and _cast(state, actor, "W", target.pos):
+			return true
+		if actor.hero == "orin" and actor.wind_ready_until <= state.time and distance <= 3.5 and _cast(state, actor, "W", target.pos):
+			return true
+		for slot: String in ["R", "Q", "W"]:
+			var preview: Dictionary = state.get_cast_preview(actor.id, slot, target.pos)
+			if preview.valid and not preview.get("support", false) and state._abilities.contains(preview, target.pos, target.radius) and _cast(state, actor, slot, target.pos):
+				return true
+		if actor.hero == "sera" and distance > 2.5 and distance < 5.0 and not _unsafe_tower(state, actor, target.pos) and _cast(state, actor, "E", target.pos):
+			return true
+
 	return false
 
 

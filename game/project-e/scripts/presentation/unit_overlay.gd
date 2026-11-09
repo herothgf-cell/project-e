@@ -1,4 +1,5 @@
 extends Control
+const RosterScript = preload("res://scripts/battle/hero_roster.gd")
 ## Visible-unit status and short damage feedback from observed simulation changes.
 
 const XPFeedbackScript = preload("res://scripts/presentation/xp_feedback_view.gd")
@@ -93,8 +94,8 @@ func _draw() -> void:
 			draw_rect(Rect2(rect.position - Vector2(0, 3), Vector2(width * clampf(float(unit.shield) / maxf(1, float(unit.max_hp)), 0, 1), 2)), Color("d6f8ed"))
 		if kind == "hero":
 			draw_rect(Rect2(rect.position + Vector2(0, 8), Vector2(width * clampf(float(unit.energy) / maxf(1, float(unit.max_energy)), 0, 1), 2)), Color("6fbcec"))
-			var hero_names: Dictionary = {"bas": "바스" if use_korean else "BAS", "rio": "리오" if use_korean else "RIO", "nema": "네마" if use_korean else "NEMA"}
-			var text: String = "%s  %d" % [hero_names.get(str(unit.hero), ""), int(unit.level)]
+			var hero_name: String = RosterScript.HEROES[unit.hero][0] if use_korean else str(unit.hero).to_upper()
+			var text: String = "%s  %d" % [hero_name, int(unit.level)]
 			if id == battle.controlled_id:
 				text = ("나 · " if use_korean else "YOU · ") + text
 			_text_center(text, point - Vector2(0, 6), 12, Color("fff5d8"))

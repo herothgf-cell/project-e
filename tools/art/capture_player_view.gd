@@ -1,5 +1,6 @@
 extends SceneTree
 ## Review the same visible UI in a source checkout and the exported Windows PCK.
+const Roster = preload("res://scripts/battle/hero_roster.gd")
 var output := ""
 var inline_preview := false
 var capture_source := "source checkout"
@@ -30,33 +31,35 @@ func _run() -> void:
 	scene.edge_pan_enabled = false
 	await _settle()
 	_check(scene.hud.selection.visible, "Hero selection is the initial screen")
-	_check(str(ProjectSettings.get_setting("application/config/version", "")) == "0.7.0", "V7 build identity")
+	_check(str(ProjectSettings.get_setting("application/config/version", "")) == "0.8.0", "V8 build identity")
 	for size: Vector2i in [Vector2i(1280, 720), Vector2i(1366, 768), Vector2i(960, 540)]:
 		root.size = size
 		await _settle()
 		var bounds: Rect2 = root.get_visible_rect()
 		_check(bounds.encloses(scene.hud._start.get_global_rect()), "Start button fits " + str(size))
-		for key: String in ["bas", "rio", "nema"]:
+		for key: String in Roster.KEYS:
 			var card: Control = scene.hud._hero_buttons[key]
 			_check(card.is_visible_in_tree(), "Visible hero choice " + key)
 			_check(bounds.encloses(card.get_global_rect()), "Hero choice fits " + key + " " + str(size))
 			var illustrated := false
 			for art in card.find_children("*", "TextureRect", true, false):
-				if art.texture != null and str(art.texture.resource_path) == "res://assets/portraits/" + key + ".webp":
-					illustrated = art.get_global_rect().size.y >= minf(180.0, bounds.size.y * 0.25)
-			_check(illustrated, "Large illustrated hero card " + key + " " + str(size))
+				if art.name == "HeroIllustration" and art.texture != null:
+					illustrated = art.get_global_rect().size.y >= minf(140.0, bounds.size.y * 0.20)
+			_check(illustrated, "Readable hero portrait " + key + " " + str(size))
 		await _save("selection-%dx%d" % [size.x, size.y])
-	var portraits: Dictionary = {}
-	for control in scene.hud.selection.find_children("*", "TextureRect", true, false):
-		if control.texture != null:
-			portraits[str(control.texture.resource_path)] = true
-	for key: String in ["bas", "rio", "nema"]:
-		_check(portraits.has("res://assets/portraits/" + key + ".webp"), "Illustrated portrait is rendered " + key)
+	for key: String in Roster.KEYS:
+		var portrait: TextureRect = scene.hud._hero_buttons[key].get_node("HeroIllustration")
+		if key in ["bas", "rio", "nema"]:
+			_check(portrait.texture.resource_path == "res://assets/portraits/" + key + ".webp", "Illustrated portrait is rendered " + key)
+		else:
+			var rendered: Image = portrait.texture.get_image()
+			_check(rendered != null and rendered.get_used_rect().has_area(), "Native model portrait contains rendered pixels " + key)
+			_check(portrait.has_node("ModelPortrait"), "Portrait uses the shipped hero model " + key)
 	# Route actual GUI pointer events at the smallest supported window size.
-	for key: String in ["bas", "rio", "nema"]:
+	for key: String in Roster.KEYS:
 		await _click(scene.hud._hero_buttons[key])
 		_check(scene.hud.selected_hero == key, "Pointer selects " + key + " at 960x540")
-		for candidate: String in ["bas", "rio", "nema"]:
+		for candidate: String in Roster.KEYS:
 			_check(scene.hud._selection_tags[candidate].visible == (candidate == key), "Exclusive selection tag " + candidate)
 	var regular: BaseButton
 	for mode: BaseButton in scene.hud._practice.button_group.get_buttons():
@@ -69,14 +72,15 @@ func _run() -> void:
 	await _click(scene.hud._practice)
 	await _click(scene.hud._start)
 	_check(scene.has_active_match and scene.is_practice, "Pointer starts the selected match mode")
-	_check(scene.battle.units[scene.battle.controlled_id].hero == "nema", "Pointer start uses selected hero")
+	_check(scene.battle.units[scene.battle.controlled_id].hero == "lume", "Pointer start uses selected hero")
 	scene.return_to_selection()
 	await _settle()
 	_check(scene.hud.selection.visible and not scene.has_active_match, "Returning to selection enables another match")
 	root.size = Vector2i(1280, 720)
-	scene.hud.select_hero("rio")
-	await _settle()
-	await _save("selection-rio")
+	for key: String in Roster.KEYS:
+		scene.hud.select_hero(key)
+		await _settle()
+		await _save("selection-" + key)
 	scene.start_match("bas", true)
 	scene.edge_pan_enabled = false
 	scene.battle.bots_enabled = false
@@ -99,7 +103,7 @@ func _run() -> void:
 	scene.hud._toast_left = 0.0
 	scene.hud._toast.hide()
 	await _settle()
-	await _save("battle-v7")
+	await _save("battle-v8")
 	var bottom: Control = scene.hud._bottom
 	_check(bottom.get_global_rect().size.y <= 128.0, "Compact battle HUD")
 	_check(root.get_visible_rect().encloses(bottom.get_global_rect()), "Battle HUD fits viewport")
@@ -123,7 +127,7 @@ func _run() -> void:
 			_check(not camera_control.get_global_rect().intersects(panel.get_global_rect()), "Small-window camera row avoids HUD panels")
 	await _save("battle-low-health-960x540")
 	await _capture_fantasy_kits()
-	var document := {"version": "0.7.0", "engine": Engine.get_version_info().string,
+	var document := {"version": "0.8.0", "engine": Engine.get_version_info().string,
 		"source": capture_source,
 		"checks": checks, "failures": failures, "captures": records}
 	var manifest := FileAccess.open(output.path_join("player-review.json"), FileAccess.WRITE)
@@ -182,14 +186,19 @@ func _capture_fantasy_kits() -> void:
 	await process_frame
 	var lab: Variant = scene.review_lab
 	lab.set_process(false)
-	for key: String in ["bas", "rio", "nema"]:
+	for key: String in Roster.KEYS:
 		lab.select_hero(key)
+		await _settle()
+		await _save("hero-" + key)
 		for index: int in range(4):
 			var slot: String = ["Q", "W", "E", "R"][index]
-			_check(lab.play_action(slot), "V7 actual cast " + key + slot)
+			_check(lab.play_action(slot), "V8 actual cast " + key + slot)
 			hero = lab.stage.battle.units[lab.stage.battle.controlled_id]
-			lab.advance_review(float(hero.cast.windup) + 0.14)
-			_check(lab.status.text.contains(scene.hud.SKILLS[key][index]), "V7 review skill identity " + key + slot)
+			var capture_time := float(hero.cast.windup) + 0.14
+			if key == "tere" and slot == "E":
+				capture_time += float(hero.cast.dash_distance) / float(hero.cast.dash_speed) + 0.35
+			lab.advance_review(capture_time)
+			_check(lab.status.text.contains(scene.hud.SKILLS[key][index]), "V8 review skill identity " + key + slot)
 			await _settle()
 			await _save("skill-" + key + "-" + slot.to_lower())
 	lab.close_review()
@@ -231,6 +240,6 @@ func _save(stem: String) -> void:
 	var entry: Dictionary = {"name": stem, "width": snapshot.get_width(),
 		"height": snapshot.get_height(), "sha256": FileAccess.get_sha256(path)}
 	records.append(entry)
-	if inline_preview and stem in ["selection-1280x720", "battle-v7", "battle-low-health-960x540", "shop-1280x720", "item-i01-active", "item-i02-active", "skill-bas-r", "skill-rio-q", "skill-nema-r"]:
+	if inline_preview and stem in ["selection-1280x720", "selection-960x540", "selection-mua", "battle-v8", "shop-1280x720", "hero-orin", "hero-tere", "hero-mua", "hero-sera", "hero-lume", "skill-orin-r", "skill-tere-e", "skill-mua-r", "skill-sera-r", "skill-lume-r"]:
 		snapshot.resize(1024, 576, Image.INTERPOLATE_LANCZOS)
 		print("PLAYER_PREVIEW_IMAGE ", stem, " ", Marshalls.raw_to_base64(snapshot.save_webp_to_buffer(false, 0.74)))

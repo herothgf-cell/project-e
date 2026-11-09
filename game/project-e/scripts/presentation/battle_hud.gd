@@ -28,11 +28,8 @@ const MUTED := Color("b5c8c5")
 const PAPER := Color("132d35")
 const TEAL := Color("73d4e6")
 const COPPER := Color("f0c47d")
-const HEROES: Dictionary = {
-	"bas": ["바스", "룬 건틀릿 전사", "거대한 마력 장갑으로 파고들어\n가까운 적을 밀어내고 아군을 엄호합니다."],
-	"rio": ["리오", "별빛 원반 마법사", "왕복하는 혜성과 별무리 닻을 다루고\n별빛 도약으로 공격의 각도를 바꿉니다."],
-	"nema": ["네마", "숲의 결계술사", "정령목과 덩굴로 길목을 지키고\n잎새의 가호로 동료를 보호합니다."],
-}
+const RosterScript = preload("res://scripts/battle/hero_roster.gd")
+const HEROES: Dictionary = RosterScript.HEROES
 const SKILLS: Dictionary = AbilityScript.SKILLS
 const SKILL_HELP: Dictionary = AbilityScript.SKILL_HELP
 const GROWTH: Dictionary = {
@@ -70,6 +67,10 @@ var _start: Button
 var _hero_buttons: Dictionary = {}
 var _selection_frame: Control
 var _selection_tags: Dictionary = {}
+var _selection_description: Label
+var _selection_skills: Array[Label] = []
+var _selection_skill_help: Array[Label] = []
+var _selection_icons: Array[TextureRect] = []
 var _skill_buttons: Dictionary = {}
 var _skill_icons: Dictionary = {}
 var _skill_labels: Dictionary = {}
@@ -465,86 +466,80 @@ func _build_selection() -> void:
 	_selection_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_selection_frame.size = Vector2(1280, 720)
 	selection.add_child(_selection_frame)
-	_place(_label(_selection_frame, "PROJECT E  /  아스트라 전장", 13, COPPER), Rect2(64, 30, 600, 25))
-	_place(_label(_selection_frame, "어떤 영웅과 함께할까요?", 38, INK), Rect2(64, 60, 1100, 54))
-	_place(_label(_selection_frame, "세 갈래 길, 하나의 목표. 적의 마법 핵을 파괴하세요.", 15, Color("d6e3dc")), Rect2(66, 116, 1100, 28))
-	var version: Label = _label(_selection_frame, "v" + str(ProjectSettings.get_setting("application/config/version", "0.6.0")), 12, MUTED)
-	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_place(version, Rect2(1036, 31, 180, 24))
+	_place(_label(_selection_frame, "PROJECT E  /  아스트라 전장", 16, COPPER), Rect2(40, 22, 700, 28))
+	_place(_label(_selection_frame, "함께 싸울 영웅을 골라주세요", 34, INK), Rect2(40, 57, 1000, 48))
+	_place(_label(_selection_frame, "8명의 영웅 · 32가지 기술  /  적의 마법 핵을 파괴하세요", 18, MUTED), Rect2(42, 112, 1100, 28))
 	var group := ButtonGroup.new()
-	var accents: Dictionary = {"bas": Color("edbf7a"), "rio": Color("b9b4f2"), "nema": Color("a6dbae")}
-	for index: int in range(3):
-		var key: String = ["bas", "rio", "nema"][index]
-		var button: Button = _button(_selection_frame, "", Vector2(368, 350))
+	for index: int in range(RosterScript.KEYS.size()):
+		var key: String = RosterScript.KEYS[index]
+		var accent := Color(RosterScript.ACCENTS[key])
+		var button: Button = _button(_selection_frame, "", Vector2(180, 204))
 		button.name = "HeroCard" + key.capitalize()
-		_place(button, Rect2(64 + index * 392, 160, 368, 350))
+		_place(button, Rect2(40 + (index % 4) * 194, 158 + (index / 4) * 218, 180, 204))
 		button.toggle_mode = true
 		button.button_group = group
 		button.button_pressed = key == selected_hero
 		button.pressed.connect(func() -> void: select_hero(key))
-		var normal: StyleBoxFlat = _style(Color("102b32"), Color("69837b"), 1)
-		normal.shadow_color = Color(0.0, 0.025, 0.03, 0.60)
-		normal.shadow_size = 14
-		normal.shadow_offset = Vector2(0, 6)
-		button.add_theme_stylebox_override("normal", normal)
-		button.add_theme_stylebox_override("hover", _style(Color("1b3b40"), accents[key], 2))
-		button.add_theme_stylebox_override("pressed", _style(Color("234246"), COPPER, 3))
-		button.add_theme_stylebox_override("hover_pressed", _style(Color("294d4e"), COPPER, 3))
+		button.tooltip_text = HEROES[key][1] + "\n" + HEROES[key][2]
+		button.add_theme_stylebox_override("normal", _style(Color("102b32"), Color("69837b"), 1))
+		button.add_theme_stylebox_override("hover", _style(Color("29474b"), accent, 2))
+		button.add_theme_stylebox_override("pressed", _style(Color("254347"), accent, 3))
 		_hero_buttons[key] = button
 		var portrait: TextureRect = PortraitScript.new()
 		portrait.hero_key = key
 		portrait.name = "HeroIllustration"
-		portrait.custom_minimum_size = Vector2(352, 232)
 		button.add_child(portrait)
-		_place(portrait, Rect2(8, 8, 352, 232))
-		var name_label: Label = _label(button, HEROES[key][0], 28, INK)
-		_place(name_label, Rect2(18, 249, 90, 40))
-		var role_label: Label = _label(button, HEROES[key][1], 14, accents[key])
-		_place(role_label, Rect2(106, 258, 244, 28))
-		var description: Label = _label(button, HEROES[key][2], 12, Color("d0ded7"))
-		_place(description, Rect2(18, 300, 332, 40))
-		var tag := PanelContainer.new()
-		tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		tag.add_theme_stylebox_override("panel", _style(Color("163a3c"), COPPER, 1))
-		button.add_child(tag)
-		_place(tag, Rect2(18, 18, 114, 28))
-		_label(tag, "선택한 영웅", 12, Color("fff0c9")).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		tag.visible = key == selected_hero
+		_place(portrait, Rect2(6, 6, 168, 148))
+		var name_label: Label = _label(button, HEROES[key][0], 25, INK)
+		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_place(name_label, Rect2(8, 158, 164, 36))
+		var tag: Label = _label(button, "선택", 14, accent)
+		_place(tag, Rect2(126, 10, 48, 24))
 		_selection_tags[key] = tag
-	_place(_label(_selection_frame, "플레이 방식", 12, COPPER), Rect2(66, 526, 400, 22))
+	var detail: Panel = Panel.new()
+	_selection_frame.add_child(detail)
+	detail.add_theme_stylebox_override("panel", _style(Color("132d35"), Color("67857e"), 1))
+	_place(detail, Rect2(830, 158, 410, 422))
+	_selection_description = _label(detail, "", 21, INK)
+	_selection_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_place(_selection_description, Rect2(18, 13, 374, 104))
+	for index: int in range(4):
+		var icon := TextureRect.new()
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		detail.add_child(icon)
+		_place(icon, Rect2(18, 128 + index * 70, 46, 46))
+		_selection_icons.append(icon)
+		var skill: Label = _label(detail, "", 17, INK)
+		skill.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		skill.mouse_filter = Control.MOUSE_FILTER_PASS
+		_place(skill, Rect2(76, 125 + index * 70, 316, 25))
+		_selection_skills.append(skill)
+		var summary: Label = _label(detail, "", 14, MUTED)
+		summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		summary.mouse_filter = Control.MOUSE_FILTER_PASS
+		_place(summary, Rect2(76, 151 + index * 70, 316, 40))
+		_selection_skill_help.append(summary)
 	var mode_group := ButtonGroup.new()
-	var regular: Button = _button(_selection_frame, "일반 경기\n레벨 1 · 성장 2포인트", Vector2(268, 62))
+	var regular: Button = _button(_selection_frame, "일반 경기\n레벨 1 · 성장 2포인트", Vector2(264, 64))
 	regular.toggle_mode = true
 	regular.button_group = mode_group
 	regular.button_pressed = true
-	regular.add_theme_font_size_override("font_size", 14)
-	_place(regular, Rect2(64, 553, 268, 62))
+	regular.add_theme_font_size_override("font_size", 17)
+	_place(regular, Rect2(40, 603, 264, 64))
 	_practice = CheckButton.new()
 	_practice.text = "기술 체험\n레벨 3 · R 해금"
 	_practice.focus_mode = Control.FOCUS_NONE
 	_practice.button_group = mode_group
-	_practice.add_theme_font_size_override("font_size", 14)
-	for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
-		_practice.add_theme_stylebox_override(state, _style(Color("244247") if state.contains("pressed") else Color("142e35"), TEAL if state != "normal" else Color("67857e"), 2 if state.contains("pressed") else 1))
+	_practice.add_theme_font_size_override("font_size", 17)
 	_selection_frame.add_child(_practice)
-	_place(_practice, Rect2(344, 553, 280, 62))
-	_start = _button(_selection_frame, "바스로 경기 시작", Vector2(568, 62), true)
-	_start.add_theme_font_size_override("font_size", 22)
-	_start.add_theme_color_override("font_color", Color("142e32"))
-	_start.add_theme_color_override("font_hover_color", Color("142e32"))
-	_start.add_theme_color_override("font_pressed_color", Color("142e32"))
-	_start.add_theme_stylebox_override("normal", _style(Color("edc680"), Color("ffe4aa"), 2))
-	_start.add_theme_stylebox_override("hover", _style(Color("ffdea0"), Color("fff2cf"), 2))
-	_start.add_theme_stylebox_override("pressed", _style(Color("d4ac67"), Color("fff2cf"), 2))
-	_place(_start, Rect2(648, 553, 568, 62))
+	_place(_practice, Rect2(320, 603, 270, 64))
+	_start = _button(_selection_frame, "바스로 경기 시작", Vector2(630, 64), true)
+	_start.add_theme_font_size_override("font_size", 25)
+	_place(_start, Rect2(610, 603, 630, 64))
 	_start.pressed.connect(func() -> void: match_requested.emit(selected_hero, _practice.button_pressed))
-	var team_note: Label = _label(_selection_frame, "나 + 아군 봇 2명  vs  상대 봇 3명   ·   각 팀에 바스 / 리오 / 네마가 한 명씩 참가합니다.", 13, Color("d0ded7"))
-	team_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_place(team_note, Rect2(64, 630, 1152, 30))
-	_place(_label(_selection_frame, "우클릭 이동·공격   ·   A 공격 이동   ·   QWER 기술   ·   G 성장   ·   F1 도움말", 12, MUTED), Rect2(64, 680, 940, 24))
-	var review_hint: Label = _label(_selection_frame, "F7  전장 둘러보기", 12, MUTED)
-	review_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_place(review_hint, Rect2(984, 680, 232, 24))
+	_place(_label(_selection_frame, "우클릭 이동·공격  ·  QWER 기술  ·  G 성장  ·  F1 도움말  ·  F7 영웅 연출실", 16, MUTED), Rect2(40, 680, 1200, 26))
+	select_hero(selected_hero)
 	selection.resized.connect(_layout_selection)
 	_layout_selection()
 	call_deferred("_layout_selection")
@@ -639,6 +634,15 @@ func select_hero(key: String) -> void:
 	selected_hero = key
 	_hero_buttons[key].button_pressed = true
 	_start.text = "%s로 경기 시작" % HEROES[key][0]
+	_selection_description.text = "%s · %s\n%s" % [HEROES[key][0], HEROES[key][1], HEROES[key][2]]
+	for index: int in range(4):
+		var slot: String = ["Q", "W", "E", "R"][index]
+		_selection_icons[index].texture = load("res://assets/ui/skills/%s_%s.svg" % [key, slot.to_lower()])
+		_selection_skills[index].text = "%s  %s" % [slot, SKILLS[key][index]]
+		_selection_skills[index].tooltip_text = SKILL_HELP[key][index]
+		_selection_skill_help[index].text = str(SKILL_HELP[key][index]).split("\n")[0]
+		_selection_skill_help[index].tooltip_text = SKILL_HELP[key][index]
+
 	for hero_key: String in _selection_tags:
 		_selection_tags[hero_key].visible = hero_key == key
 
@@ -692,6 +696,12 @@ func update_state(battle: Variant, aim_slot: String, practice: bool, attack_aim:
 	_passive.text = _passive_text(battle, hero)
 	var passive: Dictionary = AbilityScript.PASSIVES[key]
 	_passive.tooltip_text = "%s · 패시브\n%s\n\n%s" % [passive.name, passive.description, _passive.text]
+	for buff: Dictionary in hero.get("speed_buffs", []):
+		if float(buff.expires) > battle.time:
+			_passive.tooltip_text += "\n보행 가속 +%.0f%% · %.1f초" % [float(buff.strength) * 100, float(buff.expires) - battle.time]
+	for zone: Dictionary in hero.get("zones", []):
+		if float(zone.expires) > battle.time:
+			_passive.tooltip_text += "\n%s 물결 · %.1f초" % ["활성" if zone.active else "대기", float(zone.expires) - battle.time]
 	_xp.tooltip_text = "K / D / A · 처치 / 사망 / 도움"
 	_timer.text = "%02d:%02d" % [int(battle.time) / 60, int(battle.time) % 60]
 	_mode.text = "기술 체험 · Lv.3 / R" if practice else "일반 경기 · 봇 3 대 3"
@@ -755,6 +765,23 @@ func _passive_text(battle: Variant, hero: Dictionary) -> String:
 		if hero.empowered_left > 0:
 			phase += " · 강화 %.1f초" % hero.empowered_left
 		return phase
+	if hero.hero == "orin":
+		return "순풍 준비 %.1f초" % maxf(0, float(hero.get("wind_ready_until", 0)) - battle.time)
+	if hero.hero == "tere":
+		return "수정 방패 · 보호막 %.0f" % hero.shield
+	if hero.hero == "mua":
+		var active: int = 0
+		for zone: Dictionary in hero.get("zones", []):
+			if zone.active and zone.expires > battle.time: active += 1
+		return "물결 구역 %d / 2 · 활성 %d" % [hero.get("zones", []).size(), active]
+	if hero.hero == "sera":
+		var stacks: int = 0
+		for target_id: int in hero.get("marks", {}):
+			if battle.is_visible(0, target_id) and hero.marks[target_id].expires > battle.time:
+				stacks += int(hero.marks[target_id].stacks)
+		return "월영 표식 · 보이는 적 %d중첩" % stacks
+	if hero.hero == "lume":
+		return "잔열 %d / 3%s" % [hero.get("heat_count", 0), " · 다음 공격 강화" if hero.get("heat_count", 0) == 3 else ""]
 	var remaining: Array[String] = []
 	for pin_id: int in hero.pins:
 		if battle.units.has(pin_id) and battle.units[pin_id].alive:

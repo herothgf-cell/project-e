@@ -9,12 +9,14 @@ const ConsumablesScript = preload("res://scripts/battle/battle_consumables.gd")
 const FIXED_STEP: float = 1.0 / 30.0
 const ATTACK_MOVE_SEARCH: float = 8.0
 const ATTACK_MOVE_CHASE: float = 8.0
-const HERO_STATS: Dictionary = {"bas": [1100.0, 5.8, 2.0, 0.18], "rio": [950.0, 6.2, 6.5, 0.16], "nema": [1000.0, 6.0, 5.5, 0.18]}
+const Roster = preload("res://scripts/battle/hero_roster.gd")
+const HERO_STATS: Dictionary = Roster.STATS
 static var _shared_map: Variant
 
 var units: Dictionary = {}
 var effects: Array = []
 var projectiles: Array = []
+var scheduled_hits: Array = []
 var controlled_id: int = -1
 var time: float = 0.0
 var winner: int = -1
@@ -49,6 +51,7 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 	units.clear()
 	effects.clear()
 	projectiles.clear()
+	scheduled_hits.clear()
 	events.clear()
 	feedback_events.clear()
 	match_serial += 1
@@ -78,10 +81,10 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 	controlled_id = -1
 	for team: int in range(2):
 		var remaining_lanes: Array = [0, 2]
-		for hero: String in ["bas", "rio", "nema"]:
-			var lane: int = 1 if hero == hero_key else int(remaining_lanes.pop_front())
-			if team == 1:
-				lane = ["bas", "rio", "nema"].find(hero)
+		for hero: String in Roster.team_for(hero_key, team):
+			var lane: int = Roster.team_for(hero_key, team).find(hero)
+			if team == 0:
+				lane = 1 if hero == hero_key else int(remaining_lanes.pop_front())
 			var unit: Dictionary = _entity("hero", team, map.spawn_points[team] + Vector2(0, (1 - lane) * 2.0), HERO_STATS[hero][0], 0.45)
 			unit.merge({"hero": hero, "name": hero.capitalize(), "lane": lane, "speed": HERO_STATS[hero][1], "attack_range": HERO_STATS[hero][2], "attack_windup": HERO_STATS[hero][3], "energy": 100.0, "max_energy": 100.0, "energy_regen": 8.0, "power": 100.0, "points": 2, "credits": 100.0}, true)
 			if practice:
@@ -106,7 +109,7 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 func _entity(kind: String, team: int, position: Vector2, health: float, radius: float) -> Dictionary:
 	var entity: Dictionary = {"id": _next_unit, "kind": kind, "team": team, "hero": "", "name": kind.capitalize(), "pos": position, "facing": Vector2.RIGHT if team == 0 else Vector2.LEFT, "radius": radius, "alive": true, "hp": health, "max_hp": health, "shield": 0.0, "shields": [], "energy": 0.0, "max_energy": 0.0, "energy_regen": 0.0, "level": 1, "xp": 0.0, "points": 0, "r_unlocked": false, "cooldowns": {"Q": 0.0, "W": 0.0, "E": 0.0, "R": 0.0}, "respawn_left": 0.0, "lane": 1, "phase": "idle", "phase_left": 0.0, "locked": false, "power": 0.0, "armor": 0.0, "speed": 0.0, "attack_range": 0.0, "attack_interval": 1.0, "attack_windup": 0.18, "attack_damage": 0.0, "attack_left": 0.0, "target_id": -1, "path": [], "goal": position, "order": "idle", "cast": {}, "queued": {}, "root_left": 0.0, "stun_left": 0.0, "cc_history": [], "slows": [], "knockback": {}, "protected": 0.0, "siege_protected": false, "last_damage": -100.0, "last_hostile": -100.0, "contributors": {}, "pressure": 0, "pressure_left": 0.0, "empowered_left": 0.0, "empowered_damage": 0.0, "pins": [], "return_mark": {}, "passive_inside": {}, "passive_ready": {}, "investments": {"power": 0, "hp": 0, "armor": 0, "regen": 0, "speed": 0, "R": 0}, "credits": 0.0, "kills": 0, "deaths": 0, "assists": 0, "repath_at": 0.0, "last_seen": -100.0, "last_target_pos": position, "aggro_id": -1, "aggro_until": 0.0, "remove_at": INF, "lane_progress": 5.0, "ai_retreat": false, "ai_think": 0.0}
 	if kind == "hero":
-		entity.merge({"consumables": {"I01": 0, "I02": 0}, "consumable_selected": "I01", "consumable_cooldown": 0.0, "consumable_effect": {}})
+		entity.merge({"zones": [], "marks": {}, "wind_ready_until": 0.0, "heat_count": 0, "speed_buffs": [], "consumables": {"I01": 0, "I02": 0}, "consumable_selected": "I01", "consumable_cooldown": 0.0, "consumable_effect": {}})
 	units[_next_unit] = entity
 	entity.merge({"attack_move_goal": position, "attack_move_arrived": false, "attack_move_origins": {}, "attack_move_blocked": {}})
 	_next_unit += 1
@@ -159,6 +162,7 @@ func _tick(delta: float) -> void:
 			kept.append(projectile)
 	projectiles = kept
 	_abilities.tick_devices(self)
+	_abilities.expanded.tick(self, _abilities)
 	refresh_locks()
 	_resolve_victory()
 	if time >= _next_cleanup:
@@ -409,18 +413,19 @@ func _release_basic(unit: Dictionary) -> void:
 	var target: Dictionary = units[cast.target_id]
 	if not target.alive or target.locked:
 		return
-	var melee: bool = unit.hero == "bas" or unit.get("subtype", "") == "melee"
+	var melee: bool = unit.hero in Roster.MELEE or unit.get("subtype", "") == "melee"
 	if melee:
 		if not is_visible(unit.team, target.id) or unit.pos.distance_to(target.pos) > unit.attack_range + target.radius or not map.has_line_of_sight(unit.pos, target.pos):
 			return
-		var dealt: float = apply_damage(unit.id, target.id, cast.damage, cast.id, "basic")
+		var basic_damage: float = cast.damage + _abilities.expanded.basic_bonus(self, unit, target, cast.power)
+		var dealt: float = apply_damage(unit.id, target.id, basic_damage, cast.id, "basic")
 		if unit.hero == "bas" and dealt > 0.0 and target.kind == "hero" and unit.pressure >= 2:
 			unit.pressure = 0
 			unit.pressure_left = 0.0
 			add_shield(unit.id, "%d:passive" % unit.id, 80.0 + 0.25 * unit.power, 2.0)
 	else:
 		var damage: float = cast.damage
-		if unit.hero == "rio" and unit.empowered_left > 0.0:
+		if unit.hero in ["rio", "orin"] and unit.empowered_left > 0.0:
 			damage += unit.empowered_damage
 			unit.empowered_left = 0.0
 		projectiles.append({"id": cast.id, "cast_id": cast.id, "kind": "tower_bolt" if unit.kind == "tower" else "basic", "pos": unit.pos, "target_pos": target.pos, "target_id": target.id, "owner_id": unit.id, "team": unit.team, "damage": damage, "remaining": 3.0})
@@ -452,7 +457,11 @@ func _walk(unit: Dictionary, delta: float) -> void:
 	var slow: float = 0.0
 	for item: Dictionary in unit.slows:
 		slow = maxf(slow, item.strength)
-	var remaining: float = unit.speed * maxf(0.4, 1.0 - slow) * delta
+	var haste: float = 0.0
+	for buff: Dictionary in unit.get("speed_buffs", []):
+		if buff.expires > time:
+			haste = maxf(haste, buff.strength)
+	var remaining: float = unit.speed * (1.0 + haste) * maxf(0.4, 1.0 - slow) * delta
 	unit.phase = "walk"
 	for segment: int in range(4):
 		if remaining <= 0.00001 or unit.path.is_empty():
@@ -467,8 +476,9 @@ func _walk(unit: Dictionary, delta: float) -> void:
 		if unit.kind == "hero" and _hero_overlap(unit, candidate):
 			var perpendicular: Vector2 = Vector2(-unit.facing.y, unit.facing.x)
 			var found: bool = false
-			for sign_value: float in [1.0, -1.0]:
-				var side: Vector2 = unit.pos + (unit.facing + perpendicular * sign_value).normalized() * travel
+			for sign_value: float in [1.0, -1.0, 2.0, -2.0]:
+				var direction: Vector2 = (unit.facing + perpendicular * sign_value).normalized() if absf(sign_value) == 1.0 else perpendicular * signf(sign_value)
+				var side: Vector2 = unit.pos + direction * travel
 				if map.clear_walk(unit.pos, side, unit.radius) and not _hero_overlap(unit, side):
 					candidate = side
 					found = true
@@ -482,6 +492,10 @@ func _walk(unit: Dictionary, delta: float) -> void:
 		unit.pos = candidate
 		remaining -= moved
 		if moved < travel - 0.001:
+			# A collision sidestep can put the old waypoint behind terrain.
+			if unit.kind == "hero" and time >= unit.repath_at:
+				_set_path(unit, unit.goal)
+				unit.repath_at = time + 0.4
 			break
 		if unit.pos.distance_to(unit.path[0]) < 0.05:
 			unit.path.pop_front()
@@ -621,7 +635,7 @@ func command_cast(actor_id: int, slot: String, target: Vector2) -> bool:
 	actor.queued.clear()
 	plan.id = next_action_id()
 	actor.cast = plan
-	if not (actor.hero == "bas" and slot == "W") and not (actor.hero == "nema" and slot == "E"):
+	if not plan.get("support", false):
 		actor.protected = 0.0
 	effects.append(plan.duplicate(true))
 	stats.casts += 1
@@ -659,7 +673,7 @@ func get_cast_preview(actor_id: int, slot: String, target: Vector2) -> Dictionar
 		reason = "Match ended or hero defeated"
 	elif actor.stun_left > 0.0:
 		reason = "Stunned"
-	elif slot == "E" and actor.hero in ["bas", "rio"] and actor.root_left > 0.0:
+	elif result.get("movement", false) and actor.root_left > 0.0:
 		reason = "Rooted: movement skill unavailable"
 	elif slot == "R" and not actor.r_unlocked:
 		reason = "R requires level 3 and one growth point"
@@ -732,7 +746,7 @@ func _reject(actor_id: int, reason: String) -> bool:
 func cancel_action(actor: Dictionary) -> void:
 	var cast_id: int = int(actor.cast.get("id", -1))
 	if cast_id != -1:
-		effects = effects.filter(func(effect: Dictionary) -> bool: return int(effect.get("id", -2)) != cast_id or not effect.telegraph)
+		effects = effects.filter(func(effect: Dictionary) -> bool: return int(effect.get("id", -2)) != cast_id or not effect.telegraph or effect.get("scheduled", false))
 	actor.cast = {}
 	actor.phase = "idle"
 	actor.phase_left = 0.0

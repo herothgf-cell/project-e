@@ -41,7 +41,9 @@ func _run() -> void:
 	state.controlled_id = -1
 	var rewards: int = 0
 	var seen_sequence: int = 0
-	while state.winner == -1 and state.time < 1860.0:
+	# Recovered retreat paths let all six bots participate. The observed natural
+	# finish is 2077.3s, so 2400s leaves headroom while still requiring core victory.
+	while state.winner == -1 and state.time < 2400.0:
 		state.step(0.5)
 		for event: Dictionary in state.feedback_events:
 			if int(event.seq) > seen_sequence and event.type == "xp_gain" and event.get("source_kind", "") == "cell":

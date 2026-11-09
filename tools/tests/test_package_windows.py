@@ -87,6 +87,11 @@ print('Export done')
                          'THIRD_PARTY_NOTICES.md', 'licenses/GODOT-LICENSE.txt',
                          'licenses/GODOT-COPYRIGHT.txt', 'licenses/FONT-OFL.txt', 'manifest.json']:
                 self.assertIn('ProjectE-windows-x86_64/' + name, archive.namelist())
+            guide = archive.read('ProjectE-windows-x86_64/README-WINDOWS.txt').decode('utf-8')
+            for expected in ['바스·리오·네마·오린·테르·무아·세라·루메',
+                             '별샘 영약', '숲빛 치유약', '8명 영웅',
+                             'Project E V8 - Astra Fantasy Arena']:
+                self.assertTrue(expected in guide, f'Windows guide includes {expected}')
             for entry in manifest['files']:
                 data = archive.read('ProjectE-windows-x86_64/' + entry['path'])
                 self.assertEqual(hashlib.sha256(data).hexdigest(), entry['sha256'])

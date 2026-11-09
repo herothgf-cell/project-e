@@ -53,7 +53,7 @@ jobs:
           from tools.check_godot import run
           run(['xvfb-run','-a',os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),'--path','game/project-e','--rendering-method','gl_compatibility','--audio-driver','Dummy','--script',os.path.abspath('tools/art/capture_illustrated_pass.gd'),'--','--output='+os.path.abspath('review/v5')], r'CAPTURE_ART_OK', timeout=300)
           PY
-      - name: Capture V7 skills, items, shop and player interface
+      - name: Capture V8 heroes, 32 skills and player interface
         run: |
           python - <<'PY'
           import os
@@ -61,7 +61,7 @@ jobs:
           run(['xvfb-run', '-a', os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),
                '--path', 'game/project-e', '--rendering-method', 'gl_compatibility',
                '--audio-driver', 'Dummy', '--script', os.path.abspath('tools/art/capture_player_view.gd'),
-               '--', '--output=' + os.path.abspath('review/v7')], r'PLAYER_REVIEW_OK', timeout=180)
+               '--', '--output=' + os.path.abspath('review/v8')], r'PLAYER_REVIEW_OK', timeout=300)
           PY
       - uses: actions/upload-artifact@v4
         with:

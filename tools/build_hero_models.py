@@ -141,7 +141,7 @@ def face_z(x, y):
     return -.414 * math.sqrt(max(.025, 1-(x/.474)**2-((y-.008)/.51)**2))
 
 
-def head_art(key, parts, color):
+def head_art(key, parts, color, accessories=True):
     cloth,dark,hair,shadow,ivory,gold,glow,iris=color
     skin=rgb(SKIN[key])
     ink=rgb('302944'); blush=rgb('E99084')
@@ -217,6 +217,8 @@ def head_art(key, parts, color):
             z=-.15+.15*i
             locks.sweep([(s*.32,.36,z+.07),(s*.43,.18,z),(s*.45,-.04,z-.02),
                          (s*(.41 if key=='rio' else .52),y,z+.01)],[.07,.10,.094,.003],[.06,.093,.075,.003],tint(hair,shadow,.14*i),8,(0,0,1))
+    if not accessories:
+        return
     if key=='bas':
         # Overlapping flame-like locks flare past the ear, sweeping up from the crown.
         for side in (-1,1):
@@ -613,15 +615,31 @@ def unwrap_cylinder(pos,normals,faces,section):
     return np.asarray(pos),np.asarray(normals),np.asarray(uv),faces
 
 
-def save_glb(key, parts):
+def existing_paint(key, section):
+    """Reuse an original embedded atlas byte-for-byte, without raster processing."""
+    content = (OUT / f'{key}.glb').read_bytes()
+    json_length = struct.unpack_from('<I', content, 12)[0]
+    document = json.loads(content[20:20 + json_length])
+    binary_start = 20 + json_length + 8
+    image = next(image for image in document['images'] if image['name'] == key + '_' + section)
+    view = document['bufferViews'][image['bufferView']]
+    start = binary_start + view.get('byteOffset', 0)
+    return content[start:start + view['byteLength']]
+
+
+def save_glb(key, parts, textured=True, texture_sources=None):
     nodes=[]; meshes=[]; accessors=[]; views=[]; data=bytearray()
     names=list(parts)
     imgs=[]; textures=[]; materials=[{'name':'Painted','doubleSided':True,
                             'pbrMetallicRoughness':{'metallicFactor':0,'roughnessFactor':.88}}]
     mat_for={}
-    for section in ('face','tunic'):
-        if section=='tunic' and not (OUT/f'{key}-tunic.webp').exists(): continue
-        chunk=cylindrical_paint(key,section)
+    for section in (('face','tunic') if textured else ()):
+        source_key = texture_sources.get(section, key) if texture_sources else key
+        if texture_sources:
+            chunk = existing_paint(source_key, section)
+        else:
+            if section=='tunic' and not (OUT/f'{key}-tunic.webp').exists(): continue
+            chunk = cylindrical_paint(key, section)
         views.append(dict(buffer=0,byteOffset=len(data),byteLength=len(chunk)))
         data.extend(chunk)
         while len(data)%4: data.append(0)

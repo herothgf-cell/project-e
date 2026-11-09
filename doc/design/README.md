@@ -1,65 +1,75 @@
-# 프로젝트 E 설계 문서
+# Project E 게임허브
 
-- 현재 기준은 **V7 판타지 스킬·아이템**, 2026-11-06이다.
-- 실행판: Godot 독립 PC 게임, 오프라인 3 대 3, 사람 1명 + 봇 5명.
-- 영웅: 바스·리오·네마. 최신 미술 방향: 3등신의 귀여운 세미카툰 판타지.
+기준은 **V8 · 0.8.0 · 2026-11-09**다. 8명의 판타지 영웅 중 한 명을 선택해 사람 1명과 봇 5명이 3 대 3으로 싸운다. 세 라인의 성장, 측면 셀, 인접 라인 지원, 병력 동반 공성과 핵 파괴가 경기의 흐름을 만든다.
 
-현재 구현은 저장소 안내와 V7 스킬·아이템 구성에서 확인한다. 수로 전장과 영웅 모델의 편집·재현은 V5 제작 안내를 참조한다. 요소별 전투 규칙은 아래 기획 문서와 실제 소스를 대조한다. [저장소 안내](../../README.md) · [V7 스킬·아이템](27-fantasy-skills-v7.md) · [V5 제작·재현](25-illustrated-canal.md)
+## 바로가기
 
-![V5 중앙 교전 실제 렌더](assets/v5/mid-clash.webp)
-
-이 화면은 실제 렌더러에서 구성한 검토 장면이다. 생성 시안과 구분하며, 촬영 조건은 [캡처 목록](assets/v5/capture-manifest.json)에 남긴다.
-
-## 요소별 기획
-
-| 문서 | 내용 |
+| 목적 | 문서 |
 |---|---|
-| [01 경기 흐름](01-match-loop.md) | 경기 시작, 성장, 공성, 승패 |
-| [02 M01 맵](02-map-m01.md) | 세 라인과 연결 통로, 구조물, 셀과 고지 |
-| [03 전투](03-combat.md) | 기본 공격, 스킬, 피해·상태·시야 계약 |
-| [04 유닛·AI](04-units-and-ai.md) | 병력, 봇 판단과 행동 범위 |
-| [05 성장·경제](05-growth-and-economy.md) | XP, 포인트, 기지, 상점과 소모품 |
-| [06 UI·조작](06-ui-and-controls.md) | 입력, 조준, HUD, 패널과 카메라 |
-| [07 아트 방향](07-art-direction.md) | 현재 시각 목표와 읽기 우선순위 |
-| [08 초기 로드맵](08-roadmap.md) | 초기 단계 계획의 이력 |
-| [09 검증 매트릭스](09-verification.md) | 초기 검증 기준과 증거 연결 |
-| [10 설계와 실행판의 차이](10-differences.md) | 확정한 차이, 근사와 미완료 범위 |
-| [11 남은 개발](11-remaining-development.md) | 현재 구현 이후의 우선순위와 완료 조건 |
-| [캐릭터 목차](characters/README.md) | [바스](characters/01-bas.md) · [리오](characters/02-rio.md) · [네마](characters/03-nema.md) |
+| 현재 게임의 콘텐츠별 상세 기획 | [콘텐츠 10편](content/README.md) |
+| 시티 오브 템페스트의 규칙과 설계 해석 | [원작 역기획서](reverse-design/README.md) |
+| 8명 영웅의 역할과 정확한 기술 수치 | [캐릭터 시트](characters/README.md) |
+| 이번 프로토타입의 구현 범위와 실행 | [V8 8인 프로토타입](28-eight-hero-prototype.md) |
+| 수행한 검사와 배포 화면 | [V8 검증 기록](verification/2026-11-09-v8-verification.md) |
+| 8명 선택, 신규 모델과 기술의 실행 화면 | [V8 화면 모음](assets/v8/README.md) |
+| 설치·조작·자동 확인 명령 | [저장소 시작 안내](../../README.md) |
 
-## 현재 제작·검증 자료
+## 현재 게임 콘텐츠 상세 기획
 
-| 문서 | 현재 역할 |
+각 문서는 목적, 플레이 흐름, 실행 수치, 상태와 예외, 화면 피드백, 검증 기준을 함께 담는다. 현재 동작은 연결된 소스와 대조했으며 후속 실험에는 실험 조건과 관찰 항목을 적었다.
+
+| 문서 | 주요 내용 |
 |---|---|
-| [27 V7 판타지 스킬·아이템](27-fantasy-skills-v7.md) | 15개 스킬 이름, 12개 아이콘·효과, 정령목, 별샘 영약과 숲빛 치유약 |
-| [2026-11-06 V7 검증](verification/2026-11-06-v7-verification.md) | 전체 회귀, 12개 스킬·두 아이템의 실제 PCK 화면, Windows 기동, 연출 성능 보정 |
-| [2026-11-06 V6 검증](verification/2026-11-06-v6-verification.md) | 선택 화면, HUD, 추적·가장자리 카메라, PDF 전투 규칙 적용 |
-| [25 V5 수로 전장](25-illustrated-canal.md) | 복구된 3D 모델·텍스처·환경, 관절 애니메이션, 수정·촬영 방법 |
-| [2026-11-05 V5 검증](verification/2026-11-05-v5-verification.md) | 이번 소스에 대한 자동 검사, 렌더, 내보내기 수행 결과 |
-| [V5 캡처 목록](assets/v5/README.md) | 실제 경기·영웅·전장 이미지와 검토 영상 |
-| [게임 자산 안내](../../game/project-e/assets/README.md) | 실행 자산의 위치와 편집 주의점 |
+| [01 경기 흐름과 승패](content/01-match-flow.md) | 시작, 공성 단계, 사망·부활, 승패와 재시작 |
+| [02 전장과 시야](content/02-map-and-vision.md) | M01 좌표, 세 라인, 고지, 셀과 정보 공개 |
+| [03 전투와 상태](content/03-combat-and-status.md) | 시전 승인, 피해와 보호막, 제어, 취소와 다회 타격 |
+| [04 병력과 AI](content/04-units-and-ai.md) | 웨이브, 막타 유보, 포탑 어그로, 봇 판단 |
+| [05 성장](content/05-growth.md) | XP 곡선, 포인트, 투자 증가량과 상한, 원작 비교 |
+| [06 골드와 아이템](content/06-gold-and-items.md) | 골드의 역할, 수입과 지출, 두 회복 아이템, 경제 실험 |
+| [07 로스터와 편성](content/07-roster-and-drafting.md) | 8명 역할, 시작 능력치, 자동 3인 편성, 조합 시험 |
+| [08 UI와 카메라](content/08-ui-and-camera.md) | 선택, HUD, 입력, 추적·가장자리 이동, F7 |
+| [09 미술과 음향](content/09-art-and-audio.md) | 실루엣, 모델·아이콘, 경고와 효과, 상태와 소리 |
+| [10 플레이테스트와 밸런스](content/10-playtest-and-balance.md) | 영웅별 과제, 경기 기록표, 비교 조건과 조정 기준 |
 
-현재는 세 라인·공성·성장·상점, 셀 보상과 시야, 고지와 네 진입 경사로, 봇의 관측 셀 수집·지원·핵 방어·복귀가 구현되어 있다. V5는 그 위에 얼굴·의상 텍스처를 가진 GLB 영웅 3종, 환경 GLB 11종, 수로 표면, 영웅 선택 초상화를 연결한다. 영웅당 10개 관절 동작과 Q/W/E/R 효과, 전투 음향도 실행판에 존재한다. ‘봇 미구현’, ‘음향 전체 미구현’, ‘현재 영웅은 임시 도형뿐’이라는 초기 단계의 표현을 현재 상태로 해석하지 않는다.
+## 시티 오브 템페스트 역기획
 
-Windows 사용자 PC의 수동 플레이, 사람 간 밸런스, 하드웨어별 성능, 온라인·재접속·Steam은 아직 별도 작업이다. 최신 검증 문서는 실제 수행된 검사만 완료로 기록한다.
+사용자 PDF를 기본 근거로 삼고 웹 각주와 당시 공략을 함께 확인했다. 출처마다 작성 시점과 확인 범위를 기록했다. 방어 투자 상한처럼 버전이 다른 수치는 근거표에서 비교할 수 있다. 원작의 정확한 XP 곡선·상품 가격·가스 사용처처럼 추가 자료가 필요한 항목도 해당 문서에 남겼다.
 
-## 단계별 이력 — 삭제하지 않는 자료
+| 문서 | 주요 내용 |
+|---|---|
+| [01 경기와 전장](reverse-design/01-match-and-map.md) | 라인 대치, 측면 성장, 중앙 합류, 언덕과 공성 |
+| [02 전투와 조작](reverse-design/02-combat-and-controls.md) | 짧은 재사용, 마나·포션, 광역 공격과 대응 |
+| [03 성장과 경제](reverse-design/03-growth-and-economy.md) | 광물, 지표별 체력·이동속도, 투자 효과와 상한 |
+| [04 병력·공성·아이템](reverse-design/04-units-siege-and-items.md) | 가스 보상, 마무리 제한, 경험치 목표와 소모품 |
+| [05 영웅과 플레이 패턴](reverse-design/05-heroes-and-play-patterns.md) | 대표 영웅의 성향, 투자와 교전, 현재 8명 역할 연결 |
+| [06 근거와 확인 과제](reverse-design/06-evidence-and-open-questions.md) | PDF 쪽수, 출처 목록, 버전 충돌과 후속 관찰 양식 |
+
+## 8명 영웅
+
+| 영웅 | 역할 | 핵심 선택 | 상세 시트 |
+|---|---|---|---|
+| 바스 | 룬 건틀릿 전사 | 짧은 진입과 룬 보호막 | [C01](characters/01-bas.md) |
+| 리오 | 별빛 원반 마법사 | 원반 출발·귀환 경로와 닻 | [C02](characters/02-rio.md) |
+| 네마 | 숲의 결계술사 | 정령목 두 그루와 연결선 | [C03](characters/03-nema.md) |
+| 오린 | 바람의 사수 | 준비형 사격과 다음 기본공격 | [C04](characters/04-orin.md) |
+| 테르 | 수정 방패 수호자 | 뒤편 아군 보호와 후퇴 반격 | [C05](characters/05-tere.md) |
+| 무아 | 물결의 화가 | 두 구역 중 하나를 활성화 | [C06](characters/06-mua.md) |
+| 세라 | 월영 쌍검사 | 접근, 표식 축적과 소비 | [C07](characters/07-sera.md) |
+| 루메 | 잿불 연금술사 | 잔열 관리와 지연 다회 포격 | [C08](characters/08-lume.md) |
+
+각 영웅은 패시브 1개와 QWER 4개를 가진다. 선택 풀은 총 8명이며 경기 인원은 팀당 3명이다. 일반 경기에서는 레벨 3부터 성장점 1개로 R을 해금하고, 기술 체험은 레벨 3과 R 해금 상태로 시작한다. 신규 5명의 수치는 V8 플레이테스트용 실험값이다.
+
+## 제작 자료와 이력
 
 | 단계 | 문서 |
 |---|---|
-| 초기 플레이·소모품 | [12 로컬 플레이 기록](12-local-playtest-record.md), [13 소모품 검증](13-consumables-verification.md) |
-| 전장 재검토·고지 | [14 참조와 우선순위](14-tempest-reference-reprioritization.md), [15 고지 검증](15-high-ground-verification.md), [16 고지 동선](16-r30-high-ground-flow-verification.md) |
-| 피드백·초기 시각 통합 | [17 XP 피드백](17-xp-feedback-verification.md), [18 플레이 가능한 시각 단계](18-playable-visual-slice.md) |
-| V2 | [19 통합 실행판](19-integrated-v2.md), [20 전달 기록](20-v2-delivery.md) |
-| V3 | [21 판타지 아트 명세](21-fantasy-v3-art-spec.md), [22 자산 가이드](22-fantasy-v3-asset-guide.md) |
-| V4 | [23 전투 표현](23-fantasy-v4-combat-presentation.md), [24 자산 가이드](24-fantasy-v4-asset-guide.md) |
+| V8 | [8인 프로토타입](28-eight-hero-prototype.md), [검증](verification/2026-11-09-v8-verification.md) |
+| V7 | [판타지 스킬·아이템](27-fantasy-skills-v7.md), [검증](verification/2026-11-06-v7-verification.md) |
+| V6 | [PDF 적용 근거](26-cot-reference-v6.md), [선택·카메라 검증](verification/2026-11-06-v6-verification.md) |
+| V5 | [수로 전장 제작·재현](25-illustrated-canal.md), [모델 재현 기록](verification/2026-11-06-v5-model-reproduction.md), [실제 화면](assets/v5/README.md) |
+| V4 | [전투 표현](23-fantasy-v4-combat-presentation.md), [자산 안내](24-fantasy-v4-asset-guide.md) |
+| V3 | [판타지 아트 명세](21-fantasy-v3-art-spec.md), [자산 가이드](22-fantasy-v3-asset-guide.md) |
+| V2 | [통합 실행판](19-integrated-v2.md), [전달 기록](20-v2-delivery.md) |
+| 초기 설계와 구현 | [초기 요소별 기획](01-match-loop.md), [초기 검증](09-verification.md), [장기 기술·출시 계획](../../docs/README.md) |
 
-초기 공방 시안, V3 숲·석재·수정 테마와 V4 표현 검토는 의사결정의 이력이다. V5는 수로 공방의 공간 정체성에 최신 세미카툰 영웅을 연결한 현재 구현이다. 기존 `docs/`의 기술·배포·온라인 계획도 보존하지만, 계획을 구현 완료의 근거로 사용하지 않는다.
-
-## 문서 유지 규칙
-
-- **계획**은 목표와 완료 조건을 적고, **구현**은 실제 소스와 연결한다.
-- **자동 검사**, **실제 렌더 확인**, **사용자 PC 수동 플레이**를 서로 대체하지 않는다.
-- 생성 시안에는 시안임을 표시하고 실제 렌더에는 촬영 조건과 대상 소스를 기록한다.
-- 캐릭터나 장식 수정이 전투 판정·시야·동선을 바꾸면 관련 전투 기획과 검증도 함께 갱신한다.
-- 과거 검사 수치나 봇 경기 결과를 새 버전의 성능·밸런스 보증으로 옮겨 쓰지 않는다.
+버전별 기록에는 당시의 구현과 검사 조건을 보존한다. 현재 기능과 수치는 이 허브의 콘텐츠 상세 기획, 영웅 시트, V8 검증 기록을 함께 확인한다. 사람 플레이의 체감·밸런스와 하드웨어별 성능은 해당 빌드의 실제 관측값을 기록한다.

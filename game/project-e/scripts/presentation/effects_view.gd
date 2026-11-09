@@ -119,6 +119,33 @@ func _persistent_cues(battle: Variant) -> void:
 				for index: int in range(3):
 					var orbit: Vector2 = Vector2.from_angle(battle.time * 1.8 + index * TAU / 3.0)
 					_star(point + orbit * 0.45, 0.08, battle.time, Color("fff0b7"), 0.19)
+		if actor.hero == "mua":
+			for zone: Dictionary in actor.get("zones", []):
+				if float(zone.expires) <= battle.time:
+					continue
+				var point: Vector2 = zone.pos
+				var zone_color := Color("84ded6") if not enemy else Color("f8a16b")
+				if not bool(zone.active): zone_color = zone_color.darkened(0.46)
+				_ring(point, float(zone.get("radius", 2.0)), 0.065 if zone.active else 0.035, zone_color, not zone.active, 0.08)
+				if bool(zone.active):
+					_ring(point, float(zone.get("radius", 2.0)) * 0.82, 0.035, Color(zone_color, 0.55), false, 0.075)
+		if actor.hero == "sera":
+			# Marks store target ids only. Current sight grants every target position.
+			_visibility_battle = battle
+			for target_id: int in actor.get("marks", {}):
+				var target: Dictionary = battle.units.get(target_id, {})
+				var mark: Dictionary = actor.marks[target_id]
+				if target.is_empty() or not target.alive or not battle.is_visible(0, target_id) or float(mark.expires) <= battle.time:
+					continue
+				for index: int in range(int(mark.stacks)):
+					_star(target.pos + Vector2((index - 1) * 0.22, 0.0), 0.10, PI / 4, Color("c2a1e8"), 2.65)
+		if battle.is_visible(0, actor.id):
+			_visibility_battle = battle
+			if actor.hero == "orin" and float(actor.get("wind_ready_until", 0)) > battle.time:
+				_ring(actor.pos, 0.62, 0.055, Color("e4cd88"), true, 0.25)
+			if actor.hero == "lume":
+				for index: int in range(int(actor.get("heat_count", 0))):
+					_star(actor.pos + Vector2(-0.22 + index * 0.22, -0.5), 0.09, battle.time, Color("f4a16f"), 0.75)
 		_visibility_battle = null
 		if int(actor.id) == int(battle.controlled_id):
 			_visibility_battle = battle

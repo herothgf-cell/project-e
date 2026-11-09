@@ -1,10 +1,18 @@
 extends RefCounted
 ## Kit geometry and staged effects. No presentation code applies damage.
 
+const Expanded = preload("res://scripts/battle/expanded_abilities.gd")
+var expanded: RefCounted = Expanded.new()
+
 const SKILLS: Dictionary = {
 	"bas": ["룬권 파쇄", "수호 각인", "거석 돌진", "대지의 심판"],
 	"rio": ["왕복 혜성", "별무리 닻", "별빛 도약", "삼각 성좌"],
 	"nema": ["정령목 심기", "덩굴 물결", "잎새의 가호", "고대숲의 결박"],
+	"orin": ["바람살", "돌개 숨결", "순풍 걸음", "쌍둥이 폭풍"],
+	"tere": ["수정 방패격", "후위의 성벽", "수호 후퇴", "빙정 봉쇄"],
+	"mua": ["물감 웅덩이", "흐름 바꾸기", "물결 덧칠", "만조의 화폭"],
+	"sera": ["초승 베기", "달그림자", "월영 쇄도", "그믐의 심판"],
+	"lume": ["잿불 병", "화약 고리", "불씨 망토", "유성 가마"],
 }
 
 const SKILL_HELP: Dictionary = {
@@ -26,6 +34,11 @@ const SKILL_HELP: Dictionary = {
 		"잎새를 펼쳐 자신과 전방 6m의 아군을 감쌉니다.\n70도 부채꼴 안의 아군 영웅에게 1.8초 동안\n100 + 위력 40% 보호막을 부여하고\n범위·시야 안의 자기 정령목 체력을 50 회복합니다.",
 		"연결된 정령목 2그루 사이에 고대 뿌리를 깨웁니다.\n연결의 최근접점이 자신에게서 8m 안이어야 합니다.\n폭 2.2m에 120 + 위력 65% 피해와 0.6초 속박.\n발동하면 적중 여부와 관계없이 두 정령목을 소모합니다.\n준비 중 참여 정령목이 사라지면 취소됩니다.",
 	],
+	"orin": ["전방 8m, 폭 0.7m에 70 + 위력 45% 피해.\n준비 중에는 5m, 폭 2.4m로 바뀝니다.\n준비를 소모하고 다음 기본 공격을 강화합니다.", "전방 3.5m, 90도에 35 + 위력 20% 피해.\n0.8초간 25% 둔화, 5초간 발사 준비.", "2초간 보행 속도가 35% 증가합니다.", "전방 8m, 폭 1.6m에 2회 파동.\n각 85 + 위력 40% 피해, 간격 0.45초."],
+	"tere": ["전방 3m, 90도에 65 + 위력 35% 피해.\n0.8초간 25% 둔화합니다.", "조준 반대쪽 5m, 100도 아군과 자신에게\n2초간 110 + 위력 30% 보호막.\n다른 아군 보호 시 자신에게 추가 보호막.", "조준 방향으로 최대 3m 돌진합니다.\n정지 0.35초 후 출발점 반대쪽 3.5m,\n100도에 65 + 위력 30% 피해.", "전방 6m, 100도에 120 + 위력 55% 피해.\n0.8초 속박, 준비 시간 0.8초."],
+	"mua": ["6m 안에 반경 2m 물결을 8초간 설치.\n설치 시 55 + 위력 30% 피해.\n최대 2개, 최신 구역이 활성화됩니다.", "다른 구역을 활성화합니다. 하나면 유지.\n활성 구역 아군에게 2초간 보행 가속 25%.", "자신 주변 4m 아군에게 1.8초 보호막.\n80 + 위력 30%, 활성 구역 안이면\n추가로 40 + 위력 15% 보호막.", "활성 구역을 반경 3.5m로 확대 예고.\n130 + 위력 60% 피해와 0.6초 속박.\n해당 구역을 소모합니다."],
+	"sera": ["전방 2.8m, 60도에 65 + 위력 40% 피해.\n보이는 적 영웅에게 5초간 표식 1중첩.", "자신에게 1.5초간\n90 + 위력 30% 보호막을 부여합니다.", "최대 4m 돌진하며 처음 만난 영웅 앞 정지.\n적에게 50 + 위력 30% 피해.\n보이는 적 영웅에게 표식 1중첩.", "전방 3.5m, 55도에 100 + 위력 50% 피해.\n보이는 표식 영웅에게 중첩당\n35 + 위력 15% 추가 피해 후 표식 소모."],
+	"lume": ["7m 안의 지면에 반경 2m 폭발을 예고.\n0.55초 후 80 + 위력 45% 피해.", "주변 3m에 35 + 위력 20% 피해.\n0.9초간 30% 둔화합니다.", "자신에게 1.8초간 80 + 위력 25% 보호막.\n2초간 보행 속도가 25% 증가합니다.", "8m 안의 반경 2.5m에 3회 포격.\n각 70 + 위력 30% 피해, 간격 0.45초."],
 }
 
 const PASSIVES: Dictionary = {
@@ -41,12 +54,22 @@ const PASSIVES: Dictionary = {
 		"name": "숲의 품",
 		"description": "정령목 2그루 사이의 연결에 들어온 아군 영웅에게\n1.2초간 60 + 위력 20% 보호막을 부여합니다.\n같은 아군은 4초 뒤 다시 들어와야 발동합니다.",
 	},
+	"orin": {"name": "바람 장전", "description": "Q 발동 후 3초 안의 다음 기본 공격에\n30 + 위력 20% 추가 피해를 1회 부여합니다."},
+	"tere": {"name": "동행의 맹세", "description": "W로 다른 아군 영웅을 보호하면 자신에게\n2초간 50 + 위력 15% 보호막을 1회 부여합니다."},
+	"mua": {"name": "잔물결", "description": "활성 구역에 새로 진입한 아군 영웅에게\n1.2초간 35 + 위력 15% 보호막을 부여합니다.\n대상별 재발동 간격은 4초입니다."},
+	"sera": {"name": "달의 낙인", "description": "자기 표식은 대상별 최대 2중첩, 5초 유지.\n2중첩의 보이는 적 영웅에게 기본 공격하면\n55 + 위력 30% 추가 피해 후 표식을 소모합니다."},
+	"lume": {"name": "잔열", "description": "Q·W·R 발동 3회 뒤 다음 Q·W·R의\n모든 단계 피해가 25% 증가하고 순환합니다.\nE는 횟수를 증가시키거나 소모하지 않습니다."},
 }
 
 const CONFIG: Dictionary = {
 	"bas": {"Q": [16.0, 3.0, 0.20, 0.18], "W": [18.0, 5.0, 0.12, 0.12], "E": [20.0, 5.0, 0.12, 0.16], "R": [32.0, 16.0, 0.65, 0.25]},
 	"rio": {"Q": [20.0, 4.0, 0.14, 0.12], "W": [14.0, 4.0, 0.20, 0.12], "E": [18.0, 5.5, 0.06, 0.14], "R": [32.0, 15.0, 0.60, 0.20]},
 	"nema": {"Q": [14.0, 2.5, 0.25, 0.12], "W": [18.0, 3.5, 0.35, 0.12], "E": [18.0, 5.0, 0.16, 0.14], "R": [30.0, 18.0, 0.60, 0.20]},
+	"orin": {"Q": [16, 3, 0.16, 0.12], "W": [18, 5, 0.18, 0.14], "E": [16, 6, 0.08, 0.12], "R": [34, 16, 0.6, 0.2]},
+	"tere": {"Q": [16, 3.5, 0.22, 0.18], "W": [20, 5.5, 0.15, 0.15], "E": [20, 6, 0.12, 0.16], "R": [34, 18, 0.8, 0.25]},
+	"mua": {"Q": [16, 2.5, 0.25, 0.12], "W": [14, 3, 0.12, 0.12], "E": [20, 5, 0.16, 0.14], "R": [34, 18, 0.65, 0.2]},
+	"sera": {"Q": [16, 3, 0.14, 0.12], "W": [18, 5, 0.08, 0.12], "E": [20, 5.5, 0.1, 0.16], "R": [32, 16, 0.4, 0.2]},
+	"lume": {"Q": [18, 3.5, 0.55, 0.14], "W": [16, 5, 0.15, 0.12], "E": [20, 6, 0.1, 0.14], "R": [36, 18, 0.65, 0.22]},
 }
 
 
@@ -61,11 +84,15 @@ func preview(state: Variant, actor: Dictionary, slot: String, target: Vector2) -
 	var delta: Vector2 = target - actor.pos
 	var distance: float = delta.length()
 	var direction: Vector2 = delta.normalized() if distance > 0.0001 else actor.facing
-	var direction_required: bool = slot in ["Q", "E", "R"] if actor.hero == "bas" else (slot in ["Q", "E"] if actor.hero == "rio" else slot == "E")
+	var direction_required: bool = slot in ["Q", "E", "R"] if actor.hero == "bas" else (slot in ["Q", "E"] if actor.hero == "rio" else actor.hero == "nema" and slot == "E")
 	if direction_required and distance < 0.0001:
 		plan.reason = "Choose a direction"
 		return plan
 	plan.direction = direction
+	plan.movement = actor.hero in ["bas", "rio", "tere", "sera"] and slot == "E"
+	plan.support = (actor.hero == "bas" and slot == "W") or (actor.hero == "nema" and slot == "E")
+	if actor.hero in Expanded.HEROES:
+		return expanded.preview(state, actor, plan, distance)
 	var aim_valid: bool = true
 	match actor.hero + slot:
 		"basQ":
@@ -148,6 +175,9 @@ func resolve(state: Variant, actor: Dictionary, cast: Dictionary) -> void:
 			state.cancel_action(actor)
 			return
 	var power: float = cast.power
+	if actor.hero in Expanded.HEROES:
+		expanded.resolve(state, actor, cast, self)
+		return
 	match actor.hero + cast.slot:
 		"basQ":
 			area_damage(state, actor, cast, 80.0 + 0.55 * power, "slow", 0.7, 0.2)
@@ -188,7 +218,7 @@ func resolve(state: Variant, actor: Dictionary, cast: Dictionary) -> void:
 	actor.phase_left = cast.recovery
 
 
-func area_damage(state: Variant, actor: Dictionary, cast: Dictionary, amount: float, control: String = "", duration: float = 0.0, strength: float = 0.0) -> void:
+func area_damage(state: Variant, actor: Dictionary, cast: Dictionary, amount: float, control: String = "", duration: float = 0.0, strength: float = 0.0, hit_stage: String = "impact") -> void:
 	var pressure_earned: bool = false
 	for unit: Dictionary in state.units.values():
 		if not unit.alive or unit.team == actor.team or not contains(cast, unit.pos, unit.radius):
@@ -197,8 +227,10 @@ func area_damage(state: Variant, actor: Dictionary, cast: Dictionary, amount: fl
 		if not state.map.has_line_of_sight(origin, unit.pos):
 			continue
 		var visible: bool = state.is_visible(actor.team, unit.id)
-		var dealt: float = state.apply_damage(actor.id, unit.id, amount, cast.id, "impact")
+		var dealt: float = state.apply_damage(actor.id, unit.id, amount, cast.id, hit_stage)
 		if dealt > 0.0:
+			if actor.hero == "sera" and cast.slot == "Q" and unit.kind == "hero" and visible:
+				expanded.add_mark(state, actor, unit)
 			if control != "":
 				state.apply_cc(unit.id, control, duration, strength)
 			if actor.hero == "bas" and cast.slot in ["Q", "R"] and unit.kind == "hero" and visible:
@@ -256,7 +288,13 @@ func dash_step(state: Variant, actor: Dictionary, delta: float) -> void:
 			var allowed: float = state.apply_cc(contact.id, "knockback", 0.12)
 			if allowed > 0.0:
 				contact.knockback = {"direction": direction, "remaining": allowed, "speed": 0.8 / 0.12}
+	if not contact.is_empty() and contact.team != actor.team and actor.hero == "sera":
+		var dealt: float = state.apply_damage(actor.id, contact.id, 50.0 + 0.30 * cast.power, cast.id, "contact")
+		if dealt > 0.0 and state.is_visible(actor.team, contact.id):
+			expanded.add_mark(state, actor, contact)
 	if blocked or actor.dash_left < 0.001:
+		if actor.hero == "tere":
+			expanded.retreat_impact(state, actor, cast)
 		if actor.hero == "rio":
 			actor.empowered_left = 1.5
 			actor.empowered_damage = 40.0 + 0.25 * cast.power
