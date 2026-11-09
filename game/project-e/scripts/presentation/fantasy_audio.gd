@@ -47,9 +47,9 @@ func _track(hero: Dictionary) -> void:
 
 func _kit_sound(key: String) -> String:
 	match key:
-		"bas": return "slash"
-		"rio": return "arcane"
-		"nema": return "nature"
+		"bas", "tere", "sera": return "slash"
+		"rio", "orin", "lume": return "arcane"
+		"nema", "mua": return "nature"
 	return ""
 
 func observe(battle: Variant, active: bool, paused: bool) -> void:

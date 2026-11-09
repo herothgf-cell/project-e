@@ -1,4 +1,5 @@
 extends Node
+const RosterScript = preload("res://scripts/battle/hero_roster.gd")
 ## Isolated interactive inspection. Same battlefield, rigs, map and skill authority.
 ## Only this instance receives reset/cooldown/respawn assistance.
 var original: Node3D
@@ -67,8 +68,8 @@ func _build_ui() -> void:
 	box.add_child(title)
 	var row := HFlowContainer.new()
 	box.add_child(row)
-	for key: String in ["bas", "rio", "nema"]:
-		_button(row, {"bas": "01 바스", "rio": "02 리오", "nema": "03 네마"}[key], func() -> void: select_hero(key))
+	for key: String in RosterScript.KEYS:
+		_button(row, RosterScript.HEROES[key][0], func() -> void: select_hero(key))
 	_button(row, "전체 맵", func() -> void: set_map_view(true))
 	_button(row, "언덕 이동", func() -> void: play_action("hill"))
 	_button(row, "0.5× / 1×", func() -> void: speed = 0.5 if speed == 1.0 else 1.0)
@@ -118,7 +119,7 @@ func _button(parent: Control, text: String, callback: Callable) -> Button:
 	return button
 
 func select_hero(key: String) -> void:
-	if key not in ["bas", "rio", "nema"]: return
+	if key not in RosterScript.KEYS: return
 	selected_hero = key
 	for index: int in range(4):
 		var slot: String = ["Q", "W", "E", "R"][index]
@@ -179,6 +180,19 @@ func play_action(key: String) -> bool:
 				stage.battle.step(0.45)
 			hero.energy = hero.max_energy
 			stage._sync_visuals(0.0)
+		if selected_hero == "mua" and key in ["W", "E", "R"]:
+			for point: Vector2 in [Vector2(-2, 0), Vector2(1, 0)]:
+				hero.cooldowns.Q = 0.0
+				hero.energy = hero.max_energy
+				accepted = stage.battle.command_cast(hero.id, "Q", point) and accepted
+				stage.battle.step(0.55)
+			hero.energy = hero.max_energy
+		if selected_hero == "sera" and key == "R":
+			# Real crescent hits create the marked bonus used by the demonstration.
+			hero.pos = Vector2(-1, 0)
+			accepted = stage.battle.command_cast(hero.id, "Q", Vector2(1, 0)) and accepted
+			stage.battle.step(0.6)
+			hero.energy = hero.max_energy
 		var target := Vector2(1, 0)
 		if selected_hero == "bas" and key == "W": target = hero.pos
 		accepted = stage.battle.command_cast(hero.id, key, target) and accepted
@@ -246,7 +260,7 @@ func _redraw() -> void:
 	var slot_index: int = ["Q", "W", "E", "R"].find(action)
 	if slot_index >= 0:
 		action_name = "%s %s" % [action, stage.hud.SKILLS[selected_hero][slot_index]]
-	status.text = "%s / %s · %.2f초 · %.1f× · 지면 %.2fm · %s" % [{"bas":"바스", "rio":"리오", "nema":"네마"}[selected_hero], action_name, elapsed, speed, stage.battle.map.ground_height(hero.pos), "연출실 전체 지형 보기" if map_view else "스킬 범위와 적중 확인"]
+	status.text = "%s / %s · %.2f초 · %.1f× · 지면 %.2fm · %s" % [RosterScript.HEROES[selected_hero][0], action_name, elapsed, speed, stage.battle.map.ground_height(hero.pos), "연출실 전체 지형 보기" if map_view else "스킬 범위와 적중 확인"]
 
 func set_map_view(enabled: bool) -> void:
 	map_view = enabled

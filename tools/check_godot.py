@@ -74,6 +74,9 @@ def main() -> int:
         ("Fantasy consumable metadata and icons", "test_item_concepts_v7.gd", "Item concepts V7"),
         ("Distinct bounded skill geometry and spirit trees", "test_skill_vfx_v7.gd", "Skill VFX V7"),
         ("Live comet, spirit link and recovery feedback", "test_persistent_fx_v7.gd", "Persistent FX V7"),
+        ("Eight hero selection and three-person teams", "test_roster_v8.gd", "Roster V8"),
+        ("New hero skills, passives and owned state", "test_hero_abilities_v8.gd", "Hero abilities V8"),
+        ("Eight hero cards, models and review actions", "test_roster_presentation_v8.gd", "Roster presentation V8"),
     )
     for label, script, result_label in checks:
         print(f"Checking {label}", flush=True)

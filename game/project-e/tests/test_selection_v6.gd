@@ -20,7 +20,7 @@ func _run() -> void:
 			var portrait := node as TextureRect
 			if portrait.texture != null and portrait.texture.resource_path == "res://assets/portraits/%s.webp" % key:
 				found = true
-				_check(portrait.size.y >= 180.0, key + " illustration has room for the hero")
+				_check(portrait.size.y >= 140.0, key + " compact illustration has room for the hero")
 		_check(found, key + " uses the shipped illustrated portrait")
 		hud._hero_buttons[key].pressed.emit()
 		_check(hud.selected_hero == key and hud._hero_buttons[key].button_pressed, key + " card selects its hero")

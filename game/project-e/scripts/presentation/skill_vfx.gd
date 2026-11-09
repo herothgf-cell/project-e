@@ -3,7 +3,12 @@ extends MeshInstance3D
 const MOTIFS: Dictionary = {
 	"bas": {"Q":"runic_impact", "W":"guardian_sigil", "E":"stone_charge", "R":"earth_judgment"},
 	"rio": {"Q":"comet_disc", "W":"star_anchor", "E":"starlight_step", "R":"constellation"},
-	"nema": {"Q":"spirit_sapling", "W":"vine_wave", "E":"leaf_ward", "R":"ancient_roots"}
+	"nema": {"Q":"spirit_sapling", "W":"vine_wave", "E":"leaf_ward", "R":"ancient_roots"},
+	"orin": {"Q":"wind_arrow", "W":"spiral_breath", "E":"tailwind_steps", "R":"twin_tempests"},
+	"tere": {"Q":"crystal_bash", "W":"rear_bastion", "E":"guard_retreat", "R":"ice_lock"},
+	"mua": {"Q":"paint_pool", "W":"flow_exchange", "E":"wave_overpaint", "R":"tidal_canvas"},
+	"sera": {"Q":"crescent_slash", "W":"moon_shadow", "E":"lunar_rush", "R":"new_moon_judgment"},
+	"lume": {"Q":"ember_bottle", "W":"powder_ring", "E":"cinder_cloak", "R":"meteor_kiln"}
 }
 var rendered_points: Array[Vector2] = []
 var rendered_motifs: Dictionary = {}
@@ -19,7 +24,7 @@ var _effect_wall_clear: bool = false
 var _effect_flat: bool = false
 
 func style_for(hero_key: String, slot: String) -> Dictionary:
-	var tint: Color = Color("ddc58a") if hero_key == "bas" else (Color("a8dfff") if hero_key == "rio" else Color("9ce3a8"))
+	var tint := Color(preload("res://scripts/battle/hero_roster.gd").ACCENTS.get(hero_key, "ffffff"))
 	return {"motif": str(MOTIFS.get(hero_key, {}).get(slot, "")), "tint": tint}
 
 func _ready() -> void:
@@ -196,6 +201,87 @@ func _draw_pattern(key: String, fraction: float, color: Color) -> void:
 				_stroke(origin.lerp(point, 0.84), point, 0.035, 0.11, accent)
 		"nemaR":
 			_vines(0.23, 0.15 + rise * 0.48, color, true)
+
+		"orinQ":
+			for point: Vector2 in _samples(7, 0.60):
+				_chevron(point, direction, 0.22, 0.18, color)
+				_stroke(point - direction * 0.40, point, 0.04, 0.21, accent)
+		"orinW":
+			for point: Vector2 in _samples(9, 0.60):
+				_crescent(point, (point - origin).orthogonal().normalized(), 0.28, 0.18 + rise * 0.3, color)
+		"orinE":
+			for point: Vector2 in _samples(5, 0.42 + fraction * 0.3):
+				_chevron(point, direction, 0.30, 0.15, color)
+				_crescent(point, direction, 0.18, 0.32, accent)
+		"orinR":
+			for point: Vector2 in _samples(12, 0.65):
+				for side: float in [-1.0, 1.0]:
+					_crescent(point + direction.orthogonal() * side * 0.18, direction * side, 0.26, 0.18 + rise * 0.5, color)
+		"tereQ":
+			for point: Vector2 in _samples(5, 0.57):
+				_shield(point, direction.orthogonal(), 0.25, 0.60, color)
+				_stone(point, 0.12, 0.25, direction, accent)
+		"tereW":
+			for point: Vector2 in _samples(8, 0.72):
+				_shield(point, (point - origin).orthogonal().normalized(), 0.28, 0.85, color)
+		"tereE":
+			for point: Vector2 in _samples(6, 0.5):
+				_chevron(point, -direction, 0.22, 0.12, accent)
+				_shield(point, direction.orthogonal(), 0.16, 0.32, color)
+		"tereR":
+			for point: Vector2 in _samples(13, 0.68):
+				_stone(point, 0.22, 0.35 + rise * 1.0, direction, color)
+				_star(point, 0.18, 0.25, accent)
+		"muaQ":
+			for point: Vector2 in _samples(9, 0.60):
+				_crescent(point, (point - origin).normalized(), 0.26, 0.12, color)
+				_leaf(point, direction, 0.13, 0.22, accent)
+		"muaW":
+			for point: Vector2 in _samples(6, 0.52):
+				_chevron(point, (point - origin).orthogonal().normalized(), 0.32, 0.15, color)
+				_crescent(point, -direction, 0.24, 0.24, accent)
+		"muaE":
+			for point: Vector2 in _samples(12, 0.64):
+				_crescent(point, direction, 0.28, 0.20 + rise * 0.55, color)
+				_stroke(point - direction * 0.16, point + direction * 0.16, 0.08, 0.13, accent)
+		"muaR":
+			var points: Array[Vector2] = _samples(19, 0.74)
+			for index: int in range(points.size()):
+				if index > 0: _stroke(points[index-1], points[index], 0.12, 0.22 + rise * 0.20, color)
+				_crescent(points[index], direction, 0.22, 0.30 + rise * 0.45, accent)
+		"seraQ":
+			for point: Vector2 in _samples(5, 0.63):
+				_crescent(point, direction, 0.40, 0.22, color)
+				_stroke(point - direction * 0.2, point + direction * 0.2, 0.055, 0.24, accent)
+		"seraW":
+			for point: Vector2 in _samples(4, 0.44):
+				_crescent(point, direction, 0.32, 0.55, color)
+				_crescent(point + direction * 0.15, -direction, 0.20, 0.18, color.darkened(0.4))
+		"seraE":
+			for point: Vector2 in _samples(8, 0.58):
+				_crescent(point, -direction, 0.27, 0.18, color)
+				_chevron(point, direction, 0.18, 0.30, accent)
+		"seraR":
+			for point: Vector2 in _samples(10, 0.66):
+				_crescent(point, direction, 0.38, 0.30 + rise * 0.55, color)
+				_stroke(point - Vector2.ONE * 0.20, point + Vector2.ONE * 0.20, 0.07, 0.34, accent)
+				_stroke(point - Vector2(1,-1) * 0.20, point + Vector2(1,-1) * 0.20, 0.07, 0.34, accent)
+		"lumeQ":
+			for point: Vector2 in _samples(7, 0.56):
+				_stone(point, 0.16, 0.23 + rise * 0.40, direction, color)
+				_star(point, 0.11, 0.60, accent)
+		"lumeW":
+			for point: Vector2 in _samples(14, 0.76):
+				_leaf(point, (point - origin).normalized(), 0.22, 0.34 + rise * 0.45, color)
+		"lumeE":
+			for point: Vector2 in _samples(8, 0.40):
+				_leaf(point, direction, 0.24, 0.45 + rise * 0.35, color)
+				_star(point, 0.10, 0.18, accent)
+		"lumeR":
+			for point: Vector2 in _samples(11, 0.62):
+				_stone(point, 0.23, 0.40 + rise * 0.65, direction, color)
+				_stroke(point, point + direction * 0.42, 0.09, 0.20, accent)
+				_star(point, 0.20, 0.25, accent)
 
 func _samples(count: int, radius_fraction: float) -> Array[Vector2]:
 	var result: Array[Vector2] = []

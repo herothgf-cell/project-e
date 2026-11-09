@@ -5,6 +5,11 @@ const MODELS := {
 	"bas": preload("res://assets/heroes/bas.glb"),
 	"rio": preload("res://assets/heroes/rio.glb"),
 	"nema": preload("res://assets/heroes/nema.glb"),
+	"orin": preload("res://assets/heroes/orin.glb"),
+	"tere": preload("res://assets/heroes/tere.glb"),
+	"mua": preload("res://assets/heroes/mua.glb"),
+	"sera": preload("res://assets/heroes/sera.glb"),
+	"lume": preload("res://assets/heroes/lume.glb"),
 }
 const PAINT_SHADER := preload("res://assets/heroes/painted.gdshader")
 static var _outlined: ShaderMaterial
@@ -112,6 +117,41 @@ func _build_animations() -> void:
 		poses = {"Q": [Vector3(-1.55, 0, -0.55),Vector3(-1.9, 0, 0.3),Vector3(0.24, 0.35, 0)], "W": [Vector3(-1.30, 0, 0.62),Vector3(-1.30, 0, -0.62),Vector3(0.10, 0, 0)], "E": [Vector3(-0.4, 0, -0.2),Vector3(-1.85, 0, 0),Vector3(-0.35, -0.15, 0)], "R": [Vector3(-2.85, 0, -0.20),Vector3(-2.85, 0, 0.20),Vector3(-0.20, 0, 0)]}
 	elif hero_key == "rio":
 		poses = {"Q": [Vector3(-0.3, 0, -0.55),Vector3(-1.4, 0, 0.8),Vector3(0, -0.60, 0.15)], "W": [Vector3(-1.8, 0, -0.2),Vector3(-0.6, 0, 0.25),Vector3(0.22, 0.22, 0)], "E": [Vector3(0.5, 0, -0.65),Vector3(0.5, 0, 0.65),Vector3(-0.48, 0, 0.25)], "R": [Vector3(-1.4, 0, -1.2),Vector3(-1.4, 0, 1.2),Vector3(-0.08, 0.60, 0)]}
+	elif hero_key == "orin":
+		poses = {
+			"Q": [Vector3(-0.2, 0.12, -0.35), Vector3(-1.6, -0.2, 0.45), Vector3(0.12, 0.1, 0.05)],
+			"W": [Vector3(-1.3, 0.12, -0.35), Vector3(-1.8, -0.2, 0.45), Vector3(0.12, -0.2, 0.05)],
+			"E": [Vector3(0.6, 0.12, -0.35), Vector3(0.4, -0.2, 0.45), Vector3(0.12, -0.4, 0.05)],
+			"R": [Vector3(-2.0, 0.12, -0.35), Vector3(-2.3, -0.2, 0.45), Vector3(0.12, 0.3, 0.05)],
+		}
+	elif hero_key == "tere":
+		poses = {
+			"Q": [Vector3(-1.7, 0.12, -0.35), Vector3(-0.8, -0.2, 0.45), Vector3(0.12, 0.2, 0.05)],
+			"W": [Vector3(-1.5, 0.12, -0.35), Vector3(-1.2, -0.2, 0.45), Vector3(0.12, -0.1, 0.05)],
+			"E": [Vector3(-1.3, 0.12, -0.35), Vector3(0.7, -0.2, 0.45), Vector3(0.12, -0.35, 0.05)],
+			"R": [Vector3(-2.4, 0.12, -0.35), Vector3(-0.9, -0.2, 0.45), Vector3(0.12, 0.1, 0.05)],
+		}
+	elif hero_key == "mua":
+		poses = {
+			"Q": [Vector3(-0.5, 0.12, -0.35), Vector3(-1.8, -0.2, 0.45), Vector3(0.12, 0.4, 0.05)],
+			"W": [Vector3(-1.5, 0.12, -0.35), Vector3(-0.6, -0.2, 0.45), Vector3(0.12, -0.4, 0.05)],
+			"E": [Vector3(-1.7, 0.12, -0.35), Vector3(-1.7, -0.2, 0.45), Vector3(0.12, 0.0, 0.05)],
+			"R": [Vector3(-2.7, 0.12, -0.35), Vector3(-2.0, -0.2, 0.45), Vector3(0.12, 0.25, 0.05)],
+		}
+	elif hero_key == "sera":
+		poses = {
+			"Q": [Vector3(-1.3, 0.12, -0.35), Vector3(-1.9, -0.2, 0.45), Vector3(0.12, 0.6, 0.05)],
+			"W": [Vector3(-2.1, 0.12, -0.35), Vector3(-0.3, -0.2, 0.45), Vector3(0.12, -0.6, 0.05)],
+			"E": [Vector3(0.5, 0.12, -0.35), Vector3(-1.0, -0.2, 0.45), Vector3(0.12, -0.5, 0.05)],
+			"R": [Vector3(-2.4, 0.12, -0.35), Vector3(-2.8, -0.2, 0.45), Vector3(0.12, 0.7, 0.05)],
+		}
+	elif hero_key == "lume":
+		poses = {
+			"Q": [Vector3(-1.4, 0.12, -0.35), Vector3(-0.6, -0.2, 0.45), Vector3(0.12, -0.3, 0.05)],
+			"W": [Vector3(-0.4, 0.12, -0.35), Vector3(-1.9, -0.2, 0.45), Vector3(0.12, 0.3, 0.05)],
+			"E": [Vector3(-1.3, 0.12, -0.35), Vector3(-1.0, -0.2, 0.45), Vector3(0.12, -0.1, 0.05)],
+			"R": [Vector3(-2.6, 0.12, -0.35), Vector3(-0.5, -0.2, 0.45), Vector3(0.12, 0.2, 0.05)],
+		}
 	else:
 		poses = {"Q": [Vector3(-0.4, 0, -0.25),Vector3(-1.9, 0, 0.15),Vector3(0.25, -0.20, 0)], "W": [Vector3(-1.5, 0, -0.75),Vector3(-1.5, 0, 0.75),Vector3(0.12, 0, 0)], "E": [Vector3(-1.3, 0, 0.25),Vector3(-1.0, 0, -0.50),Vector3(-0.10, 0.25, 0)], "R": [Vector3(-2.45, 0, -0.8),Vector3(-2.45, 0, 0.8),Vector3(-0.22, 0, 0)]}
 	for slot: String in poses:

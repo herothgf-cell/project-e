@@ -110,7 +110,7 @@ func cc(state: Variant, target_id: int, kind: String, duration: float, strength:
 		unit.root_left = maxf(unit.root_left, allowed)
 	else:
 		unit.stun_left = maxf(unit.stun_left, allowed)
-	var movement_windup: bool = unit.phase == "windup" and unit.cast.get("slot", "") == "E" and unit.hero in ["bas", "rio"]
+	var movement_windup: bool = unit.phase == "windup" and unit.cast.get("movement", false)
 	if kind != "root" or unit.phase == "dash" or movement_windup:
 		state.cancel_action(unit)
 	return allowed
@@ -190,6 +190,7 @@ func _kill(state: Variant, unit: Dictionary, source: Dictionary, team: int) -> v
 		unit.pressure_left = 0.0
 		unit.empowered_left = 0.0
 		unit.return_mark.clear()
+		state._abilities.expanded.clear_owner(state, unit)
 		unit.protected = 0.0
 		unit.deaths += 1
 		for pin_id: int in unit.pins.duplicate():

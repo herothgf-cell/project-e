@@ -613,13 +613,13 @@ def unwrap_cylinder(pos,normals,faces,section):
     return np.asarray(pos),np.asarray(normals),np.asarray(uv),faces
 
 
-def save_glb(key, parts):
+def save_glb(key, parts, textured=True):
     nodes=[]; meshes=[]; accessors=[]; views=[]; data=bytearray()
     names=list(parts)
     imgs=[]; textures=[]; materials=[{'name':'Painted','doubleSided':True,
                             'pbrMetallicRoughness':{'metallicFactor':0,'roughnessFactor':.88}}]
     mat_for={}
-    for section in ('face','tunic'):
+    for section in (('face','tunic') if textured else ()):
         if section=='tunic' and not (OUT/f'{key}-tunic.webp').exists(): continue
         chunk=cylindrical_paint(key,section)
         views.append(dict(buffer=0,byteOffset=len(data),byteLength=len(chunk)))

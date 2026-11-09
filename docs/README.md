@@ -1,8 +1,10 @@
-# 기획 문서 목차
+# 초기·장기 기획 문서 목차
+
+현재 V8의 콘텐츠 상세 기획, 원작 역기획, 8명 영웅 시트와 실행 검증은 게임허브에서 확인한다. 이 폴더는 초기 단계와 장기 개발의 의사결정 이력을 보존한다. [Project E 게임허브](../doc/design/README.md) · [V8 캐릭터](../doc/design/characters/README.md)
 
 - 버전: v0.3 (장기 기획과 현재 오프라인 구현을 함께 안내)
 - 개정일: 2026-10-27, Asia/Seoul
-- 상태: Godot 오프라인 3라인·3영웅·3대3 전투 프로토타입. 현재 요소별 기획은 [doc/design](../doc/design/README.md), 실행 증거는 [검증 기록](../doc/design/09-verification.md). 이 폴더는 공통 수치와 장기 계획의 원본 정본을 유지한다.
+- 기록 시점의 상태는 Godot 오프라인 3라인·3영웅·3대3 프로토타입이다. V8은 총 8명 선택 풀로 확장했다.
 
 이번에 추가한 개발은 R09 기지 상점·소모품 전체와 R10 중 구매/사용 판단이며 구현·자동 검증을 완료했다. 고정 키는 **G 성장/B 기지 이동/P 상점/D 사용**, 두 슬롯 클릭은 I01/I02 종류 선택만 한다. 초기 UI 제안의 G 핑/U 성장/B 상점과 구별한다. 현재 계약과 수행 증거는 [성장·경제](../doc/design/05-growth-and-economy.md), [UI·조작](../doc/design/06-ui-and-controls.md), [남은 개발](../doc/design/11-remaining-development.md)을 따른다. 이번12묶음3,453 assertion 실패0·메인90프레임·431.8초6봇 핵 파괴 결과와 최종 화면/새 export 상태는 [최신 검증](../doc/design/13-consumables-verification.md)에 기록한다. 원본 장기 전술·튜토리얼·온라인을 완료했다는 의미는 아니다.
 
