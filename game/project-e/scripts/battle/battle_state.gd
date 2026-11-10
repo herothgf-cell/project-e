@@ -99,10 +99,10 @@ func reset(hero_key: String = "bas", practice: bool = false) -> void:
 				controlled_id = unit.id
 	for spec: Dictionary in map.tower_specs:
 		var unit: Dictionary = _entity("tower", spec.team, spec.pos, 2600.0 if spec.subtype == "inner" else 2000.0, 1.0)
-		unit.merge({"name": "%s %s %s" % ["West" if spec.team == 0 else "East", ["N", "C", "S"][spec.lane], spec.subtype], "lane": spec.lane, "subtype": spec.subtype, "attack_range": 8.5, "attack_damage": 180.0, "attack_windup": 0.1, "locked": spec.subtype == "inner"}, true)
+		unit.merge({"name": "%s %s %s" % ["South" if spec.team == 0 else "North", ["Left", "Center", "Right"][spec.lane], spec.subtype], "lane": spec.lane, "subtype": spec.subtype, "attack_range": 8.5, "attack_damage": 180.0, "attack_windup": 0.1, "locked": spec.subtype == "inner"}, true)
 	for team: int in range(2):
 		var core: Dictionary = _entity("core", team, map.core_positions[team], 4000.0, 2.0)
-		core.merge({"name": "West Core" if team == 0 else "East Core", "locked": true, "lane": 1}, true)
+		core.merge({"name": "South Core" if team == 0 else "North Core", "locked": true, "lane": 1}, true)
 	refresh_locks()
 
 
@@ -917,4 +917,4 @@ func _resolve_victory() -> void:
 	elif destroyed.size() == 1:
 		winner = 1 - destroyed[0]
 	if winner != -1:
-		log_event("result", "Draw" if winner == 2 else ("West wins" if winner == 0 else "East wins"), {"winner": winner})
+		log_event("result", "Draw" if winner == 2 else ("South wins" if winner == 0 else "North wins"), {"winner": winner})

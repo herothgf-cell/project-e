@@ -10,9 +10,9 @@ config_version=5
 
 [application]
 
-config/name="Project E V8 - Astra Fantasy Arena"
-config/version="0.8.0"
-config/description="Eight fantasy heroes with distinct QWER kits, three-lane offline 3v3 combat, growth and siege."
+config/name="Project E V9 - Astra Fantasy Arena"
+config/version="0.9.0"
+config/description="Eight fantasy heroes, a vertical three-lane battlefield, offline 3v3 combat and coordinated core siege."
 run/main_scene="res://scenes/battlefield.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 

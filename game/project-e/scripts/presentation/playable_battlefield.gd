@@ -106,7 +106,7 @@ func _update_camera(delta: float) -> void:
 	var pitch: float = deg_to_rad(55.0)
 	var height: float = float(battle.map.ground_height(_camera_focus))
 	var look := Vector3(_camera_focus.x, height + 0.65, -_camera_focus.y)
-	camera.position = look + Vector3(0, sin(pitch) * distance, cos(pitch) * distance)
+	camera.position = look + DisplayLayout.camera_offset(sin(pitch) * distance, cos(pitch) * distance)
 	camera.look_at(look, Vector3.UP)
 
 func edge_pan_axis(mouse: Vector2, bounds: Rect2, over_ui: bool = false) -> Vector2:
@@ -131,7 +131,7 @@ func pan_camera(axis: Vector2, delta: float) -> void:
 	if not _camera_input_allowed() or not axis.is_finite() or axis.is_zero_approx() or not is_finite(delta) or delta <= 0:
 		return
 	_camera_follow = false
-	_camera_focus += Vector2(axis.x, -axis.y).limit_length(1.0) * 23.0 * delta
+	_camera_focus += DisplayLayout.screen_axis_to_sim(axis).limit_length(1.0) * 23.0 * delta
 	_update_camera(0.0)
 
 func _notification(what: int) -> void:

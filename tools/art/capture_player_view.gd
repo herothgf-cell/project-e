@@ -31,7 +31,7 @@ func _run() -> void:
 	scene.edge_pan_enabled = false
 	await _settle()
 	_check(scene.hud.selection.visible, "Hero selection is the initial screen")
-	_check(str(ProjectSettings.get_setting("application/config/version", "")) == "0.8.0", "V8 build identity")
+	_check(str(ProjectSettings.get_setting("application/config/version", "")) == "0.9.0", "V9 build identity")
 	for size: Vector2i in [Vector2i(1280, 720), Vector2i(1366, 768), Vector2i(960, 540)]:
 		root.size = size
 		await _settle()
@@ -103,7 +103,7 @@ func _run() -> void:
 	scene.hud._toast_left = 0.0
 	scene.hud._toast.hide()
 	await _settle()
-	await _save("battle-v8")
+	await _save("battle-v9")
 	var bottom: Control = scene.hud._bottom
 	_check(bottom.get_global_rect().size.y <= 128.0, "Compact battle HUD")
 	_check(root.get_visible_rect().encloses(bottom.get_global_rect()), "Battle HUD fits viewport")
@@ -127,7 +127,7 @@ func _run() -> void:
 			_check(not camera_control.get_global_rect().intersects(panel.get_global_rect()), "Small-window camera row avoids HUD panels")
 	await _save("battle-low-health-960x540")
 	await _capture_fantasy_kits()
-	var document := {"version": "0.8.0", "engine": Engine.get_version_info().string,
+	var document := {"version": "0.9.0", "engine": Engine.get_version_info().string,
 		"source": capture_source,
 		"checks": checks, "failures": failures, "captures": records}
 	var manifest := FileAccess.open(output.path_join("player-review.json"), FileAccess.WRITE)

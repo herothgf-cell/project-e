@@ -23,6 +23,10 @@ func _hero(state: Variant, actor: Dictionary) -> void:
 		actor.objective_kind = ""
 		actor.objective_id = -1
 		actor.objective_cooldown = state.time + REST_TIME
+		if actor.ai_retreat and actor.hp >= actor.max_hp * 0.85 and state.is_in_home_base(actor.id):
+			# Recovery has finished and its task is cleared. Choose the lane
+			# before the legacy policy releases retreat and leaves the base.
+			_redeploy_from_home(state, actor)
 		super._hero(state, actor)
 		return
 	var defense: Dictionary = _core_threat(state, actor)
@@ -38,6 +42,9 @@ func _hero(state: Variant, actor: Dictionary) -> void:
 	if not kind.is_empty():
 		_follow_task(state, actor)
 		return
+	# Only a fresh departure may change lane. Existing tasks, action locks,
+	# recovery, and life cleanup keep their normal precedence above.
+	_redeploy_from_home(state, actor)
 	if _near_enemy(state, actor, 7.0) or state.time < float(actor.get("objective_cooldown", 0.0)):
 		super._hero(state, actor)
 		return
@@ -53,6 +60,46 @@ func _hero(state: Variant, actor: Dictionary) -> void:
 			_follow_task(state, actor)
 			return
 	super._hero(state, actor)
+
+func _redeploy_from_home(state: Variant, actor: Dictionary) -> void:
+	# A new departure can join an existing breach without crossing an enemy
+	# lane in the field. Use the same base and recovery threshold as retreat.
+	if actor.hp < actor.max_hp * 0.85 or not state.is_in_home_base(actor.id):
+		return
+	if str(actor.get("objective_kind", "")) == "defend" or not _core_threat(state, actor).is_empty():
+		return
+	var exposed: bool = false
+	var breached: Array[int] = []
+	for structure: Dictionary in state.units.values():
+		if structure.team == actor.team:
+			continue
+		# Structure destruction and unlocks are public; no enemy health or
+		# unobserved mobile unit positions enter this strategic choice.
+		if structure.kind == "core" and structure.alive and not structure.locked:
+			exposed = true
+		if structure.kind == "tower" and structure.get("subtype", "") == "inner" and not structure.alive:
+			breached.append(int(structure.lane))
+	if not exposed or breached.is_empty() or breached.has(int(actor.lane)):
+		return
+	breached.sort()
+	for lane: int in breached:
+		var assigned: int = 0
+		for ally: Dictionary in state.units.values():
+			# Dead heroes retain their next departure slot; the human player
+			# also counts, but think() never changes the controlled hero.
+			if ally.kind == "hero" and ally.team == actor.team and int(ally.lane) == lane:
+				assigned += 1
+		if assigned >= 2:
+			continue
+		var previous_lane: int = int(actor.lane)
+		actor.lane = lane
+		actor.objective_kind = ""
+		actor.objective_id = -1
+		actor.objective_until = 0.0
+		actor.erase("objective_return")
+		state.stats["siege_redeployments"] = int(state.stats.get("siege_redeployments", 0)) + 1
+		state.log_event("lane_rotation", "%s joins the %s lane" % [actor.name, ["left", "center", "right"][lane]], {"target_id": actor.id, "from_lane": previous_lane, "lane": lane})
+		return
 
 func _begin(state: Variant, actor: Dictionary, target: Dictionary, kind: String) -> void:
 	if str(actor.get("objective_kind", "")).is_empty():

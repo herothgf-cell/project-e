@@ -143,6 +143,8 @@ ProjectE.exe와 ProjectE.pck는 같은 폴더에 함께 둔다.
 일반 경기는 레벨 1·성장 2포인트로 시작한다. G로 투자한다.
 기술 체험에서는 경기에 참가한 6명 모두 레벨 3·R 해금·잔여 3포인트로 시작한다.
 아군 병력과 함께 외곽탑→내곽탑→핵을 공격한다.
+전장은 아군 하단·적군 상단, 왼쪽·중앙·오른쪽 세 라인으로 표시된다.
+카메라와 미니맵에서 같은 방향으로 전진·합류한다.
 
 조작
 지면 우클릭: 이동. 보이는 적 우클릭: 접근 후 기본 공격.
@@ -183,7 +185,7 @@ F1: 조작과 전장 안내. Esc: 일시정지 메뉴.
   .\\ProjectE.exe --log-file "$env:TEMP\\ProjectE-playtest.log"
   Get-Content "$env:TEMP\\ProjectE-playtest.log"
 문제가 있으면 %TEMP%\\ProjectE-playtest.log를 화면·재현 입력과 함께 보관한다.
-기본 로그는 %APPDATA%\\Godot\\app_userdata\\Project E V8 - Astra Fantasy Arena\\logs\\godot.log에 저장된다.
+기본 로그는 %APPDATA%\\Godot\\app_userdata\\Project E V9 - Astra Fantasy Arena\\logs\\godot.log에 저장된다.
 release 빌드에는 별도 콘솔 창이 없으므로 위 log-file 명령으로 기록을 확인한다.
 
 자동 검증 범위

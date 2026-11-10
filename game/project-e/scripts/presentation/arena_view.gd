@@ -12,6 +12,7 @@ const TERRAIN_SHADER := preload("res://assets/environment/canal_surface.gdshader
 const FLAGSTONES := preload("res://assets/environment/canal_flagstones.webp")
 const WATERBED := preload("res://assets/environment/canal_waterbed.webp")
 const MOSAIC_BLUE := Color("879eb4")
+const DisplayLayout = preload("res://scripts/presentation/battlefield_layout.gd")
 const PAVED: Array[Color] = [CREAM, PALE, Color("d9d0ae"), Color("e1d4af"), Color("c3d8c1")]
 
 var _materials: Dictionary = {}
@@ -25,7 +26,9 @@ func build(map: Variant, units: Dictionary) -> void:
 	terrain_map = map
 	_building_terrain = true
 	_box(self, Vector3(124, 1.1, 84), Vector3(0, -1.15, 0), Color("326c69"))
-	_box(self, Vector3(210, 0.16, 140), Vector3(0, -0.48, 0), Color("62aaa0"))
+	# A square water backdrop also fills the portrait map's wide overview camera.
+	# This is decorative geometry; walkability remains in BattleMap.
+	_box(self, Vector3(420, 0.16, 420), Vector3(0, -0.48, 0), Color("62aaa0"))
 	for lane: Array in map.lane_paths:
 		for i: int in range(lane.size() - 1):
 			_corridor(lane[i], lane[i + 1], 6.0, CREAM)
@@ -70,7 +73,7 @@ func build(map: Variant, units: Dictionary) -> void:
 	for lane_index: int in range(3):
 		var y: float = [18.0, 0.0, -18.0][lane_index]
 		for x: float in [-5.7, 5.7]:
-			_lane_emblem(Vector2(x, y), ["N", "C", "S"][lane_index])
+			_lane_emblem(Vector2(x, y), DisplayLayout.LANE_LABELS[lane_index])
 
 	_building_terrain = false
 

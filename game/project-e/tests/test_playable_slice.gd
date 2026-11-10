@@ -42,7 +42,7 @@ func _run() -> void:
 	_check(scene._camera_focus == focus, "paused/modal gameplay rejects edge pan")
 	scene.paused = false
 	scene.pan_camera(Vector2.RIGHT, 0.5)
-	_check(scene._camera_focus.x > focus.x and not scene._camera_follow, "manual pan moves camera and releases hero follow")
+	_check(scene._camera_focus.y < focus.y and not scene._camera_follow, "manual pan moves camera right and releases hero follow")
 	scene.open_growth()
 	focus = scene._camera_focus
 	scene.pan_camera(Vector2.LEFT, 0.5)

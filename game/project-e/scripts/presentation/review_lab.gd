@@ -1,5 +1,6 @@
 extends Node
 const RosterScript = preload("res://scripts/battle/hero_roster.gd")
+const DisplayLayout = preload("res://scripts/presentation/battlefield_layout.gd")
 ## Isolated interactive inspection. Same battlefield, rigs, map and skill authority.
 ## Only this instance receives reset/cooldown/respawn assistance.
 var original: Node3D
@@ -243,8 +244,9 @@ func _redraw() -> void:
 			if unit.kind in ["cell", "tower", "core"] and stage._unit_nodes.has(unit.id):
 				stage._unit_nodes[unit.id].visible = bool(unit.alive)
 		stage.camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-		stage.camera.size = 90.0
-		stage.camera.position = Vector3(0, 108, 44)
+		var viewport_height: float = stage.get_viewport().get_visible_rect().size.y
+		stage.camera.size = 124.0 * viewport_height / maxf(100.0, viewport_height - 260.0)
+		stage.camera.position = DisplayLayout.camera_offset(108, 44)
 		stage.camera.look_at(Vector3.ZERO, Vector3.UP)
 	else:
 		stage.arena.set_vision_texture(stage.vision_view.mask_texture)
