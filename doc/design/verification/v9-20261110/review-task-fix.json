@@ -1,0 +1,31 @@
+{
+  "finding": "A home reassignment executed before tactical task handling cancelled valid support and return orders, changed assignment during action locks, and delayed new departures when a previous-life defend task had not yet been cleaned.",
+  "reproduction": "Home bot at (-56,0), ally at (-45,0), observed foe at (-43,0). A real support task begins. After the ally dies and enemy lane 0 opens, the old hook cancelled support; the fixed hook retains lane 1 and attack target 4.",
+  "fix": "Move ordinary reassignment after lifecycle cleanup, busy/stun, recovery, own-core defense and active-kind branches. During completed home recovery only, clear the old retreat task, consider reassignment at the existing 85% threshold, then call the unchanged legacy hero branch to release retreat and depart.",
+  "tactical_ai_sha256": "a39fc46c88dc95b384b89df1041c3b05f3ed26b65db4fbf1ce9d7ec1ed7b35f1",
+  "regression": {
+    "existing_checks_preserved": 27,
+    "total_checks": 42,
+    "red_failures": 8,
+    "green_failures": 0,
+    "red_log": "review-task-red.log",
+    "green_log": "review-task-green.log",
+    "real_scenarios": [
+      "existing support attack after ally death",
+      "active lane-return movement",
+      "active cell task",
+      "authoritative skill windup",
+      "authoritative stun",
+      "previous-life defense task and respawn",
+      "84% to 85% real base healing at forward boundary"
+    ]
+  },
+  "additional_checks": {
+    "original_review_reproducer": "Both policies retain lane 1, objective support, attack target 4 and zero redeployments.",
+    "tactical_objectives": {
+      "checks": 18,
+      "failures": 0
+    }
+  },
+  "measurement_note": "Earlier 486.633/1081.333/930.467-second product runs predate this priority fix. Parent-run final source-hashed matches and full regression are the release evidence."
+}

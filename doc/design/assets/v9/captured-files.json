@@ -1,0 +1,37 @@
+{
+  "ci_run_id": 42801891061,
+  "artifact_id": 13755494347,
+  "source": "exported PCK",
+  "files": [
+    {
+      "file": "player-review.json",
+      "bytes": 8807,
+      "sha256": "935d9ab2b3ae81d7dd4b4821ad0ac3894f5ab692a110a65d056e0d844c305bdf"
+    },
+    {
+      "file": "selection-1280x720.webp",
+      "bytes": 752998,
+      "sha256": "615208006551e3ce983c97bdfd73d5c6f1fa1a29eac925e06129c2f580a93022"
+    },
+    {
+      "file": "vertical-battle-1280x720.png",
+      "bytes": 1135768,
+      "sha256": "87653b600182d221bdbf19e91e269b9f0b198cf90c45d1fc068c3d9759a58896"
+    },
+    {
+      "file": "vertical-battle-960x540.png",
+      "bytes": 543609,
+      "sha256": "aab5bb38b683a40967c6c15455214a6a6131886ca2d04c4d8335a775f8174284"
+    },
+    {
+      "file": "vertical-overview-1280x720.png",
+      "bytes": 1253958,
+      "sha256": "8cbfab16bb6af8a6fd1231c186fa0caeaefa31e345361b64a0fa36c319a35b58"
+    },
+    {
+      "file": "vertical-review.json",
+      "bytes": 795,
+      "sha256": "dfa4cd02b805119ad6dd732164fd3d4bf813433dabe351a8c9e498abce5aaf86"
+    }
+  ]
+}

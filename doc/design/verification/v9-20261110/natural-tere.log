@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+AUDIT_OUTPUT /workspace/scratch/e729c46d2a61/project-e/build/v9-natural
+SIEGE_PROGRESS t=120.5 elapsed=8.7 towers=0
+SIEGE_PROGRESS t=240.5 elapsed=17.1 towers=2
+SIEGE_PROGRESS t=360.0 elapsed=25.9 towers=2
+SIEGE_PROGRESS t=480.0 elapsed=34.7 towers=3
+SIEGE_PROGRESS t=600.0 elapsed=43.8 towers=3
+SIEGE_PROGRESS t=720.0 elapsed=53.0 towers=6
+SIEGE_PROGRESS t=840.5 elapsed=70.3 towers=7
+SIEGE_PROGRESS t=960.5 elapsed=87.5 towers=9
+SIEGE_PROGRESS t=1080.5 elapsed=109.7 towers=9
+SIEGE_PROGRESS t=1200.5 elapsed=136.4 towers=9
+SIEGE_PROGRESS t=1320.5 elapsed=159.7 towers=9
+SIEGE_COMPLETE {"milestones":{"first_core_damage":682.000000000037,"first_core_destroyed":1342.6666666661,"first_core_exposed":674.700000000044,"first_inner_damage":273.600000000002,"first_inner_destroyed":674.700000000044,"first_outer_damage":57.7333333333326,"first_outer_destroyed":170.133333333326,"first_structure_damage":57.7333333333326,"victory":1342.6666666661},"selection":"tere","stats":{"attacks":15247,"casts":2032,"damage":824821.453549753,"hero_deaths":14,"objective_cell":125,"objective_defend":67,"objective_support":11,"siege_redeployments":2},"time":1342.6666666661,"winner":1}

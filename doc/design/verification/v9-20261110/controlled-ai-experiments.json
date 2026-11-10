@@ -1,0 +1,562 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "baseline_source_revision": "debcd53c6d991ef568761761c38dae2095bc67d6",
+  "baseline_game_tree": "60f8258919678e4b5c4f3c554c16727122ba8772",
+  "team_rosters": {
+    "0": [
+      "bas",
+      "rio",
+      "nema"
+    ],
+    "1": [
+      "bas",
+      "rio",
+      "nema"
+    ]
+  },
+  "conditions": {
+    "controlled_id": -1,
+    "simulation_hz": 30,
+    "outer_step_seconds": 0.5,
+    "all_unit_structure_damage_and_wave_values": "unchanged in all AI experiments",
+    "minion_last_hit_reserve": "unchanged at 1 HP"
+  },
+  "adopted_policy": "base-redeploy-two",
+  "product_difference": "The final product additionally resolves previous-life state, honors busy/retreat/defense/live tactical tasks before reassignment, and chooses a recovered home departure inside the existing retreat branch. Separate RED/GREEN regressions and independent review verify this. Final production natural-match measurements supersede prototype timings.",
+  "interpretation": [
+    "These are deterministic six-bot fixtures, not human match averages.",
+    "First exposed core and ultimately destroyed core may belong to different teams; compare each core using its own exposure time.",
+    "An observation-cap run has no measured completion time; its match_seconds is the stopping time.",
+    "Failed core-target priority policies are retained as negative experimental evidence and are not enabled in production.",
+    "Raw experiment probes run against the baseline checkout only; running them on V9 would add the production redeployment policy and invalidate this comparison.",
+    "Original raw probe metadata names the preceding V8 game commit eb022135baf95046e1b1145bec45f5c26bab5b8a. The actual baseline checkout debcd53 differs only in documentation and has the same game source tree."
+  ],
+  "prefix_validations": [
+    {
+      "label": "core-mission",
+      "first_policy_intervention_seconds": 1132.79999999963,
+      "event_types": [
+        "structure_hit",
+        "structure_destroyed",
+        "hero_death",
+        "structure_exposed"
+      ],
+      "baseline_events": 682,
+      "variant_events": 682,
+      "exact_match": true
+    },
+    {
+      "label": "core-approach",
+      "first_policy_intervention_seconds": 1075.59999999968,
+      "event_types": [
+        "structure_hit",
+        "structure_destroyed",
+        "hero_death",
+        "structure_exposed"
+      ],
+      "baseline_events": 682,
+      "variant_events": 682,
+      "exact_match": true
+    },
+    {
+      "label": "base-redeploy",
+      "first_policy_intervention_seconds": 426.000000000123,
+      "event_types": [
+        "structure_hit",
+        "structure_destroyed",
+        "hero_death",
+        "structure_exposed"
+      ],
+      "baseline_events": 469,
+      "variant_events": 469,
+      "exact_match": true
+    },
+    {
+      "label": "base-redeploy-two",
+      "first_policy_intervention_seconds": 426.000000000123,
+      "event_types": [
+        "structure_hit",
+        "structure_destroyed",
+        "hero_death",
+        "structure_exposed"
+      ],
+      "baseline_events": 469,
+      "variant_events": 469,
+      "exact_match": true
+    }
+  ],
+  "runs": [
+    {
+      "label": "baseline",
+      "change": "Unchanged V8 tactical AI and combat rules.",
+      "observation_limit": 3000.0,
+      "outcome": "natural_victory",
+      "match_seconds": 2077.3333333321,
+      "winner": 1,
+      "destroyed_core_team": 0,
+      "stats": {
+        "attacks": 20730,
+        "casts": 3651,
+        "damage": 1332390.40115801,
+        "hero_deaths": 13,
+        "objective_cell": 165,
+        "objective_defend": 68,
+        "objective_support": 14
+      },
+      "milestones": {
+        "first_core_damage": 488.86666666684,
+        "first_core_destroyed": 2077.3333333321,
+        "first_core_exposed": 421.80000000012,
+        "first_inner_damage": 138.633333333328,
+        "first_inner_destroyed": 421.80000000012,
+        "first_outer_damage": 36.6666666666671,
+        "first_outer_destroyed": 111.066666666663,
+        "first_structure_damage": 36.6666666666671,
+        "victory": 2077.3333333321
+      },
+      "cores": [
+        {
+          "id": 19,
+          "team": 0,
+          "name": "West Core",
+          "max_hp": 4000.0,
+          "final_hp": 0.0,
+          "exposed_at": 835.766666666564,
+          "first_damage_at": 846.299999999888,
+          "destroyed_at": 2077.3333333321,
+          "longest_hit_gap": 351.533333333014,
+          "unlocked_alive_seconds": 1241.49999999887,
+          "supported_seconds": 186.99999999983,
+          "supported_near_hero_seconds": 40.4999999999632,
+          "hero_target_seconds": 7.49999999999318,
+          "damage_by_source": {
+            "1:minion:melee": 1553.59,
+            "1:minion:ranged": 1007.5,
+            "1:minion:siege": 410.5,
+            "1:rio:5": 1028.41
+          },
+          "exposed_to_destruction_seconds": 1241.566666665536
+        },
+        {
+          "id": 20,
+          "team": 1,
+          "name": "East Core",
+          "max_hp": 4000.0,
+          "final_hp": 3309.3825,
+          "exposed_at": 421.80000000012,
+          "first_damage_at": 488.86666666684,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 1168.79999999898,
+          "unlocked_alive_seconds": 1655.83333333198,
+          "supported_seconds": 45.4999999999586,
+          "supported_near_hero_seconds": 0.0,
+          "hero_target_seconds": 0.0,
+          "damage_by_source": {
+            "0:minion:melee": 208.0,
+            "0:minion:ranged": 195.0,
+            "0:minion:siege": 234.0,
+            "0:rio:2": 53.6175
+          },
+          "exposed_to_destruction_seconds": null
+        }
+      ]
+    },
+    {
+      "label": "core-mission",
+      "change": "Supported visible core within 26m; actor at least 50% HP; no visible enemy hero within 7m; safe approach route at most 30m; defense and retreat win. Core attack precedes ordinary minions and cells.",
+      "observation_limit": 3000.0,
+      "outcome": "observation_cap",
+      "match_seconds": 3000.49999999793,
+      "winner": -1,
+      "destroyed_core_team": null,
+      "stats": {
+        "attacks": 30798,
+        "casts": 5304,
+        "damage": 1931622.28093083,
+        "hero_deaths": 15,
+        "objective_cell": 242,
+        "objective_defend": 93,
+        "objective_siege": 8,
+        "objective_support": 17
+      },
+      "milestones": {
+        "first_core_damage": 488.86666666684,
+        "first_core_exposed": 421.80000000012,
+        "first_inner_damage": 138.633333333328,
+        "first_inner_destroyed": 421.80000000012,
+        "first_outer_damage": 36.6666666666671,
+        "first_outer_destroyed": 111.066666666663,
+        "first_structure_damage": 36.6666666666671,
+        "victory": -1.0
+      },
+      "cores": [
+        {
+          "id": 19,
+          "team": 0,
+          "name": "West Core",
+          "max_hp": 4000.0,
+          "final_hp": 425.29,
+          "exposed_at": 835.766666666564,
+          "first_damage_at": 846.299999999888,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 990.166666665766,
+          "unlocked_alive_seconds": 2164.99999999803,
+          "supported_seconds": 173.999999999842,
+          "supported_near_hero_seconds": 43.99999999996,
+          "hero_target_seconds": 10.4999999999905,
+          "damage_by_source": {
+            "1:minion:melee": 1924.0,
+            "1:minion:ranged": 747.5,
+            "1:nema:6": 108.9,
+            "1:rio:5": 794.31
+          },
+          "exposed_to_destruction_seconds": null
+        },
+        {
+          "id": 20,
+          "team": 1,
+          "name": "East Core",
+          "max_hp": 4000.0,
+          "final_hp": 2515.465,
+          "exposed_at": 421.80000000012,
+          "first_damage_at": 488.86666666684,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 1854.29999999835,
+          "unlocked_alive_seconds": 2578.99999999781,
+          "supported_seconds": 82.9999999999245,
+          "supported_near_hero_seconds": 12.9999999999882,
+          "hero_target_seconds": 3.49999999999682,
+          "damage_by_source": {
+            "0:minion:melee": 858.0,
+            "0:minion:ranged": 130.0,
+            "0:minion:siege": 351.0,
+            "0:nema:3": 54.45,
+            "0:rio:2": 91.085
+          },
+          "exposed_to_destruction_seconds": null
+        }
+      ],
+      "executed_probe_sha256": "b1f65728408055cd5833999423f00134f0925b94362008f07ffb28eaf713b772",
+      "probe_file": "experiments/core-mission-probe.gd",
+      "raw_probe_game_lineage": "eb022135baf95046e1b1145bec45f5c26bab5b8a"
+    },
+    {
+      "label": "core-approach",
+      "change": "Change core-mission only by allowing movement toward the public exposed core before current sight; actual attacks still require visibility. Adds passive gate counters.",
+      "observation_limit": 2100.0,
+      "outcome": "observation_cap",
+      "match_seconds": 2100.49999999875,
+      "winner": -1,
+      "destroyed_core_team": null,
+      "stats": {
+        "attacks": 21170,
+        "casts": 3636,
+        "damage": 1334736.51237014,
+        "hero_deaths": 16,
+        "objective_cell": 160,
+        "objective_defend": 30,
+        "objective_siege": 13,
+        "objective_support": 14,
+        "siege_gate_candidate": 1202,
+        "siege_gate_hidden_core": 994,
+        "siege_gate_hp_below_half": 548,
+        "siege_gate_near_defender": 420,
+        "siege_gate_no_support": 981,
+        "siege_gate_retreat": 165,
+        "siege_gate_unsafe_or_no_route": 37
+      },
+      "milestones": {
+        "first_core_damage": 488.86666666684,
+        "first_core_exposed": 421.80000000012,
+        "first_inner_damage": 138.633333333328,
+        "first_inner_destroyed": 421.80000000012,
+        "first_outer_damage": 36.6666666666671,
+        "first_outer_destroyed": 111.066666666663,
+        "first_structure_damage": 36.6666666666671,
+        "victory": -1.0
+      },
+      "cores": [
+        {
+          "id": 19,
+          "team": 0,
+          "name": "West Core",
+          "max_hp": 4000.0,
+          "final_hp": 1563.375,
+          "exposed_at": 835.766666666564,
+          "first_damage_at": 846.299999999888,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 658.133333332735,
+          "unlocked_alive_seconds": 1264.99999999885,
+          "supported_seconds": 99.4999999999095,
+          "supported_near_hero_seconds": 36.9999999999663,
+          "hero_target_seconds": 17.9999999999836,
+          "damage_by_source": {
+            "1:bas:4": 193.725,
+            "1:minion:melee": 520.0,
+            "1:minion:ranged": 585.0,
+            "1:nema:6": 163.35,
+            "1:rio:5": 974.55
+          },
+          "exposed_to_destruction_seconds": null
+        },
+        {
+          "id": 20,
+          "team": 1,
+          "name": "East Core",
+          "max_hp": 4000.0,
+          "final_hp": 3903.4925,
+          "exposed_at": 421.80000000012,
+          "first_damage_at": 488.86666666684,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 665.133333332768,
+          "unlocked_alive_seconds": 1678.99999999863,
+          "supported_seconds": 33.9999999999691,
+          "supported_near_hero_seconds": 17.4999999999841,
+          "hero_target_seconds": 0.999999999999091,
+          "damage_by_source": {
+            "0:minion:melee": 26.0,
+            "0:nema:3": 54.45,
+            "0:rio:2": 16.0575
+          },
+          "exposed_to_destruction_seconds": null
+        }
+      ],
+      "executed_probe_sha256": "184bdc2ef1a11749fb232b738af615fc07caa927eb688b94d4dfedc0cf18b1a3",
+      "probe_file": "experiments/core-approach-probe.gd",
+      "raw_probe_game_lineage": "eb022135baf95046e1b1145bec45f5c26bab5b8a"
+    },
+    {
+      "label": "core-balanced",
+      "change": "Change core-approach only by replacing the empty-7m-defender condition with not being outnumbered by visible enemy heroes in the local 10m area. Does not alter damage or waves.",
+      "observation_limit": 2100.0,
+      "outcome": "observation_cap",
+      "match_seconds": 2100.49999999875,
+      "winner": -1,
+      "destroyed_core_team": null,
+      "stats": {
+        "attacks": 21434,
+        "casts": 3613,
+        "damage": 1329276.61820346,
+        "hero_deaths": 18,
+        "objective_cell": 157,
+        "objective_defend": 57,
+        "objective_siege": 12,
+        "objective_support": 15,
+        "siege_gate_candidate": 1092,
+        "siege_gate_hidden_core": 797,
+        "siege_gate_hp_below_half": 477,
+        "siege_gate_near_defender": 374,
+        "siege_gate_no_support": 836,
+        "siege_gate_retreat": 187,
+        "siege_gate_unsafe_or_no_route": 17
+      },
+      "milestones": {
+        "first_core_damage": 488.86666666684,
+        "first_core_exposed": 421.80000000012,
+        "first_inner_damage": 138.633333333328,
+        "first_inner_destroyed": 421.80000000012,
+        "first_outer_damage": 36.6666666666671,
+        "first_outer_destroyed": 111.066666666663,
+        "first_structure_damage": 36.6666666666671,
+        "victory": -1.0
+      },
+      "cores": [
+        {
+          "id": 19,
+          "team": 0,
+          "name": "West Core",
+          "max_hp": 4000.0,
+          "final_hp": 1556.0575,
+          "exposed_at": 835.766666666564,
+          "first_damage_at": 846.299999999888,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 498.466666666214,
+          "unlocked_alive_seconds": 1264.99999999885,
+          "supported_seconds": 52.9999999999518,
+          "supported_near_hero_seconds": 14.9999999999864,
+          "hero_target_seconds": 8.49999999999227,
+          "damage_by_source": {
+            "1:bas:4": 43.2825,
+            "1:minion:melee": 858.0,
+            "1:minion:ranged": 585.0,
+            "1:rio:5": 957.66
+          },
+          "exposed_to_destruction_seconds": null
+        },
+        {
+          "id": 20,
+          "team": 1,
+          "name": "East Core",
+          "max_hp": 4000.0,
+          "final_hp": 2043.7375,
+          "exposed_at": 421.80000000012,
+          "first_damage_at": 488.86666666684,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 648.066666666117,
+          "unlocked_alive_seconds": 1678.99999999863,
+          "supported_seconds": 117.999999999893,
+          "supported_near_hero_seconds": 52.9999999999518,
+          "hero_target_seconds": 25.9999999999764,
+          "damage_by_source": {
+            "0:nema:3": 996.435,
+            "0:rio:2": 959.8275
+          },
+          "exposed_to_destruction_seconds": null
+        }
+      ],
+      "executed_probe_sha256": "af960651c7a7edf4202a1203fcf02641197a3072b5b1e73caaefa86c75ab3de5",
+      "probe_file": "experiments/core-balanced-probe.gd",
+      "raw_probe_game_lineage": "eb022135baf95046e1b1145bec45f5c26bab5b8a"
+    },
+    {
+      "label": "base-redeploy",
+      "change": "Original tactical AI plus home-departure reassignment at >=85% HP to a publicly breached lane; current breached lane stays, own-core threats postpone assignment. No core-targeting override.",
+      "observation_limit": 2100.0,
+      "outcome": "natural_victory",
+      "match_seconds": 483.966666666836,
+      "winner": 0,
+      "destroyed_core_team": 1,
+      "stats": {
+        "attacks": 3936,
+        "casts": 811,
+        "damage": 278885.552976188,
+        "hero_deaths": 5,
+        "objective_cell": 46,
+        "objective_support": 1,
+        "siege_redeployments": 2
+      },
+      "milestones": {
+        "first_core_damage": 467.900000000157,
+        "first_core_destroyed": 483.966666666836,
+        "first_core_exposed": 421.80000000012,
+        "first_inner_damage": 138.633333333328,
+        "first_inner_destroyed": 421.80000000012,
+        "first_outer_damage": 36.6666666666671,
+        "first_outer_destroyed": 111.066666666663,
+        "first_structure_damage": 36.6666666666671,
+        "victory": 483.966666666836
+      },
+      "cores": [
+        {
+          "id": 19,
+          "team": 0,
+          "name": "West Core",
+          "max_hp": 4000.0,
+          "final_hp": 4000.0,
+          "exposed_at": -1.0,
+          "first_damage_at": -1.0,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 0.0,
+          "unlocked_alive_seconds": 0.0,
+          "supported_seconds": 0.0,
+          "supported_near_hero_seconds": 0.0,
+          "hero_target_seconds": 0.0,
+          "damage_by_source": {},
+          "exposed_to_destruction_seconds": null
+        },
+        {
+          "id": 20,
+          "team": 1,
+          "name": "East Core",
+          "max_hp": 4000.0,
+          "final_hp": 0.0,
+          "exposed_at": 421.80000000012,
+          "first_damage_at": 467.900000000157,
+          "destroyed_at": 483.966666666836,
+          "longest_hit_gap": 0.766666666667277,
+          "unlocked_alive_seconds": 62.0000000000493,
+          "supported_seconds": 26.0000000000207,
+          "supported_near_hero_seconds": 26.0000000000207,
+          "hero_target_seconds": 9.50000000000756,
+          "damage_by_source": {
+            "0:bas:1": 818.525,
+            "0:minion:melee": 1056.0,
+            "0:minion:ranged": 742.5,
+            "0:minion:siege": 495.0,
+            "0:nema:3": 439.975,
+            "0:rio:2": 448.0
+          },
+          "exposed_to_destruction_seconds": 62.16666666671597
+        }
+      ],
+      "executed_probe_sha256": "821c8de01d191fa202192ebccdb17124ecf58494fa0a1eb30565f8b157c4f67c",
+      "probe_file": "experiments/base-redeploy-probe.gd",
+      "raw_probe_game_lineage": "eb022135baf95046e1b1145bec45f5c26bab5b8a"
+    },
+    {
+      "label": "base-redeploy-two",
+      "change": "Change base-redeploy only by limiting a breached lane to two assigned allied heroes, counting dead and player-controlled allies. Stable ascending lane order.",
+      "observation_limit": 2100.0,
+      "outcome": "natural_victory",
+      "match_seconds": 486.633333333505,
+      "winner": 0,
+      "destroyed_core_team": 1,
+      "stats": {
+        "attacks": 3986,
+        "casts": 814,
+        "damage": 279423.085476188,
+        "hero_deaths": 5,
+        "objective_cell": 46,
+        "objective_defend": 2,
+        "objective_support": 1,
+        "siege_redeployments": 1
+      },
+      "milestones": {
+        "first_core_damage": 467.900000000157,
+        "first_core_destroyed": 486.633333333505,
+        "first_core_exposed": 421.80000000012,
+        "first_inner_damage": 138.633333333328,
+        "first_inner_destroyed": 421.80000000012,
+        "first_outer_damage": 36.6666666666671,
+        "first_outer_destroyed": 111.066666666663,
+        "first_structure_damage": 36.6666666666671,
+        "victory": 486.633333333505
+      },
+      "cores": [
+        {
+          "id": 19,
+          "team": 0,
+          "name": "West Core",
+          "max_hp": 4000.0,
+          "final_hp": 4000.0,
+          "exposed_at": -1.0,
+          "first_damage_at": -1.0,
+          "destroyed_at": -1.0,
+          "longest_hit_gap": 0.0,
+          "unlocked_alive_seconds": 0.0,
+          "supported_seconds": 0.0,
+          "supported_near_hero_seconds": 0.0,
+          "hero_target_seconds": 0.0,
+          "damage_by_source": {},
+          "exposed_to_destruction_seconds": null
+        },
+        {
+          "id": 20,
+          "team": 1,
+          "name": "East Core",
+          "max_hp": 4000.0,
+          "final_hp": 0.0,
+          "exposed_at": 421.80000000012,
+          "first_damage_at": 467.900000000157,
+          "destroyed_at": 486.633333333505,
+          "longest_hit_gap": 0.766666666667277,
+          "unlocked_alive_seconds": 65.0000000000517,
+          "supported_seconds": 29.0000000000231,
+          "supported_near_hero_seconds": 29.0000000000231,
+          "hero_target_seconds": 7.50000000000597,
+          "damage_by_source": {
+            "0:bas:1": 828.7,
+            "0:minion:melee": 1320.0,
+            "0:minion:ranged": 845.299999999999,
+            "0:minion:siege": 594.0,
+            "0:rio:2": 412.0
+          },
+          "exposed_to_destruction_seconds": 64.83333333338499
+        }
+      ],
+      "executed_probe_sha256": "c0a56e6ae50922ddd3f27dfb023fd476a77fe813039fea9a59c2157da9573462",
+      "probe_file": "experiments/base-redeploy-two-probe.gd",
+      "raw_probe_game_lineage": "eb022135baf95046e1b1145bec45f5c26bab5b8a"
+    }
+  ]
+}

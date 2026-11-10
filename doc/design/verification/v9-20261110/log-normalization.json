@@ -1,0 +1,30 @@
+{
+  "change": "Normalize UTF-8 BOM, CRLF, trailing horizontal whitespace and final blank lines only; no message content or result values changed.",
+  "files": [
+    {
+      "file": "pre-review-regression.log",
+      "original_sha256": "17579425881c6522f9fa65b99526c8f00c3d6a3fffb248603146d3b73fc3db3f",
+      "published_sha256": "ca30950ef6625eea82d401c20ce39e7cc58415284cb79922ab1bb4fb222314df"
+    },
+    {
+      "file": "final-regression.log",
+      "original_sha256": "9482a9e029d65f561a207675775c41577f240451289c16d5048c84bbeac5142f",
+      "published_sha256": "340dd9d2afda3cdabdf85f441ee55ab84bc1fc686a736d1c4011fff928b361d7"
+    },
+    {
+      "file": "baseline-regression.log",
+      "original_sha256": "9f170d6303043f495246a043858303d98cbb7f50f46218106f8407184d921ccd",
+      "published_sha256": "54b25124e0d20eb0f1c0f850de4f9cdddebb2d67ec9d3dd526fc518a04ba7966"
+    },
+    {
+      "file": "windows-smoke.log",
+      "original_sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e",
+      "published_sha256": "6c536b7ab6a1ee8e7ac91fdd27709abb484073b092cabb70d205c4f987e47ddd"
+    },
+    {
+      "file": "windows-smoke-result.txt",
+      "original_sha256": "dab8389abfde8c0cf0fb1b7b945534d0089ebd607a3e8bd6f00104334a2e89a7",
+      "published_sha256": "75f94a300b46b4bb3b013093e08d77d3b94acef417d721cefd64fd52c0fadb85"
+    }
+  ]
+}

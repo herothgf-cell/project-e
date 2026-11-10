@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+AUDIT_OUTPUT /workspace/scratch/e729c46d2a61/siege-experiment
+SIEGE_PROGRESS t=120.5 elapsed=7.0 towers=1
+SIEGE_PROGRESS t=240.5 elapsed=14.4 towers=2
+SIEGE_PROGRESS t=360.0 elapsed=22.6 towers=3
+SIEGE_PROGRESS t=480.0 elapsed=31.8 towers=7
+SIEGE_PROGRESS t=600.0 elapsed=44.2 towers=7
+SIEGE_PROGRESS t=720.0 elapsed=56.8 towers=7
+SIEGE_PROGRESS t=840.5 elapsed=71.1 towers=9
+SIEGE_PROGRESS t=960.5 elapsed=89.2 towers=9
+SIEGE_PROGRESS t=1080.5 elapsed=105.7 towers=9
+SIEGE_PROGRESS t=1200.5 elapsed=124.0 towers=9
+SIEGE_PROGRESS t=1320.5 elapsed=140.2 towers=9
+SIEGE_PROGRESS t=1440.5 elapsed=155.9 towers=9
+SIEGE_PROGRESS t=1560.5 elapsed=168.5 towers=9
+SIEGE_PROGRESS t=1680.5 elapsed=195.3 towers=9
+SIEGE_PROGRESS t=1800.5 elapsed=221.9 towers=11
+SIEGE_PROGRESS t=1920.5 elapsed=234.4 towers=11
+SIEGE_PROGRESS t=2040.5 elapsed=244.0 towers=11
+SIEGE_COMPLETE {"milestones":{"first_core_damage":488.86666666684,"first_core_exposed":421.80000000012,"first_inner_damage":138.633333333328,"first_inner_destroyed":421.80000000012,"first_outer_damage":36.6666666666671,"first_outer_destroyed":111.066666666663,"first_structure_damage":36.6666666666671,"victory":-1.0},"selection":"bas","stats":{"attacks":21434,"casts":3613,"damage":1329276.61820346,"hero_deaths":18,"objective_cell":157,"objective_defend":57,"objective_siege":12,"objective_support":15,"siege_gate_candidate":1092,"siege_gate_hidden_core":797,"siege_gate_hp_below_half":477,"siege_gate_near_defender":374,"siege_gate_no_support":836,"siege_gate_retreat":187,"siege_gate_unsafe_or_no_route":17},"time":2100.49999999875,"winner":-1}

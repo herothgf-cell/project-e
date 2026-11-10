@@ -1,0 +1,351 @@
+{
+	"captures": [
+		{
+			"height": 720,
+			"name": "selection-1280x720",
+			"sha256": "615208006551e3ce983c97bdfd73d5c6f1fa1a29eac925e06129c2f580a93022",
+			"width": 1280
+		},
+		{
+			"height": 768,
+			"name": "selection-1366x768",
+			"sha256": "415beb40541330e1e8d330a6db4dad9cfe50271be4870c038968876d8007529a",
+			"width": 1365
+		},
+		{
+			"height": 540,
+			"name": "selection-960x540",
+			"sha256": "27f9a32c33466fc17c5ff6f09d215be60b79a0a723c5fc986e3b8b55d9a228fb",
+			"width": 960
+		},
+		{
+			"height": 720,
+			"name": "selection-bas",
+			"sha256": "04d1ecc0004270c8e1c88dfe7fe4fb96184d555e55b77f5e2ee805dd38071283",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-rio",
+			"sha256": "87726ea77aa40062bd91b493ec60b8e8d35e2f790bc2f2baf3516970cbc2f4b1",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-nema",
+			"sha256": "e0aefbbfc050ce89c47a061449b79cff2a7b29ad214cd131bc8f8b234643dfb9",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-orin",
+			"sha256": "577dd1bf51dcfd1615cac09bdd2fe5e089adf2e24f0c751fa58166ec1121f7fd",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-tere",
+			"sha256": "8280b62d7f1a33e9c0fcc2241e84afa352b41900b225f24fc296c27de46f6096",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-mua",
+			"sha256": "7a890d9f2d052525d9aae0a1c0ea1981fea45cfa6f2cfc8f49d8ecc9fbd62a33",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-sera",
+			"sha256": "313d2efc6489a6adf1f59d07f18b765d0479caa493f4ed4ceb1869abb710e71d",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "selection-lume",
+			"sha256": "f288c61c104fe2edf6887869ef7a0e62e9a69d78cae5238a878822a7b9b61195",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "battle-v9",
+			"sha256": "633457a7a911bd94db473f4d71f8ab10311e125e63dd76fe2258ef6cca043cc9",
+			"width": 1280
+		},
+		{
+			"height": 540,
+			"name": "battle-low-health-960x540",
+			"sha256": "44bed5f6bad0229f6f3144bf4898a1947925517b0556f7f676f165b6777590c3",
+			"width": 960
+		},
+		{
+			"height": 720,
+			"name": "shop-1280x720",
+			"sha256": "4fa446128904daa4a951218e2b7e5231d04f72ea04b7e082af5325a9f783afa0",
+			"width": 1280
+		},
+		{
+			"height": 540,
+			"name": "shop-960x540",
+			"sha256": "765f3b59e8f3d70305ffc5e474e7c1ed91eaafbfa1a4a8854f90998eecabbd9d",
+			"width": 960
+		},
+		{
+			"height": 720,
+			"name": "item-i01-active",
+			"sha256": "33d285947b831d6e45ea1a0a4f2056f50e90a566449afe55a1d204476d4ea829",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "item-i02-active",
+			"sha256": "1277811f5d3728d0f795c7cde35e70c8a620225c0718e999fc9e08247ed309be",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-bas",
+			"sha256": "08fc8ab4cc70b4f4b4363224cee1bf4f8a478623d1a43bad6715b39300067336",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-bas-q",
+			"sha256": "e6ae9fa824874d07cd5c7a9113e9d9532443b8870eb18f8a6d1bf293125c3267",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-bas-w",
+			"sha256": "253addc07ee0d3e5738eedb25ebfe28c624fd8bfdaaf7f199ff2cb5adb2fd88f",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-bas-e",
+			"sha256": "a436bf92346f8dd9602608e2b3c43b5f58c156e8ad3e8fdc2a9ea3f1e3899862",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-bas-r",
+			"sha256": "cd27ab8ef708211f83b32e3c14ba33c34f397ab2c7b3c700879066e125429336",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-rio",
+			"sha256": "dccb2d5a578678721b7d084ab8f0a0f41065b2cfd5637b9b01bc6a44fa9ae947",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-rio-q",
+			"sha256": "09e3bada8159042f7e1a857278d1eb49c66e66348d13aab09bbb5a11b5c80cce",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-rio-w",
+			"sha256": "600c3bf69a0b187ca9d9af05a84ceb2a9ba58c088c88a256595a0afb8dad474f",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-rio-e",
+			"sha256": "33b6cfb4f45bb52398a0ef74a788c06ae8a74c9fd66f2f06a5e3dc41cbd0955e",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-rio-r",
+			"sha256": "8c887003f7634fc2ba95a21c74d074dc7fd0ea11ca62c669c53273e602731fc6",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-nema",
+			"sha256": "02189934f479ebe01ab6018b26e3c06ee60cd0bda33b781f0ea1f53c3c7ba0a6",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-nema-q",
+			"sha256": "35b6f23b2d1a5fe19afc2d97bcddaf90036aff2385254753bcdbe205bc8298ef",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-nema-w",
+			"sha256": "6daf84a9680b77bcc7668e88bffa2f8f4cb8de4cc40a468109fccdc6c964cecc",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-nema-e",
+			"sha256": "cc44f4b6410d0e6e4660d168421344343c627554fd1a934fbe3e3c5277d76d6a",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-nema-r",
+			"sha256": "4ed05a5ee7258594ef80a30c642edfd10fd3f35d125590d3e4a5d6f57b64cf30",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-orin",
+			"sha256": "22045d343196dc4f343e7484f80fab5b950da713d8788192b85781a9a6b48c1a",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-orin-q",
+			"sha256": "a3ee87f8b7001131829bdfbceaccd2f89069b732a1871627f601c4b44fecda67",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-orin-w",
+			"sha256": "9e8eecb818c6c3d408868b2d7becbab09f6660f164327c7f9310f207471a8254",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-orin-e",
+			"sha256": "537657bf07a1af209b1f4719aba8e776aa9b2a4263dec98ef9d2cc865ee83ba9",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-orin-r",
+			"sha256": "9b12f75422ebe586638135d834724dc33e4c77e842041362d48b996ab5b48004",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-tere",
+			"sha256": "5c8f9991eb9523053814c5994018a6766269c7cb420f7c0439d6e8b5be947e98",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-tere-q",
+			"sha256": "a206d11267ff26d62dbdeab65254322e98e0a83c1b864b5ca2cb9d41b2c044a3",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-tere-w",
+			"sha256": "22b35a37d2cfaa91f6e51061c2ea1dc2dfdcdc7df4d577c8534e3f6bf405889f",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-tere-e",
+			"sha256": "0c1db8a136e7cc6ec57e7b4977d02b13408650529073323b218a6e5553d11198",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-tere-r",
+			"sha256": "aea140fca78171cb28c6735c7a67e606563f0a1b24f4d2ad27a3ba0060fa86ce",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-mua",
+			"sha256": "f0bdfee1956f8a0171349addcd804ab7d48e713306d2902ed136aec257e0334d",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-mua-q",
+			"sha256": "944b3b3e4f41368f80624059e17e8cf57fd8dc90492ae98c4817fc48c261c23c",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-mua-w",
+			"sha256": "7035d766d056bab426c8b14b2c05e62308fc89931303e0bd7f9052d9132e2271",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-mua-e",
+			"sha256": "7d1edc6c6dd2d65f9328cb56ed168c0859bd11fcb97f3ba8edb1b575529a1d71",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-mua-r",
+			"sha256": "70f9a4d154e1598eac5822e5f6d23b433efcd7e7e27e3504d56ddcbe31500855",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-sera",
+			"sha256": "3d5630ddd56097bb26a59d1e7c21b414d3e6de9b7a2c3881e1e97f3ff963d29c",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-sera-q",
+			"sha256": "16325260302d7dfc7f838938c5bef42063d3304dffc8672a7345ea46c80db682",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-sera-w",
+			"sha256": "dbfadb03880c16aa6671e2fafb4773a62cac992db6522b7cd04df065b0a6decb",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-sera-e",
+			"sha256": "46da46d8d19ca3cf68a6e2a9e296c8fdd03b934d01a833f3a89270273a871098",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-sera-r",
+			"sha256": "ddd5ae0d225f50c66aa54a9599ead3db6f68897e05808353fe0e548ca3129d39",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "hero-lume",
+			"sha256": "2eb2419bc86bd1f8fd6b1afd4ee89ecc5b5667591c97875ce86785b8e963671e",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-lume-q",
+			"sha256": "4c11f9e93adb43434b03a16546ac82b873bb0ed307f86cab2817d28dae83b36f",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-lume-w",
+			"sha256": "c99c13185af5ae59583722b3695bc72d103650368237afc046ae27325c3b8753",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-lume-e",
+			"sha256": "020d1e0cbe100bcd26f74751e4f8499dfa0a82c7937d77bb01266c907f9e11df",
+			"width": 1280
+		},
+		{
+			"height": 720,
+			"name": "skill-lume-r",
+			"sha256": "444f5e7ef17c8bb02f303eb97febb76569d55a69a444b6f78ade6179e5e55d8d",
+			"width": 1280
+		}
+	],
+	"checks": 319,
+	"engine": "4.7.2-stable (official)",
+	"failures": 0,
+	"source": "exported PCK",
+	"version": "0.9.0"
+}

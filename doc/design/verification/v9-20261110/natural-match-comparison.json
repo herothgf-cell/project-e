@@ -1,0 +1,114 @@
+{
+  "source_commit": "200df52e018e46b5b7847bfd808c59206dca7a75",
+  "game_tree": "c8dfc50a07ce38a6f36a81bcd402ab86ec45f9ee",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "conditions": {
+    "controlled_id": -1,
+    "observation_limit_seconds": 3000,
+    "inner_hz": 30,
+    "outer_step_seconds": 0.5,
+    "forced_winner": false,
+    "combat_values_changed": false
+  },
+  "baseline_sources": {
+    "bas": "controlled-ai-experiments.json / original detailed V8 run",
+    "orin": "../2026-11-09-v8-verification.md, 0.1-second published precision",
+    "tere": "../2026-11-09-v8-verification.md, 0.1-second published precision"
+  },
+  "runs": [
+    {
+      "selection": "bas",
+      "summary_file": "siege-v9-bas-summary.json",
+      "summary_sha256": "79f05f31961fed2c81dfc68babb5e331f0fe5beaf9c86ea896a374da195183dc",
+      "baseline_match_seconds": 2077.3333333321,
+      "final_match_seconds": 486.633333333505,
+      "reduction_percent": 76.57413350447077,
+      "winner": 0,
+      "hero_deaths": 5,
+      "casts": 814,
+      "siege_redeployments": 1,
+      "first_core_exposed_at": 421.80000000012,
+      "first_core_exposed_to_end_seconds": 64.83333333338499,
+      "destroyed_core": {
+        "team": 1,
+        "exposed_at": 421.80000000012,
+        "first_damage_at": 467.900000000157,
+        "destroyed_at": 486.633333333505,
+        "longest_hit_gap": 0.766666666667277,
+        "supported_seconds": 29.0000000000231,
+        "supported_near_hero_seconds": 29.0000000000231,
+        "hero_target_seconds": 7.50000000000597,
+        "damage_by_source": {
+          "0:bas:1": 828.7,
+          "0:minion:melee": 1320.0,
+          "0:minion:ranged": 845.299999999999,
+          "0:minion:siege": 594.0,
+          "0:rio:2": 412.0
+        }
+      }
+    },
+    {
+      "selection": "orin",
+      "summary_file": "siege-v9-orin-summary.json",
+      "summary_sha256": "63b9e44a579e45e7cf8c2961d70ecfcf8cdd6ef3e7d8063079fc9ec545fe4601",
+      "baseline_match_seconds": 2527.8,
+      "final_match_seconds": 1081.33333333301,
+      "reduction_percent": 57.22235408920761,
+      "winner": 0,
+      "hero_deaths": 8,
+      "casts": 2010,
+      "siege_redeployments": 2,
+      "first_core_exposed_at": 482.666666666835,
+      "first_core_exposed_to_end_seconds": 598.6666666661749,
+      "destroyed_core": {
+        "team": 1,
+        "exposed_at": 482.666666666835,
+        "first_damage_at": 699.366666666688,
+        "destroyed_at": 1081.33333333301,
+        "longest_hit_gap": 209.366666666476,
+        "supported_seconds": 149.999999999868,
+        "supported_near_hero_seconds": 84.9999999999227,
+        "hero_target_seconds": 8.99999999999181,
+        "damage_by_source": {
+          "0:bas:2": 305.125,
+          "0:minion:melee": 1322.0,
+          "0:minion:ranged": 754.575,
+          "0:nema:3": 934.45,
+          "0:orin:1": 683.85
+        }
+      }
+    },
+    {
+      "selection": "tere",
+      "summary_file": "siege-v9-tere-summary.json",
+      "summary_sha256": "2320d7636a72a503e0a03a6821ede317a23c688095572fe676b15570cb6a8c0d",
+      "baseline_match_seconds": 1798.1,
+      "final_match_seconds": 1342.6666666661,
+      "reduction_percent": 25.32858758322118,
+      "winner": 1,
+      "hero_deaths": 14,
+      "casts": 2032,
+      "siege_redeployments": 2,
+      "first_core_exposed_at": 674.700000000044,
+      "first_core_exposed_to_end_seconds": 667.9666666660559,
+      "destroyed_core": {
+        "team": 0,
+        "exposed_at": 674.700000000044,
+        "first_damage_at": 682.000000000037,
+        "destroyed_at": 1342.6666666661,
+        "longest_hit_gap": 209.999999999809,
+        "supported_seconds": 224.999999999795,
+        "supported_near_hero_seconds": 96.4999999999122,
+        "hero_target_seconds": 6.49999999999409,
+        "damage_by_source": {
+          "1:bas:4": 397.45,
+          "1:lume:5": 371.9275,
+          "1:minion:melee": 1630.9475,
+          "1:minion:ranged": 560.0,
+          "1:minion:siege": 784.0,
+          "1:orin:6": 255.675
+        }
+      }
+    }
+  ]
+}

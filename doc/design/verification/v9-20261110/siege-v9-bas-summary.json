@@ -1,0 +1,2473 @@
+{
+  "decision_counts": {
+    "busy": 538.0,
+    "core": 27.0,
+    "hero": 863.0,
+    "lane_advance": 2170.0,
+    "minion": 969.0,
+    "objective_cell": 219.0,
+    "objective_return": 81.0,
+    "retreat": 1822.0,
+    "tower": 381.0
+  },
+  "eligible_decisions": {
+    "busy": 180.0,
+    "core": 27.0,
+    "hero": 152.0,
+    "minion": 341.0,
+    "objective_cell": 38.0,
+    "objective_return": 10.0,
+    "retreat": 67.0,
+    "tower": 381.0
+  },
+  "engine": {
+    "build": "official",
+    "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "hex": 263938,
+    "major": 4,
+    "minor": 7,
+    "patch": 2,
+    "status": "stable",
+    "string": "4.7.2-stable (official)",
+    "timestamp": 0
+  },
+  "heroes": [
+    {
+      "active_retreat_siege": true,
+      "dead_seconds": 15.9999999999991,
+      "deaths": 1,
+      "final_lane": 0,
+      "final_level": 11,
+      "hero": "bas",
+      "home_base_seconds": 37.5000000000136,
+      "id": 1,
+      "incoming_damage": {
+        "1:bas:4": 1244.72727272727,
+        "1:minion:melee": 1520.0,
+        "1:minion:ranged": 1449.10714285714,
+        "1:minion:siege": 615.0,
+        "1:nema:6": 389.772727272727,
+        "1:rio:5": 11585.9805194805,
+        "1:tower:outer": 1706.49350649351
+      },
+      "initial_lane": 1,
+      "last_decision": {
+        "category": "hero",
+        "eligible": [
+          20
+        ],
+        "target_id": 6,
+        "time": 486.400000000171
+      },
+      "last_structure_damage": 484.233333333503,
+      "post_first_siege_dead_seconds": 15.9999999999991,
+      "post_first_siege_retreat_seconds": 114.50000000005,
+      "post_first_siege_seconds": 450.133333333504,
+      "retreat_active": false,
+      "retreat_seconds": 127.500000000051,
+      "retreat_start": 414.000000000114,
+      "retreats": 11,
+      "siege_retreat_seconds": 107.500000000052,
+      "siege_retreats": 9,
+      "structure_damage": 1997.425,
+      "task_starts": {
+        "cell": 3.0
+      },
+      "team": 0
+    },
+    {
+      "active_retreat_siege": true,
+      "dead_seconds": 0.0,
+      "deaths": 0,
+      "final_lane": 0,
+      "final_level": 11,
+      "hero": "rio",
+      "home_base_seconds": 30.5000000000102,
+      "id": 2,
+      "incoming_damage": {
+        "1:bas:4": 4919.99069264069,
+        "1:minion:melee": 258.095238095238,
+        "1:minion:ranged": 542.857142857143,
+        "1:minion:siege": 527.142857142857,
+        "1:tower:inner": 2516.88311688312,
+        "1:tower:outer": 531.428571428571
+      },
+      "initial_lane": 0,
+      "last_decision": {
+        "category": "hero",
+        "eligible": [
+          20
+        ],
+        "target_id": 5,
+        "time": 486.400000000171
+      },
+      "last_structure_damage": 486.633333333505,
+      "post_first_siege_dead_seconds": 0.0,
+      "post_first_siege_retreat_seconds": 127.500000000048,
+      "post_first_siege_seconds": 450.133333333504,
+      "retreat_active": false,
+      "retreat_seconds": 127.500000000048,
+      "retreat_start": 437.600000000133,
+      "retreats": 8,
+      "siege_retreat_seconds": 127.500000000048,
+      "siege_retreats": 8,
+      "structure_damage": 3069.0,
+      "task_starts": {
+        "cell": 14.0,
+        "support": 1.0
+      },
+      "team": 0
+    },
+    {
+      "active_retreat_siege": true,
+      "dead_seconds": 0.0,
+      "deaths": 0,
+      "final_lane": 2,
+      "final_level": 9,
+      "hero": "nema",
+      "home_base_seconds": 33.5000000000121,
+      "id": 3,
+      "incoming_damage": {
+        "1:minion:melee": 1031.42857142857,
+        "1:minion:ranged": 1432.14285714286,
+        "1:minion:siege": 992.142857142857,
+        "1:nema:6": 8039.66536796537,
+        "1:tower:inner": 1168.83116883117,
+        "1:tower:outer": 1551.42857142857
+      },
+      "initial_lane": 2,
+      "last_decision": {
+        "category": "tower",
+        "eligible": [
+          18
+        ],
+        "target_id": 18,
+        "time": 486.400000000171
+      },
+      "last_structure_damage": 485.833333333504,
+      "post_first_siege_dead_seconds": 0.0,
+      "post_first_siege_retreat_seconds": 114.000000000045,
+      "post_first_siege_seconds": 450.133333333504,
+      "retreat_active": false,
+      "retreat_seconds": 127.500000000046,
+      "retreat_start": 429.200000000126,
+      "retreats": 9,
+      "siege_retreat_seconds": 118.000000000038,
+      "siege_retreats": 8,
+      "structure_damage": 2283.25,
+      "task_starts": {
+        "cell": 8.0
+      },
+      "team": 0
+    },
+    {
+      "active_retreat_siege": false,
+      "dead_seconds": 57.1333333333498,
+      "deaths": 3,
+      "final_lane": 0,
+      "final_level": 9,
+      "hero": "bas",
+      "home_base_seconds": 67.1333333333735,
+      "id": 4,
+      "incoming_damage": {
+        "0:bas:1": 2459.96666666666,
+        "0:minion:melee": 2165.71428571429,
+        "0:minion:ranged": 1857.14285714286,
+        "0:minion:siege": 758.571428571429,
+        "0:rio:2": 10309.0311688312,
+        "0:tower:outer": 2032.29480519481
+      },
+      "initial_lane": 0,
+      "last_decision": {
+        "category": "retreat",
+        "eligible": [],
+        "target_id": -1,
+        "time": 463.600000000153
+      },
+      "last_structure_damage": 402.633333333438,
+      "post_first_siege_dead_seconds": 57.1333333333498,
+      "post_first_siege_retreat_seconds": 123.500000000062,
+      "post_first_siege_seconds": 450.133333333504,
+      "retreat_active": false,
+      "retreat_seconds": 137.000000000063,
+      "retreat_start": 452.400000000144,
+      "retreats": 12,
+      "siege_retreat_seconds": 104.500000000047,
+      "siege_retreats": 9,
+      "structure_damage": 977.695,
+      "task_starts": {
+        "cell": 2.0
+      },
+      "team": 1
+    },
+    {
+      "active_retreat_siege": true,
+      "dead_seconds": 19.9999999999989,
+      "deaths": 1,
+      "final_lane": 1,
+      "final_level": 10,
+      "hero": "rio",
+      "home_base_seconds": 24.1333333333436,
+      "id": 5,
+      "incoming_damage": {
+        "0:bas:1": 5955.16536796537,
+        "0:minion:melee": 440.0,
+        "0:minion:ranged": 375.0,
+        "0:minion:siege": 717.857142857143,
+        "0:rio:2": 98.1818181818182,
+        "0:tower:inner": 1313.30735930736,
+        "0:tower:outer": 540.0
+      },
+      "initial_lane": 1,
+      "last_decision": {
+        "category": "retreat",
+        "eligible": [],
+        "target_id": -1,
+        "time": 486.400000000171
+      },
+      "last_structure_damage": 473.433333333494,
+      "post_first_siege_dead_seconds": 19.9999999999989,
+      "post_first_siege_retreat_seconds": 105.633333333384,
+      "post_first_siege_seconds": 450.133333333504,
+      "retreat_active": false,
+      "retreat_seconds": 105.633333333384,
+      "retreat_start": 473.200000000161,
+      "retreats": 9,
+      "siege_retreat_seconds": 82.6333333333658,
+      "siege_retreats": 7,
+      "structure_damage": 2342.2,
+      "task_starts": {
+        "cell": 12.0
+      },
+      "team": 1
+    },
+    {
+      "active_retreat_siege": true,
+      "dead_seconds": 0.0,
+      "deaths": 0,
+      "final_lane": 2,
+      "final_level": 10,
+      "hero": "nema",
+      "home_base_seconds": 42.0000000000193,
+      "id": 6,
+      "incoming_damage": {
+        "0:bas:1": 252.272727272727,
+        "0:minion:melee": 759.047619047619,
+        "0:minion:ranged": 1120.23809523809,
+        "0:minion:siege": 775.714285714286,
+        "0:nema:3": 8330.379004329,
+        "0:tower:inner": 490.909090909091,
+        "0:tower:outer": 1911.42857142857
+      },
+      "initial_lane": 2,
+      "last_decision": {
+        "category": "hero",
+        "eligible": [],
+        "target_id": 1,
+        "time": 486.400000000171
+      },
+      "last_structure_damage": 396.033333333433,
+      "post_first_siege_dead_seconds": 0.0,
+      "post_first_siege_retreat_seconds": 120.000000000051,
+      "post_first_siege_seconds": 450.133333333504,
+      "retreat_active": false,
+      "retreat_seconds": 133.500000000051,
+      "retreat_start": 458.800000000149,
+      "retreats": 10,
+      "siege_retreat_seconds": 123.500000000043,
+      "siege_retreats": 9,
+      "structure_damage": 1585.495,
+      "task_starts": {
+        "cell": 7.0,
+        "defend": 2.0
+      },
+      "team": 1
+    }
+  ],
+  "match_seconds": 486.633333333505,
+  "milestones": {
+    "first_core_damage": 467.900000000157,
+    "first_core_destroyed": 486.633333333505,
+    "first_core_exposed": 421.80000000012,
+    "first_inner_damage": 138.633333333328,
+    "first_inner_destroyed": 421.80000000012,
+    "first_outer_damage": 36.6666666666671,
+    "first_outer_destroyed": 111.066666666663,
+    "first_structure_damage": 36.6666666666671,
+    "victory": 486.633333333505
+  },
+  "nearby_decisions": {
+    "busy": 221.0,
+    "core": 27.0,
+    "hero": 244.0,
+    "lane_advance": 839.0,
+    "minion": 447.0,
+    "objective_cell": 38.0,
+    "objective_return": 11.0,
+    "retreat": 103.0,
+    "tower": 381.0
+  },
+  "observation_limit": 3000.0,
+  "observer_sha256": "2de1d326e3168a09a5de515e0a72556854c0d21b878e76d785cb3b7705313efa",
+  "outcome": "natural_victory",
+  "project_version": "0.9.0",
+  "retreat_events": [
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.217796610169492,
+      "nearest_distance": 11.067084312439,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -0.49906462430954,
+        0.000000009179188964481
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 114.4,
+      "team": 0,
+      "time": 14.4
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.292796610169492,
+      "nearest_distance": 11.0679721832275,
+      "nearest_enemy_structure": 7,
+      "position": [
+        0.5,
+        18.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 115.6,
+      "team": 1,
+      "time": 15.6
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.270833333333333,
+      "nearest_distance": 11.1531963348389,
+      "nearest_enemy_structure": 17,
+      "position": [
+        -0.589778244495392,
+        -17.9999446868896
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 116.0,
+      "team": 0,
+      "time": 16.0
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.270833333333333,
+      "nearest_distance": 11.1531963348389,
+      "nearest_enemy_structure": 11,
+      "position": [
+        0.589778244495392,
+        -17.9999446868896
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 116.0,
+      "team": 1,
+      "time": 16.0
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.330906148867312,
+      "nearest_distance": 11.2256784439087,
+      "nearest_enemy_structure": 9,
+      "position": [
+        0.970498502254486,
+        -1.12007784843445
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 3.73333333333312,
+      "team": 1,
+      "time": 42.4000000000002
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.236067961165044,
+      "nearest_distance": 11.0804014205933,
+      "nearest_enemy_structure": 13,
+      "position": [
+        -0.744921743869781,
+        18.7940883636475
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 4.59999999999974,
+      "team": 0,
+      "time": 47.5999999999999
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.332946428571431,
+      "nearest_distance": 13.0727024078369,
+      "nearest_enemy_structure": 11,
+      "position": [
+        2.59536552429199,
+        -17.9996700286865
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 150.4,
+      "team": 1,
+      "time": 50.3999999999997
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.209974629195941,
+      "nearest_distance": 7.17270803451538,
+      "nearest_enemy_structure": 7,
+      "position": [
+        -3.73471522331238,
+        18.0080165863037
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 158.799999999999,
+      "team": 1,
+      "time": 58.7999999999992
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.25800156128025,
+      "nearest_distance": 11.0679683685303,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -0.499996185302734,
+        0.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 3.03333333333317,
+      "team": 0,
+      "time": 65.5999999999988
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.253214285714286,
+      "nearest_distance": 11.0679721832275,
+      "nearest_enemy_structure": 17,
+      "position": [
+        -0.5,
+        -18.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 11.2999999999994,
+      "team": 0,
+      "time": 73.1999999999984
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.180887978142077,
+      "nearest_distance": 11.0818090438843,
+      "nearest_enemy_structure": 7,
+      "position": [
+        0.514846205711365,
+        18.0007839202881
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 189.199999999997,
+      "team": 1,
+      "time": 89.1999999999975
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.312442528735638,
+      "nearest_distance": 6.36378288269043,
+      "nearest_enemy_structure": 11,
+      "position": [
+        -4.07790088653564,
+        -19.1705207824707
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 1.83333333333323,
+      "team": 1,
+      "time": 99.9999999999969
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.34036036036036,
+      "nearest_distance": 10.3306140899658,
+      "nearest_enemy_structure": 9,
+      "position": [
+        0.147429704666138,
+        -1.56318080425262
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 3.73333333333312,
+      "team": 1,
+      "time": 100.399999999997
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.197571428571426,
+      "nearest_distance": 11.60045337677,
+      "nearest_enemy_structure": 14,
+      "position": [
+        14.952187538147,
+        17.9621543884277
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 8.13333333333287,
+      "team": 0,
+      "time": 119.199999999996
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.0991572184429354,
+      "nearest_distance": 26.8751201629639,
+      "nearest_enemy_structure": 7,
+      "position": [
+        16.6521530151367,
+        18.0453262329102
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 219.599999999996,
+      "team": 1,
+      "time": 119.599999999996
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.151181318681315,
+      "nearest_distance": 7.20693778991699,
+      "nearest_enemy_structure": 15,
+      "position": [
+        3.70000386238098,
+        0.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 8.63333333333284,
+      "team": 0,
+      "time": 125.199999999995
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.347920634920639,
+      "nearest_distance": 10.8784255981445,
+      "nearest_enemy_structure": 17,
+      "position": [
+        -0.300000011920929,
+        -17.9999809265137
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 14.7666666666658,
+      "team": 0,
+      "time": 130.399999999995
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.269417582417584,
+      "nearest_distance": 3.95684003829956,
+      "nearest_enemy_structure": 7,
+      "position": [
+        -11.8040218353271,
+        17.9783401489258
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 249.999999999994,
+      "team": 1,
+      "time": 149.999999999994
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.308763505402161,
+      "nearest_distance": 14.1390113830566,
+      "nearest_enemy_structure": 10,
+      "position": [
+        -16.3000030517578,
+        -0.00403833435848355
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 13.9666666666659,
+      "team": 1,
+      "time": 153.599999999994
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.303494505494506,
+      "nearest_distance": 28.3952884674072,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -18.1784267425537,
+        -0.0026590907946229
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 37.4333333333312,
+      "team": 0,
+      "time": 153.999999999994
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.322136904761908,
+      "nearest_distance": 11.0679721832275,
+      "nearest_enemy_structure": 11,
+      "position": [
+        0.5,
+        -18.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 5.36666666666636,
+      "team": 1,
+      "time": 158.399999999994
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.338056523422373,
+      "nearest_distance": 5.60446500778198,
+      "nearest_enemy_structure": 14,
+      "position": [
+        21.339973449707,
+        18.3864517211914
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 0.23333333333332,
+      "team": 0,
+      "time": 173.999999999993
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.33312011371713,
+      "nearest_distance": 11.0679683685303,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -0.499996185302734,
+        0.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 67.8333333333295,
+      "team": 0,
+      "time": 184.399999999992
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.338986175115207,
+      "nearest_distance": 6.93783283233643,
+      "nearest_enemy_structure": 17,
+      "position": [
+        4.00999927520752,
+        -17.99951171875
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 14.8666666666658,
+      "team": 0,
+      "time": 187.199999999992
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.0958315565031947,
+      "nearest_distance": 5.25868272781372,
+      "nearest_enemy_structure": 7,
+      "position": [
+        -6.07999706268311,
+        17.9946727752686
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 303.599999999991,
+      "team": 1,
+      "time": 203.599999999991
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.317754086709312,
+      "nearest_distance": 29.8292198181152,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -19.6231956481934,
+        0.000196172477444634
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 90.6333333333282,
+      "team": 0,
+      "time": 207.199999999991
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.344955837173584,
+      "nearest_distance": 11.0679721832275,
+      "nearest_enemy_structure": 11,
+      "position": [
+        0.5,
+        -18.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 10.0999999999994,
+      "team": 1,
+      "time": 216.39999999999
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.313898567557101,
+      "nearest_distance": 4.94274663925171,
+      "nearest_enemy_structure": 10,
+      "position": [
+        -25.8375263214111,
+        -0.834562599658966
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 0.966666666666612,
+      "team": 1,
+      "time": 222.39999999999
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.318687830687831,
+      "nearest_distance": 7.73376178741455,
+      "nearest_enemy_structure": 14,
+      "position": [
+        18.4597415924072,
+        19.7808208465576
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 5.56666666666635,
+      "team": 0,
+      "time": 230.399999999989
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.181778273809528,
+      "nearest_distance": 6.45157146453857,
+      "nearest_enemy_structure": 17,
+      "position": [
+        3.99984359741211,
+        -19.1291561126709
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 2.73333333333318,
+      "team": 0,
+      "time": 243.199999999989
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.30283492063492,
+      "nearest_distance": 3.22668790817261,
+      "nearest_enemy_structure": 15,
+      "position": [
+        9.85617256164551,
+        0.276518970727921
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 11.5999999999993,
+      "team": 0,
+      "time": 255.999999999988
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.194567840834961,
+      "nearest_distance": 4.85867977142334,
+      "nearest_enemy_structure": 7,
+      "position": [
+        -5.74788045883179,
+        19.1492023468018
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 358.39999999999,
+      "team": 1,
+      "time": 258.39999999999
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.272836681547619,
+      "nearest_distance": 11.0679721832275,
+      "nearest_enemy_structure": 11,
+      "position": [
+        0.5,
+        -18.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 12.0666666666763,
+      "team": 1,
+      "time": 271.2
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.345467372134039,
+      "nearest_distance": 9.90718364715576,
+      "nearest_enemy_structure": 10,
+      "position": [
+        -20.4344882965088,
+        -0.920605361461639
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 60.9666666666857,
+      "team": 1,
+      "time": 282.400000000009
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.340520726276128,
+      "nearest_distance": 8.94787120819092,
+      "nearest_enemy_structure": 14,
+      "position": [
+        17.3949108123779,
+        19.0470752716064
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 3.03333333333575,
+      "team": 0,
+      "time": 284.00000000001
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.289272108843541,
+      "nearest_distance": 16.8159217834473,
+      "nearest_enemy_structure": 18,
+      "position": [
+        9.42689323425293,
+        -18.652660369873
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 7.36666666667253,
+      "team": 0,
+      "time": 300.800000000024
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.348884353741497,
+      "nearest_distance": 24.343433380127,
+      "nearest_enemy_structure": 11,
+      "position": [
+        14.182276725769,
+        -18.7035255432129
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 42.8666666667008,
+      "team": 1,
+      "time": 302.000000000025
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.188893855062683,
+      "nearest_distance": 7.24964427947998,
+      "nearest_enemy_structure": 15,
+      "position": [
+        3.65230321884155,
+        -0.00201214617118239
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 63.6000000000407,
+      "team": 0,
+      "time": 308.000000000029
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.346001587301584,
+      "nearest_distance": 11.0679721832275,
+      "nearest_enemy_structure": 7,
+      "position": [
+        0.5,
+        18.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 11.4666666666758,
+      "team": 1,
+      "time": 308.80000000003
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.342466624284806,
+      "nearest_distance": 9.17108058929443,
+      "nearest_enemy_structure": 14,
+      "position": [
+        17.156156539917,
+        19.0720081329346
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 2.60000000000207,
+      "team": 0,
+      "time": 331.200000000048
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.168306878306874,
+      "nearest_distance": 8.83876800537109,
+      "nearest_enemy_structure": 11,
+      "position": [
+        -1.88427138328552,
+        -17.9987468719482
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 73.266666666725,
+      "team": 1,
+      "time": 332.400000000049
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.25638917437479,
+      "nearest_distance": 11.829249382019,
+      "nearest_enemy_structure": 10,
+      "position": [
+        -18.7000026702881,
+        -0.00125805579591542
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 10.9666666666754,
+      "team": 1,
+      "time": 334.40000000005
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.329935064935065,
+      "nearest_distance": 11.0679683685303,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -0.499996185302734,
+        0.0
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 98.0000000000681,
+      "team": 0,
+      "time": 342.400000000057
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.298617724867725,
+      "nearest_distance": 4.3684401512146,
+      "nearest_enemy_structure": 18,
+      "position": [
+        23.700590133667,
+        -17.7857055664062
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 1.96666666666823,
+      "team": 0,
+      "time": 351.600000000064
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.246283943329392,
+      "nearest_distance": 11.0501165390015,
+      "nearest_enemy_structure": 7,
+      "position": [
+        0.482829183340073,
+        18.0049514770508
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 3.60000000000286,
+      "team": 1,
+      "time": 357.200000000069
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.334186804756422,
+      "nearest_distance": 12.5224857330322,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -2.02343392372131,
+        0.00004378904850455
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 126.00000000009,
+      "team": 0,
+      "time": 370.400000000079
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.322663699936427,
+      "nearest_distance": 22.2660140991211,
+      "nearest_enemy_structure": 7,
+      "position": [
+        -4.02394819259644,
+        0.050940465182066
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 51.7666666667079,
+      "team": 1,
+      "time": 375.200000000083
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.339301175015461,
+      "nearest_distance": 11.0227890014648,
+      "nearest_enemy_structure": 14,
+      "position": [
+        15.5475149154663,
+        18.0003662109375
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 10.3666666666749,
+      "team": 0,
+      "time": 378.400000000085
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.344708994708994,
+      "nearest_distance": 32.1782264709473,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -13.6995468139648,
+        -18.2662544250488
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 35.566666666695,
+      "team": 0,
+      "time": 385.200000000091
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.188697736862293,
+      "nearest_distance": 2.88330006599426,
+      "nearest_enemy_structure": 7,
+      "position": [
+        -7.47590351104736,
+        20.106315612793
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 0.566666666667118,
+      "team": 1,
+      "time": 403.200000000105
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.296462501462499,
+      "nearest_distance": 9.03308963775635,
+      "nearest_enemy_structure": 12,
+      "position": [
+        -17.7482032775879,
+        -17.8251457214355
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 8.76666666667364,
+      "team": 1,
+      "time": 404.800000000106
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.296757787666879,
+      "nearest_distance": 24.345630645752,
+      "nearest_enemy_structure": 7,
+      "position": [
+        1.42190217971802,
+        0.0000025505360099487
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 83.366666666733,
+      "team": 1,
+      "time": 406.800000000108
+    },
+    {
+      "hero": "bas",
+      "hero_id": 1,
+      "hp_fraction": 0.34339662447257,
+      "nearest_distance": 10.8595762252808,
+      "nearest_enemy_structure": 15,
+      "position": [
+        -0.280097782611847,
+        0.00000225264648179291
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 169.600000000125,
+      "team": 0,
+      "time": 414.000000000114
+    },
+    {
+      "hero": "nema",
+      "hero_id": 3,
+      "hp_fraction": 0.194491634491629,
+      "nearest_distance": 4.41525888442993,
+      "nearest_enemy_structure": 18,
+      "position": [
+        23.1688232421875,
+        -18.1119403839111
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 5.03333333333734,
+      "team": 0,
+      "time": 429.200000000126
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.343039892596852,
+      "nearest_distance": 33.9978942871094,
+      "nearest_enemy_structure": 7,
+      "position": [
+        23.7867813110352,
+        17.7171440124512
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 28.1666666666891,
+      "team": 1,
+      "time": 430.800000000127
+    },
+    {
+      "hero": "rio",
+      "hero_id": 2,
+      "hp_fraction": 0.343208910295005,
+      "nearest_distance": 9.87119483947754,
+      "nearest_enemy_structure": 16,
+      "position": [
+        37.1027030944824,
+        10.3550777435303
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 15.8000000000126,
+      "team": 0,
+      "time": 437.600000000133
+    },
+    {
+      "hero": "bas",
+      "hero_id": 4,
+      "hp_fraction": 0.340492903720748,
+      "nearest_distance": 46.3277130126953,
+      "nearest_enemy_structure": 7,
+      "position": [
+        35.0831642150879,
+        10.8339185714722
+      ],
+      "siege_related": false,
+      "since_own_structure_hit": 49.7666666667063,
+      "team": 1,
+      "time": 452.400000000144
+    },
+    {
+      "hero": "nema",
+      "hero_id": 6,
+      "hp_fraction": 0.307448735475052,
+      "nearest_distance": 8.91339111328125,
+      "nearest_enemy_structure": 12,
+      "position": [
+        -17.674877166748,
+        -18.3155269622803
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 62.7666666667166,
+      "team": 1,
+      "time": 458.800000000149
+    },
+    {
+      "hero": "rio",
+      "hero_id": 5,
+      "hp_fraction": 0.309833024118735,
+      "nearest_distance": 7.38465070724487,
+      "nearest_enemy_structure": 10,
+      "position": [
+        -22.9943046569824,
+        -1.16477072238922
+      ],
+      "siege_related": true,
+      "since_own_structure_hit": 0.10000000000008,
+      "team": 1,
+      "time": 473.200000000161
+    }
+  ],
+  "run_label": "v9-bas",
+  "sampling": {
+    "decision_interval_seconds": 0.4,
+    "hit_burst_gap_seconds": 3.0,
+    "near_structure_radius": 12.0,
+    "occupancy_interval_seconds": 0.5,
+    "siege_retreat_radius": 18.0,
+    "snapshot_interval_seconds": 5.0
+  },
+  "selection": "bas",
+  "source_hashes_sha256": {
+    "battle_ai.gd": "09348d779f1b9df092d96f8e2278dfd380362cf3eefa4a5df788cd58f76386df",
+    "battle_consumables.gd": "5446f03e0d92e07b720ac134ac0dd24fa036b9e32a305590bf6fc37674733a17",
+    "battle_map.gd": "cdc20f990321e66943b8b343b3020515659e4afdfaf8979b15d918a40a494317",
+    "battle_rules.gd": "a7bc26257c47590f662207808d297fd840d51490bf0a19ba2092bc36a1d5b7cd",
+    "battle_state.gd": "0f3e851a064f393959f0647522e4cac084c02291d1ded42b50eb5ec41f336dc9",
+    "expanded_abilities.gd": "f1c442bc96915658a0cab05911eecf1242573c08011bea64ec107d047a18e81a",
+    "hero_abilities.gd": "0a6cf7c137f0956fa54f4b603de33a75f7bfd6ec6f9c2334414c876da6969cb1",
+    "hero_roster.gd": "50c6076a2506b8be16d3017c6f28dda502894cebd7de8b66c9040765f6e33523",
+    "tactical_ai.gd": "a39fc46c88dc95b384b89df1041c3b05f3ed26b65db4fbf1ce9d7ec1ed7b35f1"
+  },
+  "source_revision": "v9-reviewed-working-tree-from-debcd53",
+  "stats": {
+    "attacks": 3986,
+    "casts": 814,
+    "damage": 279423.085476188,
+    "hero_deaths": 5,
+    "objective_cell": 46,
+    "objective_defend": 2,
+    "objective_support": 1,
+    "siege_redeployments": 1
+  },
+  "structure_switch_counts": {
+    "minion_support_lost": 25.0,
+    "objective_cell": 1.0,
+    "priority_hero": 10.0,
+    "priority_minion": 12.0,
+    "retreat": 1.0,
+    "target_destroyed": 5.0
+  },
+  "structure_switches": [
+    {
+      "eligible": [
+        9
+      ],
+      "from": 9,
+      "hero_id": 5,
+      "hp_fraction": 0.762135922330097,
+      "reason": "priority_hero",
+      "time": 39.2000000000003,
+      "to": 1
+    },
+    {
+      "eligible": [
+        13
+      ],
+      "from": 13,
+      "hero_id": 2,
+      "hp_fraction": 0.869902912621356,
+      "reason": "priority_hero",
+      "time": 42.4000000000002,
+      "to": 4
+    },
+    {
+      "eligible": [],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.595982142857143,
+      "reason": "minion_support_lost",
+      "time": 61.999999999999,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 15,
+      "hero_id": 1,
+      "hp_fraction": 0.492857142857143,
+      "reason": "minion_support_lost",
+      "time": 62.799999999999,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 9,
+      "hero_id": 5,
+      "hp_fraction": 0.959459459459459,
+      "reason": "minion_support_lost",
+      "time": 78.3999999999981,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.995744047619054,
+      "reason": "minion_support_lost",
+      "time": 78.7999999999981,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 13,
+      "hero_id": 2,
+      "hp_fraction": 0.976962616822426,
+      "reason": "minion_support_lost",
+      "time": 79.599999999998,
+      "to": -1
+    },
+    {
+      "eligible": [
+        9
+      ],
+      "from": 9,
+      "hero_id": 5,
+      "hp_fraction": 0.779279279279279,
+      "reason": "priority_hero",
+      "time": 96.7999999999971,
+      "to": 1
+    },
+    {
+      "eligible": [
+        11
+      ],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.668304597701156,
+      "reason": "priority_hero",
+      "time": 98.399999999997,
+      "to": 3
+    },
+    {
+      "eligible": [],
+      "from": 13,
+      "hero_id": 2,
+      "hp_fraction": 0.977792792792789,
+      "reason": "minion_support_lost",
+      "time": 98.799999999997,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 13,
+      "hero_id": 2,
+      "hp_fraction": 0.807757763975152,
+      "reason": "target_destroyed",
+      "time": 111.199999999996,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.914761904761908,
+      "reason": "minion_support_lost",
+      "time": 115.599999999996,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 15,
+      "hero_id": 1,
+      "hp_fraction": 0.59577289377289,
+      "reason": "minion_support_lost",
+      "time": 116.799999999996,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 9,
+      "hero_id": 5,
+      "hp_fraction": 1.0,
+      "reason": "target_destroyed",
+      "time": 129.599999999995,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.728184523809531,
+      "reason": "minion_support_lost",
+      "time": 134.399999999995,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.85594237695078,
+      "reason": "minion_support_lost",
+      "time": 139.599999999995,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.68056547619048,
+      "reason": "minion_support_lost",
+      "time": 153.199999999994,
+      "to": -1
+    },
+    {
+      "eligible": [
+        14
+      ],
+      "from": 14,
+      "hero_id": 2,
+      "hp_fraction": 0.6718931475029,
+      "reason": "priority_minion",
+      "time": 170.799999999993,
+      "to": 281
+    },
+    {
+      "eligible": [],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.739600614439324,
+      "reason": "minion_support_lost",
+      "time": 172.799999999993,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 7,
+      "hero_id": 4,
+      "hp_fraction": 0.533759772565743,
+      "reason": "minion_support_lost",
+      "time": 187.199999999992,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.77856566820277,
+      "reason": "minion_support_lost",
+      "time": 206.799999999991,
+      "to": -1
+    },
+    {
+      "eligible": [
+        10
+      ],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.427797135114205,
+      "reason": "priority_minion",
+      "time": 221.19999999999,
+      "to": 357
+    },
+    {
+      "eligible": [],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.954285714285719,
+      "reason": "minion_support_lost",
+      "time": 224.39999999999,
+      "to": -1
+    },
+    {
+      "eligible": [
+        14
+      ],
+      "from": 14,
+      "hero_id": 2,
+      "hp_fraction": 0.836289241622576,
+      "reason": "priority_minion",
+      "time": 224.79999999999,
+      "to": 367
+    },
+    {
+      "eligible": [
+        17
+      ],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.682708333333337,
+      "reason": "priority_hero",
+      "time": 240.399999999989,
+      "to": 6
+    },
+    {
+      "eligible": [],
+      "from": 15,
+      "hero_id": 1,
+      "hp_fraction": 0.742335290280495,
+      "reason": "minion_support_lost",
+      "time": 244.799999999989,
+      "to": -1
+    },
+    {
+      "eligible": [
+        7
+      ],
+      "from": 7,
+      "hero_id": 4,
+      "hp_fraction": 0.621614481408999,
+      "reason": "priority_minion",
+      "time": 248.399999999988,
+      "to": 386
+    },
+    {
+      "eligible": [
+        15
+      ],
+      "from": 15,
+      "hero_id": 1,
+      "hp_fraction": 0.361428571428571,
+      "reason": "priority_hero",
+      "time": 254.799999999988,
+      "to": 5
+    },
+    {
+      "eligible": [
+        7
+      ],
+      "from": 7,
+      "hero_id": 4,
+      "hp_fraction": 0.41287345075016,
+      "reason": "priority_hero",
+      "time": 256.799999999989,
+      "to": 2
+    },
+    {
+      "eligible": [],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.759667038690476,
+      "reason": "minion_support_lost",
+      "time": 259.599999999991,
+      "to": -1
+    },
+    {
+      "eligible": [
+        10
+      ],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.965079365079365,
+      "reason": "priority_minion",
+      "time": 276.400000000004,
+      "to": 446
+    },
+    {
+      "eligible": [
+        14
+      ],
+      "from": 14,
+      "hero_id": 2,
+      "hp_fraction": 0.865529290853038,
+      "reason": "priority_minion",
+      "time": 278.800000000006,
+      "to": 454
+    },
+    {
+      "eligible": [],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.864741496598643,
+      "reason": "minion_support_lost",
+      "time": 278.800000000006,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 17,
+      "hero_id": 3,
+      "hp_fraction": 0.693653061224493,
+      "reason": "target_destroyed",
+      "time": 293.600000000018,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 15,
+      "hero_id": 1,
+      "hp_fraction": 0.496596825396824,
+      "reason": "minion_support_lost",
+      "time": 294.000000000018,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 7,
+      "hero_id": 4,
+      "hp_fraction": 0.556023809523808,
+      "reason": "minion_support_lost",
+      "time": 298.000000000021,
+      "to": -1
+    },
+    {
+      "eligible": [
+        10
+      ],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.942583076396024,
+      "reason": "objective_cell",
+      "time": 320.80000000004,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.819253168893455,
+      "reason": "minion_support_lost",
+      "time": 323.200000000041,
+      "to": -1
+    },
+    {
+      "eligible": [],
+      "from": 14,
+      "hero_id": 2,
+      "hp_fraction": 0.968531468531469,
+      "reason": "minion_support_lost",
+      "time": 328.000000000045,
+      "to": 4
+    },
+    {
+      "eligible": [
+        18
+      ],
+      "from": 18,
+      "hero_id": 3,
+      "hp_fraction": 0.484001322751323,
+      "reason": "priority_minion",
+      "time": 350.000000000063,
+      "to": 580
+    },
+    {
+      "eligible": [],
+      "from": 7,
+      "hero_id": 4,
+      "hp_fraction": 0.552305194805189,
+      "reason": "minion_support_lost",
+      "time": 354.000000000066,
+      "to": -1
+    },
+    {
+      "eligible": [
+        14
+      ],
+      "from": 14,
+      "hero_id": 2,
+      "hp_fraction": 0.871675943104515,
+      "reason": "priority_minion",
+      "time": 368.400000000077,
+      "to": 603
+    },
+    {
+      "eligible": [],
+      "from": 11,
+      "hero_id": 6,
+      "hp_fraction": 0.924371693121693,
+      "reason": "target_destroyed",
+      "time": 373.600000000082,
+      "to": 598
+    },
+    {
+      "eligible": [],
+      "from": 12,
+      "hero_id": 6,
+      "hp_fraction": 0.537850707850705,
+      "reason": "minion_support_lost",
+      "time": 396.8000000001,
+      "to": -1
+    },
+    {
+      "eligible": [
+        7
+      ],
+      "from": 7,
+      "hero_id": 4,
+      "hp_fraction": 0.473622938243191,
+      "reason": "priority_hero",
+      "time": 402.000000000104,
+      "to": 2
+    },
+    {
+      "eligible": [],
+      "from": 14,
+      "hero_id": 2,
+      "hp_fraction": 0.910818783865144,
+      "reason": "target_destroyed",
+      "time": 422.00000000012,
+      "to": -1
+    },
+    {
+      "eligible": [
+        18
+      ],
+      "from": 18,
+      "hero_id": 3,
+      "hp_fraction": 0.61794973544973,
+      "reason": "priority_minion",
+      "time": 422.40000000012,
+      "to": 702
+    },
+    {
+      "eligible": [
+        10
+      ],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.888682745825603,
+      "reason": "priority_minion",
+      "time": 437.600000000133,
+      "to": 716
+    },
+    {
+      "eligible": [
+        10
+      ],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.396413110698825,
+      "reason": "priority_minion",
+      "time": 456.000000000147,
+      "to": 749
+    },
+    {
+      "eligible": [],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.532467532467529,
+      "reason": "minion_support_lost",
+      "time": 466.000000000155,
+      "to": -1
+    },
+    {
+      "eligible": [
+        20
+      ],
+      "from": 20,
+      "hero_id": 1,
+      "hp_fraction": 0.471094276094266,
+      "reason": "priority_minion",
+      "time": 470.000000000158,
+      "to": 790
+    },
+    {
+      "eligible": [
+        10
+      ],
+      "from": 10,
+      "hero_id": 5,
+      "hp_fraction": 0.309833024118735,
+      "reason": "retreat",
+      "time": 473.200000000161,
+      "to": -1
+    },
+    {
+      "eligible": [
+        20
+      ],
+      "from": 20,
+      "hero_id": 2,
+      "hp_fraction": 0.980114388922338,
+      "reason": "priority_hero",
+      "time": 483.200000000169,
+      "to": 5
+    },
+    {
+      "eligible": [
+        20
+      ],
+      "from": 20,
+      "hero_id": 1,
+      "hp_fraction": 0.507570532915351,
+      "reason": "priority_hero",
+      "time": 483.600000000169,
+      "to": 6
+    }
+  ],
+  "structure_target_decisions": {
+    "10": {
+      "busy": 18.0,
+      "hero": 14.0,
+      "minion": 33.0,
+      "objective_cell": 18.0,
+      "objective_return": 5.0,
+      "retreat": 3.0,
+      "tower": 30.0
+    },
+    "11": {
+      "busy": 25.0,
+      "hero": 17.0,
+      "minion": 31.0,
+      "retreat": 8.0,
+      "tower": 51.0
+    },
+    "12": {
+      "busy": 10.0,
+      "hero": 14.0,
+      "minion": 10.0,
+      "retreat": 4.0,
+      "tower": 8.0
+    },
+    "13": {
+      "busy": 3.0,
+      "hero": 5.0,
+      "minion": 2.0,
+      "tower": 49.0
+    },
+    "14": {
+      "busy": 10.0,
+      "hero": 28.0,
+      "minion": 31.0,
+      "objective_cell": 20.0,
+      "objective_return": 5.0,
+      "retreat": 11.0,
+      "tower": 27.0
+    },
+    "15": {
+      "busy": 21.0,
+      "hero": 4.0,
+      "minion": 54.0,
+      "retreat": 7.0,
+      "tower": 50.0
+    },
+    "17": {
+      "busy": 29.0,
+      "hero": 19.0,
+      "minion": 49.0,
+      "retreat": 5.0,
+      "tower": 47.0
+    },
+    "18": {
+      "busy": 14.0,
+      "hero": 6.0,
+      "minion": 10.0,
+      "retreat": 10.0,
+      "tower": 31.0
+    },
+    "20": {
+      "busy": 15.0,
+      "core": 27.0,
+      "hero": 24.0,
+      "minion": 30.0
+    },
+    "7": {
+      "busy": 31.0,
+      "hero": 11.0,
+      "minion": 75.0,
+      "retreat": 18.0,
+      "tower": 44.0
+    },
+    "9": {
+      "busy": 4.0,
+      "hero": 10.0,
+      "minion": 16.0,
+      "retreat": 1.0,
+      "tower": 44.0
+    }
+  },
+  "structures": [
+    {
+      "bursts": 6,
+      "damage": 1924.445,
+      "damage_by_source": {
+        "1:bas:4": 977.695,
+        "1:minion:melee": 278.0,
+        "1:minion:ranged": 380.75,
+        "1:minion:siege": 288.0
+      },
+      "damage_by_stage": {
+        "basic": 1473.145,
+        "impact": 451.3
+      },
+      "destroyed_at": -1.0,
+      "exposed_at": 0.0,
+      "final_hp": 75.5549999999994,
+      "first_damage_at": 61.9666666666657,
+      "first_supported_at": 53.4999999999995,
+      "hero_target_seconds": 17.5000000000096,
+      "hits": 50,
+      "id": 7,
+      "kind": "tower",
+      "lane": 0,
+      "last_damage_at": 405.000000000107,
+      "last_support": false,
+      "longest_hit_gap": 181.533333333323,
+      "max_hp": 2000.0,
+      "minion_target_seconds": 29.0000000000162,
+      "name": "South Left outer",
+      "near_enemy_hero_seconds": 134.500000000041,
+      "one_hp_seconds": 0.0,
+      "position": [
+        -10.0,
+        21.5
+      ],
+      "subtype": "outer",
+      "support_windows": 13,
+      "supported_damage": 1900.85,
+      "supported_near_hero_seconds": 71.500000000027,
+      "supported_seconds": 92.5000000000352,
+      "team": 0,
+      "unlocked_alive_seconds": 486.633333333505,
+      "unsupported_damage": 23.595,
+      "unsupported_near_hero_seconds": 63.0000000000138
+    },
+    {
+      "bursts": 0,
+      "damage": 0.0,
+      "damage_by_source": {},
+      "damage_by_stage": {},
+      "destroyed_at": -1.0,
+      "exposed_at": -1.0,
+      "final_hp": 2600.0,
+      "first_damage_at": -1.0,
+      "first_supported_at": -1.0,
+      "hero_target_seconds": 0.0,
+      "hits": 0,
+      "id": 8,
+      "kind": "tower",
+      "lane": 0,
+      "last_damage_at": -1.0,
+      "last_support": false,
+      "longest_hit_gap": 0.0,
+      "max_hp": 2600.0,
+      "minion_target_seconds": 0.0,
+      "name": "South Left inner",
+      "near_enemy_hero_seconds": 0.0,
+      "one_hp_seconds": 0.0,
+      "position": [
+        -26.0,
+        21.5
+      ],
+      "subtype": "inner",
+      "support_windows": 0,
+      "supported_damage": 0.0,
+      "supported_near_hero_seconds": 0.0,
+      "supported_seconds": 0.0,
+      "team": 0,
+      "unlocked_alive_seconds": 0.0,
+      "unsupported_damage": 0.0,
+      "unsupported_near_hero_seconds": 0.0
+    },
+    {
+      "bursts": 4,
+      "damage": 2000.0,
+      "damage_by_source": {
+        "1:minion:melee": 300.0,
+        "1:minion:ranged": 325.0,
+        "1:minion:siege": 180.0,
+        "1:rio:5": 1195.0
+      },
+      "damage_by_stage": {
+        "basic": 1480.12,
+        "outbound": 304.825,
+        "return": 215.055
+      },
+      "destroyed_at": 129.399999999995,
+      "exposed_at": 0.0,
+      "final_hp": 0.0,
+      "first_damage_at": 36.6666666666671,
+      "first_supported_at": 34.0000000000006,
+      "hero_target_seconds": 14.4999999999992,
+      "hits": 57,
+      "id": 9,
+      "kind": "tower",
+      "lane": 1,
+      "last_damage_at": 129.399999999995,
+      "last_support": true,
+      "longest_hit_gap": 30.8999999999983,
+      "max_hp": 2000.0,
+      "minion_target_seconds": 21.4999999999988,
+      "name": "South Center outer",
+      "near_enemy_hero_seconds": 62.9999999999982,
+      "one_hp_seconds": 0.0,
+      "position": [
+        -10.0,
+        -3.5
+      ],
+      "subtype": "outer",
+      "support_windows": 7,
+      "supported_damage": 1985.78,
+      "supported_near_hero_seconds": 29.4999999999983,
+      "supported_seconds": 39.4999999999978,
+      "team": 0,
+      "unlocked_alive_seconds": 128.999999999995,
+      "unsupported_damage": 14.22,
+      "unsupported_near_hero_seconds": 33.4999999999999
+    },
+    {
+      "bursts": 8,
+      "damage": 2328.95,
+      "damage_by_source": {
+        "1:minion:melee": 330.0,
+        "1:minion:ranged": 455.75,
+        "1:minion:siege": 396.0,
+        "1:rio:5": 1147.2
+      },
+      "damage_by_stage": {
+        "basic": 1742.15,
+        "outbound": 336.325,
+        "return": 250.475
+      },
+      "destroyed_at": -1.0,
+      "exposed_at": 129.399999999995,
+      "final_hp": 271.05,
+      "first_damage_at": 138.633333333328,
+      "first_supported_at": 132.999999999995,
+      "hero_target_seconds": 13.0000000000078,
+      "hits": 64,
+      "id": 10,
+      "kind": "tower",
+      "lane": 1,
+      "last_damage_at": 479.366666666832,
+      "last_support": false,
+      "longest_hit_gap": 112.866666666756,
+      "max_hp": 2600.0,
+      "minion_target_seconds": 28.500000000021,
+      "name": "South Center inner",
+      "near_enemy_hero_seconds": 113.000000000055,
+      "one_hp_seconds": 0.0,
+      "position": [
+        -30.0,
+        -3.5
+      ],
+      "subtype": "inner",
+      "support_windows": 13,
+      "supported_damage": 2267.75,
+      "supported_near_hero_seconds": 47.5000000000267,
+      "supported_seconds": 67.5000000000409,
+      "team": 0,
+      "unlocked_alive_seconds": 357.63333333351,
+      "unsupported_damage": 61.2,
+      "unsupported_near_hero_seconds": 65.5000000000283
+    },
+    {
+      "bursts": 7,
+      "damage": 2000.0,
+      "damage_by_source": {
+        "1:minion:melee": 260.0,
+        "1:minion:ranged": 293.805,
+        "1:minion:siege": 180.0,
+        "1:nema:6": 1266.195
+      },
+      "damage_by_stage": {
+        "basic": 1658.85,
+        "impact": 341.15
+      },
+      "destroyed_at": 373.466666666748,
+      "exposed_at": 0.0,
+      "final_hp": 0.0,
+      "first_damage_at": 78.3666666666648,
+      "first_supported_at": 35.5000000000005,
+      "hero_target_seconds": 22.0000000000038,
+      "hits": 59,
+      "id": 11,
+      "kind": "tower",
+      "lane": 2,
+      "last_damage_at": 373.466666666748,
+      "last_support": true,
+      "longest_hit_gap": 112.133333333423,
+      "max_hp": 2000.0,
+      "minion_target_seconds": 25.5000000000032,
+      "name": "South Right outer",
+      "near_enemy_hero_seconds": 118.500000000014,
+      "one_hp_seconds": 1.0000000000008,
+      "position": [
+        -10.0,
+        -21.5
+      ],
+      "subtype": "outer",
+      "support_windows": 15,
+      "supported_damage": 1941.205,
+      "supported_near_hero_seconds": 53.0000000000093,
+      "supported_seconds": 105.000000000026,
+      "team": 0,
+      "unlocked_alive_seconds": 373.000000000081,
+      "unsupported_damage": 58.795,
+      "unsupported_near_hero_seconds": 65.5000000000051
+    },
+    {
+      "bursts": 1,
+      "damage": 418.3,
+      "damage_by_source": {
+        "1:minion:siege": 99.0,
+        "1:nema:6": 319.3
+      },
+      "damage_by_stage": {
+        "basic": 253.8,
+        "impact": 164.5
+      },
+      "destroyed_at": -1.0,
+      "exposed_at": 373.466666666748,
+      "final_hp": 2181.7,
+      "first_damage_at": 393.566666666764,
+      "first_supported_at": 387.000000000092,
+      "hero_target_seconds": 2.00000000000159,
+      "hits": 7,
+      "id": 12,
+      "kind": "tower",
+      "lane": 2,
+      "last_damage_at": 396.033333333433,
+      "last_support": false,
+      "longest_hit_gap": 0.766666666667277,
+      "max_hp": 2600.0,
+      "minion_target_seconds": 3.50000000000279,
+      "name": "South Right inner",
+      "near_enemy_hero_seconds": 21.5000000000171,
+      "one_hp_seconds": 0.0,
+      "position": [
+        -26.0,
+        -21.5
+      ],
+      "subtype": "inner",
+      "support_windows": 3,
+      "supported_damage": 418.3,
+      "supported_near_hero_seconds": 17.5000000000139,
+      "supported_seconds": 26.0000000000207,
+      "team": 0,
+      "unlocked_alive_seconds": 113.633333333424,
+      "unsupported_damage": 0.0,
+      "unsupported_near_hero_seconds": 4.00000000000318
+    },
+    {
+      "bursts": 4,
+      "damage": 2000.0,
+      "damage_by_source": {
+        "0:minion:melee": 240.0,
+        "0:minion:ranged": 282.5,
+        "0:minion:siege": 135.0,
+        "0:rio:2": 1342.5
+      },
+      "damage_by_stage": {
+        "basic": 1472.8,
+        "outbound": 302.8,
+        "return": 224.4
+      },
+      "destroyed_at": 111.066666666663,
+      "exposed_at": 0.0,
+      "final_hp": 0.0,
+      "first_damage_at": 37.0666666666671,
+      "first_supported_at": 35.5000000000005,
+      "hero_target_seconds": 18.4999999999989,
+      "hits": 56,
+      "id": 13,
+      "kind": "tower",
+      "lane": 0,
+      "last_damage_at": 111.066666666663,
+      "last_support": true,
+      "longest_hit_gap": 29.5333333333317,
+      "max_hp": 2000.0,
+      "minion_target_seconds": 20.9999999999988,
+      "name": "North Left outer",
+      "near_enemy_hero_seconds": 58.9999999999983,
+      "one_hp_seconds": 0.0,
+      "position": [
+        10.0,
+        21.5
+      ],
+      "subtype": "outer",
+      "support_windows": 6,
+      "supported_damage": 1964.195,
+      "supported_near_hero_seconds": 23.4999999999987,
+      "supported_seconds": 36.4999999999979,
+      "team": 1,
+      "unlocked_alive_seconds": 110.999999999996,
+      "unsupported_damage": 35.805,
+      "unsupported_near_hero_seconds": 35.4999999999997
+    },
+    {
+      "bursts": 6,
+      "damage": 2600.0,
+      "damage_by_source": {
+        "0:minion:melee": 336.0,
+        "0:minion:ranged": 630.0,
+        "0:minion:siege": 319.5,
+        "0:rio:2": 1314.5
+      },
+      "damage_by_stage": {
+        "basic": 1693.8,
+        "impact": 250.4,
+        "outbound": 357.445,
+        "return": 298.355
+      },
+      "destroyed_at": 421.80000000012,
+      "exposed_at": 111.066666666663,
+      "final_hp": 0.0,
+      "first_damage_at": 169.06666666666,
+      "first_supported_at": 113.499999999996,
+      "hero_target_seconds": 9.50000000000415,
+      "hits": 69,
+      "id": 14,
+      "kind": "tower",
+      "lane": 0,
+      "last_damage_at": 421.80000000012,
+      "last_support": true,
+      "longest_hit_gap": 49.2000000000151,
+      "max_hp": 2600.0,
+      "minion_target_seconds": 33.0000000000135,
+      "name": "North Left inner",
+      "near_enemy_hero_seconds": 99.0000000000396,
+      "one_hp_seconds": 0.0,
+      "position": [
+        26.0,
+        21.5
+      ],
+      "subtype": "inner",
+      "support_windows": 8,
+      "supported_damage": 2579.78,
+      "supported_near_hero_seconds": 51.5000000000205,
+      "supported_seconds": 57.5000000000227,
+      "team": 1,
+      "unlocked_alive_seconds": 310.500000000123,
+      "unsupported_damage": 20.22,
+      "unsupported_near_hero_seconds": 47.500000000019
+    },
+    {
+      "bursts": 4,
+      "damage": 1999.0,
+      "damage_by_source": {
+        "0:bas:1": 1168.725,
+        "0:minion:melee": 326.0,
+        "0:minion:ranged": 369.275,
+        "0:minion:siege": 135.0
+      },
+      "damage_by_stage": {
+        "basic": 1562.65,
+        "impact": 436.35
+      },
+      "destroyed_at": -1.0,
+      "exposed_at": 0.0,
+      "final_hp": 1.0,
+      "first_damage_at": 57.7333333333326,
+      "first_supported_at": 34.0000000000006,
+      "hero_target_seconds": 27.5000000000091,
+      "hits": 56,
+      "id": 15,
+      "kind": "tower",
+      "lane": 1,
+      "last_damage_at": 422.566666666787,
+      "last_support": false,
+      "longest_hit_gap": 175.766666666797,
+      "max_hp": 2000.0,
+      "minion_target_seconds": 24.0000000000029,
+      "name": "North Center outer",
+      "near_enemy_hero_seconds": 117.000000000023,
+      "one_hp_seconds": 64.1333333333844,
+      "position": [
+        10.0,
+        3.5
+      ],
+      "subtype": "outer",
+      "support_windows": 15,
+      "supported_damage": 1984.375,
+      "supported_near_hero_seconds": 55.000000000008,
+      "supported_seconds": 84.5000000000259,
+      "team": 1,
+      "unlocked_alive_seconds": 486.633333333505,
+      "unsupported_damage": 14.625,
+      "unsupported_near_hero_seconds": 62.0000000000146
+    },
+    {
+      "bursts": 0,
+      "damage": 0.0,
+      "damage_by_source": {},
+      "damage_by_stage": {},
+      "destroyed_at": -1.0,
+      "exposed_at": -1.0,
+      "final_hp": 2600.0,
+      "first_damage_at": -1.0,
+      "first_supported_at": -1.0,
+      "hero_target_seconds": 0.0,
+      "hits": 0,
+      "id": 16,
+      "kind": "tower",
+      "lane": 1,
+      "last_damage_at": -1.0,
+      "last_support": false,
+      "longest_hit_gap": 0.0,
+      "max_hp": 2600.0,
+      "minion_target_seconds": 0.0,
+      "name": "North Center inner",
+      "near_enemy_hero_seconds": 0.0,
+      "one_hp_seconds": 0.0,
+      "position": [
+        30.0,
+        3.5
+      ],
+      "subtype": "inner",
+      "support_windows": 0,
+      "supported_damage": 0.0,
+      "supported_near_hero_seconds": 0.0,
+      "supported_seconds": 0.0,
+      "team": 1,
+      "unlocked_alive_seconds": 0.0,
+      "unsupported_damage": 0.0,
+      "unsupported_near_hero_seconds": 0.0
+    },
+    {
+      "bursts": 6,
+      "damage": 2000.0,
+      "damage_by_source": {
+        "0:minion:melee": 204.0,
+        "0:minion:ranged": 250.0,
+        "0:minion:siege": 315.0,
+        "0:nema:3": 1231.0
+      },
+      "damage_by_stage": {
+        "basic": 1584.55,
+        "impact": 415.45
+      },
+      "destroyed_at": 293.433333333351,
+      "exposed_at": 0.0,
+      "final_hp": 0.0,
+      "first_damage_at": 57.8999999999993,
+      "first_supported_at": 35.5000000000005,
+      "hero_target_seconds": 17.5000000000011,
+      "hits": 54,
+      "id": 17,
+      "kind": "tower",
+      "lane": 2,
+      "last_damage_at": 293.433333333351,
+      "last_support": true,
+      "longest_hit_gap": 67.0333333333295,
+      "max_hp": 2000.0,
+      "minion_target_seconds": 25.9999999999998,
+      "name": "North Right outer",
+      "near_enemy_hero_seconds": 121.000000000007,
+      "one_hp_seconds": 0.0,
+      "position": [
+        10.0,
+        -21.5
+      ],
+      "subtype": "outer",
+      "support_windows": 14,
+      "supported_damage": 1936.865,
+      "supported_near_hero_seconds": 60.0000000000021,
+      "supported_seconds": 95.5000000000069,
+      "team": 1,
+      "unlocked_alive_seconds": 293.000000000017,
+      "unsupported_damage": 63.135,
+      "unsupported_near_hero_seconds": 61.000000000005
+    },
+    {
+      "bursts": 3,
+      "damage": 1943.25,
+      "damage_by_source": {
+        "0:minion:melee": 396.0,
+        "0:minion:ranged": 495.0,
+        "0:nema:3": 1052.25
+      },
+      "damage_by_stage": {
+        "basic": 1456.35,
+        "impact": 486.9
+      },
+      "destroyed_at": -1.0,
+      "exposed_at": 293.433333333351,
+      "final_hp": 656.75,
+      "first_damage_at": 348.000000000061,
+      "first_supported_at": 346.50000000006,
+      "hero_target_seconds": 10.6333333333418,
+      "hits": 54,
+      "id": 18,
+      "kind": "tower",
+      "lane": 2,
+      "last_damage_at": 486.133333333504,
+      "last_support": true,
+      "longest_hit_gap": 66.5333333333863,
+      "max_hp": 2600.0,
+      "minion_target_seconds": 26.1333333333541,
+      "name": "North Right inner",
+      "near_enemy_hero_seconds": 33.6333333333601,
+      "one_hp_seconds": 0.0,
+      "position": [
+        26.0,
+        -21.5
+      ],
+      "subtype": "inner",
+      "support_windows": 4,
+      "supported_damage": 1943.25,
+      "supported_near_hero_seconds": 28.6333333333561,
+      "supported_seconds": 33.1333333333597,
+      "team": 1,
+      "unlocked_alive_seconds": 193.633333333487,
+      "unsupported_damage": 0.0,
+      "unsupported_near_hero_seconds": 5.00000000000398
+    },
+    {
+      "bursts": 0,
+      "damage": 0.0,
+      "damage_by_source": {},
+      "damage_by_stage": {},
+      "destroyed_at": -1.0,
+      "exposed_at": -1.0,
+      "final_hp": 4000.0,
+      "first_damage_at": -1.0,
+      "first_supported_at": -1.0,
+      "hero_target_seconds": 0.0,
+      "hits": 0,
+      "id": 19,
+      "kind": "core",
+      "lane": 1,
+      "last_damage_at": -1.0,
+      "last_support": false,
+      "longest_hit_gap": 0.0,
+      "max_hp": 4000.0,
+      "minion_target_seconds": 0.0,
+      "name": "South Core",
+      "near_enemy_hero_seconds": 0.0,
+      "one_hp_seconds": 0.0,
+      "position": [
+        -50.0,
+        0.0
+      ],
+      "subtype": "core",
+      "support_windows": 0,
+      "supported_damage": 0.0,
+      "supported_near_hero_seconds": 0.0,
+      "supported_seconds": 0.0,
+      "team": 0,
+      "unlocked_alive_seconds": 0.0,
+      "unsupported_damage": 0.0,
+      "unsupported_near_hero_seconds": 0.0
+    },
+    {
+      "bursts": 1,
+      "damage": 4000.0,
+      "damage_by_source": {
+        "0:bas:1": 828.7,
+        "0:minion:melee": 1320.0,
+        "0:minion:ranged": 845.299999999999,
+        "0:minion:siege": 594.0,
+        "0:rio:2": 412.0
+      },
+      "damage_by_stage": {
+        "basic": 3341.9,
+        "impact": 462.1,
+        "outbound": 142.0,
+        "return": 54.0
+      },
+      "destroyed_at": 486.633333333505,
+      "exposed_at": 421.80000000012,
+      "final_hp": 0.0,
+      "first_damage_at": 467.900000000157,
+      "first_supported_at": 458.000000000149,
+      "hero_target_seconds": 7.50000000000597,
+      "hits": 123,
+      "id": 20,
+      "kind": "core",
+      "lane": 1,
+      "last_damage_at": 486.633333333505,
+      "last_support": true,
+      "longest_hit_gap": 0.766666666667277,
+      "max_hp": 4000.0,
+      "minion_target_seconds": 19.5000000000155,
+      "name": "North Core",
+      "near_enemy_hero_seconds": 32.0000000000255,
+      "one_hp_seconds": 0.500000000000398,
+      "position": [
+        50.0,
+        0.0
+      ],
+      "subtype": "core",
+      "support_windows": 1,
+      "supported_damage": 4000.0,
+      "supported_near_hero_seconds": 29.0000000000231,
+      "supported_seconds": 29.0000000000231,
+      "team": 1,
+      "unlocked_alive_seconds": 65.0000000000517,
+      "unsupported_damage": 0.0,
+      "unsupported_near_hero_seconds": 3.00000000000239
+    }
+  ],
+  "wall_seconds": 35.598,
+  "winner": 0
+}

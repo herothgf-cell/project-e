@@ -1,0 +1,43 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: recovered bot leaves home through the publicly breached lane
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:18)
+ERROR: one departure creates one redeployment, not a repeated task
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:20)
+ERROR: the real hero walks into the opened left lane rather than resuming the blocked center
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:24)
+ERROR: moving along the selected lane does not repeatedly redeploy
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:26)
+ERROR: existing 85-percent recovery threshold enables the next departure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:55)
+ERROR: equal opened-lane options use stable left-to-right assignment
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:91)
+ERROR: the opposing team uses the same safe-home redeployment rule
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:97)
+ERROR: respawn clears the old task and permits a fresh safe departure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:173)
+       [1] _run (res://tests/test_siege_v9.gd:135)
+Siege V9: 26 checks, 8 failures

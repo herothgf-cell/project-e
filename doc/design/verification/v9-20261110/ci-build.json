@@ -1,0 +1,19 @@
+{
+  "code_commit": "200df52e018e46b5b7847bfd808c59206dca7a75",
+  "build_source": "8c16d45a58ae1bcc7dc2035b9b72aa6497c1467d",
+  "windows_run_id": 42801891061,
+  "windows_artifact_id": 13755499300,
+  "review_artifact_id": 13755494347,
+  "windows_package_sha256": "83428f16d8277328b903fa2aabb03fbf8769f94a7e7735cdd13aeb479eac4786",
+  "windows_package_bytes": 59210845,
+  "matching_product_scripts": 31,
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "windows_smoke_job_id": 129783146446,
+  "windows_smoke_artifact_id": 13756068323,
+  "windows_smoke": "passed, headless 120 frames; no manual graphical play",
+  "player_review_checks": 319,
+  "player_review_captures": 57,
+  "vertical_review_checks": 23,
+  "vertical_review_captures": 3,
+  "manually_inspected_preserved_images": 4
+}
