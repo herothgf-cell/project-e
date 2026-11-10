@@ -1,0 +1,26 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+MINION_AUDIT_ENGINE { "major": 4, "minor": 7, "patch": 2, "hex": 263938, "status": "stable", "build": "official", "hash": "ed1daf0bf001b61586d9930840f2f1394092c079", "timestamp": 0, "string": "4.7.2-stable (official)" }
+RESERVE kind=hero hp=1.0 damage=4.0
+RESERVE kind=minion hp=1.0 damage=4.0
+RESERVE kind=tower hp=1.0 damage=4.0
+RESERVE kind=core hp=1.0 damage=4.0
+RESERVE kind=cell hp=1.0 damage=4.0
+RESERVE kind=pin hp=1.0 damage=4.0
+ONE_HP damage=20.0 victim_hp=220.0 vision=true siege_support=true
+RANGE tower_to_siege=8.95 siege_to_tower=8.50 siege_acquisition=8.00
+WAVE_TOWER spawn=0 siege=false regular_one_hp=false first_tower_damage=2.267 wave_clear=7.200 tower_damage=205.0 tower_hp=1795.0
+WAVE_TOWER spawn=0 siege=true regular_one_hp=false first_tower_damage=2.267 wave_clear=10.200 tower_damage=475.0 tower_hp=1525.0
+WAVE_TOWER spawn=0 siege=true regular_one_hp=true first_tower_damage=2.267 wave_clear=7.200 tower_damage=230.0 tower_hp=1770.0
+WAVE_TOWER spawn=721 siege=true regular_one_hp=false first_tower_damage=2.267 wave_clear=12.200 tower_damage=708.5 tower_hp=1291.5
+ISOLATED_LANE time=38.0 spawned=8 alive=8 one_hp=2 siege=0 endpoint=0 deaths=0
+ISOLATED_LANE time=56.0 spawned=16 alive=16 one_hp=12 siege=0 endpoint=0 deaths=0
+ISOLATED_LANE time=74.0 spawned=24 alive=24 one_hp=24 siege=0 endpoint=0 deaths=0
+ISOLATED_LANE time=92.0 spawned=34 alive=22 one_hp=18 siege=2 endpoint=0 deaths=12
+ISOLATED_LANE time=110.0 spawned=42 alive=10 one_hp=4 siege=2 endpoint=0 deaths=32
+PARKED time=18.0 minions=4 endpoint=4 core_hp=1.0 support=true
+PARKED time=36.0 minions=8 endpoint=8 core_hp=1.0 support=true
+PARKED time=54.0 minions=12 endpoint=12 core_hp=1.0 support=true
+PARKED time=72.0 minions=16 endpoint=16 core_hp=1.0 support=true
+REWARD capped_xp=0.0 learner_xp=10.0 capped_credits=10.0 learner_credits=6.0
+Minion audit isolated probes: 27 checks, 0 failures
