@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+AUDIT_OUTPUT /workspace/scratch/e729c46d2a61/project-e/build/v9-natural
+SIEGE_PROGRESS t=120.5 elapsed=8.5 towers=0
+SIEGE_PROGRESS t=240.5 elapsed=17.6 towers=1
+SIEGE_PROGRESS t=360.0 elapsed=26.6 towers=3
+SIEGE_PROGRESS t=480.0 elapsed=35.5 towers=4
+SIEGE_PROGRESS t=600.0 elapsed=50.2 towers=6
+SIEGE_PROGRESS t=720.0 elapsed=67.2 towers=7
+SIEGE_PROGRESS t=840.5 elapsed=81.6 towers=7
+SIEGE_PROGRESS t=960.5 elapsed=98.4 towers=7
+SIEGE_PROGRESS t=1080.5 elapsed=108.6 towers=8
+SIEGE_COMPLETE {"milestones":{"first_core_damage":699.366666666688,"first_core_destroyed":1081.33333333301,"first_core_exposed":482.666666666835,"first_inner_damage":167.36666666666,"first_inner_destroyed":482.666666666835,"first_outer_damage":38.2666666666671,"first_outer_destroyed":147.233333333328,"first_structure_damage":38.2666666666671,"victory":1081.33333333301},"selection":"orin","stats":{"attacks":11628,"casts":2010,"damage":653884.515411242,"hero_deaths":8,"objective_cell":82,"objective_defend":61,"objective_support":16,"siege_redeployments":2},"time":1081.33333333301,"winner":0}

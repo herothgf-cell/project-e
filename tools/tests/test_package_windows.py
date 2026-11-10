@@ -90,7 +90,7 @@ print('Export done')
             guide = archive.read('ProjectE-windows-x86_64/README-WINDOWS.txt').decode('utf-8')
             for expected in ['바스·리오·네마·오린·테르·무아·세라·루메',
                              '별샘 영약', '숲빛 치유약', '8명 영웅',
-                             'Project E V8 - Astra Fantasy Arena']:
+                             'Project E V9 - Astra Fantasy Arena']:
                 self.assertTrue(expected in guide, f'Windows guide includes {expected}')
             for entry in manifest['files']:
                 data = archive.read('ProjectE-windows-x86_64/' + entry['path'])

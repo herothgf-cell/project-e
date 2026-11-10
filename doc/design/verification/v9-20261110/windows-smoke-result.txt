@@ -1,0 +1,1 @@
+PASS: Windows exported EXE headless startup; graphical/manual play NOT RUN

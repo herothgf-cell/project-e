@@ -1,0 +1,37 @@
+{
+  "source_commit": "200df52e018e46b5b7847bfd808c59206dca7a75",
+  "runs": [
+    {
+      "id": 42801891300,
+      "name": "Godot regression",
+      "head_sha": "200df52e018e46b5b7847bfd808c59206dca7a75",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/herothgf-cell/project-e/actions/runs/42801891300"
+    },
+    {
+      "id": 42801890748,
+      "name": "Playable slice",
+      "head_sha": "200df52e018e46b5b7847bfd808c59206dca7a75",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/herothgf-cell/project-e/actions/runs/42801890748"
+    },
+    {
+      "id": 42801891061,
+      "name": "Windows preview",
+      "head_sha": "200df52e018e46b5b7847bfd808c59206dca7a75",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/herothgf-cell/project-e/actions/runs/42801891061"
+    },
+    {
+      "id": 42801891131,
+      "name": "Integrated V2",
+      "head_sha": "200df52e018e46b5b7847bfd808c59206dca7a75",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/herothgf-cell/project-e/actions/runs/42801891131"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: a new breach cannot cancel an active support assignment
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:165)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: support retains its real attack command after the aided ally dies
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:166)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: continuing a support task does not record a new departure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:167)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: a new breach does not replace an active return route
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:178)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: resource-task commitment is resolved before a fresh departure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:189)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: ongoing cast precedes any home-departure reassignment
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:198)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: stunned heroes do not begin a new departure assignment
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:205)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+ERROR: previous-life defense is cleared before choosing the respawn departure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_siege_v9.gd:264)
+       [1] _test_task_precedence (res://tests/test_siege_v9.gd:217)
+       [2] _run (res://tests/test_siege_v9.gd:146)
+Siege V9: 42 checks, 8 failures

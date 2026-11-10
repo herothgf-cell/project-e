@@ -1,0 +1,206 @@
+{
+  "hypothesis": "12분 이후 공성병 주기를 4웨이브에서 2웨이브로 바꾸면 후반 공성이 단축되는가",
+  "status": "not_adopted",
+  "finding": "기본 2077.333초에 자연 종료했으나 비교는 2400초에도 승패가 나지 않아 이 조합에서 공성 단축이 확인되지 않았다.",
+  "experiment_is_original_cot_value": false,
+  "only_gameplay_change": "기존 _spawn_wave 실행 후 time >= 720 및 wave % 4 == 2에서 원래 공성병 사양 1기를 팀별 라인별 추가",
+  "first_added_wave_seconds": 758.0,
+  "extra_units": 138,
+  "checks": {
+    "event_count_baseline": 1016,
+    "event_count_variant": 1089,
+    "raw_events_exact_match": false,
+    "comparable_event_count": 1016,
+    "comparable_events_exact_match": true,
+    "new_observer_only_event_types": {
+      "task_start": 67,
+      "level_cap": 6
+    },
+    "sample_count_baseline": 145,
+    "sample_count_variant": 145,
+    "samples_exact_match": true,
+    "structure_samples_exact_match": true
+  },
+  "baseline": {
+    "match_seconds": 2077.3333333321,
+    "winner": 1,
+    "outcome": "natural_victory",
+    "hero_deaths": 13,
+    "casts": 3651,
+    "milestones": {
+      "first_core_damage": 488.86666666684,
+      "first_core_destroyed": 2077.3333333321,
+      "first_core_exposed": 421.80000000012,
+      "first_inner_damage": 138.633333333328,
+      "first_inner_destroyed": 421.80000000012,
+      "first_outer_damage": 36.6666666666671,
+      "first_outer_destroyed": 111.066666666663,
+      "first_structure_damage": 36.6666666666671,
+      "victory": 2077.3333333321
+    },
+    "cores": [
+      {
+        "id": 19,
+        "name": "West Core",
+        "team": 0,
+        "exposed_at": 835.766666666564,
+        "destroyed_at": 2077.3333333321,
+        "final_hp": 0.0,
+        "longest_hit_gap": 351.533333333014,
+        "last_damage_at": 2077.3333333321,
+        "supported_seconds": 186.99999999983,
+        "supported_near_hero_seconds": 40.4999999999632,
+        "hero_target_seconds": 7.49999999999318,
+        "unlocked_alive_seconds": 1241.49999999887,
+        "damage_by_source": {
+          "1:minion:melee": 1553.59,
+          "1:minion:ranged": 1007.5,
+          "1:minion:siege": 410.5,
+          "1:rio:5": 1028.41
+        },
+        "exposed_to_end_seconds": 1241.566666665536,
+        "trailing_damage_gap_seconds": 0.0
+      },
+      {
+        "id": 20,
+        "name": "East Core",
+        "team": 1,
+        "exposed_at": 421.80000000012,
+        "destroyed_at": -1.0,
+        "final_hp": 3309.3825,
+        "longest_hit_gap": 1168.79999999898,
+        "last_damage_at": 2072.99999999877,
+        "supported_seconds": 45.4999999999586,
+        "supported_near_hero_seconds": 0.0,
+        "hero_target_seconds": 0.0,
+        "unlocked_alive_seconds": 1655.83333333198,
+        "damage_by_source": {
+          "0:minion:melee": 208.0,
+          "0:minion:ranged": 195.0,
+          "0:minion:siege": 234.0,
+          "0:rio:2": 53.6175
+        },
+        "exposed_to_end_seconds": 1655.5333333319802,
+        "trailing_damage_gap_seconds": 4.333333333330302
+      }
+    ]
+  },
+  "variant": {
+    "match_seconds": 2399.99999999847,
+    "winner": -1,
+    "outcome": "observation_cap",
+    "hero_deaths": 14,
+    "casts": 4266,
+    "milestones": {
+      "first_core_damage": 488.86666666684,
+      "first_core_exposed": 421.80000000012,
+      "first_inner_damage": 138.633333333328,
+      "first_inner_destroyed": 421.80000000012,
+      "first_outer_damage": 36.6666666666671,
+      "first_outer_destroyed": 111.066666666663,
+      "first_structure_damage": 36.6666666666671,
+      "victory": -1.0
+    },
+    "cores": [
+      {
+        "id": 19,
+        "name": "West Core",
+        "team": 0,
+        "exposed_at": 990.266666666423,
+        "destroyed_at": -1.0,
+        "final_hp": 3689.865,
+        "longest_hit_gap": 523.199999999524,
+        "last_damage_at": 2345.06666666519,
+        "supported_seconds": 87.99999999992,
+        "supported_near_hero_seconds": 49.9999999999545,
+        "hero_target_seconds": 0.0,
+        "unlocked_alive_seconds": 1409.99999999872,
+        "damage_by_source": {
+          "1:minion:melee": 104.0,
+          "1:rio:5": 206.135
+        },
+        "exposed_to_end_seconds": 1409.7333333320466,
+        "trailing_damage_gap_seconds": 54.933333333279734
+      },
+      {
+        "id": 20,
+        "name": "East Core",
+        "team": 1,
+        "exposed_at": 421.80000000012,
+        "destroyed_at": -1.0,
+        "final_hp": 2287.3675,
+        "longest_hit_gap": 1202.36666666561,
+        "last_damage_at": 2328.13333333187,
+        "supported_seconds": 145.999999999867,
+        "supported_near_hero_seconds": 95.9999999999127,
+        "hero_target_seconds": 1.49999999999864,
+        "unlocked_alive_seconds": 1978.49999999835,
+        "damage_by_source": {
+          "0:minion:melee": 520.0,
+          "0:minion:siege": 526.5,
+          "0:rio:2": 666.1325
+        },
+        "exposed_to_end_seconds": 1978.1999999983498,
+        "trailing_damage_gap_seconds": 71.86666666659994
+      }
+    ]
+  },
+  "limitations": [
+    "양 팀 바스·리오·네마의 결정론적 전술 봇 단일 조합이며 사람 플레이 또는 모든 조합의 일반 결론이 아니다.",
+    "기본은 자연 종료, 비교는 관찰 상한이므로 누적 사망·병력동반체류의 관찰 길이가 다르다.",
+    "비교에서는 파괴된 핵이 없다. exposed_to_end_seconds는 노출부터 관찰 상한까지 살아 있던 시간이며 파괴까지 걸린 시간이 아니다.",
+    "longest_hit_gap는 실제 피해 사건 사이의 최대 공백이며 마지막 피해 후 관찰 종료까지는 trailing_damage_gap_seconds에 별도 기록했다.",
+    "현재 observer의 task_start와 level_cap는 기존 baseline raw log에 없던 추가 관측이다. 기존 사건 1016개와 전체 상태표본145개는 정확히 일치한다."
+  ],
+  "evidence": {
+    "baseline_audit": "../cot-audit-20261110/results.json",
+    "probe": "late-siege-probe.gd",
+    "original_run_storage": "/workspace/scratch/e729c46d2a61/siege-experiment/late-siege"
+  },
+  "provenance": {
+    "baseline_commit": "eb022135baf95046e1b1145bec45f5c26bab5b8a",
+    "baseline_game_tree": "60f8258919678e4b5c4f3c554c16727122ba8772",
+    "engine_version": "4.7.2.stable.official.ed1daf0bf",
+    "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "baseline_battle_sources_match_previous_audit_byte_for_byte": true,
+    "source_hashes_sha256": {
+      "battle_ai.gd": "09348d779f1b9df092d96f8e2278dfd380362cf3eefa4a5df788cd58f76386df",
+      "battle_consumables.gd": "5446f03e0d92e07b720ac134ac0dd24fa036b9e32a305590bf6fc37674733a17",
+      "battle_map.gd": "cdc20f990321e66943b8b343b3020515659e4afdfaf8979b15d918a40a494317",
+      "battle_rules.gd": "a7bc26257c47590f662207808d297fd840d51490bf0a19ba2092bc36a1d5b7cd",
+      "battle_state.gd": "aa0a87e3e7813b38d1e1a06c5070976750a11dda8f61f79883010909478b28c5",
+      "expanded_abilities.gd": "f1c442bc96915658a0cab05911eecf1242573c08011bea64ec107d047a18e81a",
+      "hero_abilities.gd": "0a6cf7c137f0956fa54f4b603de33a75f7bfd6ec6f9c2334414c876da6969cb1",
+      "hero_roster.gd": "50c6076a2506b8be16d3017c6f28dda502894cebd7de8b66c9040765f6e33523",
+      "tactical_ai.gd": "6f4d7658b92c6ff5fdb5beab1aa13e95e656fa34f8b3c0ddc4b80d3eb98c5c69"
+    },
+    "executed_observer_sha256": "9f65a6332558e38b872e1d070f942c7bc6c77e4c795eb0db1908ecba453b8201",
+    "executed_state_subclass_sha256": "3eaf7b3eb9caf2905a3ddfb6dea5db9097027a1c1854262333a72cfe57918b54",
+    "preserved_probe_sha256": "b589f7d95f9aa40a2261880fbf960bcc417cbbf72ad76124f816bd2cc6f7d839",
+    "probe_preservation_note": "The executed observer and State subclass are combined into one local State class. All observer and experiment statements are otherwise unchanged; original executed hashes are retained separately.",
+    "executed_summary_sha256": "a4704f7f58d4b819b8d4b10f943d022c917c93ade9e774487206d5c7200fd2ba",
+    "executed_events_sha256": "30b304de837a929e22c66fb5e5caac35a254587b5a129dc7ff4344b83798e141",
+    "executed_samples_sha256": "535eeea49f647814e0fef913bd9bf3255dfce9c352158b56b6342d4c9d748d8f",
+    "sampling": {
+      "decision_interval_seconds": 0.4,
+      "hit_burst_gap_seconds": 3.0,
+      "near_structure_radius": 12.0,
+      "occupancy_interval_seconds": 0.5,
+      "siege_retreat_radius": 18.0,
+      "snapshot_interval_seconds": 5.0
+    },
+    "simulation_hz": 30,
+    "outer_step_seconds": 0.5,
+    "observation_limit_seconds": 2400.0,
+    "roster": "Both teams bas/rio/nema, selection=bas, controlled_id=-1, no player input",
+    "execution_exit_code": 1,
+    "exit_code_meaning": "observation cap, not a runtime error",
+    "runtime_error_count": 0
+  },
+  "reproduction": {
+    "probe": "late-siege-probe.gd",
+    "command": "<Godot_4.7.2> --headless --path <baseline-checkout>/game/project-e --script <this-directory>/late-siege-probe.gd -- --hero=bas --limit=2400 --output=<fresh-output-directory> --source=eb022135baf95046e1b1145bec45f5c26bab5b8a-late-siege-only --label=bas-late-siege",
+    "baseline_command": "Run the forwarding tools/measure_siege.gd observer against the same baseline checkout, without the preserved State subclass.",
+    "important": "Use the pinned baseline simulation path, not current V9 AI. This experiment leaves the original AI unchanged."
+  }
+}

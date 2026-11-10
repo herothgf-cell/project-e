@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: visible structure edge remains selectable from the rotated camera
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_vertical_map_v9.gd:169)
+       [1] _test_target_selection (res://tests/test_vertical_map_v9.gd:111)
+       [2] _test_scene (res://tests/test_vertical_map_v9.gd:75)
+ERROR: visible structure edge remains selectable from the rotated camera
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_vertical_map_v9.gd:169)
+       [1] _test_target_selection (res://tests/test_vertical_map_v9.gd:111)
+       [2] _test_scene (res://tests/test_vertical_map_v9.gd:75)
+ERROR: visible structure edge remains selectable from the rotated camera
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_vertical_map_v9.gd:169)
+       [1] _test_target_selection (res://tests/test_vertical_map_v9.gd:111)
+       [2] _test_scene (res://tests/test_vertical_map_v9.gd:75)
+ERROR: visible structure edge remains selectable from the rotated camera
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _check (res://tests/test_vertical_map_v9.gd:169)
+       [1] _test_target_selection (res://tests/test_vertical_map_v9.gd:111)
+       [2] _test_scene (res://tests/test_vertical_map_v9.gd:75)
+Vertical map V9: 78 checks, 4 failures

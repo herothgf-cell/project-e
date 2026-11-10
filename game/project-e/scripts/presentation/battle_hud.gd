@@ -388,11 +388,11 @@ func _build_map() -> void:
 	# The concept-board minimap sits below the top bar, preserving lane view.
 	_map_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_map_panel.offset_left = 18
-	_map_panel.offset_right = 284
+	_map_panel.offset_right = 196
 	_map_panel.offset_top = 89
-	_map_panel.offset_bottom = 311
-	var column: VBoxContainer = _column(_inset(_map_panel, 10, 9), 5)
-	_label(column, "전장   N / C / S", 12, INK)
+	_map_panel.offset_bottom = 350
+	var column: VBoxContainer = _column(_inset(_map_panel, 4, 3), 4)
+	_label(column, "전장   좌 · 중앙 · 우", 11, INK)
 	minimap = MapScript.new()
 	column.add_child(minimap)
 	minimap.size_flags_vertical = Control.SIZE_EXPAND_FILL

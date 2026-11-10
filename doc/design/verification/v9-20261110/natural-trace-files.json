@@ -1,0 +1,47 @@
+{
+  "format": "gzip compressed UTF-8 JSON Lines",
+  "files": [
+    {
+      "file": "siege-v9-bas-events.jsonl.gz",
+      "sha256": "954683541753aafaeff9471d285ea2a6f5da74e02e92c0e77919396ec1c72bb1",
+      "raw_sha256": "09e04c1da53274202321e1d34189b444a4c2c992bddfd2473f835050443f4fb5",
+      "raw_bytes": 184886,
+      "compressed_bytes": 19793
+    },
+    {
+      "file": "siege-v9-bas-samples.jsonl.gz",
+      "sha256": "076d0e48278d316bac20bdfd86e6fb40b8018ca3e4b1b347a7b3e2cb8582d840",
+      "raw_sha256": "b8033d8385eec4256260647898c3692432e2090dc01920c737c7c30003120075",
+      "raw_bytes": 231969,
+      "compressed_bytes": 20774
+    },
+    {
+      "file": "siege-v9-orin-events.jsonl.gz",
+      "sha256": "98b565e85975f3eb2178a9a355d5e03b37e944162536314cc82a652004ed703b",
+      "raw_sha256": "ab990c26ce3a05b8457c26ab0f831bad7ec6ff518430dc1216a1ec423d4ee720",
+      "raw_bytes": 267882,
+      "compressed_bytes": 30671
+    },
+    {
+      "file": "siege-v9-orin-samples.jsonl.gz",
+      "sha256": "d260f563b971d3d9243015d8d8cd6b915a58e78e5d2ba91fb0767698610c0b72",
+      "raw_sha256": "eab6067b58aac3483549b988120d9fcc5649d2af0739ae43603a87650ad26743",
+      "raw_bytes": 507676,
+      "compressed_bytes": 45572
+    },
+    {
+      "file": "siege-v9-tere-events.jsonl.gz",
+      "sha256": "4f16669cc6810836656c332f93e913a39a5f81dfa2772d45ba85706707a383ed",
+      "raw_sha256": "e8a83100f1b7a895182c8f45aae7531b73ed91c24dd4d3058e6b7ea8f87efa33",
+      "raw_bytes": 297031,
+      "compressed_bytes": 34098
+    },
+    {
+      "file": "siege-v9-tere-samples.jsonl.gz",
+      "sha256": "2be9b97a730a6e686b78b51ab31dae1a7bf687b027bb25e4afa5619c042a8ea7",
+      "raw_sha256": "0e0260103a0dedab830d9b0860a3e4af5b8509ffe310c2b6ca6ac7a9215dfbc0",
+      "raw_bytes": 631956,
+      "compressed_bytes": 55590
+    }
+  ]
+}

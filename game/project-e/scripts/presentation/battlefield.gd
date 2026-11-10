@@ -5,6 +5,7 @@ const BattleScript = preload("res://scripts/battle/battle_state.gd")
 const HUDScript = preload("res://scripts/presentation/battle_hud.gd")
 const AbilityScript = preload("res://scripts/battle/hero_abilities.gd")
 const VisionScript = preload("res://scripts/presentation/team_vision_view.gd")
+const DisplayLayout = preload("res://scripts/presentation/battlefield_layout.gd")
 
 var battle: Variant = BattleScript.new()
 var has_active_match: bool = false
@@ -472,7 +473,7 @@ func pick_visible_target(screen: Vector2) -> int:
 		var height: float = 1.6 if unit.kind == "hero" else (2.7 if unit.kind in ["tower", "core"] else 0.7)
 		var head: Vector2 = camera.unproject_position(floor_position + Vector3.UP * height)
 		var closest: Vector2 = Geometry2D.get_closest_point_to_segment(screen, foot, head)
-		var edge: Vector2 = camera.unproject_position(floor_position + Vector3.RIGHT * unit.radius)
+		var edge: Vector2 = camera.unproject_position(floor_position + camera.global_basis.x * unit.radius)
 		var radius: float = maxf(10.0, foot.distance_to(edge) + 4.0)
 		var distance: float = screen.distance_to(closest)
 		var priority: int = int(priorities.get(unit.kind, 100))
@@ -516,11 +517,18 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_MIDDLE and not event.pressed:
 		_camera_drag = false
 	if event is InputEventMouseMotion and _camera_drag and _camera_input_allowed() and get_window().has_focus() and get_viewport().get_visible_rect().has_point(event.position) and event.relative.is_finite():
-		_camera_follow = false
-		var units_per_pixel: float = camera.size / maxf(1, get_viewport().get_visible_rect().size.y)
-		_camera_focus += Vector2(-event.relative.x, event.relative.y * 1.35) * units_per_pixel
-		_update_camera(0)
+		drag_camera(event.relative)
 		get_viewport().set_input_as_handled()
+
+
+func drag_camera(relative: Vector2) -> void:
+	if not _camera_input_allowed() or not relative.is_finite() or relative.is_zero_approx():
+		return
+	_camera_follow = false
+	var units_per_pixel: float = camera.size / maxf(1, get_viewport().get_visible_rect().size.y)
+	var screen_pan := Vector2(-relative.x, -relative.y * 1.35)
+	_camera_focus += DisplayLayout.screen_axis_to_sim(screen_pan) * units_per_pixel
+	_update_camera(0)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -552,7 +560,7 @@ func _update_camera(delta: float) -> void:
 	_camera_focus.x = clampf(_camera_focus.x, -45.0, 45.0)
 	_camera_focus.y = clampf(_camera_focus.y, -27.0, 27.0)
 	var look := Vector3(_camera_focus.x, 0, -_camera_focus.y)
-	camera.position = look + Vector3(0, 48, 34)
+	camera.position = look + DisplayLayout.camera_offset(48, 34)
 	camera.look_at(look, Vector3.UP)
 
 

@@ -1,0 +1,29 @@
+{
+	"captures": [
+		{
+			"description": "Staged mid-lane battle; real cast, normal fog and playable camera",
+			"file": "vertical-battle-1280x720.png",
+			"height": 720,
+			"width": 1280
+		},
+		{
+			"description": "Staged mid-lane battle; real cast, normal fog and playable camera",
+			"file": "vertical-battle-960x540.png",
+			"height": 540,
+			"width": 960
+		},
+		{
+			"description": "F7 isolated whole-map review; terrain and objectives revealed for layout inspection",
+			"file": "vertical-overview-1280x720.png",
+			"height": 720,
+			"width": 1280
+		}
+	],
+	"checks": 23,
+	"display": "X11",
+	"engine": "4.7.2-stable (official)",
+	"failures": 0,
+	"project_version": "0.9.0",
+	"scenario": "Staged presentation inspection, not a natural match or balance measurement",
+	"source": "exported PCK"
+}

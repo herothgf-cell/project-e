@@ -54,7 +54,7 @@ func _run() -> void:
 
 	scene._camera_focus = Vector2.ZERO
 	scene.pan_camera(Vector2.RIGHT, 0.1)
-	_check(not scene._camera_follow and scene._camera_focus.x > 0, "manual panning releases follow")
+	_check(not scene._camera_follow and scene._camera_focus.y < 0, "manual panning releases follow on the display-right axis")
 	var one_step: Vector2 = scene._camera_focus
 	scene._camera_focus = Vector2.ZERO
 	for _step: int in range(10):
@@ -94,7 +94,7 @@ func _run() -> void:
 	scene._process_edge_pan(Vector2(640, 360), bounds, 0.1)
 	_check(scene._edge_pan_armed and scene._camera_follow, "returning to the viewport interior arms fresh edge input")
 	scene._process_edge_pan(Vector2(1279, 360), bounds, 0.1)
-	_check(not scene._camera_follow and scene._camera_focus.x > before.x, "fresh edge entry moves the camera and releases follow")
+	_check(not scene._camera_follow and scene._camera_focus.y < before.y, "fresh edge entry moves the camera right and releases follow")
 	scene.handle_hotkey(KEY_SPACE)
 	scene._process_edge_pan(Vector2(640, 360), bounds, 0.1)
 	before = scene._camera_focus

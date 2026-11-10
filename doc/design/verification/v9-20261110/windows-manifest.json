@@ -1,0 +1,1620 @@
+{
+  "schema_version": 1,
+  "project": "Project E",
+  "created_utc": "2026-11-10T10:46:21.944359+00:00",
+  "target": "Windows x86_64",
+  "export_mode": "release",
+  "engine": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "executable_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "official_archive": "https://godotengine.org/download/archive/4.7.2-stable/"
+  },
+  "templates": {
+    "version": "4.7.2.stable",
+    "archive": "templates.tpz",
+    "archive_sha256": "f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011",
+    "official_source": "https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=export_templates.tpz&platform=templates",
+    "windows_files": {
+      "windows_release_x86_64.exe": {
+        "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+        "size": 109268480
+      },
+      "windows_debug_x86_64.exe": {
+        "sha256": "51498b72b3a237f882ebd7d1787f06a4bc1eaf0572daab93837adcfd3cfdc107",
+        "size": 103176704
+      }
+    }
+  },
+  "engine_notice_sources": {
+    "GODOT-LICENSE.txt": "https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/LICENSE.txt",
+    "GODOT-COPYRIGHT.txt": "https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/COPYRIGHT.txt"
+  },
+  "source": {
+    "git": {
+      "revision": "8c16d45a58ae1bcc7dc2035b9b72aa6497c1467d",
+      "status": "?? .ci/"
+    },
+    "tree_sha256": "8a9615f1fb17a5027a3e5b1be3fa27a6dd8efc71927ac7d899cf5f622c6c003a",
+    "files": [
+      {
+        "path": "assets/README.md",
+        "sha256": "9b31731fa24372c22af6670dce689aa0dfe50838484c26f2786f3c1a37145cb2",
+        "size": 2613
+      },
+      {
+        "path": "assets/audio/README.md",
+        "sha256": "4ddb08374ec8635964cdd60435333b14d91e34eb875468e7b5cb64c466b122eb",
+        "size": 709
+      },
+      {
+        "path": "assets/audio/arcane.wav",
+        "sha256": "ae5e452ebcf23046dc179e588211da0b4a9565b6eb5c5f7c79318c79d1bce4a2",
+        "size": 8684
+      },
+      {
+        "path": "assets/audio/arcane.wav.import",
+        "sha256": "6f1643f8416b14e094bf5e05f7f9b9f5620f0bec48abdfa08f9c81e7e49c1e50",
+        "size": 489
+      },
+      {
+        "path": "assets/audio/hit.wav",
+        "sha256": "d5557625d2f236b46c5e0541b87fb076dd9113f295d191ea570a6b1e78299849",
+        "size": 5804
+      },
+      {
+        "path": "assets/audio/hit.wav.import",
+        "sha256": "8ae77dabd9717f9e0ab86cb812c55211a58ef49291ace7d1cb9c6892bd4e5e9e",
+        "size": 480
+      },
+      {
+        "path": "assets/audio/level.wav",
+        "sha256": "06b830cbb39ced027d67f36cfceeccc28fed4f5d76aa681703eadc2906255222",
+        "size": 11564
+      },
+      {
+        "path": "assets/audio/level.wav.import",
+        "sha256": "1499d82cd52960c6b1aa42afac6431e0fa69a659840d641022cbd8a9f10af919",
+        "size": 485
+      },
+      {
+        "path": "assets/audio/nature.wav",
+        "sha256": "49cf6cb3a37eef67d44f2f87c83eb890d371b86a28009f543a9d9f5370c7ac75",
+        "size": 8684
+      },
+      {
+        "path": "assets/audio/nature.wav.import",
+        "sha256": "e73df8481138a042226b0abaff2e817c197d539df926120762d047f7ccd69333",
+        "size": 489
+      },
+      {
+        "path": "assets/audio/slash.wav",
+        "sha256": "a64dc120918eed6c14cd794ab349d11d45ced2dbf2cbf1869268389f071e42bf",
+        "size": 6444
+      },
+      {
+        "path": "assets/audio/slash.wav.import",
+        "sha256": "1c90dd81bc639875e0151353ee025545374e5c678e62e597372b6a554747ec61",
+        "size": 486
+      },
+      {
+        "path": "assets/environment/amber_fig.glb",
+        "sha256": "782513d25fcb9a61e26ebb0e69f9b071ee149c76a761f6881822407bb2b32857",
+        "size": 139080
+      },
+      {
+        "path": "assets/environment/amber_fig.glb.import",
+        "sha256": "82269db014322fa8bcc82a0ed0458e1179c276d936b86c0e45ecea900b1699db",
+        "size": 1161
+      },
+      {
+        "path": "assets/environment/canal_flagstones.webp",
+        "sha256": "e481a301127a54770e953da20da41648dcd6ead1633e0364d64f65e32ce04005",
+        "size": 188498
+      },
+      {
+        "path": "assets/environment/canal_flagstones.webp.import",
+        "sha256": "02d8dfeb4a9c7cfa8c6053c48fa4aac70f2e123a7e270cd079d1e696a68d423b",
+        "size": 973
+      },
+      {
+        "path": "assets/environment/canal_surface.gdshader",
+        "sha256": "f180ec0bc3043672f10860b17f4aadd3ef00bc98c57b69076cb4b0ee680966ef",
+        "size": 3737
+      },
+      {
+        "path": "assets/environment/canal_surface.gdshader.uid",
+        "sha256": "2ead6c370651b9e8a38d5e52b0452d5dcad27bc7bb4ec748f7f2c44a0ef3e573",
+        "size": 20
+      },
+      {
+        "path": "assets/environment/canal_waterbed.webp",
+        "sha256": "0e7f0648375be4910a121041e2dafe90f9b9d2dacb84a27d6b62bcceb13dad56",
+        "size": 66284
+      },
+      {
+        "path": "assets/environment/canal_waterbed.webp.import",
+        "sha256": "1df5e6658352cf296981b84c380250bc05f8077c19a796d65ec81395b62f0ada",
+        "size": 967
+      },
+      {
+        "path": "assets/environment/copper_millwheel.glb",
+        "sha256": "8280e4b6b93a9cbd60ddf73101763552d23823e84b2d6f8e0b9030538a4c7b3a",
+        "size": 73724
+      },
+      {
+        "path": "assets/environment/copper_millwheel.glb.import",
+        "sha256": "016bdb7c892511d950395fb7be16f019ee7d91bb38da2d5fb6f0c2dc7d6ee350",
+        "size": 1181
+      },
+      {
+        "path": "assets/environment/core_observatory.glb",
+        "sha256": "fe11c6b8f053c0e294b7510446425027b5d11497ed15e6b0082a0b7d2929aaa3",
+        "size": 66456
+      },
+      {
+        "path": "assets/environment/core_observatory.glb.import",
+        "sha256": "4babc27b788b679081d342c83702225e88120a063025451f69182a4dab40c43e",
+        "size": 1181
+      },
+      {
+        "path": "assets/environment/crown_crystal.glb",
+        "sha256": "cda8784a89a41ed78c0f6ee6d996ed49c512ce6d36c63aa358ca113be0baafa4",
+        "size": 6488
+      },
+      {
+        "path": "assets/environment/crown_crystal.glb.import",
+        "sha256": "7fcf1935ccf923febd94e970b200d5449742b6a6b7362f974fe40ce00279969c",
+        "size": 1173
+      },
+      {
+        "path": "assets/environment/garden_bank.glb",
+        "sha256": "69ffe60c6f12031e5b80956b4a4c0963430994b7c94170d41aecfe4eb992392a",
+        "size": 45664
+      },
+      {
+        "path": "assets/environment/garden_bank.glb.import",
+        "sha256": "bc53dbd374557b0d52861d4015ad54ace65594f09ac946367e6c2b193b647a2e",
+        "size": 1167
+      },
+      {
+        "path": "assets/environment/guild_mosaic.glb",
+        "sha256": "cf5d7492acae6929524117dead0888829b9612bce807edbca0210b09c2936f03",
+        "size": 18344
+      },
+      {
+        "path": "assets/environment/guild_mosaic.glb.import",
+        "sha256": "b9d43c41d1e20fbcf774a48b4878e24639a578fda1686452b65a1e16c21623ff",
+        "size": 1170
+      },
+      {
+        "path": "assets/environment/ivy_cloister.glb",
+        "sha256": "26432445a7755c1942a335a561a09b4b540457b45cc4252a9b8e898c11bf0f96",
+        "size": 88644
+      },
+      {
+        "path": "assets/environment/ivy_cloister.glb.import",
+        "sha256": "3639bbe4725387d378d49bcae81f40e0cc8966a3d5eca542db8d4c71bb4605ff",
+        "size": 1170
+      },
+      {
+        "path": "assets/environment/jade_willow.glb",
+        "sha256": "e6db6334739dae3b1fb28f586be235033179b09118bb9a8ff6947413eda304f2",
+        "size": 139084
+      },
+      {
+        "path": "assets/environment/jade_willow.glb.import",
+        "sha256": "9d0795aeddfcbdeac9f42748a89ff9a8ba672b8a3cd235bd794486a9e380f187",
+        "size": 1167
+      },
+      {
+        "path": "assets/environment/quay_rail.glb",
+        "sha256": "60f4bf2860ea2031dbccaa65f8cbfb8a87a001e63463789d9af0a49a197e351e",
+        "size": 10364
+      },
+      {
+        "path": "assets/environment/quay_rail.glb.import",
+        "sha256": "8e954f277df4a548ed697d691121120536b20b95802c6957347603023056ecfe",
+        "size": 1161
+      },
+      {
+        "path": "assets/environment/sentinel_crown.glb",
+        "sha256": "def7f3bb37bf0a0ae9adb82283d44f9913e9d02e94edf4b18534d7961fe9c9da",
+        "size": 38072
+      },
+      {
+        "path": "assets/environment/sentinel_crown.glb.import",
+        "sha256": "dbd6c49cf545d9952d0b3ef9729b1e3795c6fa116bfecd1590f69c861be9858e",
+        "size": 1176
+      },
+      {
+        "path": "assets/environment/terracotta_gatehouse.glb",
+        "sha256": "5f5716024df1bd9bec29485020edbd24ce32b2a4711d0843caa85a37afb1df37",
+        "size": 82988
+      },
+      {
+        "path": "assets/environment/terracotta_gatehouse.glb.import",
+        "sha256": "bb040e87c4d74e37e2b9ab2195ab9a78050ae5b985f1236623850c1905fba6a3",
+        "size": 1194
+      },
+      {
+        "path": "assets/fonts/OFL.txt",
+        "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+        "size": 4301
+      },
+      {
+        "path": "assets/fonts/ProjectEKorean.woff2",
+        "sha256": "1e5cba2fa8990d77d2ba24a8b0dd000617b887c3f3b815ca7a556308e56a3d23",
+        "size": 1128052
+      },
+      {
+        "path": "assets/fonts/ProjectEKorean.woff2.import",
+        "sha256": "ddc2bdb569f5084c6705f62f862b4ef91fe9bf4612ee62a98a7dd26c9cb9ec7e",
+        "size": 785
+      },
+      {
+        "path": "assets/fonts/README.md",
+        "sha256": "c9da6eb191c91b9828e81ba6421c37453b1119cfc7ee89dfb4295efc9604afac",
+        "size": 1005
+      },
+      {
+        "path": "assets/heroes/bas-face.webp",
+        "sha256": "1e5c9ca21dc21b7f7dcab0ec4329ee6e9eaae2a0234785823a94c3212fe6876a",
+        "size": 50892
+      },
+      {
+        "path": "assets/heroes/bas-face.webp.import",
+        "sha256": "89dd68413b3541a6a8e5a6a8c1b77f99502880abc2fcabefe8a94b2a07ac2ee2",
+        "size": 945
+      },
+      {
+        "path": "assets/heroes/bas-tunic.webp",
+        "sha256": "d0e63642095b7078c0681a9bfae8b301d2a195c4a3ce6ab3866bf0f41a806844",
+        "size": 107580
+      },
+      {
+        "path": "assets/heroes/bas-tunic.webp.import",
+        "sha256": "a9ee4376ec89a1c0669dedf031924230c5ef360eddc94f959557c202d59cdeb9",
+        "size": 948
+      },
+      {
+        "path": "assets/heroes/bas.glb",
+        "sha256": "f4aa9484f2eee799b8480f235cfa9871df5a7c48229ce215d17537ffb95495e2",
+        "size": 678112
+      },
+      {
+        "path": "assets/heroes/bas.glb.import",
+        "sha256": "1402ebdbddb4a4b66d5221d6787b813f7c3097c89c30101dbc9e66a14fe6ae13",
+        "size": 1138
+      },
+      {
+        "path": "assets/heroes/lume.glb",
+        "sha256": "411da673ab4293df14486b76bf3b46ff743709b84f6724fceab6b80fbd68c60b",
+        "size": 761728
+      },
+      {
+        "path": "assets/heroes/lume.glb.import",
+        "sha256": "96138553bb7f9d44487fe0d214f86e53450b0daeb43312fc99ffdb6a209ca1a1",
+        "size": 1141
+      },
+      {
+        "path": "assets/heroes/mua.glb",
+        "sha256": "d0ab0990586399e488b4afbfe18f8dcb82d75725add89d7c1af8818c8c873432",
+        "size": 705992
+      },
+      {
+        "path": "assets/heroes/mua.glb.import",
+        "sha256": "5872d6a878e36f6ac19c5f3d0197c7a85ff85a83371ad6696265f9652779261e",
+        "size": 1138
+      },
+      {
+        "path": "assets/heroes/nema-face.webp",
+        "sha256": "edb60eb021a1e53b62b3d2fdf23750ad5c29e0e0988e848ff6d908c8111c2e73",
+        "size": 42472
+      },
+      {
+        "path": "assets/heroes/nema-face.webp.import",
+        "sha256": "127f2810b0d6b0a46cc034865d619039bfd12ad1d853d675485e512a43940a1e",
+        "size": 947
+      },
+      {
+        "path": "assets/heroes/nema-tunic.webp",
+        "sha256": "016d1d72dd99263027043777d14bdcb0bc6f1a4a32b22d495021e66d983eb6aa",
+        "size": 113384
+      },
+      {
+        "path": "assets/heroes/nema-tunic.webp.import",
+        "sha256": "c8ef560b6e1b005afcc72048dc88eb01bde7fdc718b4c630b9308a7d39c71e70",
+        "size": 951
+      },
+      {
+        "path": "assets/heroes/nema.glb",
+        "sha256": "8ec760361f1cf3ec4f0c439a7e7e1b2ced757072bc90f6b958ec5554b293840d",
+        "size": 617536
+      },
+      {
+        "path": "assets/heroes/nema.glb.import",
+        "sha256": "4297dba06c1fc63480a5bc06b59002a69b7c1fc416ff6d84b8924c7a4d3bc1af",
+        "size": 1140
+      },
+      {
+        "path": "assets/heroes/orin.glb",
+        "sha256": "5b9094311bf141defdd033aeb51962f7c957da4c0cec47735661271a343097de",
+        "size": 757944
+      },
+      {
+        "path": "assets/heroes/orin.glb.import",
+        "sha256": "cec71dcc087092559d6d0849a4dbd30c0cf4e23f420f9be041401539b65aec7a",
+        "size": 1141
+      },
+      {
+        "path": "assets/heroes/painted.gdshader",
+        "sha256": "66e3a93f9542b1e82b5e7188528753e310616cb8a30a64e4897367b0d55c4927",
+        "size": 1189
+      },
+      {
+        "path": "assets/heroes/painted.gdshader.uid",
+        "sha256": "b8cba47a136a9b7a326bdcc55ef4d698718c59b509819c245725d4147fc1f64d",
+        "size": 20
+      },
+      {
+        "path": "assets/heroes/rio-face.webp",
+        "sha256": "c7fd9b63dd47ff6d0828f603ec0966919e0f9fcaef0533e4a3bec9a0c3034fbb",
+        "size": 36186
+      },
+      {
+        "path": "assets/heroes/rio-face.webp.import",
+        "sha256": "ad7807d2735a14e12ef0522268842e38771fbeec2ca05118d9c3fb38562063c4",
+        "size": 945
+      },
+      {
+        "path": "assets/heroes/rio-tunic.webp",
+        "sha256": "74b292f3ce884d61dff34e2bfed8a5a7160f5e3a988537a880c31e4decf76df7",
+        "size": 105708
+      },
+      {
+        "path": "assets/heroes/rio-tunic.webp.import",
+        "sha256": "ec7baa1d407d83dce4799ff8d5244ac0615364e1061adacb111ac29e3b688c7b",
+        "size": 948
+      },
+      {
+        "path": "assets/heroes/rio.glb",
+        "sha256": "836c5393192e0764d1f8ba4c00b734c1d3352184c709caa8306bfdca08cc4990",
+        "size": 687852
+      },
+      {
+        "path": "assets/heroes/rio.glb.import",
+        "sha256": "c4a6ca09af810051c05d4d5323c61f3dda0711f4ade07d3e7a9e7d04f7289868",
+        "size": 1138
+      },
+      {
+        "path": "assets/heroes/sera.glb",
+        "sha256": "613ac5c83371872366d6ba64b13f375a1f83f4b7ef4121eeb9b88c89c2156afa",
+        "size": 690364
+      },
+      {
+        "path": "assets/heroes/sera.glb.import",
+        "sha256": "8d369c43ab7832e5d25759b90bb3fd02e7c8e0d0025f3b1abdea2f7ae21dba13",
+        "size": 1141
+      },
+      {
+        "path": "assets/heroes/tere.glb",
+        "sha256": "4c594dd184de5a6ee4d1120308c84fa45ee6769a2eb2fd1de1646910ddf4d18f",
+        "size": 687520
+      },
+      {
+        "path": "assets/heroes/tere.glb.import",
+        "sha256": "27c9d3e6afb5f02d64899f0875d977f33cb3568ddd975bc10efe3a141db91e94",
+        "size": 1140
+      },
+      {
+        "path": "assets/portraits/bas.svg",
+        "sha256": "2205a5336041a168a40a678736a11c9dd17890b1c7170e5cb5d60c6712b917a6",
+        "size": 2754
+      },
+      {
+        "path": "assets/portraits/bas.svg.import",
+        "sha256": "cb806cdc74799eae78e87c97c7b46e8ca5ce43c1a240e6648284be8b4ed84490",
+        "size": 1027
+      },
+      {
+        "path": "assets/portraits/bas.webp",
+        "sha256": "c6f01da20bccdec7b7f258ffc2d5f6421ccd29d5a90f41de5de5282ea1927d62",
+        "size": 134686
+      },
+      {
+        "path": "assets/portraits/bas.webp.import",
+        "sha256": "ffea2b96932820c9a6a7ac148ab62191fe34e74525a867210fae1740dae84637",
+        "size": 933
+      },
+      {
+        "path": "assets/portraits/nema.svg",
+        "sha256": "04d2f12c9c488bd3cb72a9ae0f612b68ac4b274283ba1671c3d0504332901be7",
+        "size": 2670
+      },
+      {
+        "path": "assets/portraits/nema.svg.import",
+        "sha256": "57362f86c4abb2ce14e60cb6a0339058b59d9dc0852d446102bc3cc25bb74d8b",
+        "size": 1030
+      },
+      {
+        "path": "assets/portraits/nema.webp",
+        "sha256": "d88249192ca269d95d94de1158d0e44437e977cf8aded12fa8371dbaf6b4e87e",
+        "size": 130320
+      },
+      {
+        "path": "assets/portraits/nema.webp.import",
+        "sha256": "bb796fd784e54e879bfbd027d063c6ec2eded8da277d2380a300d9a7336ab1ae",
+        "size": 936
+      },
+      {
+        "path": "assets/portraits/rio.svg",
+        "sha256": "ccddfcb722fcd215dac5e1ffec4c23b8ce4940aefc248de38eee19c276b0efab",
+        "size": 2674
+      },
+      {
+        "path": "assets/portraits/rio.svg.import",
+        "sha256": "043841fad3486eb8a504c17dd25b60ebe59f62c7150b296cdaf3a2ec463c4bbc",
+        "size": 1026
+      },
+      {
+        "path": "assets/portraits/rio.webp",
+        "sha256": "b2bb1b074d2b256a0dfdb84e093ab12c78c53023e1cfb28d3860900ac02ba64c",
+        "size": 131354
+      },
+      {
+        "path": "assets/portraits/rio.webp.import",
+        "sha256": "c9f1502e60b96f178db0b405fbcc7e0fe0b54f36f0479f975c10e148f9209487",
+        "size": 933
+      },
+      {
+        "path": "assets/ui/canal-backdrop.webp",
+        "sha256": "f0aa5d94d10a66b77a4d56ad864adf672512e6eed1062a637e5c5a541f386407",
+        "size": 688578
+      },
+      {
+        "path": "assets/ui/items/grove_salve.svg",
+        "sha256": "ea071030b53f96599d3e682bdb60d70b3eb85506f5e3112457f4c8aebd03735c",
+        "size": 1405
+      },
+      {
+        "path": "assets/ui/items/grove_salve.svg.import",
+        "sha256": "076e9e2bba8917287bcf7faa782339f4299e41fd4da01e93b0a0a503b05705b9",
+        "size": 1050
+      },
+      {
+        "path": "assets/ui/items/starlight_elixir.svg",
+        "sha256": "2a1252a3b869415da2b37cf6a92ea1f57e85c9dac584622204214df39a8a749b",
+        "size": 1295
+      },
+      {
+        "path": "assets/ui/items/starlight_elixir.svg.import",
+        "sha256": "f996fed3cbdeb17d80c4849f95323191fb8a8620a726554b90075919b3e838ff",
+        "size": 1064
+      },
+      {
+        "path": "assets/ui/skills/bas_e.svg",
+        "sha256": "6d0f719921f069326149c631d42d93eae5517e3ba0f55922d6be69f16148e0c6",
+        "size": 940
+      },
+      {
+        "path": "assets/ui/skills/bas_e.svg.import",
+        "sha256": "a24f23b22054b162062fa5b03d1a99eb915559b4c65f8795533b1d80fc29ed97",
+        "size": 1032
+      },
+      {
+        "path": "assets/ui/skills/bas_q.svg",
+        "sha256": "70eaf8cfcf423eae4605623cfdcab78a3a8aa46603cbd6375c37931e0bf0b75c",
+        "size": 979
+      },
+      {
+        "path": "assets/ui/skills/bas_q.svg.import",
+        "sha256": "1fc28b8f492c206cf6811b512fd83e1b30a4e720f892130b1c37ca4730f037c8",
+        "size": 1033
+      },
+      {
+        "path": "assets/ui/skills/bas_r.svg",
+        "sha256": "e4eb5d1b84bd75480f8010ed365b0fce6fc8abd64a432ff9728dc6a100bc404a",
+        "size": 1028
+      },
+      {
+        "path": "assets/ui/skills/bas_r.svg.import",
+        "sha256": "7808f11ead74d9e2db8d9f576d4020c99cc654ae14c43cb98d884b99138fbb9b",
+        "size": 1033
+      },
+      {
+        "path": "assets/ui/skills/bas_w.svg",
+        "sha256": "4b828302666bb732d26f8f50efe77871d8e3df818a4473b0bdc11dfdccdaa8db",
+        "size": 916
+      },
+      {
+        "path": "assets/ui/skills/bas_w.svg.import",
+        "sha256": "add2a39e1df3d6c89c9e3fa871fb4d47abebc4317cb579b4cfb5f60196f95773",
+        "size": 1032
+      },
+      {
+        "path": "assets/ui/skills/lume_e.svg",
+        "sha256": "f27bbd93dd7a1c9b96fe2645a48efe621f74c537996a87912d68040f1366d90b",
+        "size": 441
+      },
+      {
+        "path": "assets/ui/skills/lume_e.svg.import",
+        "sha256": "5b49227f05f30712849574f3c5c41d39b93716c3291f11e85f09bfa4e763e243",
+        "size": 1035
+      },
+      {
+        "path": "assets/ui/skills/lume_q.svg",
+        "sha256": "e2a66039e885052cbcbe9deb1c56bff7024bf1aa4b915ce6f62e1866fadc9547",
+        "size": 438
+      },
+      {
+        "path": "assets/ui/skills/lume_q.svg.import",
+        "sha256": "70758945eb99940041f6e0db9ce0ddfeb3cbbd8a83d6e7e8b1130d269ba9ae06",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/lume_r.svg",
+        "sha256": "9df04fea71eddf66d5198012caa0f22de641620289a028ee771f5af1088081c6",
+        "size": 423
+      },
+      {
+        "path": "assets/ui/skills/lume_r.svg.import",
+        "sha256": "09d175b8bb0ac3f07faf682d74edb581840ae828a04ce17dc1c84205db6ca26e",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/lume_w.svg",
+        "sha256": "76c55e86ecaa089d71120a0b75e3ef64d511d4b270bb229b419cfb263d8f075d",
+        "size": 453
+      },
+      {
+        "path": "assets/ui/skills/lume_w.svg.import",
+        "sha256": "e7092fa931bf61f065fc8a4a0098cab10976976a9fef9edb2015209b2c411278",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/mua_e.svg",
+        "sha256": "ebf7da988d3b4a9e74763399e92191029b37b80ead627a9bdc18dbddc61afa14",
+        "size": 442
+      },
+      {
+        "path": "assets/ui/skills/mua_e.svg.import",
+        "sha256": "8a1fbcb2ebc8f4f3ec26937e9c0b3634ec7cc81110ce61b057c8fb89ce467543",
+        "size": 1033
+      },
+      {
+        "path": "assets/ui/skills/mua_q.svg",
+        "sha256": "d36812a5341ec2ee2f596af009343e5f5b372d5b24770ec04fd6626ab665e6cf",
+        "size": 433
+      },
+      {
+        "path": "assets/ui/skills/mua_q.svg.import",
+        "sha256": "e11d769bae1160be4d6b015ffee1d8e13e0492749a581b72842e90f7b84174c2",
+        "size": 1032
+      },
+      {
+        "path": "assets/ui/skills/mua_r.svg",
+        "sha256": "ed92161d72336d0863ae1a0e56b1e4beb2f6e632b16a9ddd18bdf2bfbe1006cb",
+        "size": 436
+      },
+      {
+        "path": "assets/ui/skills/mua_r.svg.import",
+        "sha256": "f8a3b4a53ab961b10b68f5fd4e27c570362084d4cf28af328aa52468ce0604b1",
+        "size": 1033
+      },
+      {
+        "path": "assets/ui/skills/mua_w.svg",
+        "sha256": "23f6a3cec9349b847b1c40d073851e2f12f32671a6d80596dc8b8b839be8fc4e",
+        "size": 494
+      },
+      {
+        "path": "assets/ui/skills/mua_w.svg.import",
+        "sha256": "1428ad7559da2017038dc0cafb5499e4e0e4eb86ffbe9e0c1a155717131c25ca",
+        "size": 1032
+      },
+      {
+        "path": "assets/ui/skills/nema_e.svg",
+        "sha256": "cef7b2e901db7f382e16d993c164ddfd575f84cc9eacaf973c31daadba94ac49",
+        "size": 983
+      },
+      {
+        "path": "assets/ui/skills/nema_e.svg.import",
+        "sha256": "387c8884786e766aa3d469462b482f89b55d786a406dd2dc91ef20ce6b7ad9d4",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/nema_q.svg",
+        "sha256": "23b8511bb60dac890239fed540bb8c9a92b48c94049b6c0aafb114d5288873d1",
+        "size": 1038
+      },
+      {
+        "path": "assets/ui/skills/nema_q.svg.import",
+        "sha256": "922b8ed83d7cdda8135202fa54df897e5586401f1185a9b8d50191762f704ac6",
+        "size": 1035
+      },
+      {
+        "path": "assets/ui/skills/nema_r.svg",
+        "sha256": "dc7df0e53ea5afa38538d9633512b5a6b1f967e38c42ddbf38775a1570ff2dbe",
+        "size": 1105
+      },
+      {
+        "path": "assets/ui/skills/nema_r.svg.import",
+        "sha256": "a248a5e50929c6247095a7df71ee91cfb439ebf5267b6b8c6d5a08bd1e8320df",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/nema_w.svg",
+        "sha256": "6792389087d6c36ec25e5b0ffcc7803d8953eb8b09218882966c2b7f432603ad",
+        "size": 999
+      },
+      {
+        "path": "assets/ui/skills/nema_w.svg.import",
+        "sha256": "a4652e075da79cae7fd7f4bb20912f0f68ab34a7eaf769c8651b1e985ad2b647",
+        "size": 1035
+      },
+      {
+        "path": "assets/ui/skills/orin_e.svg",
+        "sha256": "97b92db511171169c915efcd72fed7f6f00ac319fa380bccf25472484f6d1d4b",
+        "size": 410
+      },
+      {
+        "path": "assets/ui/skills/orin_e.svg.import",
+        "sha256": "2eef3e4f3a56c6d7c46377e00edc63804cb51f0b0adbf61624ca1c980c2f496a",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/orin_q.svg",
+        "sha256": "ec6d53482d7469c7cc3dc9141537c3659cb71abffc7a32fcafe3aa3a8a1db075",
+        "size": 389
+      },
+      {
+        "path": "assets/ui/skills/orin_q.svg.import",
+        "sha256": "87cf28083bf7795057f44ab787b0902d175485b013539a5e8c7e875429a4bf60",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/orin_r.svg",
+        "sha256": "ac2d3bfb8936bdee2ff56356db010fbe8811312b7ae5db95f2d26d219a398b4a",
+        "size": 441
+      },
+      {
+        "path": "assets/ui/skills/orin_r.svg.import",
+        "sha256": "fb54076bed5f1d86ae9fbf3e736af4612d44e6a6091b58806a734d2419dca820",
+        "size": 1035
+      },
+      {
+        "path": "assets/ui/skills/orin_w.svg",
+        "sha256": "2a788e3104918a75d983e0776e7d8a02013a4c8d557b8b9736ddd705c8ecd40b",
+        "size": 405
+      },
+      {
+        "path": "assets/ui/skills/orin_w.svg.import",
+        "sha256": "c78dbaedbc7cd3bd0816e3f39df3e6a67f5e3260ae7bf3148bf322a904d16510",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/rio_e.svg",
+        "sha256": "75681433adf6932ee682d8547b1fdf7625424c970448f5154de77891acef3788",
+        "size": 921
+      },
+      {
+        "path": "assets/ui/skills/rio_e.svg.import",
+        "sha256": "6454ddf0c8087f51229fbe4df60bfebc113a9437d83945c6a5d0e8d06df1effc",
+        "size": 1033
+      },
+      {
+        "path": "assets/ui/skills/rio_q.svg",
+        "sha256": "aa0943e13008b2f0152d44849a9034cf819a89af3fa1dfb8a6767d502acb8c98",
+        "size": 1101
+      },
+      {
+        "path": "assets/ui/skills/rio_q.svg.import",
+        "sha256": "b4da8f530c1b3e1e0465e61bd62becfbe506fa2eb64685bf83ffc4a7cf1edda1",
+        "size": 1033
+      },
+      {
+        "path": "assets/ui/skills/rio_r.svg",
+        "sha256": "2f729e880d93603955914e5783f45ab370a91a4b791e0d9b6c14f65230e8ac97",
+        "size": 905
+      },
+      {
+        "path": "assets/ui/skills/rio_r.svg.import",
+        "sha256": "738ecaed4e9ca19442d2d22097a07f7bdd622e97c301f206f1ae82e758175e79",
+        "size": 1032
+      },
+      {
+        "path": "assets/ui/skills/rio_w.svg",
+        "sha256": "3cf56b4583b2344971d5dcce2d16930b4524f42b6ff314bdfd357e6394a3db63",
+        "size": 1004
+      },
+      {
+        "path": "assets/ui/skills/rio_w.svg.import",
+        "sha256": "96e668589f0aec3d0857aa4a90dea620a05fce586e437d1a10a181463fcfcbef",
+        "size": 1032
+      },
+      {
+        "path": "assets/ui/skills/sera_e.svg",
+        "sha256": "051a6b50a8813bd4da3e7a54b37aa281998f4a781eb39c37079ff99980cf9bb1",
+        "size": 410
+      },
+      {
+        "path": "assets/ui/skills/sera_e.svg.import",
+        "sha256": "9f03fca0f839e0518f09581696544ea1fbf7b8a56a649f853fef7415e7ffa0bb",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/sera_q.svg",
+        "sha256": "ea76e00812b853fe709eadaee7de6332fd151cdecb5ab44b24a15fe3f9507c47",
+        "size": 400
+      },
+      {
+        "path": "assets/ui/skills/sera_q.svg.import",
+        "sha256": "198a1597b43fe1958e3a2b8bc63df373153c2d01d268f77f9d90d3a80c15f5d7",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/sera_r.svg",
+        "sha256": "4e5f0f99e2c132c2fe56af93f0ebe80eddabc30ee0b2c1faeb3a78ec1f4a8053",
+        "size": 422
+      },
+      {
+        "path": "assets/ui/skills/sera_r.svg.import",
+        "sha256": "8dfe94220c3761fa8b583c632eee5339c2bf6a4d2319215d9afc46f413fa3b5e",
+        "size": 1035
+      },
+      {
+        "path": "assets/ui/skills/sera_w.svg",
+        "sha256": "e1c73c52fdbd3e3667324a16922574ca8b62ea8a4de9e24d1756ba1f03a996e9",
+        "size": 415
+      },
+      {
+        "path": "assets/ui/skills/sera_w.svg.import",
+        "sha256": "a81f3fd46236c7926cdad4e41dc79b9cf1a4a3292a0829072f6d96ef51d3c354",
+        "size": 1035
+      },
+      {
+        "path": "assets/ui/skills/tere_e.svg",
+        "sha256": "edc0ba112c4f91b0e174a84b9a40d4facd0125b5cb88dd236abdf5d6c066929a",
+        "size": 391
+      },
+      {
+        "path": "assets/ui/skills/tere_e.svg.import",
+        "sha256": "f8a3f7d86d3f1f0977c92b349ce5687ffcb57669ef20958bac92747eea70690b",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/tere_q.svg",
+        "sha256": "df7d3c64ffa975dc6768a4d4d41b1ee61215ee16559058deb6a447a1197fd09a",
+        "size": 420
+      },
+      {
+        "path": "assets/ui/skills/tere_q.svg.import",
+        "sha256": "a9cf3919bb0bbeae27011dffc78dce2864ea7a5d637d70314f8809c646cd8f96",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/tere_r.svg",
+        "sha256": "9629263b221a400b76dbd8023e5f3df8a0cbbddc83fa2f7f2c146de2e96720f0",
+        "size": 420
+      },
+      {
+        "path": "assets/ui/skills/tere_r.svg.import",
+        "sha256": "2dc43453feee71db9807c3a487ae38f1dd3af8c41f0bfb42b6db6ba05465ee40",
+        "size": 1036
+      },
+      {
+        "path": "assets/ui/skills/tere_w.svg",
+        "sha256": "7c9c1acdd79855832cd621d62cf3b176b65059120fdc933da12167159019a47c",
+        "size": 429
+      },
+      {
+        "path": "assets/ui/skills/tere_w.svg.import",
+        "sha256": "a9e22e72bf0b2d33408eb5c3a4ad2b067b5fcfcff39b6a9ea44922864ca28ea5",
+        "size": 1036
+      },
+      {
+        "path": "export_presets.cfg",
+        "sha256": "218add13e2de9ccdd3084738ae60c7cae06f33067f04ccb86ce10d28d191b316",
+        "size": 828
+      },
+      {
+        "path": "project.godot",
+        "sha256": "4d0eea3fae25cc1760bd37523532aa1bd8209ce2bffb96e942467a4a88f89977",
+        "size": 3241
+      },
+      {
+        "path": "scenes/battlefield.tscn",
+        "sha256": "f43ae3958c6a4c5edc28312aa9d73213f1e28009136e277635c2affcc70e6019",
+        "size": 1521
+      },
+      {
+        "path": "scenes/combat_probe.tscn",
+        "sha256": "1f0b3df9bd11d7855e46910c014cfffc222120f03a22ce04bf6c13c9bb893cb4",
+        "size": 7454
+      },
+      {
+        "path": "scenes/player.tscn",
+        "sha256": "f313dfbdb3bb2df7be9ef235258325c2fce29f25d9114d7089d4b02217e65827",
+        "size": 1497
+      },
+      {
+        "path": "scripts/bas_motion.gd",
+        "sha256": "1ebb32eebcb279ad8174237227d225380b5914fd64a25acd680d6149ba77a7db",
+        "size": 3628
+      },
+      {
+        "path": "scripts/bas_motion.gd.uid",
+        "sha256": "2da00cd742fed3b1e764c2fbb9ed1e31b0ad9febf39904d7f2aa8c29ac4928fb",
+        "size": 18
+      },
+      {
+        "path": "scripts/battle/battle_ai.gd",
+        "sha256": "09348d779f1b9df092d96f8e2278dfd380362cf3eefa4a5df788cd58f76386df",
+        "size": 12448
+      },
+      {
+        "path": "scripts/battle/battle_ai.gd.uid",
+        "sha256": "1bb1399e7bb0433abe56b53e8367f23e60038107fdbc6a6006998370a836b195",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/battle_consumables.gd",
+        "sha256": "5446f03e0d92e07b720ac134ac0dd24fa036b9e32a305590bf6fc37674733a17",
+        "size": 7253
+      },
+      {
+        "path": "scripts/battle/battle_consumables.gd.uid",
+        "sha256": "8ab6b82d4b1c38bd20a814d0db5dc9883b62401f7b304daf71ee85f78e79f757",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/battle_map.gd",
+        "sha256": "cdc20f990321e66943b8b343b3020515659e4afdfaf8979b15d918a40a494317",
+        "size": 12171
+      },
+      {
+        "path": "scripts/battle/battle_map.gd.uid",
+        "sha256": "5154d2c9de5c3a60654e395dfb9db12e9b58fdf77353d058550d244ee70659ea",
+        "size": 20
+      },
+      {
+        "path": "scripts/battle/battle_rules.gd",
+        "sha256": "a7bc26257c47590f662207808d297fd840d51490bf0a19ba2092bc36a1d5b7cd",
+        "size": 9760
+      },
+      {
+        "path": "scripts/battle/battle_rules.gd.uid",
+        "sha256": "dc197ca93aa211e932a12e5dbf66e4d0e08ad7f37c82c3df1d7a7883cb958577",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/battle_state.gd",
+        "sha256": "0f3e851a064f393959f0647522e4cac084c02291d1ded42b50eb5ec41f336dc9",
+        "size": 36316
+      },
+      {
+        "path": "scripts/battle/battle_state.gd.uid",
+        "sha256": "7e211581f6132acedbb344855f7520aa8f9b308f39f7e35367416cec811f9615",
+        "size": 20
+      },
+      {
+        "path": "scripts/battle/expanded_abilities.gd",
+        "sha256": "f1c442bc96915658a0cab05911eecf1242573c08011bea64ec107d047a18e81a",
+        "size": 12745
+      },
+      {
+        "path": "scripts/battle/expanded_abilities.gd.uid",
+        "sha256": "596530854d1de700d2dfc3c64011e80361eb57fae99ac6ded058a7346f5e25b6",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/hero_abilities.gd",
+        "sha256": "0a6cf7c137f0956fa54f4b603de33a75f7bfd6ec6f9c2334414c876da6969cb1",
+        "size": 25823
+      },
+      {
+        "path": "scripts/battle/hero_abilities.gd.uid",
+        "sha256": "3cad7866d97e3b5cbf3899e2bad2cade566548e62d9aa76545c23adf836563fb",
+        "size": 20
+      },
+      {
+        "path": "scripts/battle/hero_roster.gd",
+        "sha256": "50c6076a2506b8be16d3017c6f28dda502894cebd7de8b66c9040765f6e33523",
+        "size": 1919
+      },
+      {
+        "path": "scripts/battle/hero_roster.gd.uid",
+        "sha256": "c1ab760503e30ddb7d4eca5c5153f0da6b2cefbc9be395ab56702570860357dc",
+        "size": 19
+      },
+      {
+        "path": "scripts/battle/tactical_ai.gd",
+        "sha256": "a39fc46c88dc95b384b89df1041c3b05f3ed26b65db4fbf1ce9d7ec1ed7b35f1",
+        "size": 10492
+      },
+      {
+        "path": "scripts/battle/tactical_ai.gd.uid",
+        "sha256": "cfbab7a30c9910504166bed73c3175e40146ad9ab1ba141ff992a769f5eea9b7",
+        "size": 20
+      },
+      {
+        "path": "scripts/combat_probe.gd",
+        "sha256": "ff4bb757aea274beb1739091d7cc84176246edb665ad167742d4e6e9fc964046",
+        "size": 4009
+      },
+      {
+        "path": "scripts/combat_probe.gd.uid",
+        "sha256": "7ff21b75a9b2b50c4726ec9c5b35274f611a11d9726803407f319b4a314eb7b9",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/arena_view.gd",
+        "sha256": "8bf8e6962421f01758f6f87684948afb4d42b8151b9f4a3f59ab7f16d20fa5ae",
+        "size": 18998
+      },
+      {
+        "path": "scripts/presentation/arena_view.gd.uid",
+        "sha256": "2871ac81763924b144ff21232a9913a95b46beff56338202c6d9ab2fe7349f64",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/battle_hud.gd",
+        "sha256": "9617be301622b730cc9ad549512438ff0c0c24f5bbf7adb1825d88f642ef8713",
+        "size": 44951
+      },
+      {
+        "path": "scripts/presentation/battle_hud.gd.uid",
+        "sha256": "252009166fadd6e781043fa6e008748559b40a28016afca81977041349253fbf",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/battlefield.gd",
+        "sha256": "a0abb31053332c7c58ba100831db2d614d8c9de0ff6c7675655c8172a0378320",
+        "size": 22272
+      },
+      {
+        "path": "scripts/presentation/battlefield.gd.uid",
+        "sha256": "d90102225a85b7a63c7d75af1c86ceeee9650676ecc184e09801ac205ef2083f",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/battlefield_layout.gd",
+        "sha256": "24d3f1e9e44fd5c5366cbae8be9e2586854bf503192b31b999bfa18adef4bbed",
+        "size": 744
+      },
+      {
+        "path": "scripts/presentation/battlefield_layout.gd.uid",
+        "sha256": "6584d059abb0abc45d9a9b91fabfd08b5c78432d14d3f29cf38410eac95dcaa4",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/combat_accents.gd",
+        "sha256": "5b4de38d42ee003f97a21bf6ee21d9199b389e9168b3f432cd3ac94d33804c19",
+        "size": 4618
+      },
+      {
+        "path": "scripts/presentation/combat_accents.gd.uid",
+        "sha256": "3a083264350069cc0fcf11525724722e4b7175c9c3c163a1782bf952b11265d5",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/effects_view.gd",
+        "sha256": "13addd28ac7435042bb4e22a201c10da671f6541394e1109b88df3c60c3c807d",
+        "size": 26260
+      },
+      {
+        "path": "scripts/presentation/effects_view.gd.uid",
+        "sha256": "aaa644a60a0d41621a927f897763febea948616fd6e628113dcaad10016cbf7d",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/fantasy_audio.gd",
+        "sha256": "864bed401ae30db35ca738b8fee36f5d0731787a2cb80dc9ff6a86ca2242739d",
+        "size": 3121
+      },
+      {
+        "path": "scripts/presentation/fantasy_audio.gd.uid",
+        "sha256": "ca5a3e99333621699a99304fde9641eb033ea6699a850af2ccea85ff499fcbfa",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/hero_portrait.gd",
+        "sha256": "6cf8e569daf3dc41ab042909873d859e9851491d4ec7bdf161e99b57fb74061b",
+        "size": 2677
+      },
+      {
+        "path": "scripts/presentation/hero_portrait.gd.uid",
+        "sha256": "a9dbc166fd9bd2ee1c9857e268cead80164554481a15ba5c08f550c51e7b5524",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/hero_rig.gd",
+        "sha256": "5ac43b83395e675ff67cb1dac78392c613fcda146a9b06c839785b654a3c7945",
+        "size": 14899
+      },
+      {
+        "path": "scripts/presentation/hero_rig.gd.uid",
+        "sha256": "f8ba8777a0fdb7f4ae61fddc53fe4a16e90486f2503500ca1fdc52254ad02f89",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/playable_battlefield.gd",
+        "sha256": "e8f6f0a6ce44dbe757fc92f7b5562f3a702fee48618429ddaef0b17cf386a041",
+        "size": 12209
+      },
+      {
+        "path": "scripts/presentation/playable_battlefield.gd.uid",
+        "sha256": "7766c15032c61418e0bb84daf87d39ebafb29600973361b3d159507ce06e92a1",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/review_lab.gd",
+        "sha256": "0cac5f7aaa5accd261dba0b229cb859e5740f87299b916be3f59e7c45816c53b",
+        "size": 12109
+      },
+      {
+        "path": "scripts/presentation/review_lab.gd.uid",
+        "sha256": "62cd6e3b34263042117b06874a4f8813afdf41f9dd547dfd59a72465b058bc5e",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/skill_vfx.gd",
+        "sha256": "88ceff058f53f243cf8fe8fc68c675c880a64e32cf323219bb25699e1a9d8ee3",
+        "size": 19690
+      },
+      {
+        "path": "scripts/presentation/skill_vfx.gd.uid",
+        "sha256": "f19fe393dea3ca924addabced78b8d02d8282f4bca8d502b725e36dfaa90fade",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/support_ramp_view.gd",
+        "sha256": "eaac831a02afc6f65fadad911420c2c55a3342b7abc1a5946ec38cc739a157d9",
+        "size": 2988
+      },
+      {
+        "path": "scripts/presentation/support_ramp_view.gd.uid",
+        "sha256": "ba4ec3197961532c68627a0242201ca40c38dc96557dd262816458251e67edd1",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/tactical_map.gd",
+        "sha256": "150c2628bfd0559497fbb862bdff1e561f24d901ffdd9c17ee535d4d9833e2b5",
+        "size": 9170
+      },
+      {
+        "path": "scripts/presentation/tactical_map.gd.uid",
+        "sha256": "c07f34af5283629be961aa7ea6a7d89562ab12f120ceb924842bcb4471f6b243",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/team_vision_view.gd",
+        "sha256": "45409d9519317c8c38d3f30c38323052e52f5f2a327dd4e08ce56a02060da3fc",
+        "size": 12464
+      },
+      {
+        "path": "scripts/presentation/team_vision_view.gd.uid",
+        "sha256": "cce70ad88549c6c659f63b79e6abc90812c463f52a49732098267619253cbbd9",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/terrain_relief.gd",
+        "sha256": "6fb98cd6db79bc805f869da5f3e58a548bbf1118ae60b345b024a332308b3ce6",
+        "size": 1958
+      },
+      {
+        "path": "scripts/presentation/terrain_relief.gd.uid",
+        "sha256": "a180f64882805206a11f43b135d09938638fc1ded425ce7d529b5fda8bbd7972",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/unit_overlay.gd",
+        "sha256": "3012ca766ec8d89cfa2a8ded8eef0c8855e76c86cbd93de20f9e908f7994fe2c",
+        "size": 6380
+      },
+      {
+        "path": "scripts/presentation/unit_overlay.gd.uid",
+        "sha256": "337f7e7e260be0e420b56a85f5a334b9bc36ef65bba2a37fa462ade39841e813",
+        "size": 20
+      },
+      {
+        "path": "scripts/presentation/workshop_arena.gd",
+        "sha256": "2b75531230792e52dd031cfa3518ab17bd8dbe39d14c8d23348c48bac90352ff",
+        "size": 11791
+      },
+      {
+        "path": "scripts/presentation/workshop_arena.gd.uid",
+        "sha256": "8447044ad870b7c26dcb691e2e03c2621a74813eae31280db672744c9d4aec48",
+        "size": 19
+      },
+      {
+        "path": "scripts/presentation/xp_feedback_view.gd",
+        "sha256": "d8f2255fce607bdd54643e1c6a007ef1ada2bc23f1344b0cafc397325f485991",
+        "size": 10259
+      },
+      {
+        "path": "scripts/presentation/xp_feedback_view.gd.uid",
+        "sha256": "6f6981d4d67ae5e558a7edd458d8146d443ce1b200efa3284f8fe6ce63e451d3",
+        "size": 19
+      },
+      {
+        "path": "scripts/probe_player.gd",
+        "sha256": "983a914328a06f1d0b33957abd38c951889cc8891f3eab6e3f96e3f07d727646",
+        "size": 1392
+      },
+      {
+        "path": "scripts/probe_player.gd.uid",
+        "sha256": "1d0f77d33c4cd0c8c871d839e3e4923628fc34488ce5dee596a150b90fb66e19",
+        "size": 20
+      },
+      {
+        "path": "tests/capture_battlefield.gd",
+        "sha256": "971fb2ba34b96675a66d19dda0711ef9d48bc8cbad996b8b946a2a15bc7f4dc3",
+        "size": 3739
+      },
+      {
+        "path": "tests/capture_battlefield.gd.uid",
+        "sha256": "e676a8f44a64a460b842523286e32861c57526f34f6a10489e4f483d1538f560",
+        "size": 19
+      },
+      {
+        "path": "tests/capture_consumables.gd",
+        "sha256": "5976c310eb98883834c13ef2ff57b33705bd5df6f2d84a6639b16345608c3ebd",
+        "size": 4697
+      },
+      {
+        "path": "tests/capture_consumables.gd.uid",
+        "sha256": "6b8fa80e640c131edeef73ddc0307ed312878979165004ac57d33850fee7ee30",
+        "size": 20
+      },
+      {
+        "path": "tests/capture_integrated_v2.gd",
+        "sha256": "23b3c0e31fd9c543bfced883734ac2a1329abe45bf6f68dedc79015a5c9527fc",
+        "size": 2926
+      },
+      {
+        "path": "tests/capture_integrated_v2.gd.uid",
+        "sha256": "7aeb5ec906955ab6f088aea1bd82155b6f56984039882d255e034e19b451b653",
+        "size": 20
+      },
+      {
+        "path": "tests/capture_next_features.gd",
+        "sha256": "0c1bdee163191f6a068e9a5c66a3bc48fcf753bdea7c2cb93fbbcef5663c7a55",
+        "size": 6096
+      },
+      {
+        "path": "tests/capture_next_features.gd.uid",
+        "sha256": "60dd06d3d1d1775d0b4fd9be19a4211af60750e2aad4a0b4e38e2faeaaba6439",
+        "size": 20
+      },
+      {
+        "path": "tests/capture_playable_slice.gd",
+        "sha256": "33dcfe0c3808b8d0708f83e2c5b8bc9ed5dd193816bc7537a4c74394ee3160c8",
+        "size": 5340
+      },
+      {
+        "path": "tests/capture_playable_slice.gd.uid",
+        "sha256": "aa389a62dc32e131d6bc0b6d33ad2765e97886a75d155fd6ec3d679343b69b0f",
+        "size": 20
+      },
+      {
+        "path": "tests/test_bas_motion.gd",
+        "sha256": "6847c41ddebbfaf8cbd640b5e1d1b4d07c495050ceb8922ddaa36877e1980d8a",
+        "size": 5474
+      },
+      {
+        "path": "tests/test_bas_motion.gd.uid",
+        "sha256": "25a6d1864afd25251db4b80be174ce0f01b474e012c20525cd3ce05531abeafe",
+        "size": 20
+      },
+      {
+        "path": "tests/test_battle_match.gd",
+        "sha256": "1eee4bb060f0b98fad3da60a698379eb82dd511bd75f1f6dbb0b519161cce83f",
+        "size": 12582
+      },
+      {
+        "path": "tests/test_battle_match.gd.uid",
+        "sha256": "b455f362ec853bf3e2edd2591a6d9cccfd950074ab97b7d5f15d1c5791734b5e",
+        "size": 20
+      },
+      {
+        "path": "tests/test_battle_rules.gd",
+        "sha256": "6dc0ccf94f5418558d3ca03f0e078c3fba427a177b38d4b0574da011846e13d1",
+        "size": 15452
+      },
+      {
+        "path": "tests/test_battle_rules.gd.uid",
+        "sha256": "9c6c04645d9e7dfb213b80bb9d57bd07f6516f0ca17ec95c54bd57adae24db78",
+        "size": 19
+      },
+      {
+        "path": "tests/test_battle_scene.gd",
+        "sha256": "79c6b58de0ec952038ab89fbae1db1a94ab9f64c1a8db9a51a035ba0a9f4cd6e",
+        "size": 18739
+      },
+      {
+        "path": "tests/test_battle_scene.gd.uid",
+        "sha256": "74c9d8ff93b860154c82de5fa6dc4e8130bb0ded177657e55a3ca8a6c5dc128e",
+        "size": 19
+      },
+      {
+        "path": "tests/test_camera_v6.gd",
+        "sha256": "ef6311b4de9dcf828c2fbf4b851d7422ce40c109e97f34d05d3812b03d1a7ff3",
+        "size": 9413
+      },
+      {
+        "path": "tests/test_consumable_ai.gd",
+        "sha256": "d7340452b9e1db9f3a55d06dcdd773d76ab37b6dc788b488122bcacf84281ada",
+        "size": 11748
+      },
+      {
+        "path": "tests/test_consumable_ai.gd.uid",
+        "sha256": "46d4a98d1eb6f54f85bddc9bd7d510565913a0929bf63eea6e0b92645e466d8d",
+        "size": 20
+      },
+      {
+        "path": "tests/test_consumable_input.gd",
+        "sha256": "27492fc3a93aaa338e2230636ab4fbbcf7bc8dbc1e926d2b0631217e9e2a186f",
+        "size": 14460
+      },
+      {
+        "path": "tests/test_consumable_input.gd.uid",
+        "sha256": "21abc535a7b09fcff06af651716fd008f23cebb12de674ff227de683b40ecafb",
+        "size": 19
+      },
+      {
+        "path": "tests/test_consumables.gd",
+        "sha256": "c0b6076693eda2ea2f52385f59ac6f3477de272423bf11ad6bd5054b2584c32b",
+        "size": 18587
+      },
+      {
+        "path": "tests/test_consumables.gd.uid",
+        "sha256": "48e633ab7fca05d90adfaf4b0cbbae8a1d8b4c73aa8e9523cd3fdb30652e5000",
+        "size": 19
+      },
+      {
+        "path": "tests/test_cot_reference_v6.gd",
+        "sha256": "41747a7b0353f47c0fff2116d4aa493b916be7f05b15fed41876be1a992c9ce9",
+        "size": 7848
+      },
+      {
+        "path": "tests/test_effect_geometry.gd",
+        "sha256": "48ccf399892afe765298915b62cd2ebb904515144e32520b2f2b4908d8c97a03",
+        "size": 10094
+      },
+      {
+        "path": "tests/test_effect_geometry.gd.uid",
+        "sha256": "de37f2d3884d155846e87116502a4a0151c83f3e194fe2c95893d9ef47cb1e75",
+        "size": 20
+      },
+      {
+        "path": "tests/test_elevation.gd",
+        "sha256": "0bbc4c0d6935e61f54b8f5be665e3c68aa1ac8b1a5097d3f8149f55e5aeb4c51",
+        "size": 4494
+      },
+      {
+        "path": "tests/test_elevation.gd.uid",
+        "sha256": "8529b1bd8d20c764f1d3c392faa5932356944f97719fdb2eb07187342d70a639",
+        "size": 19
+      },
+      {
+        "path": "tests/test_fantasy_hud_v7.gd",
+        "sha256": "9bad21d4f3756ffc7d60d338b720b16bac2112f2d5da24ce10e39056aa473600",
+        "size": 3361
+      },
+      {
+        "path": "tests/test_fantasy_hud_v7.gd.uid",
+        "sha256": "6cb791e997a3a978e5f14b56f22588d24b6153a331fac533086e80de16e930b0",
+        "size": 20
+      },
+      {
+        "path": "tests/test_fantasy_v3.gd",
+        "sha256": "bfcc3eee11b7d80da8cf40da0249fcebe5400d9fa30dd22298be8b84c21d4304",
+        "size": 2821
+      },
+      {
+        "path": "tests/test_fantasy_v3.gd.uid",
+        "sha256": "b2b54884b0c6f79137952196ec4abae5144850789b4e38643b5553d623372c01",
+        "size": 20
+      },
+      {
+        "path": "tests/test_fantasy_v4.gd",
+        "sha256": "cf4224c9997a331faefe20ef1d78b205dee07651d1820876879c9caad94badb3",
+        "size": 5033
+      },
+      {
+        "path": "tests/test_fantasy_v4.gd.uid",
+        "sha256": "b66db72cd851df4e39ffbff9e528316f87e31671fc277b6d3d9ca4e187c65cef",
+        "size": 20
+      },
+      {
+        "path": "tests/test_hero_abilities_v8.gd",
+        "sha256": "169c85ec08a674ad6b6bee299acf63e48cc023db6fe9accb5f48267b2fcd3dfe",
+        "size": 17543
+      },
+      {
+        "path": "tests/test_hero_abilities_v8.gd.uid",
+        "sha256": "62392e5dd5678f6087cd63711f35311cfca05306587d2cb5415aec57f0506ced",
+        "size": 20
+      },
+      {
+        "path": "tests/test_illustrated_v5.gd",
+        "sha256": "2ed3271cadb4d4c4047600ff7ab5fd19885b463c8d12514f247bd237bdd0b93a",
+        "size": 5753
+      },
+      {
+        "path": "tests/test_integrated_v2.gd",
+        "sha256": "7a672af3331bf0211beb0189effc97496720d832ed4582793463b8fe3579e4f4",
+        "size": 5121
+      },
+      {
+        "path": "tests/test_integrated_v2.gd.uid",
+        "sha256": "743e9366328df20a7638fc619d3634db5425e05898a5ae5e46400bcb2a9dfb8e",
+        "size": 19
+      },
+      {
+        "path": "tests/test_item_concepts_v7.gd",
+        "sha256": "4e401b82790b9ff5b70dcb465a776003a829247e004a27dab98f0e7fae0d2f4e",
+        "size": 2658
+      },
+      {
+        "path": "tests/test_item_concepts_v7.gd.uid",
+        "sha256": "68c5ee5005c483d1cbfa4b314af5b310f8e520e755b4b1b7095b8493899df5ae",
+        "size": 19
+      },
+      {
+        "path": "tests/test_next_combat.gd",
+        "sha256": "1c2b262c5fe939facc1ac461211ca2d4fb6b2419e7bfe0dc00aaa9ca6dc4850d",
+        "size": 18135
+      },
+      {
+        "path": "tests/test_next_combat.gd.uid",
+        "sha256": "868f605a8fc1eb10b6457627a1d82a91b4392b83bedd14e9346616577df0054b",
+        "size": 20
+      },
+      {
+        "path": "tests/test_next_input.gd",
+        "sha256": "987e3b07536fc891fb94d11958741c832a5447762fc79b789670b16dab3b4e23",
+        "size": 6122
+      },
+      {
+        "path": "tests/test_next_input.gd.uid",
+        "sha256": "8055072cdd51b1898e92500418ff39648ed1a870fec19d6a4d8203653789ad21",
+        "size": 18
+      },
+      {
+        "path": "tests/test_persistent_fx_v7.gd",
+        "sha256": "d60cbd7fa6cf648f6f604fedd9e1a687af85f1fcab64605ced12aeef46128b94",
+        "size": 5499
+      },
+      {
+        "path": "tests/test_persistent_fx_v7.gd.uid",
+        "sha256": "363bb6bd0dba4d2bf39feb04a7e38de1f7217e44dc51187b70fe6d6c016d2e3f",
+        "size": 20
+      },
+      {
+        "path": "tests/test_playable_slice.gd",
+        "sha256": "c28796ce62251e88996d2711f9de66c2d674a16790d6d959b257aec74facad05",
+        "size": 4997
+      },
+      {
+        "path": "tests/test_playable_slice.gd.uid",
+        "sha256": "6612374ac08b7e7c2c53691798f6c078c8a7ed31bbd20f02fcb7e8a3e306cddc",
+        "size": 20
+      },
+      {
+        "path": "tests/test_probe_scene.gd",
+        "sha256": "62a21a55709fdd0a13343a061d72ed0f8ac2e2c329f457b977a645af656a6dbb",
+        "size": 2629
+      },
+      {
+        "path": "tests/test_probe_scene.gd.uid",
+        "sha256": "5d61f52a97869458a5f54d046e5311207e071fe7fe8e752065ffa9c0dd56bbf7",
+        "size": 19
+      },
+      {
+        "path": "tests/test_r30_layout.gd",
+        "sha256": "109af0c347706be7bb1e36436bca86f029ae65de80fb3a384b8859cb06c4613d",
+        "size": 7184
+      },
+      {
+        "path": "tests/test_r30_layout.gd.uid",
+        "sha256": "057d11de06f30b31bd43bd7e728229572b07774bf4890872bb4a853bd191d1e8",
+        "size": 19
+      },
+      {
+        "path": "tests/test_review_objectives.gd",
+        "sha256": "51490725e20c6500a8bd5c22f253112902153a3d4f64798ba969fcd9ea299748",
+        "size": 2282
+      },
+      {
+        "path": "tests/test_review_objectives.gd.uid",
+        "sha256": "dbec020f9af59ba6e873cf7b55eaf3210b4d39a79c2c22d3389590953709d51c",
+        "size": 19
+      },
+      {
+        "path": "tests/test_roster_presentation_v8.gd",
+        "sha256": "4313433f217cc3d6dada377df60ed0d2d7f267de3d864060ad22b1d305f3fec9",
+        "size": 8996
+      },
+      {
+        "path": "tests/test_roster_presentation_v8.gd.uid",
+        "sha256": "4bcf4acd0c212d02115bda17cf21a3f635b05d4fa00cd0b1b7686a0f2008f91a",
+        "size": 20
+      },
+      {
+        "path": "tests/test_roster_v8.gd",
+        "sha256": "59b9003fe9bb8eed9e80a696cb01f61b185f54cfc50b9760d1f2d68b97e9f37c",
+        "size": 1065
+      },
+      {
+        "path": "tests/test_roster_v8.gd.uid",
+        "sha256": "12aba41747f10d5547d6fbd393417cfab07e9d82145b4cb98bc76aa41305e41c",
+        "size": 20
+      },
+      {
+        "path": "tests/test_selection_v6.gd",
+        "sha256": "9c7ac6da714539dc86f3cd4aff46c5fa408524ec09c4ba9492e30644fc54c934",
+        "size": 4060
+      },
+      {
+        "path": "tests/test_siege_v9.gd",
+        "sha256": "2297cbeacc15da54276cbc3f0fd5347d98e2ad8e3a19e6bde111377e3ea1528a",
+        "size": 10843
+      },
+      {
+        "path": "tests/test_siege_v9.gd.uid",
+        "sha256": "5c4e19181e11ad9a741111087d13070a54bd2bf4cf4cd8cf90a29c5233dabc7f",
+        "size": 20
+      },
+      {
+        "path": "tests/test_skill_concepts_v7.gd",
+        "sha256": "d687606aceb3db46b55de8ca0109ce21c4ac43c1acb77f72ebc4ec93018199a0",
+        "size": 3309
+      },
+      {
+        "path": "tests/test_skill_concepts_v7.gd.uid",
+        "sha256": "bebfe7cb315c6060a3f7a883cb55062b6e4b79ab41ff33293f469502462bd5b5",
+        "size": 20
+      },
+      {
+        "path": "tests/test_skill_vfx_v7.gd",
+        "sha256": "f8107dc763a6df4f386a9ba52a272f5c067ed963a739a6e65cc6abd381c32308",
+        "size": 9046
+      },
+      {
+        "path": "tests/test_skill_vfx_v7.gd.uid",
+        "sha256": "5f3923040d20b4b29fbed004b27742d8bc6b1fb4e3c94380bc36a323dffd9650",
+        "size": 20
+      },
+      {
+        "path": "tests/test_tactical_ai.gd",
+        "sha256": "feb007091672ec7c7b01b2a05d4e8343e954cf5592677ec4717060582d809c9c",
+        "size": 5517
+      },
+      {
+        "path": "tests/test_tactical_ai.gd.uid",
+        "sha256": "15758e8a48c1a92cae1dbd7d235ca903ed7b08938107385dd30e80b7f6b1e55d",
+        "size": 20
+      },
+      {
+        "path": "tests/test_tactical_lifecycle.gd",
+        "sha256": "4612fbedd584d4035a46923e0bbb477be240be38447a99cc881960d55bd3f180",
+        "size": 3049
+      },
+      {
+        "path": "tests/test_tactical_lifecycle.gd.uid",
+        "sha256": "fde940bb85504529f27c0b2ae9b72a776d110300f1cb72e5aea59ef2190cf14d",
+        "size": 20
+      },
+      {
+        "path": "tests/test_team_vision.gd",
+        "sha256": "62a0e0dc5a244626ae1cafcf953945218d6d6f4fc939e96a93856abba71381c8",
+        "size": 12188
+      },
+      {
+        "path": "tests/test_team_vision.gd.uid",
+        "sha256": "47e7811e76ce8061b1dbe700fc6d11f176244c292abffb7c38fcf19a21a35afd",
+        "size": 20
+      },
+      {
+        "path": "tests/test_v2_visual_contract.gd",
+        "sha256": "a0290047c618ae727b8d3bc4e8434da44d3553868832fde8e36e9d7e9a5f030f",
+        "size": 3381
+      },
+      {
+        "path": "tests/test_v2_visual_contract.gd.uid",
+        "sha256": "e2c938bed2b5deba9799a316df6e28735746842a7e7e77998cb00aa2033058cd",
+        "size": 19
+      },
+      {
+        "path": "tests/test_vertical_map_v9.gd",
+        "sha256": "b6104e6f39b08e00cd45314cf38c7d94b2960942e01f43e93dd1c1c691d6a907",
+        "size": 8842
+      },
+      {
+        "path": "tests/test_vertical_map_v9.gd.uid",
+        "sha256": "46eaf6cdb5828b3e09459ae042bb51ad43f091a82c8d8d0d0511a8395f2bf06d",
+        "size": 19
+      },
+      {
+        "path": "tests/test_xp_feedback.gd",
+        "sha256": "d8bc81d389eb6a06a3b294313a3eb9d6f4d7e6b0bd6ac4369fc997c7b99857ee",
+        "size": 14561
+      },
+      {
+        "path": "tests/test_xp_feedback.gd.uid",
+        "sha256": "1b9f3535799726f591f19b674c0e6f1d9e974bc8d5aee3b763920adcd4ed1d8c",
+        "size": 20
+      },
+      {
+        "path": "tests/test_xp_meter.gd",
+        "sha256": "1a1681b3160e096cbbd05229826856ee597b66002a07ee4ccddcad466136707e",
+        "size": 2875
+      },
+      {
+        "path": "tests/test_xp_meter.gd.uid",
+        "sha256": "999733d7cdd58f258673b991116c1fc135f03b087fc457e8c2962fa2309c98f1",
+        "size": 19
+      }
+    ]
+  },
+  "verification": {
+    "import": "passed",
+    "release_export": "passed",
+    "pe_x86_64_and_pck_headers": "passed",
+    "actual_windows_pc": "not_run",
+    "human_playtest": "not_run"
+  },
+  "files": [
+    {
+      "path": "ProjectE.exe",
+      "size": 109268480,
+      "sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562"
+    },
+    {
+      "path": "ProjectE.pck",
+      "size": 21310316,
+      "sha256": "6a7317eccac25f5e406f8caf9660fbf00d74ed63db6564476a33b0d9ad275ea3"
+    },
+    {
+      "path": "README-WINDOWS.txt",
+      "size": 5405,
+      "sha256": "ca7f958455e5cfed08e0e8499a5723a797f0b5990d7c880c818b6f8147c9164c"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "size": 1639,
+      "sha256": "e0c57d454f0cba8cb026ba992283d7254c089b34a93e282b5759cb4dca9c29aa"
+    },
+    {
+      "path": "build-logs/export.log",
+      "size": 21905,
+      "sha256": "a2712dae150a523ed0747a148cda4fc9cb1c2304122eb3859fe980915f3e9de5"
+    },
+    {
+      "path": "build-logs/import.log",
+      "size": 16934,
+      "sha256": "343a936dd21d213fd72f244792257250194032278c1e9d1a4961395721badd08"
+    },
+    {
+      "path": "licenses/FONT-OFL.txt",
+      "size": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "licenses/FONT-README.md",
+      "size": 1005,
+      "sha256": "c9da6eb191c91b9828e81ba6421c37453b1119cfc7ee89dfb4295efc9604afac"
+    },
+    {
+      "path": "licenses/GODOT-COPYRIGHT.txt",
+      "size": 100108,
+      "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+    },
+    {
+      "path": "licenses/GODOT-LICENSE.txt",
+      "size": 1149,
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+    }
+  ]
+}

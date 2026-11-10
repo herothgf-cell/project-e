@@ -30,7 +30,7 @@ jobs:
           GODOT_SILENCE_ROOT_WARNING: '1'
         run: |
           python tools/package_windows.py --godot "$PWD/.ci/Godot_v4.7.2-stable_linux.x86_64" --templates-archive "$PWD/.ci/templates.tpz" --engine-notices-dir "$PWD/.ci" --output-dir "$PWD/build/windows"
-          printf 'F7: integrated hero, skill and battlefield review\nF6: camera combat/tactical/detail\nY: toggle hero follow\nSpace: recenter on hero\nThis V8 prototype includes eight selectable fantasy heroes, 32 active skills, eight passives, two consumables and a 3v3 battlefield.\nWindows headless startup is tested separately; manual play and GPU performance are not certified.\n' > build/windows/PREVIEW-NOTES.txt
+          printf 'F7: integrated hero, skill and battlefield review\nF6: camera combat/tactical/detail\nY: toggle hero follow\nSpace: recenter on hero\nThis V9 prototype includes eight selectable fantasy heroes, 32 active skills, eight passives, two consumables and a vertical 3v3 battlefield with coordinated core siege.\nWindows headless startup is tested separately; manual play and GPU performance are not certified.\n' > build/windows/PREVIEW-NOTES.txt
       - name: Validate and capture the shipped PCK interface
         env:
           GODOT_SILENCE_ROOT_WARNING: '1'
@@ -53,16 +53,22 @@ jobs:
                '--script', os.path.abspath('tools/art/capture_player_view.gd'), '--',
                '--output=' + os.path.abspath('build/player-review'), '--inline-preview', '--exported-pck'],
               r'PLAYER_REVIEW_OK', timeout=300)
+          run(['xvfb-run', '-a', os.path.abspath('.ci/Godot_v4.7.2-stable_linux.x86_64'),
+               '--main-pack', os.path.abspath('build/windows/ProjectE.pck'),
+               '--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy',
+               '--script', os.path.abspath('tools/art/capture_vertical_v9.gd'), '--',
+               '--output=' + os.path.abspath('build/player-review/vertical'), '--exported-pck'],
+              r'VERTICAL_CAPTURE_OK', timeout=180)
           PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ProjectE-V8-player-review
+          name: ProjectE-V9-player-review
           path: build/player-review/
           retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
-          name: ProjectE-V8-Windows-preview
+          name: ProjectE-V9-Windows-preview
           path: |
             build/windows/ProjectE-windows-x86_64.zip
             build/windows/ProjectE-windows-x86_64.zip.sha256
@@ -76,7 +82,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: ProjectE-V8-Windows-preview
+          name: ProjectE-V9-Windows-preview
           path: package
       - name: Start exported EXE on Windows
         shell: pwsh
@@ -101,7 +107,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ProjectE-V8-Windows-smoke-log
+          name: ProjectE-V9-Windows-smoke-log
           path: |
             smoke/**/windows-smoke.log
             windows-smoke-result.txt

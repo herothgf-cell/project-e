@@ -2,6 +2,7 @@ extends Control
 
 signal point_selected(point: Vector2, button: int)
 
+const DisplayLayout = preload("res://scripts/presentation/battlefield_layout.gd")
 const DEFAULT_VISION_TOOLTIP := "팀 공유 시야 · 밝은 고리가 시야 제공원을 나타냅니다.\n고리에 마우스를 올리면 벽에 막히는 실제 시야 범위를 확인할 수 있습니다."
 
 var battle: Variant
@@ -16,7 +17,7 @@ var _hover_boundary_at: int = 0
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	custom_minimum_size = Vector2(230, 148)
+	custom_minimum_size = Vector2(124, 192)
 	clip_contents = true
 	mouse_exited.connect(func() -> void: _update_source_hover(Vector2(INF, INF)))
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -46,7 +47,7 @@ func high_ground_ramp_segments() -> Array:
 
 func _update_source_hover(pointer: Vector2) -> void:
 	var hovered: int = -1
-	if battle != null and vision_view != null and Rect2(Vector2.ZERO, size).has_point(pointer):
+	if battle != null and vision_view != null and content_rect().has_point(pointer):
 		for id: int in vision_view.source_ids():
 			if battle.units.has(id) and battle.units[id].alive and (to_map(battle.units[id].pos) + Vector2(0, -6)).distance_to(pointer) < 8:
 				hovered = id
@@ -61,10 +62,12 @@ func _update_source_hover(pointer: Vector2) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("2d5b56"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("203f3e"))
 	if battle == null:
 		return
-	var scale_value: float = size.x / 124.0
+	var content: Rect2 = content_rect()
+	draw_rect(content, Color("2d5b56"))
+	var scale_value: float = content.size.x / DisplayLayout.VIEW_SIZE.x
 	for path: Array in battle.map.lane_paths:
 		for i: int in range(path.size() - 1):
 			draw_line(to_map(path[i]), to_map(path[i + 1]), Color("d6d5b9"), 6.0 * scale_value, true)
@@ -77,10 +80,9 @@ func _draw() -> void:
 		draw_line(segment.screen_high, segment.screen_low, color, 3.0 * scale_value, true)
 	for team: int in range(2):
 		var center := Vector2(-51.5 if team == 0 else 51.5, 0)
-		draw_rect(Rect2(to_map(center) - Vector2(7.5, 8) * scale_value, Vector2(15, 16) * scale_value), Color("9ba993"))
+		draw_rect(to_map_rect(Rect2(center - Vector2(7.5, 8), Vector2(15, 16))), Color("9ba993"))
 	for blocker: Rect2 in battle.map.blockers:
-		var top_left: Vector2 = to_map(Vector2(blocker.position.x, blocker.end.y))
-		draw_rect(Rect2(top_left, blocker.size * scale_value), Color("376e64"))
+		draw_rect(to_map_rect(blocker), Color("376e64"))
 	# High ground is static terrain knowledge; fog may dim it, but it is never a
 	# hidden enemy-state reveal. Double chevrons distinguish it from XP circles.
 	for center: Vector2 in battle.map.high_ground_cells:
@@ -90,9 +92,10 @@ func _draw() -> void:
 		draw_line(high + Vector2(-r * 0.55, r * 0.15), high + Vector2(0, -r * 0.45), Color("f1dfad"), 1.2, true)
 		draw_line(high + Vector2(0, -r * 0.45), high + Vector2(r * 0.55, r * 0.15), Color("f1dfad"), 1.2, true)
 	if vision_view != null and vision_view.minimap_fog_texture != null:
-		# Texture rows follow simulation north; the minimap's screen y is south.
-		draw_set_transform(Vector2(0, size.y), 0, Vector2(1, -1))
-		draw_texture_rect(vision_view.minimap_fog_texture, Rect2(Vector2.ZERO, size), false)
+		# Texture x/y are authoritative east/north. Apply the same view basis
+		# as terrain and icons, preserving pixel alignment and uniform scale.
+		draw_set_transform_matrix(fog_transform())
+		draw_texture_rect(vision_view.minimap_fog_texture, Rect2(Vector2.ZERO, DisplayLayout.SIM_RECT.size), false)
 		draw_set_transform(Vector2.ZERO)
 	_draw_hover_range()
 	for id: int in visible_unit_ids():
@@ -130,7 +133,7 @@ func _draw() -> void:
 		if corners.size() == 4:
 			for i: int in range(4):
 				draw_line(corners[i], corners[(i + 1) % 4], Color(1, 0.96, 0.78, 0.65), 1.0, true)
-	draw_rect(Rect2(Vector2.ONE, size - Vector2.ONE * 2), Color("76978b"), false, 1)
+	draw_rect(content.grow(-1), Color("76978b"), false, 1)
 
 
 func visible_unit_ids() -> Array:
@@ -150,16 +153,39 @@ func _gui_input(event: InputEvent) -> void:
 		_update_source_hover(event.position)
 	if event is InputEventMouseButton:
 		accept_event()
-		if active and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+		if active and event.pressed and event.position.is_finite() and content_rect().has_point(event.position) and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
 			point_selected.emit(from_map(event.position), event.button_index)
 
 
+func content_rect() -> Rect2:
+	var scale_value: float = maxf(0.0, minf(size.x / DisplayLayout.VIEW_SIZE.x, size.y / DisplayLayout.VIEW_SIZE.y))
+	var extent: Vector2 = DisplayLayout.VIEW_SIZE * scale_value
+	return Rect2((size - extent) * 0.5, extent)
+
+
 func to_map(point: Vector2) -> Vector2:
-	return Vector2((point.x + 62) / 124.0 * size.x, (40 - point.y) / 80.0 * size.y)
+	var content: Rect2 = content_rect()
+	var view: Vector2 = DisplayLayout.to_view(point)
+	return content.get_center() + Vector2(view.x, -view.y) * (content.size.x / DisplayLayout.VIEW_SIZE.x)
 
 
 func from_map(point: Vector2) -> Vector2:
-	return Vector2(point.x / size.x * 124.0 - 62.0, 40.0 - point.y / size.y * 80.0)
+	var content: Rect2 = content_rect()
+	if not point.is_finite() or content.size.x <= 0.0:
+		return Vector2(INF, INF)
+	var view: Vector2 = (point - content.get_center()) * (DisplayLayout.VIEW_SIZE.x / content.size.x)
+	return DisplayLayout.from_view(Vector2(view.x, -view.y))
+
+
+func to_map_rect(rectangle: Rect2) -> Rect2:
+	var first: Vector2 = to_map(rectangle.position)
+	return Rect2(first, to_map(rectangle.end) - first).abs()
+
+
+func fog_transform() -> Transform2D:
+	var content: Rect2 = content_rect()
+	var scale_value: float = content.size.x / DisplayLayout.VIEW_SIZE.x
+	return Transform2D(Vector2(0, -scale_value), Vector2(-scale_value, 0), content.end)
 
 
 func vision_at(point: Vector2) -> float:

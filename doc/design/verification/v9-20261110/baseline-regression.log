@@ -1,0 +1,601 @@
+Checking the pinned engine version
+4.7.2.stable.official.ed1daf0bf
+Importing project
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
+[   0% ] first_scan_filesystem | Scanning file structure...
+[  16% ] first_scan_filesystem | Loading global class names...
+[  33% ] first_scan_filesystem | Verifying GDExtensions...
+[  50% ] first_scan_filesystem | Creating autoload scripts...
+[  66% ] first_scan_filesystem | Initializing plugins...
+[  83% ] first_scan_filesystem | Starting file scan...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started Registering global classes... (71 steps)
+[   0% ] update_scripts_classes |
+[   1% ] update_scripts_classes |
+[   2% ] update_scripts_classes |
+[   4% ] update_scripts_classes |
+[   5% ] update_scripts_classes |
+[   6% ] update_scripts_classes |
+[   8% ] update_scripts_classes |
+[   9% ] update_scripts_classes |
+[  11% ] update_scripts_classes |
+[  12% ] update_scripts_classes |
+[  13% ] update_scripts_classes |
+[  15% ] update_scripts_classes |
+[  16% ] update_scripts_classes |
+[  18% ] update_scripts_classes |
+[  19% ] update_scripts_classes |
+[  20% ] update_scripts_classes |
+[  22% ] update_scripts_classes |
+[  23% ] update_scripts_classes |
+[  25% ] update_scripts_classes |
+[  26% ] update_scripts_classes |
+[  27% ] update_scripts_classes |
+[  29% ] update_scripts_classes |
+[  30% ] update_scripts_classes |
+[  31% ] update_scripts_classes |
+[  33% ] update_scripts_classes |
+[  34% ] update_scripts_classes |
+[  36% ] update_scripts_classes |
+[  37% ] update_scripts_classes |
+[  38% ] update_scripts_classes |
+[  40% ] update_scripts_classes |
+[  41% ] update_scripts_classes |
+[  43% ] update_scripts_classes |
+[  44% ] update_scripts_classes |
+[  45% ] update_scripts_classes |
+[  47% ] update_scripts_classes |
+[  48% ] update_scripts_classes |
+[  50% ] update_scripts_classes |
+[  51% ] update_scripts_classes |
+[  52% ] update_scripts_classes |
+[  54% ] update_scripts_classes |
+[  55% ] update_scripts_classes |
+[  56% ] update_scripts_classes |
+[  58% ] update_scripts_classes |
+[  59% ] update_scripts_classes |
+[  61% ] update_scripts_classes |
+[  62% ] update_scripts_classes |
+[  63% ] update_scripts_classes |
+[  65% ] update_scripts_classes |
+[  66% ] update_scripts_classes |
+[  68% ] update_scripts_classes |
+[  69% ] update_scripts_classes |
+[  70% ] update_scripts_classes |
+[  72% ] update_scripts_classes |
+[  73% ] update_scripts_classes |
+[  75% ] update_scripts_classes |
+[  76% ] update_scripts_classes |
+[  77% ] update_scripts_classes |
+[  79% ] update_scripts_classes |
+[  80% ] update_scripts_classes |
+[  81% ] update_scripts_classes |
+[  83% ] update_scripts_classes |
+[  84% ] update_scripts_classes |
+[  86% ] update_scripts_classes |
+[  87% ] update_scripts_classes |
+[  88% ] update_scripts_classes |
+[  90% ] update_scripts_classes |
+[  91% ] update_scripts_classes |
+[  93% ] update_scripts_classes |
+[  94% ] update_scripts_classes |
+[  95% ] update_scripts_classes |
+[  97% ] update_scripts_classes |
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started Scanning actions... (74 steps)
+[   0% ] _update_scan_actions | arcane.wav
+[   1% ] _update_scan_actions | hit.wav
+[   2% ] _update_scan_actions | level.wav
+[   4% ] _update_scan_actions | nature.wav
+[   5% ] _update_scan_actions | slash.wav
+[   6% ] _update_scan_actions | amber_fig.glb
+[   8% ] _update_scan_actions | canal_flagstones.webp
+[   9% ] _update_scan_actions | canal_waterbed.webp
+[  10% ] _update_scan_actions | copper_millwheel.glb
+[  12% ] _update_scan_actions | core_observatory.glb
+[  13% ] _update_scan_actions | crown_crystal.glb
+[  14% ] _update_scan_actions | garden_bank.glb
+[  16% ] _update_scan_actions | guild_mosaic.glb
+[  17% ] _update_scan_actions | ivy_cloister.glb
+[  18% ] _update_scan_actions | jade_willow.glb
+[  20% ] _update_scan_actions | quay_rail.glb
+[  21% ] _update_scan_actions | sentinel_crown.glb
+[  22% ] _update_scan_actions | terracotta_gatehouse.glb
+[  24% ] _update_scan_actions | ProjectEKorean.woff2
+[  25% ] _update_scan_actions | bas-face.webp
+[  26% ] _update_scan_actions | bas-tunic.webp
+[  28% ] _update_scan_actions | bas.glb
+[  29% ] _update_scan_actions | lume.glb
+[  30% ] _update_scan_actions | mua.glb
+[  32% ] _update_scan_actions | nema-face.webp
+[  33% ] _update_scan_actions | nema-tunic.webp
+[  34% ] _update_scan_actions | nema.glb
+[  36% ] _update_scan_actions | orin.glb
+[  37% ] _update_scan_actions | rio-face.webp
+[  38% ] _update_scan_actions | rio-tunic.webp
+[  40% ] _update_scan_actions | rio.glb
+[  41% ] _update_scan_actions | sera.glb
+[  42% ] _update_scan_actions | tere.glb
+[  44% ] _update_scan_actions | bas.svg
+[  45% ] _update_scan_actions | bas.webp
+[  46% ] _update_scan_actions | nema.svg
+[  48% ] _update_scan_actions | nema.webp
+[  49% ] _update_scan_actions | rio.svg
+[  50% ] _update_scan_actions | rio.webp
+[  52% ] _update_scan_actions | grove_salve.svg
+[  53% ] _update_scan_actions | starlight_elixir.svg
+[  54% ] _update_scan_actions | bas_e.svg
+[  56% ] _update_scan_actions | bas_q.svg
+[  57% ] _update_scan_actions | bas_r.svg
+[  58% ] _update_scan_actions | bas_w.svg
+[  60% ] _update_scan_actions | lume_e.svg
+[  61% ] _update_scan_actions | lume_q.svg
+[  62% ] _update_scan_actions | lume_r.svg
+[  64% ] _update_scan_actions | lume_w.svg
+[  65% ] _update_scan_actions | mua_e.svg
+[  66% ] _update_scan_actions | mua_q.svg
+[  68% ] _update_scan_actions | mua_r.svg
+[  69% ] _update_scan_actions | mua_w.svg
+[  70% ] _update_scan_actions | nema_e.svg
+[  72% ] _update_scan_actions | nema_q.svg
+[  73% ] _update_scan_actions | nema_r.svg
+[  74% ] _update_scan_actions | nema_w.svg
+[  76% ] _update_scan_actions | orin_e.svg
+[  77% ] _update_scan_actions | orin_q.svg
+[  78% ] _update_scan_actions | orin_r.svg
+[  80% ] _update_scan_actions | orin_w.svg
+[  81% ] _update_scan_actions | rio_e.svg
+[  82% ] _update_scan_actions | rio_q.svg
+[  84% ] _update_scan_actions | rio_r.svg
+[  85% ] _update_scan_actions | rio_w.svg
+[  86% ] _update_scan_actions | sera_e.svg
+[  88% ] _update_scan_actions | sera_q.svg
+[  89% ] _update_scan_actions | sera_r.svg
+[  90% ] _update_scan_actions | sera_w.svg
+[  92% ] _update_scan_actions | tere_e.svg
+[  93% ] _update_scan_actions | tere_q.svg
+[  94% ] _update_scan_actions | tere_r.svg
+[  96% ] _update_scan_actions | tere_w.svg
+[  97% ] _update_scan_actions | canal-backdrop.webp
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started (Re)Importing Assets (74 steps)
+[   0% ] reimport | Preparing files to reimport...
+[   1% ] reimport | Preparing files to reimport...
+[   2% ] reimport | Preparing files to reimport...
+[   4% ] reimport | Preparing files to reimport...
+[   5% ] reimport | Preparing files to reimport...
+[   6% ] reimport | Preparing files to reimport...
+[   8% ] reimport | Preparing files to reimport...
+[   9% ] reimport | Preparing files to reimport...
+[  10% ] reimport | Preparing files to reimport...
+[  12% ] reimport | Preparing files to reimport...
+[  13% ] reimport | Preparing files to reimport...
+[  14% ] reimport | Preparing files to reimport...
+[  16% ] reimport | Preparing files to reimport...
+[  17% ] reimport | Preparing files to reimport...
+[  18% ] reimport | Preparing files to reimport...
+[  20% ] reimport | Preparing files to reimport...
+[  21% ] reimport | Preparing files to reimport...
+[  22% ] reimport | Preparing files to reimport...
+[  24% ] reimport | Preparing files to reimport...
+[  25% ] reimport | Preparing files to reimport...
+[  26% ] reimport | Preparing files to reimport...
+[  28% ] reimport | Preparing files to reimport...
+[  29% ] reimport | Preparing files to reimport...
+[  30% ] reimport | Preparing files to reimport...
+[  32% ] reimport | Preparing files to reimport...
+[  33% ] reimport | Preparing files to reimport...
+[  34% ] reimport | Preparing files to reimport...
+[  36% ] reimport | Preparing files to reimport...
+[  37% ] reimport | Preparing files to reimport...
+[  38% ] reimport | Preparing files to reimport...
+[  40% ] reimport | Preparing files to reimport...
+[  41% ] reimport | Preparing files to reimport...
+[  42% ] reimport | Preparing files to reimport...
+[  44% ] reimport | Preparing files to reimport...
+[  45% ] reimport | Preparing files to reimport...
+[  46% ] reimport | Preparing files to reimport...
+[  48% ] reimport | Preparing files to reimport...
+[  49% ] reimport | Preparing files to reimport...
+[  50% ] reimport | Preparing files to reimport...
+[  52% ] reimport | Preparing files to reimport...
+[  53% ] reimport | Preparing files to reimport...
+[  54% ] reimport | Preparing files to reimport...
+[  56% ] reimport | Preparing files to reimport...
+[  57% ] reimport | Preparing files to reimport...
+[  58% ] reimport | Preparing files to reimport...
+[  60% ] reimport | Preparing files to reimport...
+[  61% ] reimport | Preparing files to reimport...
+[  62% ] reimport | Preparing files to reimport...
+[  64% ] reimport | Preparing files to reimport...
+[  65% ] reimport | Preparing files to reimport...
+[  66% ] reimport | Preparing files to reimport...
+[  68% ] reimport | Preparing files to reimport...
+[  69% ] reimport | Preparing files to reimport...
+[  70% ] reimport | Preparing files to reimport...
+[  72% ] reimport | Preparing files to reimport...
+[  73% ] reimport | Preparing files to reimport...
+[  74% ] reimport | Preparing files to reimport...
+[  76% ] reimport | Preparing files to reimport...
+[  77% ] reimport | Preparing files to reimport...
+[  78% ] reimport | Preparing files to reimport...
+[  80% ] reimport | Preparing files to reimport...
+[  81% ] reimport | Preparing files to reimport...
+[  82% ] reimport | Preparing files to reimport...
+[  84% ] reimport | Preparing files to reimport...
+[  85% ] reimport | Preparing files to reimport...
+[  86% ] reimport | Preparing files to reimport...
+[  88% ] reimport | Preparing files to reimport...
+[  89% ] reimport | Preparing files to reimport...
+[  90% ] reimport | Preparing files to reimport...
+[  92% ] reimport | Preparing files to reimport...
+[  93% ] reimport | Preparing files to reimport...
+[  94% ] reimport | Preparing files to reimport...
+[  96% ] reimport | Preparing files to reimport...
+[  97% ] reimport | Preparing files to reimport...
+[   0% ] reimport | Executing pre-reimport operations...
+[   0% ] preload_reimporting_scene | Started Preparing scenes for reload (1 steps)
+[   0% ] preload_reimporting_scene | Analyzing scene [empty]
+[  50% ] preload_reimporting_scene | Preparation done.
+[ DONE ] preload_reimporting_scene
+
+[   0% ] reimport | ProjectEKorean.woff2
+[   1% ] reimport | ProjectEKorean.woff2
+[   2% ] reimport | nema_r.svg
+[   4% ] reimport | nema_q.svg
+[   5% ] reimport | nema_e.svg
+[   6% ] reimport | mua_w.svg
+[   8% ] reimport | mua_r.svg
+[   9% ] reimport | mua_q.svg
+[  10% ] reimport | mua_e.svg
+[  12% ] reimport | lume_w.svg
+[  13% ] reimport | lume_r.svg
+[  14% ] reimport | lume_q.svg
+[  16% ] reimport | lume_e.svg
+[  17% ] reimport | bas_w.svg
+[  18% ] reimport | bas_r.svg
+[  20% ] reimport | bas_q.svg
+[  21% ] reimport | bas_e.svg
+[  22% ] reimport | starlight_elixir.svg
+[  24% ] reimport | grove_salve.svg
+[  25% ] reimport | rio.webp
+[  26% ] reimport | canal-backdrop.webp
+[  28% ] reimport | tere_w.svg
+[  29% ] reimport | tere_r.svg
+[  30% ] reimport | tere_q.svg
+[  32% ] reimport | tere_e.svg
+[  33% ] reimport | sera_w.svg
+[  34% ] reimport | sera_r.svg
+[  36% ] reimport | sera_q.svg
+[  37% ] reimport | sera_e.svg
+[  38% ] reimport | rio_w.svg
+[  40% ] reimport | rio_r.svg
+[  41% ] reimport | rio_q.svg
+[  42% ] reimport | rio_e.svg
+[  44% ] reimport | orin_w.svg
+[  45% ] reimport | orin_r.svg
+[  46% ] reimport | orin_q.svg
+[  48% ] reimport | orin_e.svg
+[  49% ] reimport | nema_w.svg
+[  50% ] reimport | canal_flagstones.webp
+[  52% ] reimport | canal_waterbed.webp
+[  53% ] reimport | bas-face.webp
+[  54% ] reimport | bas-tunic.webp
+[  56% ] reimport | nema-face.webp
+[  57% ] reimport | nema-tunic.webp
+[  58% ] reimport | rio-face.webp
+[  60% ] reimport | rio-tunic.webp
+[  61% ] reimport | bas.svg
+[  62% ] reimport | rio.svg
+[  64% ] reimport | nema.webp
+[  65% ] reimport | bas.webp
+[  66% ] reimport | ProjectEKorean.woff2
+[  68% ] reimport | nema_r.svg
+[  69% ] reimport | nema_q.svg
+[  70% ] reimport | nema_e.svg
+[  72% ] reimport | mua_w.svg
+[  73% ] reimport | amber_fig.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  74% ] reimport | copper_millwheel.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  76% ] reimport | core_observatory.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  77% ] reimport | crown_crystal.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  78% ] reimport | garden_bank.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  80% ] reimport | guild_mosaic.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  81% ] reimport | ivy_cloister.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  82% ] reimport | jade_willow.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  84% ] reimport | quay_rail.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  85% ] reimport | sentinel_crown.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  86% ] reimport | terracotta_gatehouse.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  88% ] reimport | bas.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  89% ] reimport | lume.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  90% ] reimport | mua.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  92% ] reimport | tere.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  93% ] reimport | nema.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  94% ] reimport | orin.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  96% ] reimport | sera.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  97% ] reimport | rio.glb
+[   0% ] import | Started Import Scene (104 steps)
+[   0% ] import | Importing Scene...
+[   1% ] import | Running Custom Script...
+[  99% ] import | Saving...
+[ DONE ] import
+
+[  98% ] reimport | Finalizing Asset Import...
+[ DONE ] reimport
+
+[   0% ] reimport | Started (Re)Importing Assets (74 steps)
+[   0% ] reimport | Executing post-reimport operations...
+[ DONE ] reimport
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
+Checking Original movement rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bas motion: 40 checks, 0 failures
+Checking Original physical scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Probe scene: 19 checks, 0 failures
+Checking Combat and hero abilities
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle rules: 115 checks, 0 failures
+Checking Lanes, bots and match lifecycle
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Bot checkpoint: 60.0s; damage=20343.4; units=65
+Bot checkpoint: 210.5s; damage=105368.2; units=53
+Bot checkpoint: 360.5s; damage=194090.5; units=49
+Bot checkpoint: 510.5s; damage=288096.6; units=72
+Bot checkpoint: 660.5s; damage=374890.8; units=71
+Bot diagnostic: 793.4s; winner=0; towers=6; damage=465346.0; hero deaths=5; units=56
+Battle match: 1942 checks, 0 failures
+Checking Playable scene and UI routing
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Battle scene: 96 checks, 0 failures
+Checking Cell tiers, turret boundaries and attack-move
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next combat: 152 checks, 0 failures
+Checking Shared vision presentation and cell labels
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Team vision: 499 checks, 0 failures
+Checking Attack-move input, target priority and help
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Next input: 32 checks, 0 failures
+Checking Wall-clipped area previews and effects
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Effect geometry: 35 checks, 0 failures
+Checking Raised XP platforms, ramps and high-ground sight
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Elevation: 17 checks, 0 failures
+Checking R30 high-ground support rotation layout
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+R30 layout: 61 checks, 0 failures
+Checking Consumable purchase, recovery and interruption rules
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Consumables: 245 checks, 0 failures
+Checking Shop, inventory and consumable input
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Consumable input: 115 checks, 0 failures
+Checking Bot purchase and consumable decisions
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Consumable AI: 186 checks, 0 failures
+Checking Observed cell spawns and actual personal XP feedback
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+XP feedback: 88 checks, 0 failures
+Checking Visible XP meter and HUD layering
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+XP meter: 14 checks, 0 failures
+Checking Visible tactical objective decisions
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Tactical objectives: 18 checks, 0 failures
+Checking Playable camera, original art and vision
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Playable slice: 34 checks, 0 failures
+Checking Tactical respawn and full match
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+TACTICAL_MATCH time=2077.3 winner=1 damage=1332390.4 cells=165 support=14 defend=68 cell_grants=55
+Tactical lifecycle: 13 checks, 0 failures
+Checking Integrated animation review and isolation
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Integrated V2: 329 checks, 0 failures
+Checking Skill readability, terrain and corpse concealment
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+V2 visual contract: 865 checks, 0 failures
+Checking Review objectives and live match isolation
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Review objectives: 5 checks, 0 failures
+Checking Fantasy 3-head hero art, map and skill icon binding
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Fantasy V3: 55 checks, 0 failures
+Checking V4 enhanced combat art, local audio and VFX motifs
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Fantasy V4: 48 checks, 0 failures
+Checking V5 imported geometry, illustrations and articulated poses
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Illustrated V5: 80 checks, 0 failures
+Checking Illustrated hero selection and compact battle HUD
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Selection V6: 49 checks, 0 failures
+Checking Smooth hero follow and four-edge camera input
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Camera V6: 56 checks, 0 failures
+Checking COT ordinary lane unit last-hit reserve
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+COT reference V6: 50 checks, 0 failures
+Checking Fantasy skill and item names in actual controls
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Fantasy HUD V7: 96 checks, 0 failures
+Checking All fantasy hero skill identities and icons
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Skill concepts V7: 476 checks, 0 failures
+Checking Fantasy consumable metadata and icons
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Item concepts V7: 36 checks, 0 failures
+Checking Distinct bounded skill geometry and spirit trees
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Skill VFX V7: 52 checks, 0 failures
+Checking Live comet, spirit link and recovery feedback
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Persistent FX V7: 227 checks, 0 failures
+Checking Eight hero selection and three-person teams
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Roster V8: 48 checks, 0 failures
+Checking New hero skills, passives and owned state
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Hero abilities V8: 259 checks, 0 failures
+Checking Eight hero cards, models and review actions
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Roster presentation V8: 425 checks, 0 failures
+Starting the main scene
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: Godot import, all 36 behavioral suites and main-scene startup

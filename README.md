@@ -1,6 +1,6 @@
 # Project E — 아스트라 수로 전장
 
-Godot 4.7.2 Standard로 만드는 독립 실행형 PC AOS다. **V8 · 0.8.0**은 8명의 판타지 영웅 중 한 명을 선택해 사람 1명과 봇 5명이 싸우는 오프라인 3 대 3 프로토타입이다. 세 라인에서 성장하고 포탑을 밀어 상대 핵을 파괴한다.
+Godot 4.7.2 Standard로 만드는 독립 실행형 PC AOS다. **V9 · 0.9.0**은 8명의 판타지 영웅 중 한 명을 선택해 사람 1명과 봇 5명이 싸우는 오프라인 3 대 3 프로토타입이다. 아군 하단·적군 상단의 세로 전장에서 좌·중·우 라인을 따라 성장하고 포탑과 상대 핵을 파괴한다. 기지에서 출발하는 봇은 돌파한 라인에 최대 2명까지 합류한다.
 
 ## 게임허브
 
@@ -10,7 +10,7 @@ Godot 4.7.2 Standard로 만드는 독립 실행형 PC AOS다. **V8 · 0.8.0**은
 | 현재 게임 콘텐츠별 상세 기획 | [경기·맵·전투·AI·성장·경제·로스터·UI·아트·플레이테스트](doc/design/content/README.md) |
 | 시티 오브 템페스트 역기획 | [원작 규칙·성장 수치·경제·아이템·전술·출처](doc/design/reverse-design/README.md) |
 | 8명 영웅의 기술 수치와 대응 | [캐릭터 시트](doc/design/characters/README.md) |
-| 이번 구현과 수행한 검증 | [V8 프로토타입](doc/design/28-eight-hero-prototype.md) · [검증 기록](doc/design/verification/2026-11-09-v8-verification.md) |
+| 이번 구현과 수행한 검증 | [V9 세로 전장·공성](doc/design/30-v9-vertical-siege.md) · [검증 기록](doc/design/verification/2026-11-10-v9-verification.md) |
 
 ## 8명 선택과 전투
 
@@ -36,7 +36,7 @@ Godot 4.7.2 Standard로 만드는 독립 실행형 PC AOS다. **V8 · 0.8.0**은
 3. 8명 중 한 명을 선택하고 일반 경기 또는 기술 체험으로 시작한다.
 4. F7을 열어 영웅별 동작과 QWER를 재생할 수 있다.
 
-Windows 배포본은 `.exe`와 `.pck`를 같은 폴더에 둔다. 빌드별 다운로드와 실제 실행 결과는 검증 기록에서 확인한다. [V8 빌드·검증](doc/design/verification/2026-11-09-v8-verification.md)
+Windows 배포본은 `.exe`와 `.pck`를 같은 폴더에 둔다. 빌드별 다운로드와 실제 실행 결과는 검증 기록에서 확인한다. [V9 빌드·검증](doc/design/verification/2026-11-10-v9-verification.md)
 
 | 입력 | 동작 |
 |---|---|
@@ -72,4 +72,6 @@ python tools/check_audio_assets.py
 python -m unittest discover -s tools/tests -p 'test_package_windows.py'
 ```
 
-검증 도구는 자산 가져오기, 36개 행동 검사, 시작 장면과 배포 규칙을 확인한다. 실제 배포 PCK의 화면·포인터 검사와 Windows 실행 결과는 같은 버전의 검증 기록에 연결한다. 사람 플레이의 체감·밸런스와 GPU별 성능은 플레이테스트 양식에 따라 관측한다. [V8 검증](doc/design/verification/2026-11-09-v8-verification.md) · [플레이테스트](doc/design/content/10-playtest-and-balance.md)
+검증 도구는 자산 가져오기, 전투·전장·입력 행동 검사, 시작 장면과 배포 규칙을 확인한다. 실제 배포 PCK의 화면·포인터 검사와 Windows 실행 결과는 같은 버전의 검증 기록에 연결한다. 사람 플레이의 체감·밸런스와 GPU별 성능은 플레이테스트 양식에 따라 관측한다. [V9 검증](doc/design/verification/2026-11-10-v9-verification.md) · [플레이테스트](doc/design/content/10-playtest-and-balance.md)
+
+자연 봇 경기의 공성 시간을 재측정하려면 `tools/measure_siege.gd`를 사용한다. 전투 결정을 바꾸지 않는 관측기로, 실제 핵 파괴 또는 지정한 관측 상한까지 기록한다. 실행 예와 통제 조건은 [V9 검증](doc/design/verification/2026-11-10-v9-verification.md)에 있다.
