@@ -6,6 +6,7 @@ Godot 4.7.2 Standard로 만드는 독립 실행형 PC AOS다. **V9 · 0.9.0**은
 
 | 찾는 내용 | 바로가기 |
 |---|---|
+| 다른 PC·개발자·AI에서 작업 이어가기 | [작업 인계와 요소별 기획](doc/handoff/README.md) · [AI 시작 프롬프트](doc/handoff/04-ai-handoff-prompt.md) |
 | 전체 기획과 제작 자료 | [Project E 게임허브](doc/design/README.md) |
 | 현재 게임 콘텐츠별 상세 기획 | [경기·맵·전투·AI·성장·경제·로스터·UI·아트·플레이테스트](doc/design/content/README.md) |
 | 시티 오브 템페스트 역기획 | [원작 규칙·성장 수치·경제·아이템·전술·출처](doc/design/reverse-design/README.md) |
