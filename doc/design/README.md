@@ -12,6 +12,7 @@
 | 시티 오브 템페스트의 규칙과 설계 해석 | [원작 역기획서](reverse-design/README.md) |
 | 8명 영웅의 역할과 정확한 기술 수치 | [캐릭터 시트](characters/README.md) |
 | 8명 프로토타입의 기본 구현 범위 | [V8 8인 프로토타입](28-eight-hero-prototype.md) |
+| **신규 서브컬처 판타지 캐릭터 아트 방향** | [D 혼합형: 8명 영웅 아트 바이블](31-subculture-fantasy-hero-art-direction.md) |
 | 현재 검사, 공성 전후 비교와 실행 파일 | [V9 검증 기록](verification/2026-11-10-v9-verification.md) |
 | 세로 전장과 작은 화면의 실제 실행 모습 | [V9 화면 모음](assets/v9/README.md) |
 | 8명 선택, 신규 모델과 기술의 실행 화면 | [V8 화면 모음](assets/v8/README.md) |
